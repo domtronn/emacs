@@ -1,0 +1,5 @@
+(setq USERPATH (getenv "HOME"))
+(setq custom-file (concat USERPATH "/.env/custom.el"))
+
+(load-file (concat USERPATH "/.env/emacs"))
+(load-file custom-file)

@@ -1,0 +1,189 @@
+#!/bin/bash
+## Colour Definitions
+
+# Normal Colours
+black=$(tput setaf 0)        # Black
+red=$(tput setaf 1)          # Red
+green=$(tput setaf 2)        # Green
+yellow=$(tput setaf 3)       # Yellow
+blue=$(tput setaf 4)         # Blue
+purple=$(tput setaf 5)       # Purple
+cyan=$(tput setaf 6)         # Cyan
+white=$(tput setaf 7)        # White
+
+
+bld=$(tput bold)        # Black
+
+# Background
+onBlack=$(tput setab 0)       # Black
+onRed=$(tput setab 1)         # Red
+onGreen=$(tput setab 2)       # Green
+onYellow=$(tput setab 3)      # Yellow
+onBlue=$(tput setab 4)        # Blue
+onPurple=$(tput setab 5)      # Purple
+onCyan=$(tput setab 6)        # Cyan
+onWhite=$(tput setab 7)       # White
+
+nc=$(tput sgr0)            # Color Reset
+
+WD=`pwd`
+
+jshintmode=0;
+jshint=0;
+nodeinstalled=0;
+
+function installNode() {
+		git clone git://github.com/ry/node.git
+		cd node
+		./configure
+		make
+		sudo make install
+		cd ..
+		rm -rf node
+}
+
+echo ""
+if [ ! -d "/Applications/Emacs.app" ]; then
+		echo "${white}${onRed}!! EMACS IS NOT INSTALLED !! ${nc}"
+		echo ""
+		echo "Please install Emacs from, ${white}http://emacsformacosx.com/${nc} before continuing"
+		echo ""
+		exit;
+fi
+
+echo "${white}== STARTING SETUP${nc}  "
+echo "${bld}${red}!!${nc} ${red}You may be asked for your password during setup...${nc}"
+
+if [ ! -f "/usr/local/bin/node" ] || [ ! -d "/usr/local/lib/node_modules/npm" ]; then
+		echo "${bld}${red}!! WARNING - ${nc}${yellow}NodeJS${red} not installed !! ${nc}"
+		echo ""
+		echo "This conifguration of Emacs uses ${yellow}JsHint${nc} for javascript format checking, which requries ${yellow}NodeJS${nc} and ${yellow}NpmJS${nc}"
+		echo "You can download and install ${yellow}NodeJs${nc} from,"
+		echo "    ${white}http://nodejs.org and install${nc}"
+		echo ""
+		read -p "Would you like to install ${yellow}NodeJs${nc} now? " nodejs
+		echo ""
+		case $nodejs in
+				[Yy]* )
+						read -p "Use GitHUB automated installer? (This takes a ${red}VERY${nc} long time... I recommend no) " nodejsauto
+						echo ""
+						case $nodejsauto in
+								[Yy]* )
+										installNode
+										nodeinstalled=1
+										;;
+								[Nn]* )
+										echo "Go to ${white}http://nodejs.org${nc} to install manually before rerunning this ./Setup"
+										echo ""
+										exit;
+										;;
+						esac
+						;;
+				[Nn]* )
+						echo "Disabling ${yellow}JsHint${nc} features for emacs setup..."
+						echo "If you would like this feature in the future, rerun ./Setup"
+						sleep 2
+						echo ""
+						jshintmode=0
+						;;
+		esac
+else
+		echo "Found ${yellow}NodeJs${nc} ..."
+		nodeinstalled=1
+fi 
+
+if [ ! -d "/usr/local/lib/node_modules/jshint" ] && [ $nodeinstalled == 1 ]; then
+		echo ""
+		echo "${red}!! ${yellow}JsHint${nc}${red}is not installed${nc}"
+		read -p "Would you like to install jshint? " jshintyn
+		echo ""
+		case $jshintyn in
+				[Yy]* ) 
+						`sudo npm install jshint -g`
+						jshint=1
+						;;
+		esac
+else 
+		echo "Found ${yellow}JsHint${nc} ..."
+		jshint=1;
+fi
+		
+if [ ! -d "/usr/local/lib/node_modules/jshint-mode" ] && [ $jshint == 1 ] && [ $nodeinstalled == 1 ]; then
+		echo ""
+		echo "${red}!! ${yellow}jshint-mode${nc} ${red}is not installed ${nc}"
+		read -p "Would you like to install ${yellow}jshint-mode${nc} for emacs? " jshintmodeyn
+		echo ""
+		case $jshintmodeyn in 
+				[Yy]* ) 
+						`sudo npm install jshint-mode -g` 
+						jshintmode=1
+						;;
+				[Nn]* ) 
+						echo "Initialising emacs without ${yellow}jshint-mode${nc}"
+						jshintmode=0
+						;;
+		esac
+elif [ $jshint == 1 ]; then
+		echo "Found ${yellow}jshint-mode${nc} ..."
+		jshintmode=1
+fi
+
+if [ $jshint == 1 ]; then
+		echo ""
+fi
+
+if [ -f $HOME/.emacs ] || [ -d $HOME/.emacs.d ]; then
+		echo "${white}== FOUND EXISTING CONFIG FILES${nc}"
+		if [ ! -d $HOME/.emacs.backup ]; then
+				echo "Making backup directory ${cyan}'$HOME/.emacs.backup'...${nc}"
+				mkdir $HOME/.emacs.backup
+				sleep 1
+		fi
+		if [ ! -L $HOME/.emacs ]; then
+				echo "Moving ${cyan}$HOME/.emacs${nc} to ${cyan}$HOME/.emacs.backup/.emacs${nc}"
+				mv $HOME/.emacs $HOME/.emacs.backup/.
+				sleep 1
+		fi
+
+		if [ ! -h $HOME/.emacs.d ]; then
+				echo "Moving ${cyan}$HOME/.emacs.d{$nc} to ${cyan}$HOME/.emacs.backup/.emacs.d${nc}"
+				mv $HOME/.emacs.d $HOME/.emacs.backup/.
+				sleep 1
+		fi
+		echo ""
+fi
+
+if [ -h $HOME/.emacs ] || [ -h $HOME/.emacs.d ]; then
+		echo "${white}== FOUND EXISTING SYMLINKS ${nc}"
+		if [ -h $HOME/.emacs ]; then
+				echo "Removing symlink ${cyan}$HOME/.emacs...${nc}"
+				rm -f $HOME/.emacs
+				sleep 1
+		fi
+
+		if [ -h $HOME/.emacs.d ]; then
+				echo "Removing symlink ${cyan}$HOME/.emacs.d...${nc}"
+				rm -rf $HOME/.emacs.d
+				sleep 1
+		fi
+
+		echo ""
+fi 
+
+echo "${white}== CREATING EMACS CONFIGURATION ${nc}"
+		
+echo "Copying ${cyan}./SetupEmacs${nc} to ${cyan}$HOME/.emacs...${nc}"
+ln -s $WD/SetupEmacs $HOME/.emacs
+`echo "(setq JSHINTMODE $jshintmode)" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
+echo "Linking ${cyan}emacs.packages${nc} to ${cyan}$HOME/.emacs.d...${nc}"
+ln -s $WD/emacs.packages $HOME/.emacs.d
+sleep 1
+
+
+`echo "alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs &'" >> $HOME/.bash_profile`
+echo ""
+echo "${bld}${yellow}** SUCCESS **${nc}"
+
+echo "Emacs is now configured! "
+echo "You can run it with the command ${bld}${green}'emacs'${nc}"
+echo ""
