@@ -1,11 +1,11 @@
 ;; Load a project into the file cache to find files simply
 
-(unless (boundp 'project-path)
-    (defvar PROJECTPATH (concat USERPATH "/Projects.csv")))
+
+(setq PROJECTPATH (concat (getenv "HOME") "/Projects.csv"))
 
 ; Cache environment files to find them easily!
 ; These are defined in ./projects.csv
-(mapcar
+(mapc
  'file-cache-add-directory-using-find 
  (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
 
