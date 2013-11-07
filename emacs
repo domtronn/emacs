@@ -2,7 +2,7 @@
 ;; Games Dev Websites
 ;;;; enginuity, nehe productions, opengl tutorial
 
-(add-to-list 'load-path (concat USERPATH "/.env/elisp"))
+(add-to-list 'load-path (concat USERPATH "/elisp"))
 ;; Some various useful functions to remember! ;;
 ;;rgrep                                        ;
 ;;    - find files containing a regexp         ;
@@ -18,10 +18,10 @@
 ;;------------------
 ;; Load Files
 ;;------------------
-(load-file (concat USERPATH "/.env/elisp/buffer_move.el"))
-(load-file (concat USERPATH "/.env/elisp/highlight_current_line.el"))
-(load-file (concat USERPATH "/.env/elisp/js2-mode.el"))
-(load-file (concat USERPATH "/.env/elisp/actionscript-mode.el"))
+(load-file (concat USERPATH "/elisp/buffer_move.el"))
+(load-file (concat USERPATH "/elisp/highlight_current_line.el"))
+(load-file (concat USERPATH "/elisp/js2-mode.el"))
+(load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 
 ;;------------------
 ;; Requires
@@ -44,7 +44,7 @@
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (concat USERPATH "/.env/elisp/ac-dict"))
+(add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
 
 (require 'uniquify)
@@ -55,7 +55,7 @@
 
 (if (= JSHINTMODE 1)
 		(progn 
-			;; (add-to-list 'load-path (concat USERPATH "/.env/elisp/jshint-mode"))
+			;; (add-to-list 'load-path (concat USERPATH "/elisp/jshint-mode"))
 			;; (require 'flymake-jshint)
 			;; (require 'flymake-node-jshint)
 			(message (concat "JSHINT MODE IS -> JSHINTMODE"))
@@ -85,9 +85,9 @@
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
 
-;; (load-file "~/.env/skeletons.el") ; NO LONGER USED
+;; (load-file "~/skeletons.el") ; NO LONGER USED
 
-(load-file (concat USERPATH "/.env/cacheproject.el"))
+(load-file (concat USERPATH "/cacheproject.el"))
 
 ;; Load js2 mode for javascript files
 ;; (autoload 'js2-mode "js2" nil t)
@@ -99,6 +99,7 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 (setq js2-basic-offset 2)
 (setq js2-enter-indents-newline t)
@@ -184,8 +185,7 @@
 (global-rainbow-delimiters-mode 1)
 
 ;; Set start up dimesnions in characters
-(add-to-list 'default-frame-alist '(height . 65))
-(add-to-list 'default-frame-alist '(width . 200))
+(maximize-frame)
 
 ;; Set translucency
 ;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
@@ -194,8 +194,8 @@
 ;;------------------
 ;; My Key Shortcuts
 ;;------------------
-(load-file (concat USERPATH "/.env/functions.el"))
-(load-file (concat USERPATH "/.env/keys.el"))
+(load-file (concat USERPATH "/functions.el"))
+(load-file (concat USERPATH "/keys.el"))
 
 ;; Load Theme
 ;; (dgc-set-chalkboard)

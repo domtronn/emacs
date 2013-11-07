@@ -148,6 +148,22 @@
   (mapc 'kill-buffer (buffer-list)))
 
 ;; ============================================================================
+(defun random-colour ()
+	"Returns a random colour"
+	(interactive)
+	(random t)
+	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
+
+;; ============================================================================
+(defun ahahah ()
+	"You know what it displays..."
+	(interactive) 
+	(message "%s" 
+					 (propertize "Ah ah ah, you didn't say the magic word!" 
+											 'face 
+											 '(:foreground '(make-string 'random-colour)))))
+
+;; ============================================================================
 (defun toggle-transparency ()
   "Toggles transpacernt"
   (interactive)

@@ -1,20 +1,18 @@
 ;; Load a project into the file cache to find files simply
 
 (unless (boundp 'project-path)
-    (defvar project-path "~/code/sport"))
-
-;;;; OBSOLETE but useful to remember!
-;;
-;; (setq project-directory-list 
-;; 	(shell-command-to-string 
-;; 	 (format "find %s | grep -v \/test*\.js$ | grep -v \.svn | grep -v \.png$" 
-;; 					 project-path)))
-
-(file-cache-add-directory-using-find project-path)
+    (defvar PROJECTPATH (concat USERPATH "/Projects.csv")))
 
 ; Cache environment files to find them easily!
-(file-cache-add-directory-using-find "~/.env/")
-(file-cache-add-directory-using-find "~/code/tal/antie/static/script/widgets")
+; These are defined in ./projects.csv
+(mapcar
+ 'file-cache-add-directory-using-find 
+ (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
+
+
+;; ========================================
+;;  Caching Functions
+;; ========================================
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
@@ -33,8 +31,6 @@
 (defun project-clear ()
 	"Clears the cache of projects"
 	(file-cache-clear-cache))
-
-
 
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.

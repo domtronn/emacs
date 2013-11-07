@@ -57,7 +57,7 @@ echo "${bld}${red}!!${nc} ${red}You may be asked for your password during setup.
 if [ ! -f "/usr/local/bin/node" ] || [ ! -d "/usr/local/lib/node_modules/npm" ]; then
 		echo "${bld}${red}!! WARNING - ${nc}${yellow}NodeJS${red} not installed !! ${nc}"
 		echo ""
-		echo "This conifguration of Emacs uses ${yellow}JsHint${nc} for javascript format checking, which requries ${yellow}NodeJS${nc} and ${yellow}NpmJS${nc}"
+		echo "This conifguration of Emacs uses ${yellow}JsHint${nc} for javascript format checking, which requires ${yellow}NodeJS${nc} and ${yellow}NpmJS${nc}"
 		echo "You can download and install ${yellow}NodeJs${nc} from,"
 		echo "    ${white}http://nodejs.org and install${nc}"
 		echo ""
@@ -175,6 +175,7 @@ echo "${white}== CREATING EMACS CONFIGURATION ${nc}"
 echo "Copying ${cyan}./SetupEmacs${nc} to ${cyan}$HOME/.emacs...${nc}"
 ln -s $WD/SetupEmacs $HOME/.emacs
 `echo "(setq JSHINTMODE $jshintmode)" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
+`echo "(setq USERPATH \"$WD\")" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
 echo "Linking ${cyan}emacs.packages${nc} to ${cyan}$HOME/.emacs.d...${nc}"
 ln -s $WD/emacs.packages $HOME/.emacs.d
 sleep 1
