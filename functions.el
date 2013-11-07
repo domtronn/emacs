@@ -150,7 +150,7 @@
 ;; ============================================================================
 (defun random-colour ()
 	"Returns a random colour"
-	(interactive)
+	(stringp)
 	(random t)
 	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
 
@@ -161,7 +161,7 @@
 	(message "%s" 
 					 (propertize "Ah ah ah, you didn't say the magic word!" 
 											 'face 
-											 '(:foreground '(make-string 'random-colour)))))
+											 '(:foreground (concat "\"" 'random-colour "\"")))))
 
 ;; ============================================================================
 (defun toggle-transparency ()
@@ -231,22 +231,22 @@
 (defun dgc-set-default ()
   "Default is the dark bright theme"
   (interactive)
-  (load-file "~/.env/cs_darkbright.el"))
+  (load-file (concat USERPATH "/cs_darkbright.el")))
 ;; ============================================================================
 (defun dgc-set-dark ()
   "Dark theme"
   (interactive)
-  (load-file "~/.env/cs_dark.el"))
+  (load-file (concat USERPATH "/cs_dark.el")))
 ;; ============================================================================
 (defun dgc-set-chalkboard ()
   "Chalkboard theme"
   (interactive)
-  (load-file "~/.env/cs_chalkboard.el"))
+  (load-file (concat USERPATH "/cs_chalkboard.el")))
 ;; ============================================================================
 (defun dgc-set-light ()
   "Light theme"
   (interactive)
-  (load-file "~/.env/cs_light.el"))
+  (load-file (concat USERPATH "/cs_light.el")))
 
 ;; ============================================================================
 (defun json-format ()

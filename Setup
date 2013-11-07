@@ -180,7 +180,6 @@ echo "Linking ${cyan}emacs.packages${nc} to ${cyan}$HOME/.emacs.d...${nc}"
 ln -s $WD/emacs.packages $HOME/.emacs.d
 sleep 1
 
-
 `echo "alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs &'" >> $HOME/.bash_profile`
 echo ""
 echo "${bld}${yellow}** SUCCESS **${nc}"
