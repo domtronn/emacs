@@ -154,14 +154,24 @@
 	(random t)
 	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
 
+(defun random-hex ()
+  "Return a string in the form of #FFFFFF. Choose the number for
+   #xffffff randomly using Emacs Lisp's builtin function (random)."
+  ;; seed our random number generator: current datetime plus Emacs's
+  ;; process ID
+	(interactive)
+  (random t)
+  (message "%s" (format "#%06x" (random #xffffff)))
+  )
 ;; ============================================================================
 (defun ahahah ()
 	"You know what it displays..."
-	(interactive) 
-	(message "%s" 
-					 (propertize "Ah ah ah, you didn't say the magic word!" 
-											 'face 
-											 '(:foreground (concat "\"" 'random-colour "\"")))))
+	(interactive)
+	(random t)
+	(setq clr (nth (random (length (defined-colors))) (defined-colors)))
+	(message "%s" (propertize "Ah ah ah, you didn't say the magic word!" 
+											'face 
+											`(:foreground ,clr))))
 
 ;; ============================================================================
 (defun toggle-transparency ()

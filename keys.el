@@ -71,7 +71,7 @@
 (global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
 
-(global-set-key (kbd "C-z") '(lambda () (interactive) (message "%s" (propertize "Ah ah ah, you didn't say the magic word!" 'face '(:foreground "red")))))
+(global-set-key (kbd "C-z") 'ahahah)
 
 (global-set-key [C-k] 'dgc-kill-line)
 (global-set-key [M-k] 'dgc-copy-line)
