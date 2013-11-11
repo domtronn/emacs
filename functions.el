@@ -45,14 +45,14 @@
 (defun domtronn-sign ()
 	"Insert my name and data"
 	(interactive)
-	(insert "-- Dominic Charlesworth (dgc336@gmail.com)\n   ")
+	(insert "-- Dom Charlesworth (dgc336@gmail.com)\n   ")
 	(domtronn-timestamp))
 
 ;; ============================================================================
 (defun domtronn-sign-professional ()
 	"Insert my name and data"
 	(interactive)
-	(insert "-- Dominic Charlesworth (DominicCharlesworth@bbc.co.uk)\n   ")
+	(insert "-- Dominic Charlesworth (Dominic.Charlesworth@bbc.co.uk)\n   ")
 	(domtronn-timestamp))
 
 ;; ============================================================================
@@ -135,24 +135,23 @@
       (comment-or-uncomment-region (region-beginning) (region-end)) 
       (comment-or-uncomment-region (line-beginning-position) (line-end-position)))) 
 
-;; ============================================================================
-(defun dgc-scratch ()										
-  "Switches buffer to *scratch*"
-  (interactive)
-  (switch-to-buffer) "*scratch*")
-
+;; ============================================================================a
 (defun dgc-log (arg)
 	"Inserts a log"
 	(interactive "sEnter your log message: ")
 	(progn
 		(setq len (+ (length arg) 2))
+		
+		(insert "log.log\(\"")
+		(insert (concat (make-list len '?=)))
+		(insert"\"\)\;")
+		(indent-according-to-mode)
+		(insert (concat "\nlog.log\(\" " arg " \"\)\;"))
+		(indent-according-to-mode)
 		(insert "\nlog.log\(\"")
 		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;\n")
-		(insert (concat "log.log\(\" " arg " \"\)\;"))
-		(insert "\nlog.log\(\"")
-		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;\n")))
+		(insert"\"\)\;")
+		(indent-according-to-mode)))
 		;; (insert-char "=" '(string-to-int (+ (length arg) 2)))))
 
 
