@@ -92,6 +92,8 @@
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
 
+(global-set-key (kbd "C-§") 'dgc-log)
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (global-set-key (kbd "C-x C-c") 'goto-line)

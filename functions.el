@@ -141,6 +141,22 @@
   (interactive)
   (switch-to-buffer) "*scratch*")
 
+(defun dgc-log (arg)
+	"Inserts a log"
+	(interactive "sEnter your log message: ")
+	(progn
+		(setq len (+ (length arg) 2))
+		(insert "\nlog.log\(\"")
+		(insert (concat (make-list len '?=)))
+		(insert"\"\)\;\n")
+		(insert (concat "log.log\(\" " arg " \"\)\;"))
+		(insert "\nlog.log\(\"")
+		(insert (concat (make-list len '?=)))
+		(insert"\"\)\;\n")))
+		;; (insert-char "=" '(string-to-int (+ (length arg) 2)))))
+
+
+
 ;; ============================================================================
 (defun close-all-buffers ()
   "Kills all open buffers"
