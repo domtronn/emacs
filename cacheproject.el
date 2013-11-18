@@ -1,12 +1,12 @@
 ;; Load a project into the file cache to find files simply
 
 (unless (boundp 'PROJECTPATH)
-				(setq PROJECTPATH (concat (getenv "HOME") "/Projects.csv")))
+	(setq PROJECTPATH (concat (getenv "HOME") "/Projects.csv")))
 
 ; Cache environment files to find them easily!
 ; These are defined in ./projects.csv
 (mapc
- 'file-cache-add-directory
+ 'file-cache-add-directory-recursively
  (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
 
 
@@ -31,7 +31,7 @@
 	(progn
 		(project-clear)
 		(mapc
-		 'file-cache-add-directory
+		 'file-cache-add-directory-recursively
 		 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))))
 
 (defun file-cache-ido-find-file (file)
