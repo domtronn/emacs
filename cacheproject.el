@@ -19,13 +19,6 @@
 	(interactive)
 	(file-cache-clear-cache))
 
-(defun project-change (arg)
-  "Changes the project path and reloads the new cache"
-  (interactive (list (read-file-name "Enter project path: ")))
-  (setq PROJECTPATH arg)
-	(message "New project directory is %s. Run project-refresh to see changes." arg)
-	)
-
 (defun project-refresh ()
 	(interactive)
 	(progn
@@ -33,6 +26,18 @@
 		(mapc
 		 'file-cache-add-directory-recursively
 		 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))))
+
+(defun project-add (arg)
+	"Appends the path to this project to your project file"
+	(interactive (list (read-directory-name "Enter project path: ")))
+	(shell-command (concat "echo \"" arg "\" >> " PROJECTPATH))
+	(project-refresh))
+
+(defun project-change (arg)
+  "Changes the project path and reloads the new cache"
+  (interactive (list (read-file-name "Enter path to Project file: ")))
+  (setq PROJECTPATH arg)
+	(message "New project directory is %s. Run project-refresh to see changes." arg))
 
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.

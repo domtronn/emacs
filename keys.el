@@ -63,8 +63,8 @@
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
 (global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
 
-(global-set-key [C-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
-(global-set-key [C-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
+(global-set-key [C-down] 'move-line-region-down)
+(global-set-key [C-up] 'move-line-region-up)
 
 (global-set-key [M-S-down] '(lambda () (interactive) (dgc-scroll-up-in-place 5)))
 (global-set-key [M-S-up] '(lambda () (interactive) (dgc-scroll-down-in-place 5)))
@@ -93,6 +93,9 @@
 (global-set-key (kbd "H-e") 'end-of-line)
 
 (global-set-key (kbd "C-§") 'dgc-log)
+(global-set-key (kbd "H-/") 'rgrep)
+(global-set-key (kbd "H-.") 'fm-right-frame)
+(global-set-key (kbd "H-,") 'fm-left-frame)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

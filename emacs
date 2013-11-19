@@ -19,6 +19,8 @@
 ;; Load Files
 ;;------------------
 (load-file (concat USERPATH "/elisp/buffer_move.el"))
+(load-file (concat USERPATH "/elisp/framemove.el"))
+(load-file (concat USERPATH "/elisp/move_line_region.el"))
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
