@@ -48,6 +48,17 @@
 	(insert "-- Dom Charlesworth (dgc336@gmail.com)\n   ")
 	(domtronn-timestamp))
 
+(defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
+
+(defun go-to-grep-and-rgrep ()
+	"Goes to the *grep* buffer and runs the rgrep command"
+	(interactive)
+	(progn 
+		(if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*grep*"))))
+				(switch-to-buffer-other-frame (get-buffer "*grep*")))
+		(call-interactively 'rgrep)))
+	
+
 ;; ============================================================================
 (defun domtronn-sign-professional ()
 	"Insert my name and data"
@@ -135,16 +146,6 @@
       (comment-or-uncomment-region (region-beginning) (region-end)) 
       (comment-or-uncomment-region (line-beginning-position) (line-end-position)))) 
 
-;; ============================================================================
-(defun move-line-region-up (&optional start end n)
-  (interactive "r\np")
-  (if (use-region-p) (move-region-up start end n) (move-line-up n)))
-
-;; ============================================================================
-(defun move-line-region-down (&optional start end n)
-  (interactive "r\np")
-  (if (use-region-p) (move-region-down start end n) (move-line-down n)))
-
 ;; ============================================================================a
 (defun dgc-log (arg)
 	"Inserts a log"
@@ -156,7 +157,7 @@
 		(insert (concat (make-list len '?=)))
 		(insert"\"\)\;")
 		(indent-according-to-mode)
-		(insert (concat "\nlog.log\(\" " arg " \"\)\;"))
+		(insert (concat "\nlog.log\(" arg "\)\;"))
 		(indent-according-to-mode)
 		(insert "\nlog.log\(\"")
 		(insert (concat (make-list len '?=)))
@@ -164,7 +165,22 @@
 		(indent-according-to-mode)))
 		;; (insert-char "=" '(string-to-int (+ (length arg) 2)))))
 
-
+(defun dgc-level-log (level msg)
+	"Inserts a with custom levellog"
+	(interactive "sEnter log level: \nsEnter your log message: ")
+	(progn
+		(setq len (+ (length msg) 2))
+		
+		(insert (concat "log." level "\(\""))
+		(insert (concat (make-list len '?=)))
+		(insert"\"\)\;")
+		(indent-according-to-mode)
+		(insert (concat "\nlog." level "\(" msg "\)\;"))
+		(indent-according-to-mode)
+		(insert "\nlog." level "\(\"")
+		(insert (concat (make-list len '?=)))
+		(insert"\"\)\;")
+		(indent-according-to-mode)))
 
 ;; ============================================================================
 (defun close-all-buffers ()
@@ -178,6 +194,13 @@
 	(stringp)
 	(random t)
 	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
+
+;; ============================================================================
+(defun copy-file-name ()
+	"Returns a random colour"
+	(interactive)
+	(message (concat "Copied " (buffer-file-name)))
+	(kill-new (buffer-file-name)))
 
 (defun random-hex ()
   "Return a string in the form of #FFFFFF. Choose the number for
@@ -266,22 +289,22 @@
 (defun dgc-set-default ()
   "Default is the dark bright theme"
   (interactive)
-  (load-file (concat USERPATH "/cs_darkbright.el")))
+  (load-file (concat USERPATH "/coloursheets/cs_darkbright.el")))
 ;; ============================================================================
 (defun dgc-set-dark ()
   "Dark theme"
   (interactive)
-  (load-file (concat USERPATH "/cs_dark.el")))
+  (load-file (concat USERPATH "/coloursheets/cs_dark.el")))
 ;; ============================================================================
 (defun dgc-set-chalkboard ()
   "Chalkboard theme"
   (interactive)
-  (load-file (concat USERPATH "/cs_chalkboard.el")))
+  (load-file (concat USERPATH "/coloursheets/cs_chalkboard.el")))
 ;; ============================================================================
 (defun dgc-set-light ()
   "Light theme"
   (interactive)
-  (load-file (concat USERPATH "/cs_light.el")))
+  (load-file (concat USERPATH "/coloursheets/cs_light.el")))
 
 ;; ============================================================================
 (defun json-format ()
