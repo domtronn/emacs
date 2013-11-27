@@ -107,12 +107,15 @@
 (setq js2-enter-indents-newline t)
 ;;(setq js2-use-font-lock-faces t)
 
+(setq framemove-hook-into-windmove t)
+
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'flycheck-mode);
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js-mode-hook (lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -162,8 +165,8 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;(setq skeleton-pair t)
-;(setq skeleton-pair-on-word t)
+;; (setq skeleton-pair t)
+;; (setq skeleton-pair-on-word t)
 
 (show-paren-mode t)   ; Show paranthesis matching
 (desktop-save-mode 1) ; Used to restore previous sessions
