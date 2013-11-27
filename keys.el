@@ -73,7 +73,8 @@
 
 (global-set-key (kbd "C-z") 'ahahah)
 
-(global-set-key [C-k] 'dgc-kill-line)
+(global-set-key (kbd "C-S-k") 'kill-whole-line)
+(global-set-key (kbd "C-k") 'kill-line)
 (global-set-key [M-k] 'dgc-copy-line)
 
 (global-set-key (kbd "C-S-w") 'mark-word)
@@ -93,7 +94,8 @@
 (global-set-key (kbd "H-e") 'end-of-line)
 
 (global-set-key (kbd "C-§") 'dgc-log)
-(global-set-key (kbd "H-/") 'rgrep)
+(global-set-key (kbd "C-±") 'dgc-level-log)
+(global-set-key (kbd "H-/") 'go-to-grep-and-rgrep)
 (global-set-key (kbd "H-.") 'fm-right-frame)
 (global-set-key (kbd "H-,") 'fm-left-frame)
 
