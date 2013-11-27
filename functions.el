@@ -146,6 +146,16 @@
       (comment-or-uncomment-region (region-beginning) (region-end)) 
       (comment-or-uncomment-region (line-beginning-position) (line-end-position)))) 
 
+;; ============================================================================
+(defun move-line-region-up (&optional start end n)
+  (interactive "r\np")
+  (if (use-region-p) (move-region-up start end n) (move-line-up n)))
+
+;; ============================================================================
+(defun move-line-region-down (&optional start end n)
+  (interactive "r\np")
+  (if (use-region-p) (move-region-down start end n) (move-line-down n)))
+
 ;; ============================================================================a
 (defun dgc-log (arg)
 	"Inserts a log"
