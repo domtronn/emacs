@@ -1,7 +1,13 @@
 ;; Load a project into the file cache to find files simply
 
+(defun project-change (arg)
+  "Changes the project path and reloads the new cache"
+  (interactive (list (read-file-name "Enter path to Project file: ")))
+  (setq PROJECTPATH arg)
+	(message "New project directory is %s. Run project-refresh to see changes." arg))
+
 (unless (boundp 'PROJECTPATH)
-	(setq PROJECTPATH (concat (getenv "HOME") "/Projects.csv")))
+	(call-interactively 'project-change))
 
 ; Cache environment files to find them easily!
 ; These are defined in ./projects.csv
@@ -33,11 +39,6 @@
 	(shell-command (concat "echo \"" arg "\" >> " PROJECTPATH))
 	(project-refresh))
 
-(defun project-change (arg)
-  "Changes the project path and reloads the new cache"
-  (interactive (list (read-file-name "Enter path to Project file: ")))
-  (setq PROJECTPATH arg)
-	(message "New project directory is %s. Run project-refresh to see changes." arg))
 
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
