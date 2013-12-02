@@ -39,9 +39,12 @@
 (require 'multiple-cursors)   ; Amazing package to allow simultaneous multiline editiing
 
 (require 'hideshowvis)
-(autoload 'hideshowvis-enable "hideshowvis" )
+(autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
 (hideshowvis-symbols)
+
+(require 'autopair)
+(autopair-global-mode)
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
@@ -165,8 +168,8 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;; (setq skeleton-pair t)
-;; (setq skeleton-pair-on-word t)
+(setq skeleton-pair t)
+(setq skeleton-pair-on-word t)
 
 (show-paren-mode t)   ; Show paranthesis matching
 (desktop-save-mode 1) ; Used to restore previous sessions
