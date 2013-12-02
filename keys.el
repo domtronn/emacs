@@ -14,11 +14,14 @@
 (global-set-key [M-right] 'dgc-forward-word-2)
 (global-set-key [M-left] 'dgc-backward-word)
 
-;; ;; Skeleton pair parenthesis
+;; ;; Skeleton pair parenthesis 
+;; ;; This is now depreciated by the use of the autopair global mode
 ;; (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 ;; (global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
 ;; (global-set-key (kbd "{") 'skeleton-pair-insert-maybe) 
 ;; (global-set-key (kbd "<") 'skeleton-pair-insert-maybe)
+;; (global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+;; (global-set-key (kbd "'") 'skeleton-pair-insert-maybe)
 
 ;; Navigate parantheses
 (global-set-key (kbd "s-.") 'forward-list)
