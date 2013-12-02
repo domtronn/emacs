@@ -2,6 +2,11 @@
 ###########
 *~
 
+# Dynamic Emacs Files #
+#######################
+*.emacs.desktop*
+*ac-comphist.dat
+
 # Compiled source #
 ###################
 *.com
