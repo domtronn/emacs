@@ -57,6 +57,23 @@
 		(if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*grep*"))))
 				(switch-to-buffer-other-frame (get-buffer "*grep*")))
 		(call-interactively 'rgrep)))
+
+(defun go-to-calendar ()
+	"Goes to the *grep* buffer and runs the rgrep command"
+	(interactive)
+	(progn 
+		(if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*Calendar*"))))
+				(switch-to-buffer-other-frame (get-buffer "*Calendar*")))
+		(calendar)))
+
+(defun go-to-agenda ()
+	"Goes to the *grep* buffer and runs the rgrep command"
+	(interactive)
+	(if (buffer-exists "*Org Agenda*")
+			(switch-to-buffer (get-buffer "*Org Agenda*"))
+		(org-agenda-list)
+		)
+	)
 	
 
 ;; ============================================================================

@@ -2,7 +2,7 @@
 ;; note: C-h k is the command used to discover keypresses
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key [C-return] 'dabbrev-expand)
-(global-set-key [S-tab] 'dabbrev-expand)
+(global-set-key [S-tab] 'ac-expand)
 
 (global-set-key (kbd "s-_") 'hide-all-functions)
 (global-set-key (kbd "s--") 'hs-hide-block)
@@ -38,11 +38,15 @@
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
 
+;; Bring up shell terminal
+(global-set-key (kbd "C-~") 'shell-pop)
+(global-set-key (kbd "C-`") 'shell-pop)
+
 ;; move and resize windows
 (global-set-key [M-s-left] 'windmove-left)
 (global-set-key [M-s-right] 'windmove-right)
 (global-set-key [M-s-up] 'windmove-up)
-(global-set-key [M-s-down] 'windmove-down)
+ (global-set-key [M-s-down] 'windmove-down)
 
 (global-set-key (kbd "H--") 'shrink-window-horizontally)
 (global-set-key (kbd "H-_") 'shrink-window)
@@ -50,11 +54,8 @@
 (global-set-key (kbd "H-+") 'enlarge-window)
 
 ;; Comment regions
-(global-set-key (kbd "C-c C-v") 'uncomment-region)
 (global-set-key (kbd "s-/") 'dgc-comment)
 (global-set-key (kbd "C-c C-c") 'dgc-comment)
-
-(global-set-key (kbd "M-_") 'redo)
 
 (global-set-key [f1] 'dgc-copy-line)
 (global-set-key [f2] 'yank)
@@ -69,17 +70,22 @@
 (global-set-key [C-down] 'move-line-region-down)
 (global-set-key [C-up] 'move-line-region-up)
 
-(global-set-key [M-S-down] '(lambda () (interactive) (dgc-scroll-up-in-place 5)))
-(global-set-key [M-S-up] '(lambda () (interactive) (dgc-scroll-down-in-place 5)))
 (global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
+(global-set-key (kbd "M-p") '(lambda () (interactive) (previous-line 5)))
+(global-set-key (kbd "M-n") '(lambda () (interactive) (next-line 5)))
+
+(global-set-key [S-M-up] '(lambda () (interactive) (previous-line 15)))
+(global-set-key [S-M-down] '(lambda () (interactive) (next-line 15)))
+(global-set-key [C-S-M-up] '(lambda () (interactive) (progn(previous-line 15) (recenter))))
+(global-set-key [C-S-M-down] '(lambda () (interactive) (progn (next-line 15) (recenter))))
 
 (global-set-key (kbd "C-z") 'ahahah)
 
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
-(global-set-key [M-k] 'dgc-copy-line)
 
+(global-set-key [M-k] 'dgc-copy-line)
 (global-set-key (kbd "C-S-w") 'mark-word)
 
 ;; Amazing mode to mark all instances in a definiton
@@ -87,9 +93,6 @@
 (global-set-key (kbd "C-<") 'mc/mark-all-like-this)
 
 ;; Use C-i as my personal prefix command
-(define-prefix-command 'global-map)
-(global-set-key [C-i] 'global-map)
-
 (define-prefix-command 'dgc-map)
 (global-set-key (kbd "H-x") 'dgc-map)
 
@@ -99,6 +102,7 @@
 (global-set-key (kbd "C-§") 'dgc-log)
 (global-set-key (kbd "C-±") 'dgc-level-log)
 (global-set-key (kbd "H-/") 'go-to-grep-and-rgrep)
+(global-set-key (kbd "H-\\") 'go-to-agenda)
 (global-set-key (kbd "H-.") 'fm-right-frame)
 (global-set-key (kbd "H-,") 'fm-left-frame)
 

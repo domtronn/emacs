@@ -1,5 +1,8 @@
 ;; Load a project into the file cache to find files simply
 
+(custom-set-variables 
+ '(file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$"))))
+
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
   (interactive (list (read-file-name "Enter path to Project file: ")))

@@ -24,17 +24,26 @@
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
+(load-file (concat USERPATH "/elisp/shell-pop.el"))
+(load-file (concat USERPATH "/elisp/linum-off.el"))
 
 ;;------------------
 ;; Requires
 ;;------------------
+
+(if (require 'package)
+		(progn (require 'package)
+			 (add-to-list 'package-archives 
+										'("marmalade" .
+											"http://marmalade-repo.org/packages/"))
+			 (package-initialize))
+	(message "Package is not installed - Are you using Emacs v24 or later?"))
+
 (require 'sunrise-commander)  ; Used for showing tree view of directories
 (require 'sunrise-x-tree)     ; use sunrise and then sr-tree-view
 
 (require 'rainbow-delimiters)
 (require 'paren)
-(require 'anything-match-plugin)
-(require 'anything-config)
 
 (require 'multiple-cursors)   ; Amazing package to allow simultaneous multiline editiing
 
@@ -43,14 +52,18 @@
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
 (hideshowvis-symbols)
 
+(autoload 'ibuffer "ibuffer" "List buffers." t)
+
 (require 'autopair)
 (autopair-global-mode)
-
-(autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
+
+(setq sml/theme 'dark)
+(require 'smart-mode-line)
+(sml/setup)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names 
@@ -65,11 +78,8 @@
 			;; (require 'flymake-node-jshint)
 			(message (concat "JSHINT MODE IS -> JSHINTMODE"))
 			(add-to-list 'load-path "/usr/local/lib/node_modules/jshint-mode")
-			;; (require 'flymake-jshint)
 			(add-hook 'javascript-mode-hook
 						(lambda () (flymake-mode t)))
-			;; (eval-after-load "flycheck"
-			;; 	'(add-hook 'flycheck-mode 'flycheck-color-mode-line))
 			)
 		nil)
 
@@ -80,15 +90,6 @@
     "/usr/bin"
 		"/bin"
     ))
-
-(if (require 'package)
-		(progn (require 'package)
-			 (add-to-list 'package-archives 
-										'("marmalade" .
-											"http://marmalade-repo.org/packages/"))
-			 (package-initialize))
-	(message "Package is not installed - Are you using Emacs v24 or later?"))
-
 
 ;; (load-file "~/skeletons.el") ; NO LONGER USED
 
@@ -111,6 +112,8 @@
 ;;(setq js2-use-font-lock-faces t)
 
 (setq framemove-hook-into-windmove t)
+
+(setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
@@ -172,7 +175,6 @@
 (setq skeleton-pair-on-word t)
 
 (show-paren-mode t)   ; Show paranthesis matching
-(desktop-save-mode 1) ; Used to restore previous sessions
 
 ;; Ido Support
 (ido-mode 1)

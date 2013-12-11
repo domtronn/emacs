@@ -6,13 +6,27 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(calendar-mark-diary-entries-flag t)
+ '(calendar-setup (quote one-frame))
+ '(calendar-view-diary-initially-flag t)
  '(completion-ignored-extensions (quote (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".svn-base")))
- '(file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn" "\\.svn-base")))
+ '(file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$")))
+ '(flycheck-highlighting-mode (quote lines))
  '(ibuffer-formats (quote ((mark modified read-only " " (name 30 30 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ido-use-filename-at-point (quote guess))
  '(jshint-mode-jshintrc "~/.jshintrc")
+ '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
+ '(org-agenda-files (quote ("/Users/charld13/Documents/Calendar.org")))
+ '(org-calendar-insert-diary-entry-key (quote i))
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
+ '(shell-pop-autocd-to-working-dir t)
+ '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-universal-key "C-t")
+ '(shell-pop-window-height 40)
+ '(shell-pop-window-position "bottom")
+ '(sml/show-time t)
+ '(sml/time-format " %H:%M:%S")
  '(tab-stop-list (quote (2 4 6 8 10 12 14 16 18 20 22 24 26 28 30))))
 
 (custom-set-faces

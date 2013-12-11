@@ -3,8 +3,9 @@
 ;;; Code:
 
 
-;;;### (autoloads nil nil ("autopair-pkg.el" "autopair.el") (21148
-;;;;;;  27093 763273 0))
+;;;### (autoloads nil nil ("../../../../.emacs.d/elpa/autopair-0.3/autopair-pkg.el"
+;;;;;;  "../../../../.emacs.d/elpa/autopair-0.3/autopair.el") (21148
+;;;;;;  38020 146017 0))
 
 ;;;***
 

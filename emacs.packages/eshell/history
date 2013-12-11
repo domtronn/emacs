@@ -1,0 +1,12 @@
+ls
+vm
+ls
+ls -l
+ls
+cd ~/
+ls
+ssh 192.168.192.10
+ls
+find-file .bashrc
+ssh 192.168.192.10
+ssh root@192.168.192.10
