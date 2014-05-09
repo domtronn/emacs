@@ -15,6 +15,10 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'load-path (concat USERPATH "/elisp"))
+
+(load-file (concat USERPATH "/functions.el"))
+
 ;;------------------
 ;; Load Files
 ;;------------------
@@ -26,6 +30,7 @@
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
+(load-file (concat USERPATH "/elisp/etags-select.el"))
 
 ;;------------------
 ;; Requires
@@ -38,9 +43,6 @@
 											"http://marmalade-repo.org/packages/"))
 			 (package-initialize))
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
-
-(require 'sunrise-commander)  ; Used for showing tree view of directories
-(require 'sunrise-x-tree)     ; use sunrise and then sr-tree-view
 
 (require 'rainbow-delimiters)
 (require 'paren)
@@ -57,6 +59,9 @@
 (require 'autopair)
 (autopair-global-mode)
 
+(autoload 'dash-at-point "dash-at-point"
+          "Search the word at point with Dash." t nil)
+
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
@@ -71,17 +76,7 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(if (= JSHINTMODE 1)
-		(progn 
-			;; (add-to-list 'load-path (concat USERPATH "/elisp/jshint-mode"))
-			;; (require 'flymake-jshint)
-			;; (require 'flymake-node-jshint)
-			(message (concat "JSHINT MODE IS -> JSHINTMODE"))
-			(add-to-list 'load-path "/usr/local/lib/node_modules/jshint-mode")
-			(add-hook 'javascript-mode-hook
-						(lambda () (flymake-mode t)))
-			)
-		nil)
+(setq grunt-cmd "grunt test --no-color --config ~/code/sprtiptvjs-massivedesign/branches/grunt-spike-2/webapp/static-versioned/script-tests/gruntfile.js")
 
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
@@ -118,9 +113,9 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
-(add-hook 'prog-mode-hook 'flycheck-mode);
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook (lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 
 (add-to-list 'js2-global-externs "require")
@@ -204,9 +199,9 @@
 ;;------------------
 ;; My Key Shortcuts
 ;;------------------
-(load-file (concat USERPATH "/functions.el"))
 (load-file (concat USERPATH "/keys.el"))
 
 ;; Load Theme
 ;; (dgc-set-chalkboard)
-(dgc-set-dark)
+
+(load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))

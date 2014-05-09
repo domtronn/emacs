@@ -276,7 +276,7 @@
 	(progn (rainbow-delimiters-mode 0)
 				 (rainbow-delimiters-mode 1)))
 
- (defun rotate-windows ()
+(defun rotate-windows ()
    "Rotate your windows" 
    (interactive) 
    (cond 
@@ -296,19 +296,118 @@
          (set-window-buffer w1  b2)
          (set-window-buffer w2 b1)
          (set-window-start w1 s2)
-         (set-windowe-start w2 s1)
+         (set-window-start w2 s1)
          (setq i (1+ i)))))))
 
-(defun open-test ()
-	"Open the test file of currently viewed .js file"
+(defun find-file-upwards (file-to-find)
+  "Recursively searches each parent directory starting from the default-directory.
+looking for a file with name file-to-find.  Returns the path to it
+or nil if not found."
+  (labels
+      ((find-file-r (path)
+                    (let* ((parent (file-name-directory path))
+                           (possible-file (concat parent file-to-find)))
+                      (cond
+                       ((file-exists-p possible-file) possible-file) ; Found
+                       ;; The parent of ~ is nil and the parent of / is itself.
+                       ;; Thus the terminating condition for not finding the file
+                       ;; accounts for both.
+                       ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
+                       (t (find-file-r (directory-file-name parent))))))) ; Continue
+    (find-file-r default-directory)))
+
+(defun clear-tags-table ()
+  "Resets lists of tags files and deletes associated tags buffers"
+  (interactive)
+ 
+  ;; clear tags-table-list and buffers
+  (dolist (f tags-table-list)
+    (let ((b (get-file-buffer f)))
+      (when b
+        (kill-buffer b))))
+  (setq tags-table-list nil)
+
+  ;; clear tags-file-name and buffer
+  (when tags-file-name
+    (let ((b (get-file-buffer tags-file-name)))
+      (when b
+        (kill-buffer b)))
+    (setq tags-file-name nil)))
+
+
+(defun find-tags-file-upwards ()
+	"Get and set the tags file"
 	(interactive)
-	(ido-find-file-in-dir (replace-regexp-in-string
-												 (buffer-name)
-												 ""
-												 (replace-regexp-in-string 
-													"script"
-													"script-tests\/tests"
-													(buffer-file-name)))))
+	(let ((my-tags-file (find-file-upwards ".tags")))
+		(when my-tags-file
+			(clear-tags-table)
+			(message "Loading tags file: %s" my-tags-file)
+			(visit-tags-table my-tags-file))))
+
+(defun jds-find-tags-file ()
+  "recursively searches each parent directory for a file named 'TAGS' and returns the
+path to that file or nil if a tags file is not found. Returns nil if the buffer is
+not visiting a file"
+  (progn
+      (defun find-tags-file-r (path)
+         "find the tags file from the parent directories"
+         (let* ((parent (file-name-directory path))
+                (possible-tags-file (concat parent ".tags")))
+           (cond
+             ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
+             ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
+             (t (find-tags-file-r (directory-file-name parent))))))
+
+    (if (buffer-file-name)
+        (catch 'found-it 
+          (find-tags-file-r (buffer-file-name)))
+        (error "buffer is not visiting a file"))))
+
+(defun jds-set-tags-file-path ()
+  "calls `jds-find-tags-file' to recursively search up the directory tree to find
+a file named 'TAGS'. If found, set 'tags-table-list' with that path as an argument
+otherwise raises an error."
+  (interactive)
+  (setq tags-table-list (cons (jds-find-tags-file) tags-table-list)))
+
+(defun open-test ()
+	"replace name "
+	(interactive)
+	(if (string-match "Test.js" (buffer-name))
+		(previous-buffer)
+		(find-file
+		 (replace-regexp-in-string "script" "script-tests\/tests"
+			 (replace-regexp-in-string "\\\.js" "Test\.js" (buffer-file-name))
+		 ))))
+
+(defun grunt ()
+  "Run grunt"
+  (interactive)
+  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
+        (result (call-process-shell-command grunt-cmd nil grunt-buffer t))
+        (output (with-current-buffer grunt-buffer (buffer-string))))
+    (cond ((zerop result)
+           (message "Grunt completed without errors"))
+          (t
+           (message nil)
+					 (delete-windows-on "*grunt*")
+           (split-window-vertically)
+           (set-window-buffer (next-window) grunt-buffer)))))
+
+(defun grunt-this-test-file ()
+  "Run grunt"
+  (interactive)
+  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
+        (result (call-process-shell-command
+								 (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
+        (output (with-current-buffer grunt-buffer (buffer-string))))
+    (cond ((zerop result)
+           (message "Grunt completed without errors"))
+          (t
+           (message nil)
+					 (delete-windows-on "*grunt*")
+           (split-window-vertically)
+					 (set-window-buffer (next-window) grunt-buffer)))))
 
 ;; ============================================================================
 ;; Functions to set appearance of emacs
