@@ -6,7 +6,8 @@
 ;; http://raebear.net/comp/emacscolors.html
 
 ;; Font
-(set-face-attribute 'default nil :font "-outline-Lucida Console-normal-normal-normal-mono-*-*-*-*-c-*-iso10646-1")
+
+(set-face-attribute 'default nil :font "-outline-Lucida Console-normal-normal-normal-mono-*-*-*-*-c-*-iso10646-1" :height 110)
 
 ;; Font locking. Turn it on in all modes that support it.
 (cond ((fboundp 'global-font-lock-mode)
@@ -19,11 +20,14 @@
 (set-face-background 'highlight-current-line-face "gray25")
 
 ;; Font Locking Colours
+(set-face-foreground (quote font-lock-comment-face) "dimgray")
+(set-face-foreground (quote font-lock-comment-delimiter-face) "gray25")
+(set-face-foreground (quote font-lock-builtin-face) "steelblue")
+
 (set-face-foreground (quote font-lock-function-name-face) "darkorange2")
-(set-face-foreground (quote font-lock-comment-face) "lightskyblue3")
 (set-face-foreground (quote font-lock-constant-face) "tomato2")
 (set-face-foreground (quote font-lock-type-face) "lightsteelblue")
-(set-face-foreground (quote font-lock-keyword-face) "gold1")
+(set-face-foreground (quote font-lock-keyword-face) "gold")
 (set-face-foreground (quote font-lock-string-face) "darkolivegreen3")
 (set-face-foreground (quote font-lock-variable-name-face) "lightgoldenrod2");
 
@@ -33,7 +37,7 @@
 (setq font-lock-maximum-size nil)
 
 ;; My colours
-(setq fg "whitesmoke")
+(setq fg "azure2")
 (setq bg "gray18")
 (setq bg-2 "gray40")
 (setq link "powderblue")
