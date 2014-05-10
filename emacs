@@ -2,7 +2,6 @@
 ;; Games Dev Websites
 ;;;; enginuity, nehe productions, opengl tutorial
 
-(add-to-list 'load-path (concat USERPATH "/elisp"))
 ;; Some various useful functions to remember! ;;
 ;;rgrep                                        ;
 ;;    - find files containing a regexp         ;
@@ -16,6 +15,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path (concat USERPATH "/elisp"))
+(add-to-list 'load-path "/usr/local/lib/node_modules/jshint-mode")
 
 (load-file (concat USERPATH "/functions.el"))
 
@@ -61,6 +61,10 @@
 
 (autoload 'dash-at-point "dash-at-point"
           "Search the word at point with Dash." t nil)
+
+(require 'flymake-jshint)
+(add-hook 'javascript-mode-hook
+         (lambda () (flymake-mode t)))
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
