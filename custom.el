@@ -19,6 +19,7 @@
  '(flycheck-highlighting-mode (quote lines))
  '(flycheck-jshintrc "/Users/charld13/.jshintrc")
  '(flymake-gui-warnings-enabled t)
+ '(highlight-current-line-globally t nil (highlight-current-line))
  '(ibuffer-formats (quote ((mark modified read-only " " (name 30 30 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ido-use-filename-at-point (quote guess))
  '(jshint-mode-jshintrc "~/.jshintrc")
@@ -45,6 +46,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(highlight-current-line-face ((t (:background "#333335"))))
  '(hs-face ((t nil)))
  '(ido-first-match ((((class color) (min-colors 89)) (:foreground "#f99157"))))
  '(ido-subdir ((((class color) (min-colors 89)) (:foreground "#cc99cc"))))
