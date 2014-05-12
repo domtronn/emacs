@@ -41,6 +41,9 @@
  '(vc-annotate-very-old-color nil)
  '(vc-svn-program "/usr/local/bin/svn"))
 
+(set-face-foreground (quote font-lock-comment-face) "dimgray")
+(set-face-foreground (quote font-lock-comment-delimiter-face) "gray25")
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -65,4 +68,4 @@
  '(rainbow-delimiters-depth-8-face ((((class color) (min-colors 89)) (:foreground "#ffcc66"))))
  '(rainbow-delimiters-depth-9-face ((t (:foreground "DarkGoldenrod1"))))
  '(rainbow-delimiters-unmatched-face ((t (:foreground "#f2777a"))))
- '(show-paren-match ((t (:foreground "gray18" :background "gold1" :weight extra-bold)))))
+ '(show-paren-match ((t (:inverse-video t))))
