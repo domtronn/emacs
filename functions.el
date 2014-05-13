@@ -1,10 +1,12 @@
-;;; functions.el --- 
-;;; common functions used in emacs
+;;; functions.el --- List of my own functions
 
-;; History
-;; 
+;;; Commentary:
+;; common functions used in Emacs
 
+
+;;; Code: 
 ;; ============================================================================
+
 (defun dgc-kill-line ()
   "Kill from beginning of line to beginning of next."
   (interactive)
@@ -13,6 +15,155 @@
     (let ((bol (point)))
       (end-of-line)
       (kill-region bol (1+ (point))))))
+
+(defun toggle-fullscreen ()
+  "Toggle full screen."
+  (interactive)
+  (set-frame-parameter
+     nil 'fullscreen
+     (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
+	)
+
+(defun open-in-and-activate-intellj ()
+	"Opens the current file in intellij for n00b5!"
+	(interactive)
+	(shell-command
+	 (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 13\\\" to activate\"" (buffer-file-name))))
+
+(defun buffer-mode (buffer-or-string)
+  "Return the major mode associated with a buffer."
+  (with-current-buffer buffer-or-string
+     major-mode))
+
+(defun my-isearch-yank-word-or-char-from-beginning ()
+  "Move to beginning of word before yanking word in isearch-mode."
+  (interactive)
+  ;; Making this work after a search string is entered by user
+  ;; is too hard to do, so work only when search string is empty.
+  (if (= 0 (length isearch-string))
+      (beginning-of-thing 'word))
+  (isearch-yank-word-or-char)
+  ;; Revert to 'isearch-yank-word-or-char for subsequent calls
+  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning 
+			     'isearch-yank-word-or-char
+			     isearch-mode-map))
+
+(add-hook 'isearch-mode-hook
+ (lambda ()
+   "Activate my customized Isearch word yank command."
+   (substitute-key-definition 'isearch-yank-word-or-char 
+			      'my-isearch-yank-word-or-char-from-beginning
+			      isearch-mode-map)))
+
+(defun my-vc-dir ()
+	"calls vc-dir on the appropriate project"
+	(interactive)
+	(let ((top-level-git (find-top-level-dir (buffer-file-name) ".git"))
+				(top-level-svn (find-top-level-dir (buffer-file-name) ".svn")))
+		(if (not (string-equal (find-top-level-dir (buffer-file-name) ".git") (buffer-file-name)))
+				(vc-dir top-level-git)
+			(if (not (string-equal (find-top-level-dir (buffer-file-name) ".svn") (buffer-file-name)))
+					(vc-dir top-level-svn)
+				(message "This file is not under version control."))))
+	nil)
+
+
+(defun set-up-rgrep-results ()
+	"Opens a pop up for rgrep results"
+	(interactive )
+	(save-excursion
+		(progn
+			(let ((match-string (thing-at-point 'symbol))
+						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
+						(match-dir (find-top-level-dir (buffer-file-name) ".svn")))
+				(message "rgrep %s %s %s" match-string match-type match-dir)
+				(rgrep match-string match-type match-dir)
+				(delete-other-windows)
+				(popwin:popup-buffer "*grep*")
+				(if (not (print truncate-lines))
+						(toggle-truncate-lines))
+			))))
+
+(defun set-up-rgrep-results-with-prompt (search-string)
+	"Opens a pop up for rgrep results"
+	(interactive "sEnter search string : ")
+	(save-excursion
+		(progn
+			(let ((match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
+						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name))))
+				(message "rgrep %s %s %s" search-string match-type match-dir)
+				(rgrep search-string match-type match-dir)
+				(delete-other-windows)
+				(popwin:popup-buffer "*grep*")
+				(if (not (print truncate-lines))
+						(toggle-truncate-lines))
+			))))
+
+(defun create-tags (dir-name)
+     "Create tags file."
+     (shell-command
+      (format "find %s -type f -follow | grep -E \"\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+
+(defun create-tags-for-project ()
+	"Creates tags files in the base of each project module in PROJECTPATH"
+	(interactive)
+	(mapc
+	 'create-tags
+	 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
+
+(defun set-up-grunt-watch-format ()
+	"Sets the display ready for grunt watching"
+	(interactive)
+	(save-excursion
+		(let (running (buffer-exists "*ansi-term*"))
+			(progn
+				(delete-other-windows)
+				(split-window-horizontally)
+				(enlarge-window-horizontally 50)
+				(visit-ansi-term)
+				(execute-kbd-macro 'cd-tests-grunt-watch)
+				(rotate-windows)))))
+
+(defun visit-ansi-term ()
+  "If the current buffer is:
+     1) a running ansi-term named *ansi-term*, rename it.
+     2) a stopped ansi-term, kill it and create a new one.
+     3) a non ansi-term, go to an already running ansi-term
+        or start a new one while killing a defunt one"
+  (interactive)
+  (let ((is-term (string= "term-mode" major-mode))
+        (is-running (term-check-proc (buffer-name)))
+        (term-cmd "/bin/bash")
+        (anon-term (get-buffer "*ansi-term*")))
+    (if is-term
+        (if is-running
+            (if (string= "*ansi-term*" (buffer-name))
+                (call-interactively 'rename-buffer)
+              (if anon-term
+                  (switch-to-buffer "*ansi-term*")
+                (ansi-term term-cmd)))
+          (kill-buffer (buffer-name))
+          (ansi-term term-cmd))
+      (if anon-term
+          (if (term-check-proc "*ansi-term*")
+              (switch-to-buffer "*ansi-term*")
+            (kill-buffer "*ansi-term*")
+            (ansi-term term-cmd))
+        (ansi-term term-cmd)))))
+
+(defun mark-word-at-point ()
+	"Marks the current word at point"
+	(interactive)
+	(progn
+		(mark-word)
+		(backward-word)))
+
+(defun my-mark-all-like-this ()
+	"Uses mc/mark-all-like-this at point"
+	(interactive)
+	(progn
+		(mark-word-at-point)
+		(mc/mark-all-like-this)))
 
 ;; ============================================================================
 (defun dgc-copy-line ()
@@ -223,6 +374,49 @@
 	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
 
 ;; ============================================================================
+
+(defvar my-ediff-bwin-config nil "Window configuration before ediff.")
+(defcustom my-ediff-bwin-reg ?b
+	"*Register to be set up to hold `my-ediff-bwin-config'
+    configuration.")
+
+(defvar my-ediff-awin-config nil "Window configuration after ediff.")
+(defcustom my-ediff-awin-reg ?e
+	"*Register to be used to hold `my-ediff-awin-config' window
+    configuration.")
+
+(defun my-ediff-bsh ()
+	"Function to be called before any buffers or window setup for
+    ediff."
+	(setq my-ediff-bwin-config (current-window-configuration))
+	(when (characterp my-ediff-bwin-reg)
+		(set-register my-ediff-bwin-reg
+									(list my-ediff-bwin-config (point-marker)))))
+
+(defun my-ediff-ash ()
+	"Function to be called after buffers and window setup for ediff."
+	(setq my-ediff-awin-config (current-window-configuration))
+	(when (characterp my-ediff-awin-reg)
+    	(set-register my-ediff-awin-reg
+										(list my-ediff-awin-config (point-marker)))))
+
+(defun my-ediff-qh ()
+	"Function to be called when ediff quits."
+	(when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config)))
+
+(defun vc-dir-kill-all-lines-at-mark ()
+	"remove all files with certain status"
+	(interactive)
+	(backward-word)
+	(let ((marked-word (thing-at-point 'word)))
+		(if (eq (buffer-mode (buffer-name)) "vc-dir-mode")
+				(message marked-word)
+				(save-excursion
+					(beginning-of-buffer)
+					(while (search-forward marked-word) (vc-dir-kill-line))))))
+
+
+;; ============================================================================
 (defun copy-file-name ()
 	"Returns a random colour"
 	(interactive)
@@ -248,33 +442,24 @@
 											'face 
 											`(:foreground ,clr))))
 
-;; ============================================================================
-(defun toggle-transparency ()
-  "Toggles transpacernt"
-  (interactive)
-  (if (/=
-       (cadr (frame-parameter nil 'alpha))
-       100)
-      ;; ('active 'inactive)
-      (set-frame-parameter nil 'alpha '(100 100))
-    (set-frame-parameter nil 'alpha '(40 15))))
-
 (defun ido-sort-mtime ()
 	(setq ido-temp-list
-				(sort ido-temp-list 
-							(lambda (a b)
-								(time-less-p
-								 (sixth (file-attributes (concat ido-current-directory b)))
-								 (sixth (file-attributes (concat ido-current-directory a)))))))
+				(sort ido-temp-list
+  (lambda (a b)
+      (let ((a-tramp-file-p (string-match-p ":\\'" a))
+            (b-tramp-file-p (string-match-p ":\\'" b)))
+        (cond
+         ((and a-tramp-file-p b-tramp-file-p)
+          (string< a b))
+         (a-tramp-file-p nil)
+         (b-tramp-file-p t)
+         (t (time-less-p
+             (sixth (file-attributes (concat ido-current-directory b)))
+             (sixth (file-attributes (concat ido-current-directory a))))))))))
 	(ido-to-end  ;; move . files to end (again)
 	 (delq nil (mapcar
 							(lambda (x) (and (char-equal (string-to-char x) ?.) x))
 							ido-temp-list))))
-
-(defun rmr ()
-	(interactive)
-	(progn (rainbow-delimiters-mode 0)
-				 (rainbow-delimiters-mode 1)))
 
 (defun rotate-windows ()
    "Rotate your windows" 
@@ -299,6 +484,26 @@
          (set-window-start w2 s1)
          (setq i (1+ i)))))))
 
+
+(defun find-top-level-dir (dir find-dir)
+	(interactive)
+	(let* ((parent (mapconcat 'identity (butlast (split-string dir "\\/")) "/")))
+		(if (file-exists-p (concat parent "/" find-dir))
+				(progn 
+					(setq ret nil)
+					(find-top-level-dir parent find-dir))
+			(setq ret dir))
+		)
+	ret)
+
+(defun test ()
+	(interactive)
+	(if (not (string-equal (sub-test (buffer-file-name) ".git") (buffer-file-name)))
+			(message "This file is under Git version control")
+		(if (not (string-equal (sub-test (buffer-file-name) ".svn") (buffer-file-name)))
+				(message ("This file is under SVN version control"))
+			(message "This file is NOT under version control tut"))))
+
 (defun find-file-upwards (file-to-find)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
@@ -319,14 +524,12 @@ or nil if not found."
 (defun clear-tags-table ()
   "Resets lists of tags files and deletes associated tags buffers"
   (interactive)
- 
   ;; clear tags-table-list and buffers
   (dolist (f tags-table-list)
     (let ((b (get-file-buffer f)))
       (when b
         (kill-buffer b))))
   (setq tags-table-list nil)
-
   ;; clear tags-file-name and buffer
   (when tags-file-name
     (let ((b (get-file-buffer tags-file-name)))
@@ -374,7 +577,7 @@ otherwise raises an error."
 	"replace name "
 	(interactive)
 	(if (string-match "Test.js" (buffer-name))
-		(previous-buffer)
+		(switch-to-buffer (replace-regexp-in-string "Test\.js" "\.js" (buffer-name)))
 		(find-file
 		 (replace-regexp-in-string "script" "script-tests\/tests"
 			 (replace-regexp-in-string "\\\.js" "Test\.js" (buffer-file-name))
@@ -409,36 +612,59 @@ otherwise raises an error."
            (split-window-vertically)
 					 (set-window-buffer (next-window) grunt-buffer)))))
 
-;; ============================================================================
-;; Functions to set appearance of emacs
-;; ============================================================================
-(defun dgc-set-default ()
-  "Default is the dark bright theme"
-  (interactive)
-  (load-file (concat USERPATH "/coloursheets/cs_darkbright.el")))
-;; ============================================================================
-(defun dgc-set-dark ()
-  "Dark theme"
-  (interactive)
-  (load-file (concat USERPATH "/coloursheets/cs_dark.el")))
-;; ============================================================================
-(defun dgc-set-chalkboard ()
-  "Chalkboard theme"
-  (interactive)
-  (load-file (concat USERPATH "/coloursheets/cs_chalkboard.el")))
-;; ============================================================================
-(defun dgc-set-light ()
-  "Light theme"
-  (interactive)
-  (load-file (concat USERPATH "/coloursheets/cs_light.el")))
-
-;; ============================================================================
 (defun json-format ()
 	(interactive)
 	(save-excursion
 		(shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)
 		)
 	)
+
+(defun format-code ()
+	"Prints cool message if in javascript mode"
+	(interactive)
+	(if (eq (buffer-mode (buffer-name)) 'js-mode)
+			(jshint-code)
+
+		)
+	nil)
+
+(defun jshint-code ()
+	"Reformats the code to go with jshint."
+	(interactive)
+		(save-excursion
+			(replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
+			(replace-string-in-buffer "function(" "function (")	; Add space between function and parantheses
+			(replace-string-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
+			(replace-string-in-buffer "if(" "if (") ; Add space between if and parantheses
+			(replace-string-in-buffer "for(" "for (") ; Add space between for and parantheses
+			(replace-string-in-buffer "){" ") {") ; Add space between close paren and open brace
+			(replace-string-in-buffer "{}" "{ }") ; Add space between open-close braces
+			(replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
+			(replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
+			(replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
+			;; (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") ; Add space around method arguments
+			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") 
+			(replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
+			(replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
+			(replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "")	; Remove double whitespace
+			(replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
+			(replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
+			(replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
+			(replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
+			(replace-string-in-buffer "    " "	") ; Reformat for the use of tabs over spaces
+			))
+
+(defun replace-regexp-in-buffer (arg1 arg2)
+	"Goes to beginning of buffer for each replace-regexp"
+	 (save-excursion
+		 (beginning-of-buffer)
+		 (replace-regexp arg1 arg2)))
+
+(defun replace-string-in-buffer (arg1 arg2)
+	"Goes to beginning of buffer for each replace-regexp"
+	 (save-excursion
+		 (beginning-of-buffer)
+		 (replace-regexp arg1 arg2)))
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS
@@ -455,5 +681,14 @@ otherwise raises an error."
 (fset 'hide-prev-function
    [?\C-r ?: ?. ?* ?f ?u ?n ?c ?t ?i ?o ?n ?\C-e ?\s-- ?\C-a])
 
+(fset 'press-return
+			[?c ?d ? ?$ ?T ?E ?S ?T ?S return])
+
 (fset 'hide-all-functions
    [?\M-> ?\C-u ?0 ?\M-x ?h ?i ?d ?e ?- ?p ?r ?e ?v ?- ?f ?u ?n ?c ?t ?i ?o ?n return ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e])
+
+(fset 'cd-tests-grunt-watch
+			[?c ?d ?  ?$ ?T ?E ?S ?T ?S return ?g ?r ?u ?n ?t ? ?w ?a ?t ?c ?h return])
+
+(provide 'functions)
+;;; functions.el ends here

@@ -41,4 +41,7 @@
  '(mode-line-inactive ((t (:inherit mode-line :background "#393939" :foreground "#999999" :box nil))))
  '(mode-line ((t (:background "gray18" :box (:line-width 1 :color "burlywood1" :style released-button))))))
 
+(set-face-foreground (quote font-lock-comment-face) "dimgray")
+(set-face-foreground (quote font-lock-comment-delimiter-face) "gray25")
+
 (provide-theme 'dgc-dark)

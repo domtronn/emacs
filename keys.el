@@ -14,15 +14,6 @@
 (global-set-key [M-right] 'dgc-forward-word-2)
 (global-set-key [M-left] 'dgc-backward-word)
 
-;; ;; Skeleton pair parenthesis 
-;; ;; This is now depreciated by the use of the autopair global mode
-;; (global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "{") 'skeleton-pair-insert-maybe) 
-;; (global-set-key (kbd "<") 'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-
 ;; Navigate parantheses
 (global-set-key (kbd "s-.") 'forward-list)
 (global-set-key (kbd "s-,") 'backward-list)
@@ -30,13 +21,18 @@
 (global-set-key [C-tab] 'file-cache-ido-find-file)
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
+(global-set-key (kbd "C-x f") 'ido-find-file)
+
 ;; change to use regexp searching rather than normal isearch
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-?") 'query-replace-regexp)
 
+(global-set-key (kbd "H-s") '(lambda () (interactive) (isearch-forward-regexp (thing-at-point 'word))))
+
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
+(global-set-key (kbd "M-s-¬") 'jshint-code)
 
 ;; Bring up shell terminal
 (global-set-key (kbd "C-~") 'shell-pop)
@@ -62,8 +58,14 @@
 (global-set-key (kbd "s-/") 'dgc-comment)
 (global-set-key (kbd "C-c C-c") 'dgc-comment)
 
-(global-set-key [f1] 'dgc-copy-line)
-(global-set-key [f2] 'yank)
+(global-set-key [f1] 'set-up-grunt-watch-format)
+(global-set-key [f2] 'set-up-rgrep-results)
+(global-set-key (kbd "<M-f2>") 'set-up-rgrep-results-with-prompt)
+
+(global-set-key [f6] 'vc-ediff)
+(global-set-key [f5] 'vc-next-action)
+(global-set-key [f7] 'my-vc-dir)
+(global-set-key (kbd "<M-f7>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
@@ -90,6 +92,8 @@
 (global-set-key (kbd "C-x t") 'open-test)
 (global-set-key (kbd "s-t") 'open-test)
 
+(global-set-key (kbd "C-x n p") 'project-change)
+
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
 
@@ -99,15 +103,17 @@
 (global-set-key (kbd "H-l") (kbd "C-l"))
 
 ;; Duplicate line
-(global-set-key (kbd "s-d") "\C-a\C- \C-n\M-w\C-y")
+(global-set-key (kbd "s-d") "\C-a\C- \C-n\M-w\C-y\C-p")
 
 (global-set-key (kbd "C-S-w") 'mark-word)
 
 ;; Amazing mode to mark all instances in a definiton
 (global-set-key (kbd "C->") 'mc/mark-all-like-this-in-defun)
-(global-set-key (kbd "C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-<") 'my-mark-all-like-this)
+(global-set-key (kbd "s-e") 'my-mark-all-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
+(global-set-key (kbd "S-s-t") 'grunt)
 (global-set-key (kbd "s-r") 'grunt-this-test-file)
 
 ;; Use C-i as my personal prefix command
@@ -134,3 +140,8 @@
 (define-key dgc-map (kbd "s") 'domtronn-sign) 
 (define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
+
+;; It's Key Chord Time!
+(key-chord-define-global "io" 'open-in-and-activate-intellj)
+(key-chord-define-global "??" 'set-up-rgrep-results-with-prompt)
+(key-chord-define-global "q]" 'flycheck-mode)

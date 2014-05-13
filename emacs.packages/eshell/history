@@ -10,3 +10,20 @@ ls
 find-file .bashrc
 ssh 192.168.192.10
 ssh root@192.168.192.10
+cd $TESTS
+ls
+cd workspace/sprtiptvjs-static/webapp/static-versioned/script-tests/
+ls
+grunt
+grunt watch
+cd ../
+alias
+ls
+cd script/controller
+ls -al
+jslint
+jslint --white deeplinkcontroller.js 
+jslint
+jslint --help
+jshint
+jslint

@@ -1,22 +1,14 @@
-;; my (dgc) .emacs file setup change
+;;; Emacs --- my .emacs file setup change
+
+
+;;; Commentary:
+
 ;; Games Dev Websites
-;;;; enginuity, nehe productions, opengl tutorial
+;;  enginuity, nehe productions, opengl tutorial
 
-;; Some various useful functions to remember! ;;
-;;rgrep                                        ;
-;;    - find files containing a regexp         ;
-;;      in a directory                         ;
-;;describe-key & describe-function             ;
-;;    - does what it says on the tin           ;
-;; vc-ediff   (C-x v =)                        ;
-;; vc-revert  (C-x v u)                        ;
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Code:
 (add-to-list 'load-path (concat USERPATH "/elisp"))
-(add-to-list 'load-path "/usr/local/lib/node_modules/jshint-mode")
-
 (load-file (concat USERPATH "/functions.el"))
 
 ;;------------------
@@ -28,19 +20,23 @@
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
+(load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
+(load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 
 ;;------------------
 ;; Requires
 ;;------------------
-
 (if (require 'package)
 		(progn (require 'package)
 			 (add-to-list 'package-archives 
 										'("marmalade" .
 											"http://marmalade-repo.org/packages/"))
+			 (add-to-list 'package-archives
+										'("melpa" . 
+											"http://melpa.milkbox.net/packages/") t)
 			 (package-initialize))
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
@@ -56,23 +52,38 @@
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
+(autoload 'css-color-mode "mon-css-color" "" t)
+(css-color-global-mode)
+
 (require 'autopair)
 (autopair-global-mode)
+
+(require 'key-chord)
+(key-chord-mode 1)
+
+(require 'popup)
+(require 'popwin)
 
 (autoload 'dash-at-point "dash-at-point"
           "Search the word at point with Dash." t nil)
 
-(require 'flymake-jshint)
+(require 'rfringe)
+(require 'flycheck-tip)
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'javascript-mode-hook
-         (lambda () (flymake-mode t)))
+         (lambda () (flycheck-mode t)))
+(flycheck-tip-use-timer 'verbose)
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
+(ac-set-trigger-key "TAB")
 
-(setq sml/theme 'dark)
-(require 'smart-mode-line)
-(sml/setup)
+;; Smart mode line causes troubles with flymake modes
+;; (setq sml/theme 'dark)
+;; (require 'smart-mode-line)
+;; (sml/setup)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names 
@@ -90,14 +101,6 @@
 		"/bin"
     ))
 
-;; (load-file "~/skeletons.el") ; NO LONGER USED
-
-(load-file (concat USERPATH "/cacheproject.el"))
-
-;; Load js2 mode for javascript files
-;; (autoload 'js2-mode "js2" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
 ;;---------------
 ;; Mode Hooks
 ;;---------------
@@ -111,16 +114,19 @@
 ;;(setq js2-use-font-lock-faces t)
 
 (setq framemove-hook-into-windmove t)
-
+(setq truncate-lines t)
 (setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-hook 'prog-mode-hook 'css-color-mode)
+(add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
-(add-hook 'js-mode-hook (lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
+(add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
+(add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -133,20 +139,42 @@
 			    ": *true" " "
 			    (replace-regexp-in-string "[\n\t ]+" " " 
 						      (buffer-substring-no-properties 1 (buffer-size)) t t))))
-		(mapc (apply-partially 'add-to-list 'js2-additional-externs)
-		      (split-string
-		       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) 
-			   (match-string-no-properties 1 btext) "")
-		       " *, *" t))
-		))))
+					(mapc (apply-partially 'add-to-list 'js2-additional-externs)
+								(split-string
+								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) 
+										 (match-string-no-properties 1 btext) "")
+								 " *, *" t))
+					))))
+
+;; Java Mode - Malabar Mode
+(require 'cedet)
+(require 'semantic)
+(load "semantic/loaddefs.el")
+(semantic-mode 1);;
+(require 'malabar-mode)
+(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+
+;; Load stuff to do with grep initially
+(eval-after-load "grep"
+  '(grep-compute-defaults))
 
 ;; change vc-diff to use vc-ediff
 (eval-after-load "vc-hooks"
   '(define-key vc-prefix-map "=" 'vc-ediff))
 (setq ediff-split-window-function (quote split-window-horizontally))
 (setq ediff-keep-variants nil)
-(add-hook 'ediff-startup-hook
-					'ediff-swap-buffers)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
+(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
+(add-hook 'ediff-quit-hook 'my-ediff-qh)
+
+(add-hook 'ediff-startup-hook 'ediff-swap-buffers)
+
+(add-hook 'vc-dir-mode-hook
+          (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
+(add-hook 'vc-dir-mode-hook
+          (lambda () (local-set-key (kbd "d") #'vc-ediff)))
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
@@ -158,6 +186,7 @@
 (setq visible-bell t)                       ; Disbales beep and use visible bell 
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
+(delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
 (setq-default cursor-type 'bar)             ; Change cursor to bar
@@ -168,6 +197,7 @@
 
 ;; Get rid of stupid menu bar and Tool Bar.. 
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (setq skeleton-pair t)
@@ -204,8 +234,7 @@
 ;; My Key Shortcuts
 ;;------------------
 (load-file (concat USERPATH "/keys.el"))
+(load-file (concat USERPATH "/cacheproject.el"))
 
 ;; Load Theme
-;; (dgc-set-chalkboard)
-
 (load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))
