@@ -142,6 +142,6 @@
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
 
 ;; It's Key Chord Time!
-(key-chord-define-global "io" 'open-in-and-activate-intellj)
+(key-chord-define-global "IO" 'open-in-and-activate-intellj)
 (key-chord-define-global "??" 'set-up-rgrep-results-with-prompt)
 (key-chord-define-global "q]" 'flycheck-mode)
