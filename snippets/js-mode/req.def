@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+#name : require def
+#expand-env: (yas-indent-line 'fixed)
+# --
+require.def("$1",
+	[
+		
+	],
+
+	function () {
+		"use strict";	
+
+		return ({
+
+			init: function () {
+				
+			}
+
+		});
+
+	}
+);

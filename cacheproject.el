@@ -33,10 +33,17 @@
 
 ; Cache environment files to find them easily!
 ; These are defined in ./projects.csv
-;; (mapc
-;;  'file-cache-add-directory-recursively
-;;  (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
-;; (create-tags-for-project)
+(if (string-equal "0\n" 				  
+	  (shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
+	(progn 
+	  (mapc
+	   'file-cache-add-directory-recursively
+	   (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
+	  (create-tags-for-project))
+  (progn
+	(message (concat PROJECTPATH " is not a project file"))
+	(file-cache-add-directory USERPATH )
+	(file-cache-add-directory (concat USERPATH "/elisp"))))
 
 ;; (mapc
 ;;  'test

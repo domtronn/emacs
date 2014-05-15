@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : Stub
+# --
+this.sandbox.stub(${1:class}.prototype);

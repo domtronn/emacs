@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+#name : member variable
+# --
+${1:$(concat "this._" yas-text)} = ${1:variable};
+$0

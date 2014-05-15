@@ -24,6 +24,7 @@
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
+(load-file (concat USERPATH "/elisp/sticky-windows.el"))
 
 ;;------------------
 ;; Requires
@@ -58,12 +59,34 @@
 ;; (require 'autopair)
 ;; (autopair-global-mode)
 
-(require 'key-chord)
-(key-chord-mode 1)
+;; (require 'key-chord)
+;; (key-chord-mode 1)
+
+;; Kevs Packages
+(require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
+(require 'feature-mode) ;; https://github.com/michaelklishin/cucumber.el
+(require 'groovy-mode)  ;; http://groovy.codehaus.org/Emacs+Groovy+Mode
 
 (require 'popup)
 (require 'popwin)
 (popwin-mode 1)
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+(require 'tabbar-ruler)
+(setq tabbar-ruler-popup-menu t) ; If you want a popup menu.
+(setq tabbar-ruler-popup-toolbar t) ; If you want a popup toolbar
+(setq *tabbar-ignore-buffers* 
+  '("*dirtree*" "*Completions*" "*Ido Completions*" "*Help*" "*ansi-term*" "*ansi-term-1*" "Ibuffer" "*Messages*" "*scratch*"))
+(setq tabbar-buffer-list-function
+	  (lambda ()
+		(remove-if
+		 (lambda (buffer)
+		   (and (not (eq (current-buffer) buffer)) ; Always include the current buffer.
+				(loop for name in *tabbar-ignore-buffers* ;remove buffer name in this list.
+					  thereis (string-equal (buffer-name buffer) name))))
+          (buffer-list))))
 
 ;; (autoload 'dash-at-point "dash-at-point"
 ;;           "Search the word at point with Dash." t nil)
@@ -76,9 +99,9 @@
          (lambda () (flycheck-mode t)))
 (flycheck-tip-use-timer 'verbose)
 
-(require 'yasnippet)
-(setq yas-snippet-dirs (concat USERPATH "/snippets"))
-(yas/load-directory (concat USERPATH "/snippets"))
+;;(require 'yasnippet)
+;;(setq yas-snippet-dirs (concat USERPATH "/snippets"))
+;;(yas/load-directory (concat USERPATH "/snippets"))
 
 (require 'auto-complete-config)
 (require 'ac-dabbrev)
@@ -111,7 +134,6 @@
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-
 (setq exec-path
       '(
     "/usr/local/bin"
@@ -126,6 +148,9 @@
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
+
+(add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
 
 (setq js2-basic-offset 2)
 (setq js2-enter-indents-newline t)
@@ -142,6 +167,12 @@
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
 (add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
+
+;;; make Groovy mode electric by default.
+(add-hook 'groovy-mode-hook
+          '(lambda ()
+             (require 'groovy-electric)
+             (groovy-electric-mode)))
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -194,6 +225,9 @@
 (add-hook 'vc-dir-mode-hook
           (lambda () (local-set-key (kbd "d") #'vc-ediff)))
 
+(add-hook 'dirtree-mode-hook
+		  (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
+
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
 (setq inhibit-startup_message t)            ; disable start up message
@@ -203,7 +237,7 @@
 (setq auto-save-default nil)                ; don't autosave
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
-(delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
+(delete-selection-mode 1)					; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
 (setq-default cursor-type 'bar)             ; Change cursor to bar
@@ -223,24 +257,30 @@
 (setq ido-create-new-buffer 'always)
 (setq ido-file-extensions-order '(".js" ".json" ".css" ".as" ".php" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
 
-;; sort ido filelist by mtime instead of alphabetically
+;; ;; sort ido filelist by mtime instead of alphabetically
 (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
 (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
-;; Global Mode Stuff
+;; ;; Global Mode Stuff
 (setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
 (global-rainbow-delimiters-mode 1)
+(scroll-bar-mode 1)
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(set-fringe-mode '(nil . 0))
+
+;; ;; Tree file browser
+(require 'tree-mode)
+(require 'windata)
+(require 'dirtree)
+(setq dirtree-windata (quote (frame left 0.2 delete)))
+(set-up-dir-tree)
 
 ;; Set start up dimesnions in characters
 (maximize-frame)
-
-;; Set translucency
-;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
-;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
 ;;------------------
 ;; My Key Shortcuts
 ;;------------------
 (load-file (concat USERPATH "/keys.el"))
-;; (load-file (concat USERPATH "/cacheproject.el"))
+(load-file (concat USERPATH "/cacheproject.el"))

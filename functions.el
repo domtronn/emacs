@@ -24,6 +24,11 @@
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
 	)
 
+(defun close-and-pop-buffer (oldbuffer buffer)
+  (switch-to-buffer oldbuffer)
+  (popwin:popup-buffer buffer))
+  
+
 (defun occur-at-point ()
 	"Run occur on a thing."
 	(interactive)
@@ -124,10 +129,12 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(progn
 			(let ((match-string (thing-at-point 'symbol))
 						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (find-top-level-dir (buffer-file-name) ".svn")))
+						(match-dir (find-top-level-dir (buffer-file-name) ".svn"))
+						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" match-string match-type match-dir)
 				(rgrep match-string match-type match-dir)
-				(delete-other-windows)
+				(sticky-window-delete-other-windows)
+				(switch-to-buffer current-buf)
 				(popwin:popup-buffer "*grep*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))
@@ -139,10 +146,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	(save-excursion
 		(progn
 			(let ((match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name))))
+						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name)))
+						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" search-string match-type match-dir)
-				(rgrep search-string match-type match-dir)
-				(delete-other-windows)
+				(rgrep match-string match-type match-dir)
+				(sticky-window-delete-other-windows)
+				(switch-to-buffer current-buf)
+				(popwin:popup-buffer "*grep*")
 				(popwin:popup-buffer "*grep*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))
@@ -166,12 +176,24 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	(save-excursion
 		(let (running (buffer-exists "*ansi-term*"))
 			(progn
-				(delete-other-windows)
+			  (delete-other-windows)
 				(split-window-horizontally)
 				(enlarge-window-horizontally 50)
 				(visit-ansi-term)
 				(execute-kbd-macro 'cd-tests-grunt-watch)
 				(rotate-windows)))))
+
+
+(defun set-up-dir-tree ()
+	"Sets the display ready for grunt watching"
+	(interactive)
+	(save-excursion
+	  (progn
+		(dirtree-root-widget "~/workspace")
+		(dirtree-start)
+		(other-window 1)
+		(set-window-dedicated-p (get-buffer-window) t)
+		(other-window 1))))
 
 (defun visit-ansi-term ()
   "If the current buffer is:
