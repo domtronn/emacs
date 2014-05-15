@@ -161,7 +161,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun create-tags (dir-name)
      "Create tags file."
      (shell-command
-      (format "find %s -type f -follow | grep -E \"\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+      (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
 
 (defun create-tags-for-project ()
 	"Creates tags files in the base of each project module in PROJECTPATH"

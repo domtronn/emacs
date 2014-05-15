@@ -172,8 +172,8 @@ fi
 
 echo "${white}== CREATING EMACS CONFIGURATION ${nc}"
 		
-echo "Copying ${cyan}./SetupEmacs${nc} to ${cyan}$HOME/.emacs...${nc}"
-ln -s $WD/SetupEmacs $HOME/.emacs
+echo "Copying ${cyan}./.emacs${nc} to ${cyan}$HOME/.emacs...${nc}"
+ln -s $WD/.emacs $HOME/.emacs
 `echo "(setq JSHINTMODE $jshintmode)" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
 `echo "(setq USERPATH \"$WD\")" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
 echo "Linking ${cyan}emacs.packages${nc} to ${cyan}$HOME/.emacs.d...${nc}"
