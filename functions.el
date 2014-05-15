@@ -24,6 +24,11 @@
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
 	)
 
+(defun occur-at-point ()
+	"Run occur on a thing."
+	(interactive)
+	(occur (thing-at-point 'symbol)))
+
 (defun open-in-and-activate-intellj ()
 	"Opens the current file in intellij for n00b5!"
 	(interactive)
@@ -67,6 +72,50 @@
 				(message "This file is not under version control."))))
 	nil)
 
+(defun run-current-file ()
+  "Execute the current file.
+For example, if the current buffer is the file xx.py,
+then it'll call “python xx.py” in a shell.
+The file can be php, perl, python, ruby, javascript, bash, ocaml, vb, elisp.
+File suffix is used to determine what program to run.
+
+If the file is modified, ask if you want to save first.
+
+If the file is Emacs Lisp, run the byte compiled version if exist."
+  (interactive)
+  (let* (
+         (suffixMap
+          `(
+            ("php" . "php")
+            ("pl" . "perl")
+            ("py" . "python")
+            ("py3" . ,(if (string-equal system-type "windows-nt") "c:/Python32/python.exe" "python3"))
+            ("rb" . "ruby")
+            ("js" . "node")             ; node.js
+            ("sh" . "bash")
+            ("ml" . "ocaml")
+            ("vbs" . "cscript")
+            )
+          )
+         (fName (buffer-file-name))
+         (fSuffix (file-name-extension fName))
+         (progName (cdr (assoc fSuffix suffixMap)))
+         (cmdStr (concat progName " \""   fName "\""))
+         )
+
+    (when (buffer-modified-p)
+      (when (y-or-n-p "Buffer modified. Do you want to save first?")
+          (save-buffer) ) )
+
+    (if (string-equal fSuffix "el") ; special case for emacs lisp
+        (load (file-name-sans-extension fName))
+      (if progName
+          (progn
+            (message "Running…")
+            (shell-command cmdStr "*xah-run-current-file output*" )
+            )
+        (message "No recognized program file suffix for this file.")
+        ) ) ))
 
 (defun set-up-rgrep-results ()
 	"Opens a pop up for rgrep results"
@@ -544,8 +593,11 @@ or nil if not found."
 	(let ((my-tags-file (find-file-upwards ".tags")))
 		(when my-tags-file
 			(clear-tags-table)
+			(ac-etags-clear-cache)
 			(message "Loading tags file: %s" my-tags-file)
-			(visit-tags-table my-tags-file))))
+			(visit-tags-table my-tags-file)
+			(ac-etags-setup)
+			(ac-etags-ac-setup))))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the
@@ -642,8 +694,8 @@ otherwise raises an error."
 			(replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
 			(replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
 			(replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-			;; (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") ; Add space around method arguments
-			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") 
+			(replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") 
+			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
 			(replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "")	; Remove double whitespace
@@ -665,6 +717,10 @@ otherwise raises an error."
 	 (save-excursion
 		 (beginning-of-buffer)
 		 (replace-regexp arg1 arg2)))
+
+;; ----------------------------------------------------------------------------
+;; YASNIPPET FUNCTIONS
+;; ----------------------------------------------------------------------------
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS

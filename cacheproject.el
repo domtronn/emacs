@@ -1,5 +1,5 @@
 ;; Load a project into the file cache to find files simply
-(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/" "\\/\\." "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-test[s]\\/tests" "\\/node_modules\\/" "\\/jsdoc\\/")))
+(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/" "\\/\\." "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-test[s]\\/tests" "\\/node_modules\\/" "\\/jsdoc\\/" "\\.min\\.js$")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -25,6 +25,7 @@
 (defun project-set (arg)
 	(interactive (list (read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
   (setq PROJECTPATH arg)
+  (message PROJECTPATH)
 )
 
 (unless (boundp 'PROJECTPATH)
@@ -32,10 +33,10 @@
 
 ; Cache environment files to find them easily!
 ; These are defined in ./projects.csv
-(mapc
- 'file-cache-add-directory-recursively
- (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
-(create-tags-for-project)
+;; (mapc
+;;  'file-cache-add-directory-recursively
+;;  (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
+;; (create-tags-for-project)
 
 ;; (mapc
 ;;  'test

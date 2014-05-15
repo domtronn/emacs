@@ -19,9 +19,8 @@
 (load-file (concat USERPATH "/elisp/move_line_region.el"))
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
-(load-file (concat USERPATH "/elisp/actionscript-mode.el"))
-(load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
+(load-file (concat USERPATH "/elisp/popwin.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
@@ -55,31 +54,51 @@
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
 
-(require 'autopair)
-(autopair-global-mode)
+;; ;; Automatically put pairs of delimiters in
+;; (require 'autopair)
+;; (autopair-global-mode)
 
 (require 'key-chord)
 (key-chord-mode 1)
 
 (require 'popup)
 (require 'popwin)
+(popwin-mode 1)
 
-(autoload 'dash-at-point "dash-at-point"
-          "Search the word at point with Dash." t nil)
+;; (autoload 'dash-at-point "dash-at-point"
+;;           "Search the word at point with Dash." t nil)
 
 (require 'rfringe)
 (require 'flycheck-tip)
 (require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
 (add-hook 'javascript-mode-hook
          (lambda () (flycheck-mode t)))
 (flycheck-tip-use-timer 'verbose)
 
+(require 'yasnippet)
+(setq yas-snippet-dirs (concat USERPATH "/snippets"))
+(yas/load-directory (concat USERPATH "/snippets"))
+
 (require 'auto-complete-config)
+(require 'ac-dabbrev)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
-(ac-set-trigger-key "TAB")
 
+(ac-set-trigger-key "TAB")
+(define-key ac-complete-mode-map [tab] 'ac-expand-common)
+(define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
+(define-key ac-complete-mode-map [return] 'ac-complete)
+(define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
+(define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
+(global-set-key "\C-f" 'ac-isearch)
+
+(set-default 'ac-sources '(
+									 ac-source-yasnippet
+									 ac-source-semantic
+									 ac-source-dabbrev
+									 ac-source-files-in-current-dir
+									 ))
 ;; Smart mode line causes troubles with flymake modes
 ;; (setq sml/theme 'dark)
 ;; (require 'smart-mode-line)
@@ -91,9 +110,8 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(setq grunt-cmd "grunt test --no-color --config ~/code/sprtiptvjs-massivedesign/branches/grunt-spike-2/webapp/static-versioned/script-tests/gruntfile.js")
-
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+
 (setq exec-path
       '(
     "/usr/local/bin"
@@ -115,18 +133,15 @@
 
 (setq framemove-hook-into-windmove t)
 (setq truncate-lines t)
-(setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
-(add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+(add-hook 'prog-mode-hook 'yas-minor-mode)
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
-(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
-(add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -146,13 +161,16 @@
 								 " *, *" t))
 					))))
 
-;; Java Mode - Malabar Mode
-(require 'cedet)
-(require 'semantic)
-(load "semantic/loaddefs.el")
-(semantic-mode 1);;
-(require 'malabar-mode)
-(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+;; ;; Java Mode - Malabar Mode
+;; (require 'cedet)
+;; (require 'semantic)
+;; (load "semantic/loaddefs.el")
+;; (semantic-mode 1);;
+;; (require 'malabar-mode)
+;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+
+;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
+;; (load "jde")
 
 ;; Load stuff to do with grep initially
 (eval-after-load "grep"
@@ -183,7 +201,6 @@
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
 (setq auto-save-default nil)                ; don't autosave
-(setq visible-bell t)                       ; Disbales beep and use visible bell 
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
 (delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
@@ -191,17 +208,9 @@
 
 (setq-default cursor-type 'bar)             ; Change cursor to bar
 (setq-default indent-tabs-mode t)           ; always replace tabs with spaces
-(setq-default tab-width 2)
-(setq js-indent-level 2)
+(setq-default tab-width 4)
+(setq js-indent-level 4)
 (setq dired-listing-switches "-alk")        ; dired less info
-
-;; Get rid of stupid menu bar and Tool Bar.. 
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-(setq skeleton-pair t)
-(setq skeleton-pair-on-word t)
 
 (show-paren-mode t)   ; Show paranthesis matching
 
@@ -234,7 +243,4 @@
 ;; My Key Shortcuts
 ;;------------------
 (load-file (concat USERPATH "/keys.el"))
-(load-file (concat USERPATH "/cacheproject.el"))
-
-;; Load Theme
-(load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))
+;; (load-file (concat USERPATH "/cacheproject.el"))

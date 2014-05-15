@@ -27,3 +27,6 @@ jslint
 jslint --help
 jshint
 jslint
+ls
+chmod 755 spike.php 
+./spike.php 
