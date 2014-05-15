@@ -132,6 +132,14 @@ if [ $jshint == 1 ]; then
 		echo ""
 fi
 
+if [ ! -f `which ctags` ]; then
+	echo "${red}!! ${yellow}ctags${nc} ${red} is not installed ${nc}"
+	echo "Installing ${yellow}ctags${nc} ..."
+	ln -s $WD/lib/.ctags $HOME/.ctags
+	mv $WD/lib/ctags /usr/local/bin/ctags
+fi;
+			
+
 if [ -f $HOME/.emacs ] || [ -d $HOME/.emacs.d ]; then
 		echo "${white}== FOUND EXISTING CONFIG FILES${nc}"
 		if [ ! -d $HOME/.emacs.backup ]; then
@@ -172,8 +180,8 @@ fi
 
 echo "${white}== CREATING EMACS CONFIGURATION ${nc}"
 		
-echo "Copying ${cyan}./.emacs${nc} to ${cyan}$HOME/.emacs...${nc}"
-ln -s $WD/.emacs $HOME/.emacs
+echo "Linking ${cyan}./lib/.emacs${nc} to ${cyan}$HOME/.emacs...${nc}"
+ln -s $WD/lib/.emacs $HOME/.emacs
 `echo "(setq JSHINTMODE $jshintmode)" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
 `echo "(setq USERPATH \"$WD\")" | cat - $HOME/.emacs > $HOME/temp && mv $HOME/temp $HOME/.emacs`
 echo "Linking ${cyan}emacs.packages${nc} to ${cyan}$HOME/.emacs.d...${nc}"
