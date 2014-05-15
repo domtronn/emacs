@@ -56,7 +56,9 @@
 
 ;; Tag searching
 (global-set-key (kbd "H-.") 'etags-select-find-tag-at-point)
+(global-set-key (kbd "s-b") 'etags-select-find-tag-at-point)
 (global-set-key (kbd "H-?") 'etags-select-find-tag)
+(global-set-key (kbd "s-B") 'etags-select-find-tag)
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 
 ;; Tabs and Windows
