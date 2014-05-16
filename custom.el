@@ -29,6 +29,7 @@
  '(flymake-log-level 3)
  '(global-rainbow-delimiters-mode t)
  '(highlight-current-line-globally t nil (highlight-current-line))
+ '(highlight-current-line-ignore-regexp "Faces\\|Colors\\| \\*Mini\\|custom.el")
  '(ibuffer-formats (quote ((mark modified read-only " " (name 30 30 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(icicle-download-dir "~/.env/elisp/icicles")
  '(ido-buffer-disable-smart-matches nil)

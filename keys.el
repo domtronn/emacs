@@ -4,6 +4,8 @@
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
 
+(global-set-key (kbd "<escape>") "\C-g")
+
 ;; Opening files
 (global-set-key (kbd "s-o") 'ido-find-file)
 (global-set-key (kbd "s-O") 'file-cache-ido-find-file)
@@ -64,6 +66,8 @@
 ;; Tabs and Windows
 (global-set-key [M-s-left] 'tabbar-backward-tab)
 (global-set-key [M-s-right] 'tabbar-forward-tab)
+(global-set-key [M-s-up] 'tabbar-forward-group)
+(global-set-key [M-s-down] 'tabbar-backward-group)
 
 (global-set-key (kbd "<home>") 'windmove-left)   ;; This is Fn-left
 (global-set-key (kbd "<end>") 'windmove-right)   ;; This is Fn-Right
@@ -78,8 +82,8 @@
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
+;; Function keys
 (global-set-key [f1] 'set-up-dir-tree)
-
 (global-set-key [f2] 'set-up-rgrep-results)
 (global-set-key (kbd "<M-f2>") 'set-up-rgrep-results-with-prompt)
 
@@ -91,6 +95,17 @@
 (global-set-key [f7] 'occur-at-point)
 
 (global-set-key [f8] 'run-current-file)
+
+;; Mode changing keys
+(global-set-key (kbd "<s-f1>") 'scala-mode)
+(global-set-key (kbd "<s-f2>") 'groovy-electric-mode)
+(global-set-key (kbd "<s-f3>") 'feature-mode)
+(global-set-key (kbd "<s-f4>") 'js-mode)
+(global-set-key (kbd "<s-f5>") 'java-mode)
+(global-set-key (kbd "<s-f6>") 'emacs-lisp-mode)
+(global-set-key (kbd "<s-f7>") 'sh-mode)
+(global-set-key (kbd "<s-f8>") 'php-mode)
+(global-set-key (kbd "<s-f8>") 'web-mode)
 
 ;; Buffer Movemenet
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
@@ -105,7 +120,7 @@
 
 (global-set-key (kbd "C-z") 'ahahah)
 
-;; Function needs some work
+;; Function needs some work based on mode
 ;; (global-set-key (kbd "C-x t") 'open-test)
 ;; (global-set-key (kbd "s-t") 'open-test)
 

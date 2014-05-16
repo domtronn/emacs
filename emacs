@@ -79,7 +79,7 @@
 (setq tabbar-ruler-popup-menu t) ; If you want a popup menu.
 (setq tabbar-ruler-popup-toolbar t) ; If you want a popup toolbar
 (setq *tabbar-ignore-buffers* 
-  '("*dirtree*" "*Completions*" "*Ido Completions*" "*Help*" "*ansi-term*" "*ansi-term-1*" "Ibuffer" "*Messages*" "*scratch*"))
+  '("*dirtree*" "*Completions*" "*Ido Completions*" "*Help*" "*ansi-term*" "*ansi-term-1*" "Ibuffer" "*Messages*" "*scratch*" "*Minibuf-0*" "*Minibuf-1*" "*Minibuf-2*"))
 (setq tabbar-buffer-list-function
 	  (lambda ()
 		(remove-if
@@ -96,9 +96,15 @@
 (require 'flycheck-tip)
 (require 'flycheck)
 ;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
+
 (add-hook 'javascript-mode-hook
          (lambda () (flycheck-mode t)))
 (flycheck-tip-use-timer 'verbose)
+
+(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
 
 ;;(require 'yasnippet)
 ;;(setq yas-snippet-dirs (concat USERPATH "/snippets"))
