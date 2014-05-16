@@ -58,4 +58,54 @@ Some things to be aware of though if you want to start rebinding:
   However, you might think `C-S-x` would be the key binding for `Ctrl+Shift+x`, but it would actually be `C-X`.
   Notice how the _X_ is capital in the real binding? Yeah, that's a thing.
   
-  #### Cheat Sheet
+#### Cheat Sheet
+| Shortcut | Outcome |
+|:--------:|:--------|
+| `Cmd+o` | Open file (prompt in minibuffer) |
+| `Cmd+Shift+o` | Open any Cached file (prompt in minibuffer) |
+| `Cmd+Alt+Left` | Go to Previous Tab |
+| `Cmd+Alt+Right` | Go to Next Tab |
+| `Cmd+Alt+Up` | Go Forwards a Tab Group (Marked by major mode _i.e._ .el etc) |
+| `Cmd+Alt+Down` | Go Backwards a Tab Group (Marked by major mode _i.e._ .el etc) |
+| `Cmd+Alt+Right` | Go to Next Tab |
+| `Cmd+w` | Close Tab |
+| `Cmd+s` | Save Tab |
+| `Cmd+Shift+s` | Save all Modified Tabs |
+| `Cmd+z` | Undo |
+| `Cmd+Shift+z` | Redo |
+| `Cmd+y` | Redo |
+| `Cmd+Up` | Beginning of Buffer/File |
+| `Cmd+Down` | End of Buffer/File
+| `Cmd+Left` | Go to Beginning of Line |
+| `Cmd+Right` | Go to End of Line |
+| `Ctrl+Left` | Go Backwards Word |
+| `Ctrl+Right` | Go Forwards Word |
+| `Ctrl+Up` | Go Up 5 lines |
+| `Ctrl+Down` | Go Down 5 lines |
+| `Ctrl+Shift+Up` | Go Up 15 lines |
+| `Ctrl+Shift+Down` | Go Down 15 lines |
+| `Alt+Left` | Go Forwards a Delimiter (_i.e._ next parenthesis, brace, bracket) |
+| `Ctrl+Right` | Go Backwards a Delimiter (_i.e._ next parenthesis, brace, bracket) |
+| `Cmd+-` | Close block of Code |
+| `Cmd+=` | Open block of Code |
+| `Cmd+Shift+=` | Open all closed blocks of Code |
+| `Cmd+f` | Search forward using RegExp (pressing again moves mark to next result) |
+| `Cmd+Shift+f` | Search backward using RegExp (pressing again moves mark to previous result) |
+| `Cmd+b` | Click through to function definition at point |
+| `Cmd+Shift+b` | Search for function definition (Prompt in minibuffer) |
+| `Fn+-` | Shrink Window Size |
+| `Fn+=` | Enlarge Window Size |
+| `Cmd+/` | Comment/Uncomment Highlighted Region |
+| `Ctrl+k` | Kill the rest of a line |
+| `Ctrl+Shift+k` | Kill the Entire line |
+| `Cmd+Up` | Move line or Region up |
+| `Cmd+Down` | Move line or Region down |
+| `Cmd+d` | Duplicate Line |
+| `Ctrl+x Ctrl+c` | Go to Line |
+| `Ctrl+l` | Recenter Buffer |
+| `Ctrl+x Ctrl+x` | Close other split windows |
+| `Ctrl+x Ctrl+0` | Close current window |
+| `Ctrl+x Ctrl+3` | Split window vertically |
+| `Ctrl+x Ctrl+2` | Split window horizontally |
+| `Tab` | Performs AutoComplete |
+
