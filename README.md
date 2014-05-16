@@ -107,5 +107,8 @@ Some things to be aware of though if you want to start rebinding:
 | `Ctrl+x Ctrl+0` | Close current window |
 | `Ctrl+x Ctrl+3` | Split window vertically |
 | `Ctrl+x Ctrl+2` | Split window horizontally |
+| `Fn+Left` | Move Left a Window |
+| `Fn+Right` | Move Right a Window |
+| `Fn+Up` | Move Up a Window |
+| `Fn+Down` | Move Down a Window | 
 | `Tab` | Performs AutoComplete |
-

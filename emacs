@@ -106,9 +106,12 @@
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
 
-;;(require 'yasnippet)
-;;(setq yas-snippet-dirs (concat USERPATH "/snippets"))
-;;(yas/load-directory (concat USERPATH "/snippets"))
+(define-key isearch-mode-map (kbd "s-f") 'isearch-repeat-forward)
+(define-key isearch-mode-map (kbd "s-F") 'isearch-repeat-backward) 
+
+(require 'yasnippet)
+(setq yas-snippet-dirs (concat USERPATH "/snippets"))
+(yas/load-directory (concat USERPATH "/snippets"))
 
 (require 'auto-complete-config)
 (require 'ac-dabbrev)

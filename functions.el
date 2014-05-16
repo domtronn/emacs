@@ -193,6 +193,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(dirtree-start)
 		(other-window 1)
 		(set-window-dedicated-p (get-buffer-window) t)
+		(setq window-size-fixed t)
 		(other-window 1))))
 
 (defun visit-ansi-term ()
