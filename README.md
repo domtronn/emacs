@@ -5,7 +5,7 @@ Emacs Configuration &amp; Setup
 -------------------------------
 First of all, we need to install emacs, you can [download Emacs for OSX from here](http://emacsformacosx.com/). Next, clone this branch into your home directory.
 ```
-git clone https://github.com/domtronn/emacs.git ~/.simplemacs
+git clone -b simplemacs https://github.com/domtronn/emacs.git ~/.simplemacs
 ```
 `cd` into it and then run `./Setup`
 ```
