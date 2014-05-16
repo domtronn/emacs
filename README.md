@@ -38,8 +38,9 @@ IMO, the best feature of Emacs is it's adaptability, primarily, it's ability to 
 
 #### Understanding key Combinations
 To see what key combinations we have (although I will list them below), you can open the `keys.el` file and look at what binds to what. Key combinations usually consist of an operator (`Ctrl`, `Alt`, `Cmd` etc.) and a key. The operators are as follows:
-| Type | Operator|
-|------|:-------:|
+
+| Type | Operator |
+|------|:--------:|
 |`C`| Ctrl |
 |`M`| Meta or Alt |
 |`H`| Hyper or Fn |
