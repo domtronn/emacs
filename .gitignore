@@ -6,6 +6,9 @@
 #######################
 *.emacs.desktop*
 *ac-comphist.dat
+*node_modules*
+*tramp*
+*url*
 
 # Compiled source #
 ###################
