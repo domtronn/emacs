@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+#name : require def
+# expand-env: ((yas/indent-line 'fixed))
+# --
+require.def("`(replace-regexp-in-string ".*script/" "/sprtiptvjs/" (file-name-sans-extension (buffer-file-name)))`",
+	[
+		
+	],
+
+	function ($1) {
+		"use strict";	
+
+		return ({
+
+			init: function () {
+				
+			}
+
+		});
+
+	}
+);

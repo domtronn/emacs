@@ -1,0 +1,5 @@
+# -*- mode: js-mode -*-
+#name : Stub var
+# --
+var stub${1:$(upcase-initials yas-text)} = this.sandbox.stub(${1:class}.prototype);
+$0

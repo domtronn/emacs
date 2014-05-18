@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+#name : require def
+# expand-env: ((yas/indent-line 'fixed))
+# --
+`(setq use-underscores nil)`
+require.def("`(replace-regexp-in-string ".*script/" "sprtiptvjs/" (file-name-sans-extension (buffer-file-name)))`",
+	[
+${1:$(inject-dependency yas-text)}
+	],
+
+	function ($1) {
+		"use strict";
+${2:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}
+		return ({
+
+			init: function (${2:Variables}) {
+				${2:$(when yas-modified-p (format-init-members yas-text use-underscores))}
+			}${2:$(when yas-modified-p (format-getters yas-text use-underscores))}
+
+		});
+
+	}
+);

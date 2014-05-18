@@ -1,0 +1,5 @@
+# -*- mode: js-mode -*-
+#name : Stub.ret
+# --
+this.sandbox.stub(${1:class}, "${2:method}").returns(${3:value});
+$0
