@@ -24,6 +24,39 @@
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
 	)
 
+(defun test ( )
+  (interactive)
+	(let ((class-name (thing-at-point 'symbol))
+				(res-point (point)))
+		(message "%s" class-name)
+		(save-excursion
+			(beginning-of-buffer)
+			(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
+						(aEnd (- (search-forward-regexp "\\s-*\\]") 1))
+						(bStart (search-forward-regexp "function\\s-*("))
+						(bEnd (- (search-forward ")") 1)))				
+				(let ((mPosition (position class-name
+																	 (split-string (buffer-substring bStart bEnd) ",\\s-*" t)
+																	 :test #'string-equal)))
+					(message "Pos %s ? %s" mPosition (eq mPosition nil))
+					(if (eq mPosition nil)
+							(progn (goto-char res-point) (etags-select-find-tag-at-point))
+						(file-cache-ido-find-file
+						 (replace-regexp-in-string "\"" ""
+									 (replace-regexp-in-string "\\(\\w+/\\)+\\(\\\w+\\)" "\\2.js"
+											 (replace-regexp-in-string "\\s-*\n.*" "" 
+																						 (nth mPosition (split-string (buffer-substring aStart aEnd)
+																																												 ",\\s-*\n\\s-*" t))))))))))))
+
+(defun close-and-pop-buffer (oldbuffer buffer)
+  (switch-to-buffer oldbuffer)
+  (popwin:popup-buffer buffer))
+  
+(defun occur-at-point ()
+	"Run occur on a thing."
+	(interactive)
+	(occur (thing-at-point 'symbol)))
+
 (defun open-in-and-activate-intellj ()
 	"Opens the current file in intellij for n00b5!"
 	(interactive)
@@ -67,6 +100,50 @@
 				(message "This file is not under version control."))))
 	nil)
 
+(defun run-current-file ()
+  "Execute the current file.
+For example, if the current buffer is the file xx.py,
+then it'll call “python xx.py” in a shell.
+The file can be php, perl, python, ruby, javascript, bash, ocaml, vb, elisp.
+File suffix is used to determine what program to run.
+
+If the file is modified, ask if you want to save first.
+
+If the file is Emacs Lisp, run the byte compiled version if exist."
+  (interactive)
+  (let* (
+         (suffixMap
+          `(
+            ("php" . "php")
+            ("pl" . "perl")
+            ("py" . "python")
+            ("py3" . ,(if (string-equal system-type "windows-nt") "c:/Python32/python.exe" "python3"))
+            ("rb" . "ruby")
+            ("js" . "node")             ; node.js
+            ("sh" . "bash")
+            ("ml" . "ocaml")
+            ("vbs" . "cscript")
+            )
+          )
+         (fName (buffer-file-name))
+         (fSuffix (file-name-extension fName))
+         (progName (cdr (assoc fSuffix suffixMap)))
+         (cmdStr (concat progName " \""   fName "\""))
+         )
+
+    (when (buffer-modified-p)
+      (when (y-or-n-p "Buffer modified. Do you want to save first?")
+          (save-buffer) ) )
+
+    (if (string-equal fSuffix "el") ; special case for emacs lisp
+        (load (file-name-sans-extension fName))
+      (if progName
+          (progn
+            (message "Running…")
+            (shell-command cmdStr "*xah-run-current-file output*" )
+            )
+        (message "No recognized program file suffix for this file.")
+        ) ) ))
 
 (defun set-up-rgrep-results ()
 	"Opens a pop up for rgrep results"
@@ -75,10 +152,12 @@
 		(progn
 			(let ((match-string (thing-at-point 'symbol))
 						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (find-top-level-dir (buffer-file-name) ".svn")))
+						(match-dir (find-top-level-dir (buffer-file-name) ".svn"))
+						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" match-string match-type match-dir)
 				(rgrep match-string match-type match-dir)
-				(delete-other-windows)
+				(sticky-window-delete-other-windows)
+				(switch-to-buffer current-buf)
 				(popwin:popup-buffer "*grep*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))
@@ -90,10 +169,12 @@
 	(save-excursion
 		(progn
 			(let ((match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name))))
+						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name)))
+						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" search-string match-type match-dir)
-				(rgrep search-string match-type match-dir)
-				(delete-other-windows)
+				(rgrep match-string match-type match-dir)
+				(sticky-window-delete-other-windows)
+				(switch-to-buffer current-buf)
 				(popwin:popup-buffer "*grep*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))
@@ -102,7 +183,7 @@
 (defun create-tags (dir-name)
      "Create tags file."
      (shell-command
-      (format "find %s -type f -follow | grep -E \"\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+      (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
 
 (defun create-tags-for-project ()
 	"Creates tags files in the base of each project module in PROJECTPATH"
@@ -122,7 +203,11 @@
 				(enlarge-window-horizontally 50)
 				(visit-ansi-term)
 				(execute-kbd-macro 'cd-tests-grunt-watch)
-				(rotate-windows)))))
+				(rotate-windows)
+				(other-window 1)
+				(set-window-dedicated-p (get-buffer-window) t)
+				(setq window-size-fixed t)
+				(other-window 1)))))
 
 (defun visit-ansi-term ()
   "If the current buffer is:
@@ -496,13 +581,66 @@
 		)
 	ret)
 
-(defun test ()
+(defun format-member-vars (var-list &optional UNDERSCORES)
+  (interactive)
+	(format "\n\t\t%s\n"
+		(mapconcat
+		 #'(lambda (arg) 
+				 (if UNDERSCORES (format "\t\tvar _%s;" arg) (format "\t\tvar %s;" arg)))
+		 (split-string var-list ",\\s-*" t) "\n")))
+
+(defun format-member-vars-single-line (var-list &optional UNDERSCORES)
+  (interactive)
+	(format "\n\t\tvar %s;\n"
+					(mapconcat
+					 #'(lambda (arg) 
+							 (if UNDERSCORES (format "_%s" arg) (format "%s" arg)))
+					 (split-string var-list ",\\s-*" t) ", ")))
+
+(defun format-init-members (var-list &optional UNDERSCORES)
+  (interactive)
+  (mapconcat
+	 #'(lambda (arg)
+			 (if UNDERSCORES (format "_%s = %s;" arg arg) (format "this.%s = %s;" arg arg)))
+	 (split-string var-list ",\\s-*" t) "\n\t\t\t\t"))
+
+(defun format-getters (var-list &optional UNDERSCORES)
+  (interactive)
+	(mapconcat
+	 #'(lambda (var)
+			 (format ",\n\n%s" (inject-getter var UNDERSCORES)))
+	 (split-string var-list ",\\s-*" t) ""))
+	 
+(defun inject-getter (var-name &optional UNDERSCORES)
 	(interactive)
-	(if (not (string-equal (sub-test (buffer-file-name) ".git") (buffer-file-name)))
-			(message "This file is under Git version control")
-		(if (not (string-equal (sub-test (buffer-file-name) ".svn") (buffer-file-name)))
-				(message ("This file is under SVN version control"))
-			(message "This file is NOT under version control tut"))))
+	(with-temp-buffer
+		(js-mode)
+		(insert "reqgetter")
+		(yas-expand)
+		(insert (upcase-initials var-name))
+		(yas-next-field)
+		(insert (if UNDERSCORES (concat "_" var-name ) var-name))
+		(format "%s" (buffer-substring (point-min) (point-max)))))
+
+(defun inject-dependency (dep-list)
+  (interactive)
+	(mapconcat
+	 #'(lambda (arg)
+			 (let ((res-require-path nil))
+				 (maphash #'(lambda (id assoc-list)
+											(let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
+												(if (eq res-require-path nil)
+														(setq res-require-path
+															(if (= (length record) 2)
+																	(concat (replace-regexp-in-string ".*script" id (cadr record)) 
+																					(file-name-sans-extension (car record)))
+																nil)))))
+									external-cache-hash)
+				 (format "\t\t\"%s\"" 
+								 (if (eq res-require-path nil)
+										 (concat "???/" (downcase arg))
+									 res-require-path))))
+	 (split-string dep-list ",\\s-*" t) ",\n"))
 
 (defun find-file-upwards (file-to-find)
   "Recursively searches each parent directory starting from the default-directory.
@@ -544,8 +682,16 @@ or nil if not found."
 	(let ((my-tags-file (find-file-upwards ".tags")))
 		(when my-tags-file
 			(clear-tags-table)
+			(ac-etags-clear-cache)
 			(message "Loading tags file: %s" my-tags-file)
-			(visit-tags-table my-tags-file))))
+			(visit-tags-table my-tags-file)
+			(ac-etags-setup)
+			(ac-etags-ac-setup))))
+
+(defun etags-function-at-point ()
+  (interactive)
+	(message (format "You have clicked %s" )
+  ))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the
@@ -642,8 +788,8 @@ otherwise raises an error."
 			(replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
 			(replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
 			(replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-			;; (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") ; Add space around method arguments
-			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") 
+			(replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") 
+			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
 			(replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "")	; Remove double whitespace
@@ -665,6 +811,10 @@ otherwise raises an error."
 	 (save-excursion
 		 (beginning-of-buffer)
 		 (replace-regexp arg1 arg2)))
+
+;; ----------------------------------------------------------------------------
+;; YASNIPPET FUNCTIONS
+;; ----------------------------------------------------------------------------
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS

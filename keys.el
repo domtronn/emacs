@@ -4,6 +4,15 @@
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
 
+;; Closing Files
+(global-set-key (kbd "s-w") 
+  '(lambda () (interactive) (kill-buffer (buffer-name))))
+
+;; Undo and Redo
+(global-set-key (kbd "s-z") 'undo-tree-undo)
+(global-set-key (kbd "s-Z") 'undo-tree-redo)
+(global-set-key (kbd "s-y") 'undo-tree-redo)
+
 (global-set-key (kbd "s-_") 'hide-all-functions)
 (global-set-key (kbd "s--") 'hs-hide-block)
 (global-set-key (kbd "s-=") 'hs-show-block)
@@ -17,7 +26,6 @@
 ;; Navigate parantheses
 (global-set-key (kbd "s-.") 'forward-list)
 (global-set-key (kbd "s-,") 'backward-list)
-
 (global-set-key [C-tab] 'file-cache-ido-find-file)
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
@@ -28,11 +36,12 @@
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-?") 'query-replace-regexp)
 
-(global-set-key (kbd "H-s") '(lambda () (interactive) (isearch-forward-regexp (thing-at-point 'word))))
-
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
 (global-set-key (kbd "M-s-¬") 'jshint-code)
+
+(global-set-key (kbd "s-m") 'mark-paragraph)
+(global-set-key (kbd "s-:") 'eval-region)
 
 ;; Bring up shell terminal
 (global-set-key (kbd "C-~") 'shell-pop)
@@ -62,10 +71,13 @@
 (global-set-key [f2] 'set-up-rgrep-results)
 (global-set-key (kbd "<M-f2>") 'set-up-rgrep-results-with-prompt)
 
-(global-set-key [f6] 'vc-ediff)
-(global-set-key [f5] 'vc-next-action)
-(global-set-key [f7] 'my-vc-dir)
-(global-set-key (kbd "<M-f7>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
+(global-set-key [f5] 'vc-ediff)
+(global-set-key [f4] 'vc-next-action)
+(global-set-key [f6] 'my-vc-dir)
+(global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
+
+(global-set-key [f7] 'occur-at-point)
+(global-set-key [f8] 'run-current-file)
 
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
@@ -74,11 +86,13 @@
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
 (global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
 
-(global-set-key [C-down] 'move-line-region-down)
-(global-set-key [C-up] 'move-line-region-up)
+(global-set-key [s-down] 'move-line-region-down)
+(global-set-key [s-up] 'move-line-region-up)
 
 (global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
+(global-set-key [C-up] '(lambda () (interactive) (previous-line 5)))
+(global-set-key [C-down] '(lambda () (interactive) (next-line 5)))
 (global-set-key (kbd "M-p") '(lambda () (interactive) (previous-line 5)))
 (global-set-key (kbd "M-n") '(lambda () (interactive) (next-line 5)))
 
@@ -128,20 +142,31 @@
 (global-set-key (kbd "H-/") 'go-to-grep-and-rgrep)
 (global-set-key (kbd "H-\\") 'go-to-agenda)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") '(lambda () (interactive) 
+  (if (buffer-exists "*Ibuffer*")
+	  (popwin:popup-buffer "*Ibuffer*")
+	(let ((current-buf (buffer-name)))
+		  (message current-buf)
+		  (ibuffer)
+		  (close-and-pop-buffer current-buf "*Ibuffer*")))))
 
 (global-set-key (kbd "C-x C-c") 'goto-line)
 
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
-(define-key dgc-map (kbd "H-b") 'anything-buffers-list)
+(global-set-key (kbd "s-<return>") 'yas/expand)
 
-(define-key dgc-map (kbd "s") 'domtronn-sign) 
+(global-set-key "\M-}" 'flycheck-mode)
+(global-set-key "\M-]" 'flycheck-next-error)
+(global-set-key "\M-[" 'flycheck-previous-error)
+
 (define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
 
 ;; It's Key Chord Time!
 (key-chord-define-global "IO" 'open-in-and-activate-intellj)
 (key-chord-define-global "??" 'set-up-rgrep-results-with-prompt)
-(key-chord-define-global "q]" 'flycheck-mode)
+
+(provide 'keys)
+;;; keys.el ends here

@@ -8,8 +8,9 @@
 
 
 ;;; Code:
-(add-to-list 'load-path (concat USERPATH "/elisp"))
 (load-file (concat USERPATH "/functions.el"))
+
+(add-to-list 'load-path (concat USERPATH "/elisp"))
 
 ;;------------------
 ;; Load Files
@@ -22,9 +23,11 @@
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 (load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
+(load-file (concat USERPATH "/elisp/popwin.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
+(load-file (concat USERPATH "/elisp/sticky-windows.el"))
 
 ;;------------------
 ;; Requires
@@ -61,25 +64,88 @@
 (require 'key-chord)
 (key-chord-mode 1)
 
+;; ;; Extra Packages
+;; (require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
+;; (require 'feature-mode) ;; https://github.com/michaelklishin/cucumber.el
+;; (require 'groovy-mode)  ;; http://groovy.codehaus.org/Emacs+Groovy+Mode
+
 (require 'popup)
 (require 'popwin)
+(popwin-mode 1)
 
 (autoload 'dash-at-point "dash-at-point"
           "Search the word at point with Dash." t nil)
 
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+(require 'highlight)
+(require 'button-lock)
+(require 'json)
+
+(global-set-key (kbd "<s-down-mouse>") (lambda () (message "Hellow Worlds")))
+
+(eval-after-load 'js
+  '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
+(add-hook 'js-mode-hook #'(lambda () 
+			    (button-lock-set-button "\\.\\(\\w+\\)("
+						    #'(lambda (event)
+										(interactive "e")
+										(save-excursion
+											(mouse-set-point event)
+											(etags-select-find (thing-at-point 'word))
+											))
+								:face 'function-link :mouse-face 'function-mouse-link 
+								:face-policy 'append :grouping 1 :mouse-binding 'mouse-1)))
+
+(add-hook 'etags-select-mode-hook #'(lambda () (message "Enabling Button Lock Mode")))
+(add-hook 'etags-select-mode-hook #'(lambda () 
+			    (button-lock-mode 1)
+			    (button-lock-set-button "^\\([0-9]+\\).*"
+						    #'(lambda (event)
+										(interactive "e")
+										(save-excursion
+											(mouse-set-point event)
+											(beginning-of-line)
+											(etags-select-by-tag-number-without-prompt (thing-at-point 'symbol))))
+								:face 'inherit :mouse-face 'mouse-over :face-policy 'append)))
+
 (require 'rfringe)
 (require 'flycheck-tip)
 (require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
 (add-hook 'javascript-mode-hook
          (lambda () (flycheck-mode t)))
 (flycheck-tip-use-timer 'verbose)
 
+;; (add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
+;; (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
+
+(require 'yasnippet)
+(setq yas-snippet-dirs (concat USERPATH "/snippets"))
+(yas/load-directory (concat USERPATH "/snippets"))
+
 (require 'auto-complete-config)
+(require 'ac-dabbrev)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
-(ac-set-trigger-key "TAB")
 
+(ac-set-trigger-key "TAB")
+(define-key ac-complete-mode-map [tab] 'ac-expand-common)
+(define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
+(define-key ac-complete-mode-map [return] 'ac-complete)
+(define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
+(define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
+(global-set-key "\C-f" 'ac-isearch)
+
+(set-default 'ac-sources '(
+									 ac-source-yasnippet
+									 ac-source-semantic
+									 ac-source-dabbrev
+									 ac-source-files-in-current-dir
+									 ))
 ;; Smart mode line causes troubles with flymake modes
 ;; (setq sml/theme 'dark)
 ;; (require 'smart-mode-line)
@@ -91,7 +157,7 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(setq grunt-cmd "grunt test --no-color --config ~/code/sprtiptvjs-massivedesign/branches/grunt-spike-2/webapp/static-versioned/script-tests/gruntfile.js")
+(setq grunt-cmd "grunt test --no-color --config ~/workspace/sprtiptvjs-static/webapp/static-versioned/script-tests/gruntfile.js")
 
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
@@ -109,6 +175,9 @@
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
+;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
+;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
+
 (setq js2-basic-offset 2)
 (setq js2-enter-indents-newline t)
 ;;(setq js2-use-font-lock-faces t)
@@ -121,12 +190,23 @@
 (add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
-(add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+(add-hook 'prog-mode-hook 'yas-minor-mode)
 
 (add-hook 'js-mode-hook 'js2-minor-mode)
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
-(add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
+;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
+
+;; Allow cmd clicking on functions depricated by button locks
+;; (eval-after-load 'js
+;; 	'(define-key js-mode-map (kbd "<s-mouse-1>")
+;; 		 (lambda (event)
+;;     (interactive "e")
+;;     (let ((posn (elt event 1)))
+;;       (with-selected-window (posn-window posn)
+;;         (goto-char (posn-point posn))
+;; 				(etags-select-find-tag-at-point))))))
+	
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -146,13 +226,16 @@
 								 " *, *" t))
 					))))
 
-;; Java Mode - Malabar Mode
-(require 'cedet)
-(require 'semantic)
-(load "semantic/loaddefs.el")
-(semantic-mode 1);;
-(require 'malabar-mode)
-(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+;; ;; Java Mode - Malabar Mode
+;; (require 'cedet)
+;; (require 'semantic)
+;; (load "semantic/loaddefs.el")
+;; (semantic-mode 1);;
+;; (require 'malabar-mode)
+;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+
+;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
+;; (load "jde")
 
 ;; Load stuff to do with grep initially
 (eval-after-load "grep"
@@ -222,6 +305,7 @@
 (setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
 (global-rainbow-delimiters-mode 1)
+(set-fringe-mode '(nil . 0))
 
 ;; Set start up dimesnions in characters
 (maximize-frame)
@@ -233,8 +317,8 @@
 ;;------------------
 ;; My Key Shortcuts
 ;;------------------
-(load-file (concat USERPATH "/keys.el"))
 (load-file (concat USERPATH "/cacheproject.el"))
+(load-file (concat USERPATH "/keys.el"))
 
 ;; Load Theme
 (load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))

@@ -236,7 +236,8 @@ to do."
          (tagname (completing-read
                    (format "Find tag (default %s): " default)
                    'etags-select-complete-tag nil nil nil 'find-tag-history default)))
-    (etags-select-find tagname)))
+    (etags-select-find tagname))
+	(recenter))
 
 (defun etags-select-complete-tag (string predicate what)
   "Tag completion."
@@ -421,6 +422,17 @@ Use the C-u prefix to prevent the etags-select window from closing."
     (if (and etags-select-go-if-unambiguous (not (re-search-forward (concat "^" first-digit) nil t 2)))
         (setq tag-num first-digit)
       (setq tag-num (read-from-minibuffer "Tag number? " first-digit)))
+    (goto-char (point-min))
+    (if (re-search-forward (concat "^" tag-num) nil t)
+        (etags-select-goto-tag)
+      (goto-char current-point)
+      (message (concat "Couldn't find tag number " tag-num))
+      (ding))))
+
+(defun etags-select-by-tag-number-without-prompt (first-digit)
+  "Select a tag by number."
+  (let ((current-point (point)) tag-num)
+		(setq tag-num first-digit)
     (goto-char (point-min))
     (if (re-search-forward (concat "^" tag-num) nil t)
         (etags-select-goto-tag)
