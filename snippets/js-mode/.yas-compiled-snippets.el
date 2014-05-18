@@ -21,10 +21,10 @@
 												nil nil nil)
 											 ("req.html" "new Request.HTML({\n  onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript) {\n    $0\n  }\n}).${1:get}(${2:url});" "html" nil nil nil nil nil nil)
 											 ("req.json" "new Request.JSON({\n  onSuccess: function(responseJSON, responseText) {\n    $0\n  }\n}).${1:send}(${2:url});" "json" nil nil nil nil nil nil)
-											 ("reqdef" "`(setq my-getters nil)`\nrequire.def(\"`(replace-regexp-in-string \".*script/\" \"sprtiptvjs/\" (file-name-sans-extension (buffer-file-name)))`\",\n	[\n${1:$(inject-dependency yas-text)}\n	],\n\n	function ($1) {\n		\"use strict\";\n\n${2:$(format-member-vars yas-text)}\n\n		return ({\n\n			init: function (${2:Variables}) {\n				$0\n			}${2:$(format-getters yas-text)}\n\n		});\n\n	}\n);" "require def" nil nil
+											 ("reqdef" "`(setq use-underscores nil)``(setq available-exts nil)`require.def(\"`(replace-regexp-in-string \".*script/\" \"sprtiptvjs/\" (file-name-sans-extension (buffer-file-name)))`\",\n	[\n${1:$(inject-dependency yas-text)}\n	],\n\n	function (${1:$$(setq available-exts yas-text)}) {\n		\"use strict\";\n${3:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}\n		return ${2:$$(concat (yas-choose-value (split-string available-exts \",\\\\s-*\")) \".extend\")}({\n\n			init: function (${3:Variables}) {\n				${3:$(when yas-modified-p (format-init-members yas-text use-underscores))}\n			}${3:$(when yas-modified-p (format-getters yas-text use-underscores))}\n\n		});\n\n	}\n);" "require def" nil nil
 												((yas/indent-line 'fixed))
 												nil nil nil)
-											 ("reqgetter" "		get${1:$$(upcase-initials yas-text)}: function () {\n			return $2;\n		}" "Define Getter" nil nil
+											 ("reqgetter" "			get${1:$$(upcase-initials yas-text)}: function () {\n				return $2;\n			}" "Define Getter" nil nil
 												((yas/indent-line 'fixed))
 												nil nil nil)
 											 ("spy" "var $1${2:$(upcase-initials yas-text)}Spy = this.sandbox.spy(${1:Class}, \"${2:Method}\");\n$0" "Spy" nil nil nil nil nil nil)
@@ -33,4 +33,4 @@
 											 ("stubvar" "var stub${1:$(upcase-initials yas-text)} = this.sandbox.stub(${1:class}.prototype);\n$0" "Stub var" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Sun May 18 22:28:45 2014
+;;; Do not edit! File generated at Sun May 18 23:11:13 2014

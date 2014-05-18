@@ -2,22 +2,21 @@
 #name : require def
 # expand-env: ((yas/indent-line 'fixed))
 # --
-`(setq use-underscores nil)`
-require.def("`(replace-regexp-in-string ".*script/" "sprtiptvjs/" (file-name-sans-extension (buffer-file-name)))`",
+`(setq use-underscores nil)``(setq available-exts nil)`require.def("`(replace-regexp-in-string ".*script/" "sprtiptvjs/" (file-name-sans-extension (buffer-file-name)))`",
 	[
 ${1:$(inject-dependency yas-text)}
 	],
 
-	function ($1) {
+	function (${1:$$(setq available-exts yas-text)}) {
 		"use strict";
-${2:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}
-		return ({
+${4:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}
+		${3:$(when yas-modified-p "var ")}${3:return}${3:$(when yas-modified-p " = ")} ${2:$$(concat (yas-choose-value (split-string available-exts ",\\s-*")) ".extend")}({
 
-			init: function (${2:Variables}) {
-				${2:$(when yas-modified-p (format-init-members yas-text use-underscores))}
-			}${2:$(when yas-modified-p (format-getters yas-text use-underscores))}
-
+			init: function ($4) {
+				${4:$(when yas-modified-p (format-init-members yas-text use-underscores))}
+			}${4:$(when yas-modified-p (format-getters yas-text use-underscores))}
+			$0
 		});
-
+		${3:$(when yas-modified-p (format "\n\t\treturn new %s();\n" yas-text))}
 	}
 );

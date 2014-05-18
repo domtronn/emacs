@@ -10,4 +10,4 @@
 											 ("vars" "# name : $1${2:\n# key : ${3:trigger-key}}${4:\n# keybinding : ${5:keybinding}}${6:\n# expand-env : (${7:})}\n# contributor : $6\n# key: vars\n# --\n$0" "Snippet header" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Sun May 18 22:28:45 2014
+;;; Do not edit! File generated at Sun May 18 23:11:13 2014
