@@ -1,7 +1,8 @@
 (require 'filecache)
 (defvar external-cache-hash nil)
+(defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
-(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/" "\\/\\." "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-test[s]\\/tests" "\\/node_modules\\/" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache")))
+(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/" "\\/\\." "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-test[s]\\/tests" "\\/node_modules\\/" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -9,13 +10,60 @@
 	(file-cache-clear-cache))
 
 (defun project-refresh ()
+	"Parses a json project file for modules of a project, whether or not to cache them
+	 And external dependencies (mainly for javascript). If the supplied file is not a 
+	 file but a directory, it just adds this directory to the file cache"
 	(interactive)
 	(progn
 		(project-clear)
-		(mapc
-		 'file-cache-add-directory-recursively
-		 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
-		(create-tags-for-project)))
+		(if (string-equal "0\n" 				  
+											(shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
+				(progn 
+					(let ((json-object-type 'hash-table)
+								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
+						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
+						(mapc 
+						 #'(lambda (hash) 
+								 (progn 
+									 (if (not (eq (gethash "cache" hash) :json-false))
+											 (progn 
+												 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
+														 (let ((temp-file-cache-alist file-cache-alist))																		
+															 (setq file-cache-alist nil)
+															 (file-cache-add-directory-recursively (gethash "dir" hash))
+															 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache"))
+															 (setq file-cache-alist temp-file-cache-alist))
+													 nil)
+												 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
+												 (message "[filecache] Added %s from cache..." (gethash "dir" hash))
+												 )
+										 (progn 
+											 (if (file-exists-p (concat (gethash "dir" hash) "/.filecache"))
+													 (delete-file (concat (gethash "dir" hash) "/.filecache")))
+											 (file-cache-add-directory-recursively (gethash "dir" hash)))
+										 )
+									 (create-tags (gethash "dir" hash))))
+						 (gethash "project" (json-read-from-string json-contents)))
+						(mapc 
+						 #'(lambda (hash) 
+								 (progn 
+									 (let ((temp-file-cache-alist file-cache-alist))
+										 (setq file-cache-alist nil)
+										 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
+												 (progn 
+													 (file-cache-add-directory-recursively (gethash "dir" hash))
+													 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache")))
+											 nil)
+										 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
+										 (message "[filecache] Added External Dependency %s from cache..." (gethash "dir" hash))
+										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
+										 (setq file-cache-alist temp-file-cache-alist)))
+								 (create-tags (gethash "dir" hash)))
+						 (gethash "libs" (json-read-from-string json-contents)))))
+			(progn 
+				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
+				(file-cache-add-directory-recursively PROJECTPATH )
+				(create-tags PROJECTPATH)))))
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
@@ -23,11 +71,6 @@
   (setq PROJECTPATH arg)
 	(project-refresh)
 	(message "New project directory is %s." arg))
-
-(defun project-set (arg)
-	(interactive (list (read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
-  (setq PROJECTPATH arg)
-)
 
 (defun file-cache-save-cache-to-file (file)
   "Save contents of `file-cache-alist' to FILE.
@@ -47,63 +90,10 @@ The file cache can be saved to a file using
     (kill-buffer buf)))
 
 (unless (boundp 'PROJECTPATH)
-	(call-interactively 'project-set))
+	(call-interactively 'project-change))
 
 ; Cache environment files to find them easily!
-; These are defined in ./projects.csv
-(if (string-equal "0\n" 				  
-  (shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
-		(let ((json-object-type 'hash-table)
-					(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
-			(mapc 
-			 #'(lambda (hash) 
-					 (progn 
-						 (if (not (eq (gethash "cache" hash) :json-false))
-								 (progn 
-									 (message "%s" (concat "[filecache] " (gethash "dir" hash) " has been marked for caching..."))
-									 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
-											 (let ((temp-file-cache-alist file-cache-alist))
-												 (message "%s" (concat "[filecache] " (gethash "dir" hash ) "/.filecache does not exist! Creating it..."))
-												 (setq file-cache-alist nil)
-												 (file-cache-add-directory-recursively (gethash "dir" hash))
-												 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache"))
-												 (setq file-cache-alist temp-file-cache-alist))
-										 nil)
-									 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
-									 (message "%s" "[filecache] Added from cache..."))
-							 (progn (if (file-exists-p (concat (gethash "dir" hash) "/.filecache"))
-													(delete-file (concat (gethash "dir" hash) "/.filecache")))
-											(file-cache-add-directory-recursively (gethash "dir" hash))))
-						 (create-tags (gethash "dir" hash))))
-			 (gethash "project" (json-read-from-string json-contents))))
-	(progn 
-		(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
-		(file-cache-add-directory-using-find PROJECTPATH )
-		(create-tags-for-project)))
-
-;; (mapc
-;;  'test
-;;  (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t))
-
-(let ((json-object-type 'hash-table)
-			(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
-	(mapc 
-	 #'(lambda (hash) 
-			 (progn 
-				 (let ((temp-file-cache-alist file-cache-alist))
-					 (setq file-cache-alist nil)
-					 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
-							 (progn (message "%s" (concat "[filecache] " (gethash "dir" hash ) "/.filecache does not exist! Creating it..."))
-											(file-cache-add-directory-recursively (gethash "dir" hash))
-											(file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache")))
-						 nil)
-					 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
-					 (message "%s" "[filecache] Added from cache...")
-					 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
-					 (setq file-cache-alist temp-file-cache-alist))
-				 (create-tags (gethash "dir" hash))))
-	 (gethash "libs" (json-read-from-string json-contents))))
-
+; These are defined in ./projects.cs
 ;; ========================================
 ;;  Caching Functions
 ;; ========================================

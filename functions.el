@@ -22,31 +22,117 @@
   (set-frame-parameter
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
-	)
+	(toggle-tool-bar-mode-from-frame))
 
-(defun test ( )
-  (interactive)
-	(let ((class-name (thing-at-point 'symbol))
-				(res-point (point)))
-		(message "%s" class-name)
+(defun inject-javascript-dependency ()
+	(interactive)
+	(let ((class-name (thing-at-point 'word)))
 		(save-excursion
 			(beginning-of-buffer)
 			(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
 						(aEnd (- (search-forward-regexp "\\s-*\\]") 1))
 						(bStart (search-forward-regexp "function\\s-*("))
 						(bEnd (- (search-forward ")") 1)))				
-				(let ((mPosition (position class-name
-																	 (split-string (buffer-substring bStart bEnd) ",\\s-*" t)
+				(let ((pos (position class-name
+																	 (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
 																	 :test #'string-equal)))
-					(message "Pos %s ? %s" mPosition (eq mPosition nil))
-					(if (eq mPosition nil)
-							(progn (goto-char res-point) (etags-select-find-tag-at-point))
-						(file-cache-ido-find-file
-						 (replace-regexp-in-string "\"" ""
-									 (replace-regexp-in-string "\\(\\w+/\\)+\\(\\\w+\\)" "\\2.js"
-											 (replace-regexp-in-string "\\s-*\n.*" "" 
-																						 (nth mPosition (split-string (buffer-substring aStart aEnd)
-																																												 ",\\s-*\n\\s-*" t))))))))))))
+					(beginning-of-buffer)
+					(let ((my-point 
+								 (search-forward (nth (- pos 1) (split-string (buffer-substring aStart aEnd) ",\\s-*\n\\s-*" t)))))
+						(message "%s" pos)
+						(message "%s" (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
+						(if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t))) 
+								(progn (message "Setting q backwards") (setq my-point (+ 1(search-backward "\"")))))
+						(progn (goto-char my-point)
+									 (insert (format ",\n%s" (inject-dependency class-name))))))))))
+
+(defun update-javascript-dependency ()
+	(interactive)
+	(save-excursion
+		(beginning-of-buffer)
+		(let ((bStart (search-forward-regexp "function\\s-*("))
+					(bEnd (- (search-forward ")") 1)))
+				(beginning-of-buffer)
+				(replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
+												(format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd)))))))
+
+(defun inject-dependency (dep-list)
+  (interactive)
+	(mapconcat
+	 #'(lambda (arg)
+			 (let ((res-require-path nil))
+				 (maphash #'(lambda (id assoc-list)
+											(let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
+												(if (eq res-require-path nil)
+														(setq res-require-path
+															(if (= (length record) 2)
+																	(concat (replace-regexp-in-string ".*script" id (cadr record)) 
+																					(file-name-sans-extension (car record)))
+																nil)))))
+									external-cache-hash)
+				 (format "\t\t\"%s\"" 
+								 (if (eq res-require-path nil)
+										 (concat "???/" (downcase arg))
+									 res-require-path))))
+	 (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
+
+(defun js-hlt-nonused-dependencies ()
+	"Will highlght the parts of the function include that are not used in the class"
+  (interactive)
+	(if (eq (buffer-mode (buffer-name)) 'js-mode)
+			(save-excursion
+				(beginning-of-buffer)
+				(let ((start) (end))
+					(if (search-forward-regexp "function\\s-*(" (point-max) t)
+							(progn (setq start (point))
+										 (search-forward-regexp ")" (point-max) t)
+										 (setq end (- (point) 1))						
+										 (mapc #'(lambda (arg)
+															 (unhighlight-regexp (format "[^a-zA-Z]%s" arg))
+															 (if (< (count-words-region start (point-max) arg) 2)
+																	 (progn													
+																		 (message "%s is not used" arg)
+																		 (highlight-regexp (format "[^a-zA-Z]%s" arg) 'js2-non-used)
+																		 )))
+													 (split-string (buffer-substring start end) ",\\s-*\n*\\s-*" t))))))))
+
+(defun js-hlt-nonused-vars ()
+  (interactive)
+  (if (eq (buffer-mode (buffer-name)) 'js-mode)
+			(save-excursion
+					(beginning-of-buffer)
+					(while (and (< (point) (point-max))
+											(search-forward-regexp "var\\s-*\\\w+" (point-max) t))
+						(let ((temp-point (point))
+									(arg (thing-at-point 'symbol)))
+							(unhighlight-regexp (format "var\\s-*%s" arg))
+							(if (< (count-words-region temp-point (point-max) arg) 1)
+									(progn (message "%s is not used" arg)
+												 (highlight-regexp (format "var\\s-*%s" arg) 'js2-non-used-var)))
+							(goto-char temp-point))))))
+
+(defun count-words-buffer (arg)
+  (interactive "r")
+	(save-excursion
+		(let (wordCount) 
+			(setq wordCount 0)
+			(beginning-of-buffer)
+			(while (and (< (point) (point-max))
+									(search-forward arg (point-max) t))
+				(setq wordCount (1+ wordCount)))
+			wordCount)))
+
+(defun count-words-region (posStart posEnd arg)
+  (interactive "r")
+	(save-excursion
+		(let (wordCount) 
+			(setq wordCount 0)
+			(goto-char posStart)
+			(while (and (< (point) posEnd)
+									(search-forward arg posEnd t))
+				(if (string-equal arg (thing-at-point 'symbol))
+						(setq wordCount (1+ wordCount))))
+			wordCount)))
 
 (defun close-and-pop-buffer (oldbuffer buffer)
   (switch-to-buffer oldbuffer)
@@ -172,13 +258,12 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name)))
 						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" search-string match-type match-dir)
-				(rgrep match-string match-type match-dir)
+				(rgrep search-string match-type match-dir)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
 				(popwin:popup-buffer "*grep*")
 				(if (not (print truncate-lines))
-						(toggle-truncate-lines))
-			))))
+						(toggle-truncate-lines))))))
 
 (defun create-tags (dir-name)
      "Create tags file."
@@ -250,6 +335,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(mark-word-at-point)
 		(mc/mark-all-like-this)))
 
+(defun my-mark-all-like-this-in-defun ()
+	"Uses mc/mark-all-like-this-in-defun at point"
+	(interactive)
+	(progn
+		(mark-word-at-point)
+		(mc/mark-all-like-this-in-defun))) 
+
 ;; ============================================================================
 (defun dgc-copy-line ()
   "Copy from beginning of line to end of line."
@@ -307,11 +399,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	(interactive)
 	(if (buffer-exists "*Org Agenda*")
 			(switch-to-buffer (get-buffer "*Org Agenda*"))
-		(org-agenda-list)
-		)
-	)
+		(org-agenda-list)))
 	
-
 ;; ============================================================================
 (defun domtronn-sign-professional ()
 	"Insert my name and data"
@@ -613,6 +702,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	 
 (defun inject-getter (var-name &optional UNDERSCORES)
 	(interactive)
+	(if (not (boundp 'UNDERSCORES))
+			(setq UNDERSCORES nil))
 	(with-temp-buffer
 		(js-mode)
 		(insert "reqgetter")
@@ -622,25 +713,37 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(insert (if UNDERSCORES (concat "_" var-name ) var-name))
 		(format "%s" (buffer-substring (point-min) (point-max)))))
 
-(defun inject-dependency (dep-list)
+(defun add-file-to-project-cache ()
   (interactive)
-	(mapconcat
-	 #'(lambda (arg)
-			 (let ((res-require-path nil))
-				 (maphash #'(lambda (id assoc-list)
-											(let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
-												(if (eq res-require-path nil)
-														(setq res-require-path
-															(if (= (length record) 2)
-																	(concat (replace-regexp-in-string ".*script" id (cadr record)) 
-																					(file-name-sans-extension (car record)))
-																nil)))))
-									external-cache-hash)
-				 (format "\t\t\"%s\"" 
-								 (if (eq res-require-path nil)
-										 (concat "???/" (downcase arg))
-									 res-require-path))))
-	 (split-string dep-list ",\\s-*" t) ",\n"))
+	(if (and (not (assoc-string (buffer-name) file-cache-alist))
+					 (find-file-upwards ".tags")
+					 (eq (buffer-mode (buffer-name)) 'js-mode))
+			(progn 
+				(message "[filecache] Adding %s to the file cache..." (buffer-file-name))
+				(push (list (buffer-name) (file-name-directory (buffer-file-name))) file-cache-alist)))
+	t)
+
+(defun add-file-to-ext-lib-cache ()
+	(interactive)
+		(let ((lib-cache (gethash project-id external-cache-hash))
+					(temp-file-cache-alist file-cache-alist))
+			(if (and (boundp 'project-id) 
+							 (not (eq project-id nil))
+							 (not (assoc-string (buffer-name) (gethash project-id external-cache-hash)))
+							 (find-file-upwards ".filecache")
+							 (eq (buffer-mode (buffer-name)) 'js-mode))
+					(progn 
+						(message "[filecache] Adding %s to the external library cache..." (buffer-file-name))
+						(push 
+						 (list (buffer-name)
+									 (file-name-directory (buffer-file-name)))
+						 (gethash project-id external-cache-hash))
+						(setq file-cache-alist (gethash project-id external-cache-hash))
+						(file-cache-save-cache-to-file (find-file-upwards ".filecache"))
+						(setq file-cache-alist temp-file-cache-alist))))
+		t)
+
+
 
 (defun find-file-upwards (file-to-find)
   "Recursively searches each parent directory starting from the default-directory.
@@ -687,11 +790,6 @@ or nil if not found."
 			(visit-tags-table my-tags-file)
 			(ac-etags-setup)
 			(ac-etags-ac-setup))))
-
-(defun etags-function-at-point ()
-  (interactive)
-	(message (format "You have clicked %s" )
-  ))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the
@@ -769,9 +867,7 @@ otherwise raises an error."
 	"Prints cool message if in javascript mode"
 	(interactive)
 	(if (eq (buffer-mode (buffer-name)) 'js-mode)
-			(jshint-code)
-
-		)
+			(jshint-code))
 	nil)
 
 (defun jshint-code ()
@@ -792,6 +888,7 @@ otherwise raises an error."
 			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
 			(replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
+			(replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
 			(replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "")	; Remove double whitespace
 			(replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
 			(replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon

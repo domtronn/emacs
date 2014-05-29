@@ -12,6 +12,7 @@
 (global-set-key (kbd "s-z") 'undo-tree-undo)
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
 (global-set-key (kbd "s-y") 'undo-tree-redo)
+(global-set-key (kbd "C-+") 'undo-tree-redo)
 
 (global-set-key (kbd "s-_") 'hide-all-functions)
 (global-set-key (kbd "s--") 'hs-hide-block)
@@ -122,7 +123,7 @@
 (global-set-key (kbd "C-S-w") 'mark-word)
 
 ;; Amazing mode to mark all instances in a definiton
-(global-set-key (kbd "C->") 'mc/mark-all-like-this-in-defun)
+(global-set-key (kbd "C->") 'my-mark-all-like-this-in-defun)
 (global-set-key (kbd "C-<") 'my-mark-all-like-this)
 (global-set-key (kbd "s-e") 'my-mark-all-like-this)
 
@@ -142,13 +143,14 @@
 (global-set-key (kbd "H-/") 'go-to-grep-and-rgrep)
 (global-set-key (kbd "H-\\") 'go-to-agenda)
 
-(global-set-key (kbd "C-x C-b") '(lambda () (interactive) 
-  (if (buffer-exists "*Ibuffer*")
-	  (popwin:popup-buffer "*Ibuffer*")
-	(let ((current-buf (buffer-name)))
-		  (message current-buf)
-		  (ibuffer)
-		  (close-and-pop-buffer current-buf "*Ibuffer*")))))
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; (global-set-key (kbd "C-x C-b") '(lambda () (interactive) 
+;;   (if (buffer-exists "*Ibuffer*")
+;; 	  (popwin:popup-buffer "*Ibuffer*")
+;; 	(let ((current-buf (buffer-name)))
+;; 		  (message current-buf)
+;; 		  (ibuffer)
+;; 		  (close-and-pop-buffer current-buf "*Ibuffer*")))))
 
 (global-set-key (kbd "C-x C-c") 'goto-line)
 
@@ -166,6 +168,7 @@
 
 ;; It's Key Chord Time!
 (key-chord-define-global "IO" 'open-in-and-activate-intellj)
+(key-chord-define-global (kbd "C-c C-d") 'dash-at-point)
 (key-chord-define-global "??" 'set-up-rgrep-results-with-prompt)
 
 (provide 'keys)
