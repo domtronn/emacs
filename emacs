@@ -85,8 +85,15 @@
 
 (global-set-key (kbd "<s-down-mouse>") (lambda () (message "Hellow Worlds")))
 
-(eval-after-load 'js
-  '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
+(eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-javascript-dependency))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
+(add-hook 'js-mode-hook 'js-hlt-nonused-dependencies)
+(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
+(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-vars)))
+(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-ext-lib-cache)))
+(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 (add-hook 'js-mode-hook #'(lambda () 
 			    (button-lock-set-button "\\.\\(\\w+\\)("
 						    #'(lambda (event)
@@ -138,6 +145,12 @@
 (define-key ac-complete-mode-map [return] 'ac-complete)
 (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
 (define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
+(define-key ac-complete-mode-map (kbd "s-1") 'ac-complete-select-1)
+(define-key ac-complete-mode-map (kbd "s-2") 'ac-complete-select-2)
+(define-key ac-complete-mode-map (kbd "s-3") 'ac-complete-select-3)
+(define-key ac-complete-mode-map (kbd "s-4") 'ac-complete-select-4)
+(define-key ac-complete-mode-map (kbd "s-5") 'ac-complete-select-5)
+(define-key ac-complete-mode-map (kbd "s-6") 'ac-complete-select-6)
 (global-set-key "\C-f" 'ac-isearch)
 
 (set-default 'ac-sources '(
@@ -265,6 +278,7 @@
 (setq inhibit-startup-echo-area-message t)
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
+(setq create-lockfiles nil)		              ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell t)                       ; Disbales beep and use visible bell 
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
