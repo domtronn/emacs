@@ -9,6 +9,7 @@
 *node_modules*
 *tramp*
 *url*
+*.yas-compiled-*el
 
 # Compiled source #
 ###################
