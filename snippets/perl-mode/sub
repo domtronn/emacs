@@ -1,0 +1,6 @@
+# -*- mode: perl-mode -*-
+#name : Sub
+# --
+sub $1 {
+		$0
+}

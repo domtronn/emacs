@@ -1,0 +1,4 @@
+# -*- mode: perl-mode -*-
+#name : use
+# --
+use ${1:$$(if yas-modified-p (mapconcat 'identity (split-string yas-text " ") "::"))}$0;
