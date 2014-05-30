@@ -21,7 +21,7 @@
 												nil nil nil)
 											 ("req.html" "new Request.HTML({\n  onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript) {\n    $0\n  }\n}).${1:get}(${2:url});" "html" nil nil nil nil nil nil)
 											 ("req.json" "new Request.JSON({\n  onSuccess: function(responseJSON, responseText) {\n    $0\n  }\n}).${1:send}(${2:url});" "json" nil nil nil nil nil nil)
-											 ("reqdef" "`(setq use-underscores nil)``(setq available-exts nil)`require.def(\"`(replace-regexp-in-string \".*script/\" \"sprtiptvjs/\" (file-name-sans-extension (buffer-file-name)))`\",\n	[\n${1:$(inject-dependency yas-text)}\n	],\n\n	function (${1:$$(setq available-exts yas-text)}) {\n		\"use strict\";\n${3:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}\n		return ${2:$$(concat (yas-choose-value (split-string available-exts \",\\\\s-*\")) \".extend\")}({\n\n			init: function (${3:Variables}) {\n				${3:$(when yas-modified-p (format-init-members yas-text use-underscores))}\n			}${3:$(when yas-modified-p (format-getters yas-text use-underscores))}\n\n		});\n\n	}\n);" "require def" nil nil
+											 ("reqdef" "`(setq use-underscores nil)``(setq available-exts nil)`require.def(\"`(replace-regexp-in-string \".*script/\" \"sprtiptvjs/\" (file-name-sans-extension (buffer-file-name)))`\",\n	[\n${1:$(inject-dependency yas-text)}\n	],\n\n	function (${1:$$(setq available-exts yas-text)}) {\n		\"use strict\";\n${4:$(when yas-modified-p (format-member-vars-single-line yas-text use-underscores))}\n		${3:$(when yas-modified-p \"var \")}${3:return}${3:$(when yas-modified-p \" = \")} ${2:$$(concat (yas-choose-value (split-string available-exts \",\\\\s-*\")) \".extend\")}({\n\n			init: function ($4) {\n				${4:$(when yas-modified-p (format-init-members yas-text use-underscores))}\n			}${4:$(when yas-modified-p (format-getters yas-text use-underscores))}\n			$0\n		});\n		${3:$(when yas-modified-p (format \"\\n\\t\\treturn new %s();\\n\" yas-text))}\n	}\n);" "require def" nil nil
 												((yas/indent-line 'fixed))
 												nil nil nil)
 											 ("reqgetter" "			get${1:$$(upcase-initials yas-text)}: function () {\n				return $2;\n			}" "Define Getter" nil nil
@@ -33,4 +33,4 @@
 											 ("stubvar" "var stub${1:$(upcase-initials yas-text)} = this.sandbox.stub(${1:class}.prototype);\n$0" "Stub var" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Sun May 18 23:11:13 2014
+;;; Do not edit! File generated at Fri May 30 09:30:39 2014

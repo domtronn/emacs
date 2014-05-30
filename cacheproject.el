@@ -16,7 +16,7 @@
 	(interactive)
 	(progn
 		(project-clear)
-		(if (string-equal "0\n" 				  
+		(if (string-equal "0\n"
 											(shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
 				(progn 
 					(let ((json-object-type 'hash-table)
@@ -62,7 +62,7 @@
 						 (gethash "libs" (json-read-from-string json-contents)))))
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
-				(file-cache-add-directory-recursively PROJECTPATH )
+				(file-cache-add-directory-recursively PROJECTPATH)
 				(create-tags PROJECTPATH)))))
 
 (defun project-change (arg)

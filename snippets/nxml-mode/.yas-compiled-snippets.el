@@ -5,9 +5,7 @@
 										 '(("body" "<body$1>\n  $0\n</body>" "<body>...</body>" nil nil nil nil nil nil)
 											 ("br" "<br />" "<br />" nil nil nil nil nil nil)
 											 ("code" "<code>\n  $0\n</code>" "<code>...</code>" nil nil nil nil nil nil)
-											 ("code.class" "<code class=\"$1\">\n  $0\n</code>" "<code class=\"...\">...</code>" nil nil nil nil nil nil)
 											 ("div" "<div$1>$0</div>" "<div...>...</div>" nil nil nil nil nil nil)
-											 ("div.class" "<div class=\"$1\">\n  $0\n</div>" "<div class=\"...\">...</div>" nil nil nil nil nil nil)
 											 ("div.id" "<div id=\"$1\">\n  $0\n</div>" "<div id=\"...\">...</div>" nil nil nil nil nil nil)
 											 ("div.id-class" "<div id=\"$1\" class=\"$2\">\n  $0\n</div>" "<div id=\"...\" class=\"...\">...</div>" nil nil nil nil nil nil)
 											 ("dl.id" "<dl id=\"$1\">\n    $0\n</dl>" "<dl> ... </dl>" nil
@@ -48,18 +46,12 @@
 											 ("img" "<img src=\"$1\" alt=\"$2\" />" "<img src=\"...\" alt=\"...\" />" nil nil nil nil nil nil)
 											 ("input" "<input type=\"$1\" name=\"$2\" value=\"$3\" />" "<input ... />" nil nil nil nil nil nil)
 											 ("li" "<li>$1</li>" "<li>...</li>" nil nil nil nil nil nil)
-											 ("li.class" "<li class=\"$1\">$2</li>" "<li class=\"...\">...</li>" nil
-												("list")
-												nil nil nil nil)
 											 ("link" "<link rel=\"${1:stylesheet}\" href=\"${2:url}\" type=\"${3:text/css}\" media=\"${4:screen}\" />" "<link stylesheet=\"...\" />" nil nil nil nil nil nil)
 											 ("meta" "<meta name=\"${1:generator}\" content=\"${2:content}\" />" "<meta name=\"...\" content=\"...\" />" nil
 												("meta")
 												nil nil nil nil)
 											 ("name" "<a name=\"$1\"></a>" "<a name=\"...\"></a>" nil nil nil nil nil nil)
 											 ("ol" "<ol>\n  $0\n</ol>" "<ol>...</ol>" nil nil nil nil nil nil)
-											 ("ol.class" "<ol class=\"$1\">\n  $0\n</ol>" "<ol class=\"...\">...</ol>" nil
-												("list")
-												nil nil nil nil)
 											 ("ol.id" "<ol id=\"$1\">\n  $0\n</ol>" "<ol id=\"...\">...</ol>" nil
 												("list")
 												nil nil nil nil)
@@ -67,7 +59,6 @@
 											 ("pre" "<pre>\n  $0\n</pre>" "<pre>...</pre>" nil nil nil nil nil nil)
 											 ("quote" "<blockquote>\n  $1\n</blockquote>" "<blockquote>...</blockquote>" nil nil nil nil nil nil)
 											 ("span" "<span>$1</span>" "<span>...</span>" nil nil nil nil nil nil)
-											 ("span.class" "<span class=\"$1\">$2</span>" "<span class=\"...\">...</span>" nil nil nil nil nil nil)
 											 ("span.id" "<span id=\"$1\">$2</span>" "<span id=\"...\">...</span>" nil nil nil nil nil nil)
 											 ("style" "<style type=\"text/css\" media=\"${1:screen}\">\n  $0\n</style>" "<style type=\"text/css\" media=\"...\">...</style>" nil nil nil nil nil nil)
 											 ("table" "<table>\n  $0\n</table>" "<table>...</table>" nil nil nil nil nil nil)
@@ -78,12 +69,9 @@
 											 ("title" "<title>$1</title>" "<title>...</title>" nil nil nil nil nil nil)
 											 ("tr" "<tr>\n  $0\n</tr>" "<tr>...</tr>" nil nil nil nil nil nil)
 											 ("ul" "<ul>\n  $0\n</ul>" "<ul>...</ul>" nil nil nil nil nil nil)
-											 ("ul.class" "<ul class=\"$1\">\n  $0\n</ul>" "<ul class=\"...\">...</ul>" nil
-												("list")
-												nil nil nil nil)
 											 ("ul.id" "<ul id=\"$1\">\n  $0\n</ul>" "<ul id=\"...\">...</ul>" nil
 												("list")
 												nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Sun May 18 23:11:13 2014
+;;; Do not edit! File generated at Fri May 30 09:30:39 2014
