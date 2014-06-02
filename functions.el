@@ -134,6 +134,49 @@
 						(setq wordCount (1+ wordCount))))
 			wordCount)))
 
+(defun go-to-class ()
+  "Find and go to the class at point"
+	(interactive)
+	(let ((class-name (thing-at-point 'symbol)))
+	(save-excursion 
+		(beginning-of-buffer)
+		(let ((start (search-forward-regexp "function\\s-*("))
+				 (end (- (search-forward ")") 1)))		
+			(goto-char start)
+			(if (search-forward class-name end t)
+					(let ((record (assoc (concat (downcase class-name) ".js") file-cache-alist)))
+						(if (and record (= (length record) 2))
+								(let ((found-file (concat (car (cdr record)) (car record))))
+									(message "Found %s" found-file)
+									(find-file found-file))
+							(message "Couldn't find a cached file for %s..." class-name)))
+				nil)))))
+
+(defun go-to-thing-at-point ()
+	"Go to the thing at point assuming if it's not a class or function it's a variable"
+  (interactive)
+	(let ((thing (thing-at-point 'symbol))
+				(thing-point (point)))
+		(if (eq nil (go-to-class))
+				(if (eq nil (search-backward-regexp 
+										 (format "var\\s-*%s" thing) (point-min) t))
+						(if (eq nil (search-backward-regexp
+												 (format "function\\s-*(.*%s" thing) (point-min) t))
+								(progn
+									(search-backward ".")
+									(let ((thing-clazz (thing-at-point 'symbol)))
+										(goto-char thing-point)
+										(etags-select-find-tag-at-point)
+										(if (string-equal "*etags-select*" (buffer-name))
+												(progn
+													(search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
+													(next-line)
+													(etags-select-goto-tag)))))
+							(progn
+								(search-forward thing)
+								(backward-word)))))))
+
+
 (defun close-and-pop-buffer (oldbuffer buffer)
   (switch-to-buffer oldbuffer)
   (popwin:popup-buffer buffer))
