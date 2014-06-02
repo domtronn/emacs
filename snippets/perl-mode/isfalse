@@ -1,0 +1,5 @@
+# -*- mode: perl-mode -*-
+#name : isfalse
+# --
+is ( $1, false, '${1:$()} should be false' );
+$0

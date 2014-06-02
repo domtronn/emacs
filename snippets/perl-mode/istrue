@@ -1,0 +1,5 @@
+# -*- mode: perl-mode -*-
+#name : istrue
+# --
+ok ( $1, '${1:$()} should be true' );
+$0

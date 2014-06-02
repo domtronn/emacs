@@ -1,0 +1,5 @@
+# -*- mode: perl-mode -*-
+#name : isequal
+# --
+is ( $1, $2, '${1:$()} should equal ${2:$()}' );
+$0
