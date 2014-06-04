@@ -376,7 +376,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	(interactive)
 	(progn
 		(mark-word-at-point)
-		(mc/mark-all-like-this)))
+		(mc/mark-all-symbols-like-this)))
 
 (defun my-mark-all-like-this-in-defun ()
 	"Uses mc/mark-all-like-this-in-defun at point"
