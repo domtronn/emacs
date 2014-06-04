@@ -49,7 +49,7 @@
 (global-set-key (kbd "C-`") 'shell-pop)
 
 ;; Tag searching
-(global-set-key (kbd "H-.") 'etags-select-find-tag-at-point)
+(global-set-key (kbd "H-.") 'go-to-thing-at-point);;etags-select-find-tag-at-point)
 (global-set-key (kbd "H-?") 'etags-select-find-tag)
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 
