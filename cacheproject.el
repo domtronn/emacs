@@ -22,9 +22,9 @@
 					(let ((json-object-type 'hash-table)
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
-						(mapc 
-						 #'(lambda (hash) 
-								 (progn 
+						(mapc
+						 #'(lambda (hash)
+								 (progn
 									 (if (not (eq (gethash "cache" hash) :json-false))
 											 (progn 
 												 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
