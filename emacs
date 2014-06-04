@@ -6,9 +6,6 @@
 ;; Games Dev Websites
 ;;  enginuity, nehe productions, opengl tutorial
 
-;; Load Theme
-(load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))
-
 ;;; Code:
 (load-file (concat USERPATH "/functions.el"))
 (add-to-list 'load-path (concat USERPATH "/elisp"))
@@ -334,5 +331,8 @@
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
+
+;; Load Theme
+(load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))
 
 (server-start)
