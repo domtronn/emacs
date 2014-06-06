@@ -46,6 +46,9 @@
 
 (require 'multiple-cursors)   ; Amazing package to allow simultaneous multiline editiing
 
+(require 'tex)
+(TeX-global-PDF-mode t)
+
 (require 'hideshowvis)
 (autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
@@ -133,6 +136,8 @@
 (yas/load-directory (concat USERPATH "/snippets"))
 
 (require 'auto-complete-config)
+(require 'auto-complete-etags)
+(require 'auto-complete-auctex)
 (require 'ac-dabbrev)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
@@ -153,10 +158,12 @@
 
 (set-default 'ac-sources '(
 									 ac-source-yasnippet
+									 ac-source-etags
 									 ac-source-semantic
-									 ac-source-dabbrev
+									 ac-source-dabbrev									 
 									 ac-source-files-in-current-dir
 									 ))
+
 ;; Smart mode line causes troubles with flymake modes
 ;; (setq sml/theme 'dark)
 ;; (require 'smart-mode-line)
@@ -170,7 +177,7 @@
 
 (setq grunt-cmd "grunt test --no-color --config ~/workspace/sprtiptvjs-static/webapp/static-versioned/script-tests/gruntfile.js")
 
-(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+(setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
       '(
     "/usr/local/bin"
