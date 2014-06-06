@@ -44,7 +44,7 @@
  '(org-agenda-files (quote ("/Users/charld13/Documents/Calendar.org")))
  '(org-calendar-insert-diary-entry-key (quote i))
  '(popwin:popup-window-height 20)
- '(popwin:special-display-config (quote (("*RE-Builder*" :height 2 :position bottom) ("*Ido Completions*" :position bottom :noselect t) ("*Help*") ("*Completions*" :position bottom :dedicated nil) ("*compilation*" :noselect t) ("*Occur*" :position bottom :noselect t))) nil nil "op")
+ '(popwin:special-display-config (quote (("*RE-Builder*" :height 2 :position bottom) ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t) ("*Ido Completions*" :position bottom :noselect t) ("*Help*") ("*Completions*" :position bottom :dedicated nil) ("*compilation*" :noselect t) ("*Occur*" :position bottom :noselect t))) nil nil "op")
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
  '(scroll-bar-mode nil)
