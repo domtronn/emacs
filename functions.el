@@ -22,7 +22,17 @@
   (set-frame-parameter
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
+	(toggle-tool-bar-mode-from-frame)
 	(toggle-tool-bar-mode-from-frame))
+
+(defun latex-make ()
+  (interactive)
+	(setq buffer-save-without-query t)
+	(if (buffer-modified-p) (save-buffer))
+  (let ((f1 (current-frame-configuration))
+        (retcode (shell-command (concat "rubber --pdf " (buffer-file-name)))))
+		(message "Return code : %s" retcode)
+    (if (= retcode 0) (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))))
 
 (defun inject-javascript-dependency ()
 	(interactive)
@@ -252,27 +262,33 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
             ("sh" . "bash")
             ("ml" . "ocaml")
             ("vbs" . "cscript")
+						("cpp" . "make")
+						("tex" . "rubber --pdf")
             )
           )
          (fName (buffer-file-name))
          (fSuffix (file-name-extension fName))
          (progName (cdr (assoc fSuffix suffixMap)))
-         (cmdStr (concat progName " \""   fName "\""))
-         )
+				 (cmdStr (cond ((string-equal (buffer-mode (buffer-name)) "c++-mode") 
+												(concat progName " \""  (file-name-sans-extension fName) "\"; " (file-name-sans-extension fName)))
+											 (t (concat progName " \"" fName "\""))
+											 )))
 
     (when (buffer-modified-p)
       (when (y-or-n-p "Buffer modified. Do you want to save first?")
           (save-buffer) ) )
 
-    (if (string-equal fSuffix "el") ; special case for emacs lisp
-        (load (file-name-sans-extension fName))
-      (if progName
-          (progn
-            (message "Running…")
-            (shell-command cmdStr "*xah-run-current-file output*" )
-            )
-        (message "No recognized program file suffix for this file.")
-        ) ) ))
+    (cond ((string-equal fSuffix "el") ; special case for emacs lisp
+					 (load (file-name-sans-extension fName)))
+					((string-equal fSuffix "tex")
+					 (find-file (concat (file-name-sans-extension fName) ".pdf")))
+					(t (if progName
+							(progn
+								(message "Running…")
+								(shell-command cmdStr "*run-current-file output*" )
+								)
+						(message "No recognized program file suffix for this file.")
+						)))))
 
 (defun set-up-rgrep-results ()
 	"Opens a pop up for rgrep results"
