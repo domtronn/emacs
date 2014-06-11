@@ -22,8 +22,21 @@
   (set-frame-parameter
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
-	(toggle-tool-bar-mode-from-frame)
-	(toggle-tool-bar-mode-from-frame))
+	(if (not (frame-parameter nil 'fullscreen))
+			(progn (tool-bar-mode 1)
+						 (tool-bar-mode -1)
+						 (set-frame-height (selected-frame) 69))))
+
+(defun remove-tool-bar ()
+	"Remove the toolbar"
+	(interactive)
+	(tool-bar-mode 1)
+	(tool-bar-mode -1)) 
+
+(defun true-fullscreen ()
+	"Makes true fullscreen"
+	(interactive)
+	(set-frame-height (selected-frame) 70))
 
 (defun latex-make ()
   (interactive)
@@ -33,6 +46,23 @@
         (retcode (shell-command (concat "rubber --pdf " (buffer-file-name)))))
 		(message "Return code : %s" retcode)
     (if (= retcode 0) (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))))
+
+(defun xelatex-make ()
+  (interactive)
+	(if (string-equal (buffer-mode (buffer-name)) "latex-mode")
+			(progn
+				(setq buffer-save-without-query t)
+				(if (buffer-modified-p) (save-buffer))
+				(let ((f1 (current-frame-configuration))
+							(retcode (shell-command (concat "xelatex " (buffer-file-name)))))
+					(message "Return code : %s" retcode)
+					(if (= retcode 0) 
+							(progn
+								(if (buffer-exists (concat (file-name-sans-extension (buffer-name)) ".pdf"))
+										(kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
+								(find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
+								(delete-other-windows)))))
+		nil))
 
 (defun inject-javascript-dependency ()
 	(interactive)
