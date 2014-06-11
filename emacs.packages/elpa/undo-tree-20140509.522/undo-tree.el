@@ -1,3 +1,4 @@
+
 ;;; undo-tree.el --- Treat undo history as a tree  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2009-2014  Free Software Foundation, Inc
@@ -1109,7 +1110,6 @@ in visualizer."
     (define-key map (kbd "C-/") 'undo-tree-undo)
     (define-key map "\C-_" 'undo-tree-undo)
     ;; redo doesn't exist normally, so define our own keybindings
-    (define-key map (kbd "C-?") 'undo-tree-redo)
     (define-key map (kbd "M-_") 'undo-tree-redo)
     ;; just in case something has defined `redo'...
     (define-key map [remap redo] 'undo-tree-redo)
