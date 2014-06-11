@@ -106,6 +106,8 @@
 								:face 'function-link :mouse-face 'function-mouse-link 
 								:face-policy 'append :grouping 1 :mouse-binding 'mouse-1)))
 
+(add-hook 'latex-mode 'flyspell-mode)
+
 (add-hook 'etags-select-mode-hook #'(lambda () (message "Enabling Button Lock Mode")))
 (add-hook 'etags-select-mode-hook #'(lambda () 
 			    (button-lock-mode 1)
