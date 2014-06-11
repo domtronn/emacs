@@ -5,7 +5,8 @@
 (global-set-key [S-tab] 'ac-expand)
 
 ;; Closing Files
-(global-set-key (kbd "s-w") 
+(global-set-key (kbd "s-w") 'delete-window)
+(global-set-key (kbd "s-W") 
   '(lambda () (interactive) (kill-buffer (buffer-name))))
 
 ;; Undo and Redo
@@ -36,6 +37,8 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-?") 'query-replace-regexp)
+
+(global-set-key (kbd "M-?") 'ispell-word)
 
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
@@ -79,6 +82,7 @@
 
 (global-set-key [f7] 'occur-at-point)
 (global-set-key [f8] 'run-current-file)
+(global-set-key (kbd "<S-f8>") 'xelatex-make)
 
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
