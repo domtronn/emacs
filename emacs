@@ -246,13 +246,13 @@
 								 " *, *" t))
 					))))
 
-;; ;; Java Mode - Malabar Mode
-;; (require 'cedet)
-;; (require 'semantic)
-;; (load "semantic/loaddefs.el")
-;; (semantic-mode 1);;
-;; (require 'malabar-mode)
-;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+;; Java Mode - Malabar Mode
+(require 'cedet)
+(require 'semantic)
+(load "semantic/loaddefs.el")
+(semantic-mode 1);;
+(require 'malabar-mode)
+(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
 
 ;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
 ;; (load "jde")
@@ -278,6 +278,9 @@
           (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
 (add-hook 'vc-dir-mode-hook
           (lambda () (local-set-key (kbd "d") #'vc-ediff)))
+
+(add-hook 'dirtree-mode-hook
+		  (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
@@ -330,6 +333,16 @@
 
 ;; Set start up dimesnions in characters
 (maximize-frame)
+
+;; ;; Tree file browser
+(require 'tree-mode)
+(require 'windata)
+(require 'dirtree)
+(setq dirtree-windata (quote (frame left 0.2 delete)))
+
+(define-derived-mode dirtree-mode tree-mode "Dir-Tree"
+  "A mode to display tree of directory"
+  (tree-widget-set-theme "ASCII"))
 
 ;; Set translucency
 ;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
