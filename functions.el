@@ -909,11 +909,11 @@ otherwise raises an error."
 (defun open-test ()
 	"replace name "
 	(interactive)
-	(if (string-match "Test.js" (buffer-name))
-		(switch-to-buffer (replace-regexp-in-string "Test\.js" "\.js" (buffer-name)))
+	(if (string-match "Spec.js" (buffer-name))
+		(switch-to-buffer (replace-regexp-in-string "Spec\.js" "\.js" (buffer-name)))
 		(find-file
-		 (replace-regexp-in-string "script" "script-tests\/tests"
-			 (replace-regexp-in-string "\\\.js" "Test\.js" (buffer-file-name))
+		 (replace-regexp-in-string "script" "script-tests\/specs"
+			 (replace-regexp-in-string "\\\.js" "Spec\.js" (buffer-file-name))
 		 ))))
 
 (defun grunt ()
