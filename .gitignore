@@ -8,6 +8,8 @@
 *ac-comphist.dat
 *node_modules*
 *tramp*
+*history*
+*scratch*
 *url*
 *.yas-compiled-*el
 
