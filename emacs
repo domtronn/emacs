@@ -274,10 +274,11 @@
 
 (add-hook 'ediff-startup-hook 'ediff-swap-buffers)
 
-(add-hook 'vc-dir-mode-hook
-          (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
-(add-hook 'vc-dir-mode-hook
-          (lambda () (local-set-key (kbd "d") #'vc-ediff)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "d") #'vc-ediff)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "q") #'kill-this-buffer)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "r") #'vc-revert)))
+
 
 (add-hook 'dirtree-mode-hook
 		  (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
