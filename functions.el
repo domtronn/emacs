@@ -665,7 +665,10 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun my-ediff-qh ()
 	"Function to be called when ediff quits."
-	(when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config)))
+	(if (buffer-exists "*vc-dir*")
+			(progn (switch-to-buffer "*vc-dir*")
+						 (delete-other-windows))
+		(when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config))))
 
 (defun vc-dir-kill-all-lines-at-mark ()
 	"remove all files with certain status"
@@ -677,6 +680,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 				(save-excursion
 					(beginning-of-buffer)
 					(while (search-forward marked-word) (vc-dir-kill-line))))))
+
+
 
 
 ;; ============================================================================
