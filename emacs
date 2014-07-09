@@ -26,6 +26,7 @@
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
+(load-file (concat USERPATH "/elisp/repo-root.el"))
 
 ;;------------------
 ;; Requires
@@ -257,6 +258,9 @@
 
 ;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
 ;; (load "jde")
+
+(add-to-list 'repository-root-matchers repository-root-matcher/svn)
+(add-to-list 'repository-root-matchers repository-root-matcher/git)
 
 ;; Load stuff to do with grep initially
 (eval-after-load "grep"
