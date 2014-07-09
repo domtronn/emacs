@@ -260,14 +260,7 @@
 (defun my-vc-dir ()
 	"calls vc-dir on the appropriate project"
 	(interactive)
-	(let ((top-level-git (find-top-level-dir (buffer-file-name) ".git"))
-				(top-level-svn (find-top-level-dir (buffer-file-name) ".svn")))
-		(if (not (string-equal (find-top-level-dir (buffer-file-name) ".git") (buffer-file-name)))
-				(vc-dir top-level-git)
-			(if (not (string-equal (find-top-level-dir (buffer-file-name) ".svn") (buffer-file-name)))
-					(vc-dir top-level-svn)
-				(message "This file is not under version control."))))
-	nil)
+	(vc-dir (repository-root)))
 
 (defun run-current-file ()
   "Execute the current file.
@@ -923,6 +916,8 @@ otherwise raises an error."
 
 (defun grunt ()
   "Run grunt"
+	(if (buffer-exists "*grunt*")
+			(kill-buffer "*grunt*"))
   (interactive)
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
         (result (call-process-shell-command grunt-cmd nil grunt-buffer t))
@@ -932,12 +927,13 @@ otherwise raises an error."
           (t
            (message nil)
 					 (delete-windows-on "*grunt*")
-           (split-window-vertically)
-           (set-window-buffer (next-window) grunt-buffer)))))
+           (popwin:popup-buffer "*grunt*")))))
 
 (defun grunt-this-test-file ()
   "Run grunt"
   (interactive)
+	(if (buffer-exists "*grunt*")
+			(kill-buffer "*grunt*"))
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
         (result (call-process-shell-command
 								 (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
@@ -947,8 +943,7 @@ otherwise raises an error."
           (t
            (message nil)
 					 (delete-windows-on "*grunt*")
-           (split-window-vertically)
-					 (set-window-buffer (next-window) grunt-buffer)))))
+           (popwin:popup-buffer "*grunt*")))))
 
 (defun json-format ()
 	(interactive)
