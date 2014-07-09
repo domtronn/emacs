@@ -92,7 +92,6 @@
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
 (add-hook 'js-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
-(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-vars)))
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-ext-lib-cache)))
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 (add-hook 'js-mode-hook #'(lambda () 
