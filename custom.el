@@ -36,7 +36,7 @@
  '(ido-use-filename-at-point (quote guess))
  '(js-indent-level 2)
  '(js2-enter-indents-newline t)
- '(js2-global-externs (quote ("log" "require" (\, "assert.*") (\, "sinon"))))
+ '(js2-global-externs (quote ("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "describe" "it" "define")))
  '(jshint-configuration-path "~/.jshintrc")
  '(jshint-mode-jshintrc "~/.jshintrc")
  '(jshint-mode-mode "jslint")
