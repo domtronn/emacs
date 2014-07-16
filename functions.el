@@ -16,8 +16,9 @@
       (end-of-line)
       (kill-region bol (1+ (point))))))
 
+
 (defun toggle-fullscreen ()
-  "Toggle full screen."
+	"Toggle full screen."
   (interactive)
   (set-frame-parameter
      nil 'fullscreen
@@ -26,14 +27,17 @@
 			(progn (tool-bar-mode 1)
 						 (tool-bar-mode -1)
 						 (set-frame-height (selected-frame) 69))))
+(defun f1-toggle-fullscreen ()
+	(interactive)
+	(toggle-fullscreen))
 
-(defun remove-tool-bar ()
+(defun f2-remove-tool-bar ()
 	"Remove the toolbar"
 	(interactive)
 	(tool-bar-mode 1)
 	(tool-bar-mode -1)) 
 
-(defun true-fullscreen ()
+(defun f3-true-fullscreen ()
 	"Makes true fullscreen"
 	(interactive)
 	(set-frame-height (selected-frame) 70))
@@ -920,7 +924,7 @@ otherwise raises an error."
 			(kill-buffer "*grunt*"))
   (interactive)
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-        (result (call-process-shell-command grunt-cmd nil grunt-buffer t))
+        (result (call-process-shell-command (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
         (output (with-current-buffer grunt-buffer (buffer-string))))
     (cond ((zerop result)
            (message "Grunt completed without errors"))
