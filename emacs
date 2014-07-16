@@ -85,8 +85,6 @@
 (require 'button-lock)
 (require 'json)
 
-(global-set-key (kbd "<s-down-mouse>") (lambda () (message "Hellow Worlds")))
-
 (eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-javascript-dependency))
@@ -177,8 +175,6 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(setq grunt-cmd "grunt test --no-color --config ~/workspace/sprtiptvjs-static/webapp/static-versioned/script-tests/gruntfile.js")
-
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
       '(
@@ -249,12 +245,12 @@
 					))))
 
 ;; Java Mode - Malabar Mode
-(require 'cedet)
-(require 'semantic)
-(load "semantic/loaddefs.el")
-(semantic-mode 1);;
-(require 'malabar-mode)
-(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+;; (require 'cedet)
+;; (require 'semantic)
+
+;; (semantic-mode 1)
+;; (require 'malabar-mode)
+;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
 
 ;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
 ;; (load "jde")
