@@ -120,6 +120,17 @@
 									 res-require-path))))
 	 (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
 
+
+(defun random-return ()
+  (interactive)
+  (setq words '("pow" "shazam" "foo" "bar" "wollop" "bam" "smash" 
+								"boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky" 
+								"hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
+								"mimsy" "snicker" "snack" "vorpal" "wabe" "zorp" "fam"
+								"horcrux" "muggle" "shiwu"))
+	(random t)
+	(message (nth (random (length words)) words)))
+
 (defun js-hlt-nonused-dependencies ()
 	"Will highlght the parts of the function include that are not used in the class"
   (interactive)
@@ -776,6 +787,15 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					 #'(lambda (arg) 
 							 (if UNDERSCORES (format "_%s" arg) (format "%s" arg)))
 					 (split-string var-list ",\\s-*" t) ", ")))
+
+(defun format-spy-methods (method-list)
+	"Splits on comma and puts string in inverted commas"
+	(interactive)
+	(setq method-list (reverse (cdr (reverse method-list))))
+	(mapconcat
+	 #'(lambda (arg)
+			 (format "\"%s\"" arg))
+	 (split-string method-list ",\\s-*" t) ", "))
 
 (defun format-init-members (var-list &optional UNDERSCORES)
   (interactive)
