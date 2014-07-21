@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : fin
+# --
+for (var ${1:i} in ${2:obj}) {
+  $0
+}

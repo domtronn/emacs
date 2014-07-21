@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tb
+# --
+expect($1).toBe($2);$0

@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : exp
+# --
+expect($1)

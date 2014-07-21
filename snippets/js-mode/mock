@@ -1,0 +1,5 @@
+# -*- mode: js-mode -*-
+#name : mock
+# --
+var mock${1:$(upcase-initials yas-text)} = jasmine.createSpyObj(${1:class}, ["${2:methods$$(when yas-modified-p (replace-regexp-in-string ", " "\\",\\"" yas-text))}"]);
+$0

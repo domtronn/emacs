@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : instof
+# --
+${1:foo} instanceof ${2:bar}$0

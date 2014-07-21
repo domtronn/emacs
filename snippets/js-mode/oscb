@@ -1,0 +1,7 @@
+# -*- mode: js-mode -*-
+#name : oscb
+# --
+spyOn(${1:object},'${2:method}').andCallFake(function () { 
+	$1.$2.mostRecentCall.args[${3:0}].${4:$$(yas-choose-value '("onError" "onSuccess"))}('filtereMedia');
+});
+$0

@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tbt
+# --
+expect($1).toBeTruthy();$0

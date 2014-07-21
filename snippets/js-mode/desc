@@ -1,0 +1,6 @@
+# -*- mode: js-mode -*-
+#name : desc
+# --
+describe("${1:Description}", function () {
+	$0
+});

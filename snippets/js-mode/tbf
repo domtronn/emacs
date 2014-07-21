@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tbf
+# --
+expect($1).toBeFalsy();$0

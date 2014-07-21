@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : mra
+# --
+mostRecentCall.args[${1:0}].${2:method}('${3:args$$(when yas-modified-p (replace-regexp-in-string ", " "','" yas-text))}');

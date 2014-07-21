@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tbc
+# --
+expect($1).toHaveBeenCalled();$0

@@ -1,0 +1,7 @@
+# -*- mode: js-mode -*-
+#name : it
+# --
+it("${1:should...}", function () {
+	$2
+});
+$0

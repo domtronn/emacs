@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tbd
+# --
+expect($1).toBeDefined();$0

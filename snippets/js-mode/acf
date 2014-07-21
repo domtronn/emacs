@@ -1,0 +1,7 @@
+# -*- mode: js-mode -*-
+#name : acf
+# --
+spyOn(${1:class}, '${2:method}').andCallFake(function () { 
+	$3;
+});
+$0

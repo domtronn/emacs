@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tblt
+# --
+expect($1).toBeLessThan($2);$0
