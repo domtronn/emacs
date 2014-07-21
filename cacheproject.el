@@ -62,8 +62,7 @@
 						 (gethash "libs" (json-read-from-string json-contents)))))
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
-				(file-cache-add-directory-recursively PROJECTPATH)
-				(create-tags PROJECTPATH)))))
+				(file-cache-add-directory-recursively PROJECTPATH)))))
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
