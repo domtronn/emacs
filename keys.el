@@ -3,6 +3,7 @@
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
+(global-set-key (kbd "M-\\") 'hippie-expand)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
@@ -131,13 +132,12 @@
 (global-set-key (kbd "C-S-w") 'mark-word)
 
 ;; Amazing mode to mark all instances in a definiton
-(global-set-key (kbd "C->") 'my-mark-all-like-this-in-defun)
-(global-set-key (kbd "C-<") 'my-mark-all-like-this)
-(global-set-key (kbd "s-e") 'my-mark-all-like-this)
+(global-set-key (kbd "H-s-r") 'mark-word-at-point)
+(global-set-key (kbd "s-r") 'mc/mark-all-like-this-in-defun)
+(global-set-key (kbd "s-R") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
 (global-set-key (kbd "S-s-t") 'grunt)
-(global-set-key (kbd "s-r") 'grunt-this-test-file)
 
 ;; Use C-i as my personal prefix command
 (define-prefix-command 'dgc-map)
