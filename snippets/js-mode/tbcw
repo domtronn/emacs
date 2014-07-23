@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : tbcw
 # --
-expect($1).toHaveBeenCalledWith($2);$0
+expect(${1:$$(if yas-modified-p ( ) (get-last-spy))}).toHaveBeenCalledWith($2);$0
