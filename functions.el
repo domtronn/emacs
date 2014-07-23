@@ -100,6 +100,14 @@
 				(replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
 												(format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd)))))))
 
+(defun get-last-spy ()
+	(interactive)
+	(save-excursion
+		(let ((start (+ (search-backward-regexp "spyOn(" 6)))
+					(end (- (search-forward-regexp ")") 1)))
+			(if (string-match "spyOn\(\\\(.*\\\),\\s-*\"\\\(.*?\\\)\"" (buffer-substring start end))
+					(format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
+
 (defun inject-dependency (dep-list)
   (interactive)
 	(mapconcat
@@ -127,7 +135,7 @@
 								"boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky" 
 								"hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
 								"mimsy" "snicker" "snack" "vorpal" "wabe" "zorp" "fam"
-								"horcrux" "muggle" "shiwu"))
+								"horcrux" "muggle" "shiwu" "hokey" "cokey"))
 	(random t)
 	(message (nth (random (length words)) words)))
 
@@ -335,7 +343,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(progn
 			(let ((match-string (thing-at-point 'symbol))
 						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (find-top-level-dir (buffer-file-name) ".svn"))
+						(match-dir (repository-root))
 						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" match-string match-type match-dir)
 				(rgrep match-string match-type match-dir)
@@ -346,13 +354,12 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(toggle-truncate-lines))
 			))))
 
-(defun set-up-rgrep-results-with-prompt (search-string)
-	"Opens a pop up for rgrep results"
-	(interactive "sEnter search string : ")
+(defun set-up-rgrep-results-with-prompt (search-string match-type)
+	"Opens a pop up for rgrep results with a search string"
+	(interactive "sEnter search string : \nsEnter file type : ")
 	(save-excursion
 		(progn
-			(let ((match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (replace-regexp-in-string "\\(.*script\\/\\).*" "\\1" (buffer-file-name)))
+			(let ((match-dir (repository-root))
 						(current-buf (current-buffer)))
 				(message "rgrep %s %s %s" search-string match-type match-dir)
 				(rgrep search-string match-type match-dir)
@@ -787,15 +794,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					 #'(lambda (arg) 
 							 (if UNDERSCORES (format "_%s" arg) (format "%s" arg)))
 					 (split-string var-list ",\\s-*" t) ", ")))
-
-(defun format-spy-methods (method-list)
-	"Splits on comma and puts string in inverted commas"
-	(interactive)
-	(setq method-list (reverse (cdr (reverse method-list))))
-	(mapconcat
-	 #'(lambda (arg)
-			 (format "\"%s\"" arg))
-	 (split-string method-list ",\\s-*" t) ", "))
 
 (defun format-init-members (var-list &optional UNDERSCORES)
   (interactive)
