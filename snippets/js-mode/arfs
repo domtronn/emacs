@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : arfs
+# --
+${1:object}.${2:method}.andReturn('${3:`(random-return)`}');$0
