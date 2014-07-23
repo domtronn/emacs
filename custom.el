@@ -96,7 +96,7 @@
  '(ido-subdir ((((class color) (min-colors 89)) (:foreground "#cc99cc"))))
  '(inherit ((t (:inherit nil))) t)
  '(isearch ((t (:background "#2d2d2d" :foreground "#f99157" :inverse-video t :weight extra-bold))))
- '(js2-error ((t (:background "#f2777a" :underline "#f2777a"))))
+ '(js2-error ((t (:underline "#f2777a"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
  '(js2-non-used-var ((t (:inherit nil :foreground "#9c9c9c" :slant italic :underline "#cc3333"))) t)
  '(js2-warning ((t (:underline "brown3"))))
