@@ -1,0 +1,7 @@
+# -*- mode: js-mode -*-
+#name : be
+# --
+afterEach(function () {
+	$1
+});
+$0
