@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : cso
+# --
+spyOn(${1:class}, '${2:method}');$0
