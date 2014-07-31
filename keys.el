@@ -4,6 +4,7 @@
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
 (global-set-key (kbd "M-\\") 'hippie-expand)
+(global-set-key [M-tab] 'hippie-expand)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
@@ -73,6 +74,7 @@
 (global-set-key (kbd "C-c C-c") 'dgc-comment)
 
 (global-set-key [f1] 'set-up-grunt-watch-format)
+(global-set-key [f11] 'browse-sandbox)
 (global-set-key [f2] 'set-up-rgrep-results)
 (global-set-key (kbd "<M-f2>") 'set-up-rgrep-results-with-prompt)
 
@@ -83,7 +85,7 @@
 
 (global-set-key [f7] 'occur-at-point)
 (global-set-key [f8] 'run-current-file)
-(global-set-key (kbd "<S-f8>") 'xelatex-make)
+(global-set-key (kbd "<S-f8>") 'alt-run-current-file)
 
 (global-set-key (kbd "<M-S-f8>") 'f1-toggle-fullscreen)
 (global-set-key (kbd "<M-S-f9>") 'f2-remove-tool-bar)
@@ -131,9 +133,11 @@
 
 (global-set-key (kbd "C-S-w") 'mark-word)
 
-;; Amazing mode to mark all instances in a definiton
+;; Amazing mode to mark all instances in a definiton 
 (global-set-key (kbd "H-s-r") 'mark-word-at-point)
-(global-set-key (kbd "s-r") 'mc/mark-all-like-this-in-defun)
+(global-set-key (kbd "M-q") 'mark-word-at-point)
+
+(global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
