@@ -2,7 +2,7 @@
 (defvar external-cache-hash nil)
 (defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
-(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/" "\\/\\." "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/node_modules\\/" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "report")))
+(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "report")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -87,6 +87,8 @@ The file cache can be saved to a file using
   (let ((buf (find-file-noselect file)))
     (setq file-cache-alist (append (read buf) file-cache-alist))
     (kill-buffer buf)))
+
+(message (format "%s" file-cache-filter-regexps))
 
 (unless (boundp 'PROJECTPATH)
 	(call-interactively 'project-change))
