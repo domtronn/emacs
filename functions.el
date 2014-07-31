@@ -16,7 +16,6 @@
       (end-of-line)
       (kill-region bol (1+ (point))))))
 
-
 (defun toggle-fullscreen ()
 	"Toggle full screen."
   (interactive)
@@ -27,6 +26,7 @@
 			(progn (tool-bar-mode 1)
 						 (tool-bar-mode -1)
 						 (set-frame-height (selected-frame) 69))))
+
 (defun f1-toggle-fullscreen ()
 	(interactive)
 	(toggle-fullscreen))
@@ -51,6 +51,14 @@
 		(message "Return code : %s" retcode)
     (if (= retcode 0) (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))))
 
+(defun alt-run-current-file ()
+	(interactive)
+	(let* ((fSuffix (file-name-extension (buffer-file-name))))
+		(cond ((string-equal fSuffix "js")
+					 (grunt-spec))
+					((string-equal (buffer-mode (buffer-name)) "latex-mode")
+					 (xelatex-make)))))
+
 (defun xelatex-make ()
   (interactive)
 	(if (string-equal (buffer-mode (buffer-name)) "latex-mode")
@@ -67,6 +75,15 @@
 								(find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
 								(delete-other-windows)))))
 		nil))
+
+(defun grunt-spec ()
+  "Run grunt"
+  (interactive)
+	(if (buffer-exists "*grunt*")
+			(kill-buffer "*grunt*"))
+	(let* ((grunt-buffer (get-buffer-create "*grunt*"))
+				 (result (call-process-shell-command
+									(concat "grunt spec --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t)))))
 
 (defun inject-javascript-dependency ()
 	(interactive)
@@ -105,7 +122,7 @@
 	(save-excursion
 		(let ((start (+ (search-backward-regexp "spyOn(" 6)))
 					(end (- (search-forward-regexp ")") 1)))
-			(if (string-match "spyOn\(\\\(.*\\\),\\s-*\"\\\(.*?\\\)\"" (buffer-substring start end))
+			(if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
 					(format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
 (defun inject-dependency (dep-list)
@@ -138,6 +155,10 @@
 								"horcrux" "muggle" "shiwu" "hokey" "cokey"))
 	(random t)
 	(message (nth (random (length words)) words)))
+
+(defun browse-sandbox ()
+	(interactive)
+	(browse-url "http://pal.sandbox.dev.bbc.co.uk/sprtiptvjs/?brand=chrome&model=20_0&config=beta"))
 
 (defun js-hlt-nonused-dependencies ()
 	"Will highlght the parts of the function include that are not used in the class"
@@ -247,7 +268,8 @@
 (defun occur-at-point ()
 	"Run occur on a thing."
 	(interactive)
-	(occur (thing-at-point 'symbol)))
+	(occur (thing-at-point 'symbol))
+	(toggle-read-only))
 
 (defun open-in-and-activate-intellj ()
 	"Opens the current file in intellij for n00b5!"
@@ -328,6 +350,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					 (load (file-name-sans-extension fName)))
 					((string-equal fSuffix "tex")
 					 (find-file (concat (file-name-sans-extension fName) ".pdf")))
+					((string-equal fSuffix "js")
+						 (grunt-this-test-file))
 					(t (if progName
 							(progn
 								(message "Running…")
@@ -432,14 +456,14 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(mark-word)
 		(backward-word)))
 
-(defun my-mark-all-like-this ()
+(defun malt ()
 	"Uses mc/mark-all-like-this at point"
 	(interactive)
 	(progn
 		(mark-word-at-point)
 		(mc/mark-all-symbols-like-this)))
 
-(defun my-mark-all-like-this-in-defun ()
+(defun dalt ()
 	"Uses mc/mark-all-like-this-in-defun at point"
 	(interactive)
 	(progn
@@ -824,12 +848,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun add-file-to-project-cache ()
   (interactive)
-	(if (and (not (assoc-string (buffer-name) file-cache-alist))
+	(if (and (not (assoc-string (file-name-nondirectory (buffer-file-name)) file-cache-alist))
 					 (find-file-upwards ".tags")
-					 (eq (buffer-mode (buffer-name)) 'js-mode))
+					 (eq (buffer-mode (buffer-name)) 'js-mode)
+					 (not (string-match "Spec" (buffer-name))))
 			(progn 
 				(message "[filecache] Adding %s to the file cache..." (buffer-file-name))
-				(push (list (buffer-name) (file-name-directory (buffer-file-name))) file-cache-alist)))
+				(push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
 	t)
 
 (defun add-file-to-ext-lib-cache ()
@@ -838,13 +863,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					(temp-file-cache-alist file-cache-alist))
 			(if (and (boundp 'project-id) 
 							 (not (eq project-id nil))
-							 (not (assoc-string (buffer-name) (gethash project-id external-cache-hash)))
+							 (not (assoc-string (file-name-nondirectory (buffer-file-name)) (gethash project-id external-cache-hash)))
 							 (find-file-upwards ".filecache")
 							 (eq (buffer-mode (buffer-name)) 'js-mode))
 					(progn 
 						(message "[filecache] Adding %s to the external library cache..." (buffer-file-name))
 						(push 
-						 (list (buffer-name)
+						 (list (file-name-nondirectory (buffer-file-name))
 									 (file-name-directory (buffer-file-name)))
 						 (gethash project-id external-cache-hash))
 						(setq file-cache-alist (gethash project-id external-cache-hash))
@@ -970,9 +995,7 @@ otherwise raises an error."
 (defun json-format ()
 	(interactive)
 	(save-excursion
-		(shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)
-		)
-	)
+		(shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
 
 (defun format-code ()
 	"Prints cool message if in javascript mode"
