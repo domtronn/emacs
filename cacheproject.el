@@ -66,7 +66,9 @@
 																				(file-truename (concat (gethash "dir" hash) "/.tags"))
 																				tags-table-list )))
 						 (gethash "libs" (json-read-from-string json-contents))))
-					(setq tags-table-list (reverse tags-table-list)))
+					(setq tags-table-list (reverse tags-table-list))
+					(ac-etags-setup) 
+					(ac-etags-ac-setup))
 			;; Else Load as a directory
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
