@@ -62,8 +62,11 @@
 										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
 										 (setq file-cache-alist temp-file-cache-alist)))
 								 (create-tags (gethash "dir" hash))
-								 (setq tags-table-list (cons (concat (gethash "dir" hash) ".tags") tags-table-list)))
-						 (gethash "libs" (json-read-from-string json-contents)))))
+								 (setq tags-table-list (cons 
+																				(file-truename (concat (gethash "dir" hash) "/.tags"))
+																				tags-table-list )))
+						 (gethash "libs" (json-read-from-string json-contents))))
+					(setq tags-table-list (reverse tags-table-list)))
 			;; Else Load as a directory
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
