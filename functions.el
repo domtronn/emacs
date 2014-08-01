@@ -228,12 +228,15 @@
 				 (end (- (search-forward ")") 1)))		
 			(goto-char start)
 			(if (search-forward class-name end t)
-					(let ((record (assoc (concat (downcase class-name) ".js") file-cache-alist)))
-						(if (and record (= (length record) 2))
-								(let ((found-file (concat (car (cdr record)) (car record))))
-									(message "Found %s" found-file)
-									(find-file found-file))
-							(message "Couldn't find a cached file for %s..." class-name)))
+					(maphash #'(lambda (id file-alist)
+								(let ((record (assoc (concat (downcase class-name) ".js") file-alist)))
+									(if (and record (= (length record) 2))
+								 (let ((found-file (concat (car (cdr record)) (car record))))
+									 (message "Found %s" found-file)
+									 (ring-insert find-tag-marker-ring (point-marker))
+									 (find-file found-file))
+								 (message "Couldn't find a cached file for %s..." class-name))))
+								external-cache-hash)
 				nil)))))
 
 (defun go-to-thing-at-point ()
@@ -916,33 +919,34 @@ or nil if not found."
 (defun find-tags-file-upwards ()
 	"Get and set the tags file"
 	(interactive)
-	(let ((my-tags-file (find-file-upwards ".tags")))
-		(when my-tags-file
-			(clear-tags-table)
-			(ac-etags-clear-cache)
-			(message "Loading tags file: %s" my-tags-file)
-			(visit-tags-table my-tags-file)
-			(ac-etags-setup)
-			(ac-etags-ac-setup))))
+	(if (eq tags-table-list nil)
+			(let ((my-tags-file (find-file-upwards ".tags")))
+				(when my-tags-file
+					(clear-tags-table)
+					(ac-etags-clear-cache)
+					(message "Loading tags file: %s" my-tags-file)
+					(visit-tags-table my-tags-file)))
+		(progn (ac-etags-setup)
+					 (ac-etags-ac-setup))))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the
 path to that file or nil if a tags file is not found. Returns nil if the buffer is
 not visiting a file"
   (progn
-      (defun find-tags-file-r (path)
-         "find the tags file from the parent directories"
-         (let* ((parent (file-name-directory path))
-                (possible-tags-file (concat parent ".tags")))
-           (cond
-             ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
-             ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
-             (t (find-tags-file-r (directory-file-name parent))))))
-
+		(defun find-tags-file-r (path)
+			"find the tags file from the parent directories"
+			(let* ((parent (file-name-directory path))
+						 (possible-tags-file (concat parent ".tags")))
+				(cond
+				 ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
+				 ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
+				 (t (find-tags-file-r (directory-file-name parent))))))
+		
     (if (buffer-file-name)
         (catch 'found-it 
           (find-tags-file-r (buffer-file-name)))
-        (error "buffer is not visiting a file"))))
+			(error "buffer is not visiting a file"))))
 
 (defun jds-set-tags-file-path ()
   "calls `jds-find-tags-file' to recursively search up the directory tree to find
