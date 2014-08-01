@@ -7,6 +7,7 @@
 (defun project-clear ()
 	"Clears the cache of projects"
 	(interactive)
+	(setq tags-table-list nil)
 	(file-cache-clear-cache))
 
 (defun project-refresh ()
@@ -18,6 +19,7 @@
 		(project-clear)
 		(if (string-equal "0\n"
 											(shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
+				;; If it's a file project file do this
 				(progn 
 					(let ((json-object-type 'hash-table)
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
@@ -44,6 +46,7 @@
 										 )
 									 (create-tags (gethash "dir" hash))))
 						 (gethash "project" (json-read-from-string json-contents)))
+						;; This block handles the libs section which is used for javascript dependency injection
 						(mapc 
 						 #'(lambda (hash) 
 								 (progn 
@@ -58,8 +61,10 @@
 										 (message "[filecache] Added External Dependency %s from cache..." (gethash "dir" hash))
 										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
 										 (setq file-cache-alist temp-file-cache-alist)))
-								 (create-tags (gethash "dir" hash)))
+								 (create-tags (gethash "dir" hash))
+								 (setq tags-table-list (cons (concat (gethash "dir" hash) ".tags") tags-table-list)))
 						 (gethash "libs" (json-read-from-string json-contents)))))
+			;; Else Load as a directory
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
 				(file-cache-add-directory-recursively PROJECTPATH)))))
