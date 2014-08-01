@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
-#name : console.log
+#name : jasmine.log
 # --
-console.log($0);
+jasmine.log($0);
