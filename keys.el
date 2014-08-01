@@ -4,7 +4,7 @@
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
 (global-set-key (kbd "M-\\") 'hippie-expand)
-(global-set-key [M-tab] 'hippie-expand)
+(global-set-key [M-tab] 'dabbrev-expand)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
