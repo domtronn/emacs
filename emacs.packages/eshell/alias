@@ -1,3 +1,0 @@
-alias devnet ssh teamtvx@10.10.10.1
-alias vm ssh root@192.168.192.10
-alias open find-file
