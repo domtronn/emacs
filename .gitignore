@@ -1,6 +1,10 @@
 # Backups #
 ###########
 *~
+*semanticdb*
+*eshell*
+*srecode*
+*.mc-lists.el*
 
 # Dynamic Emacs Files #
 #######################
