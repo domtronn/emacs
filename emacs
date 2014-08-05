@@ -76,8 +76,9 @@
 ;; (require 'groovy-mode)  ;; http://groovy.codehaus.org/Emacs+Groovy+Mode
 
 (require 'popup)
-(require 'popwin)
 (popwin-mode 1)
+(setq popwin:close-popup-window-timer-interval 0.1)
+(setq popwin:close-popup-window-timer nil)
 
 (autoload 'dash-at-point "dash-at-point"
           "Search the word at point with Dash." t nil)
@@ -88,6 +89,8 @@
 (require 'highlight)
 (require 'fill-column-indicator)
 (require 'button-lock)
+
+(require 'filecache)
 
 (require 'json)
 (require 'json-snatcher)
