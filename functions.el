@@ -16,6 +16,14 @@
       (end-of-line)
       (kill-region bol (1+ (point))))))
 
+(defun use-tabs ()
+  (interactive)
+  (setq indent-tabs-mode t))
+
+(defun use-spaces ()
+  (interactive)
+  (setq indent-tabs-mode nil))
+
 (defun toggle-fullscreen ()
 	"Toggle full screen."
   (interactive)
@@ -376,14 +384,12 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
 						(match-dir (repository-root))
 						(current-buf (current-buffer)))
-				(message "rgrep %s %s %s" match-string match-type match-dir)
-				(rgrep match-string match-type match-dir)
+				(ack (concat "ack --column --nogroup --smart-case --env --color-filename=yellow --color-match=green " match-string) match-dir)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*grep*")
+				(popwin:popup-buffer "*ack*")
 				(if (not (print truncate-lines))
-						(toggle-truncate-lines))
-			))))
+						(toggle-truncate-lines))))))
 
 (defun set-up-rgrep-results-with-prompt (search-string match-type)
 	"Opens a pop up for rgrep results with a search string"
@@ -392,11 +398,10 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(progn
 			(let ((match-dir (repository-root))
 						(current-buf (current-buffer)))
-				(message "rgrep %s %s %s" search-string match-type match-dir)
-				(rgrep search-string match-type match-dir)
+				(ack (concat "ack --column --nogroup --smart-case --env --" match-type " --color-filename=yellow --color-match=green " search-string) match-dir)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*grep*")
+				(popwin:popup-buffer "*ack*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))))))
 
@@ -966,8 +971,7 @@ otherwise raises an error."
 		(switch-to-buffer (replace-regexp-in-string "Spec\.js" "\.js" (buffer-name)))
 		(find-file
 		 (replace-regexp-in-string "script" "script-tests\/specs"
-			 (replace-regexp-in-string "\\\.js" "Spec\.js" (buffer-file-name))
-		 ))))
+							(replace-regexp-in-string "\\\.js" "Spec\.js" (buffer-file-name))))))
 
 (defun grunt ()
   "Run grunt"
