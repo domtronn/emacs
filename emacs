@@ -51,7 +51,7 @@
 (require 'hideshowvis)
 (autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
-(hideshowvis-symbols)
+;; (hideshowvis-symbols)
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
@@ -89,6 +89,9 @@
 (require 'highlight)
 (require 'fill-column-indicator)
 (require 'button-lock)
+
+(require 'rvm)
+(rvm-use "ruby-2.1.2" "global")
 
 (require 'filecache)
 
@@ -137,6 +140,11 @@
 								:face 'inherit :mouse-face 'mouse-over :face-policy 'append)))
 
 (require 'rfringe)
+(require 'git-gutter-fringe)
+(global-git-gutter-mode)
+
+(require 'git-messenger)
+
 (require 'flycheck-tip)
 (require 'flycheck)
 ;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
@@ -298,7 +306,7 @@
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "q") #'kill-this-buffer)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "r") #'vc-revert)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "c") #'vc-resolve-conflicts)))
-
+(global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
 (add-hook 'dirtree-mode-hook
 		  (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
