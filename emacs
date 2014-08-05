@@ -27,6 +27,7 @@
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
+(load-file (concat USERPATH "/elisp/powerline.el"))
 
 ;;------------------
 ;; Requires
@@ -47,8 +48,8 @@
 
 (require 'multiple-cursors)   ; Amazing package to allow simultaneous multiline editiing
 
-(require 'tex)
-(TeX-global-PDF-mode t)
+;(require 'tex)
+;(TeX-global-PDF-mode t)
 
 (require 'hideshowvis)
 (autoload 'hideshowvis-enable "hideshowvis")
@@ -62,6 +63,12 @@
 
 (require 'autopair)
 (autopair-global-mode)
+
+(require 'auto-indent-mode)
+(auto-indent-global-mode)
+
+(require 'anzu)
+(global-anzu-mode +1)
 
 ;; (require 'key-chord)
 ;; (key-chord-mode 1)
@@ -115,7 +122,7 @@
 								:face 'function-link :mouse-face 'function-mouse-link 
 								:face-policy 'append :grouping 1 :mouse-binding 'mouse-1)))
 
-(add-hook 'latex-mode 'flyspell-mode)
+;(add-hook 'latex-mode 'flyspell-mode)
 
 (add-hook 'etags-select-mode-hook #'(lambda () (message "Enabling Button Lock Mode")))
 (add-hook 'etags-select-mode-hook #'(lambda () 
@@ -148,7 +155,7 @@
 
 (require 'auto-complete-config)
 (require 'auto-complete-etags)
-(require 'auto-complete-auctex)
+;(require 'auto-complete-auctex)
 (require 'ac-dabbrev)
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
