@@ -478,7 +478,6 @@ popup buffer.")
   (condition-case var
       (popwin:close-popup-window-if-necessary)
     (error
-     (message "popwin:close-popup-window-timer: error: %s" var)
      (when popwin:debug (backtrace)))))
 
 (defun popwin:close-popup-window (&optional keep-selected)
