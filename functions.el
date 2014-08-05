@@ -967,11 +967,12 @@ otherwise raises an error."
 (defun open-test ()
 	"replace name "
 	(interactive)
-	(if (string-match "Spec.js" (buffer-name))
-		(switch-to-buffer (replace-regexp-in-string "Spec\.js" "\.js" (buffer-name)))
-		(find-file
-		 (replace-regexp-in-string "script" "script-tests\/specs"
-							(replace-regexp-in-string "\\\.js" "Spec\.js" (buffer-file-name))))))
+	(let ((file-ext (file-name-extension (buffer-name))))
+		(if (string-match (concat project-tests-ext "." file-ext) (buffer-name))
+				(switch-to-buffer (replace-regexp-in-string (concat project-tests-ext "." file-ext) (concat "." file-ext) (buffer-name)))
+			(find-file
+			 (replace-regexp-in-string project-src-path project-tests-path
+																 (replace-regexp-in-string (concat "." file-ext) (concat project-tests-ext "." file-ext) (buffer-file-name)))))))
 
 (defun grunt ()
   "Run grunt"
