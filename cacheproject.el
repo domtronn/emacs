@@ -27,10 +27,10 @@
 					(let ((json-object-type 'hash-table)
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
-						(setq project-tests-path (gethash "testsPath" (json-read-from-string json-contents)))
-            (setq project-src-path (gethash "srcPath" (json-read-from-string json-contents)))
-            (setq project-tests-ext (gethash "testsExt" (json-read-from-string json-contents)))
-            (setq project-tests-cmd (gethash "testsCmd" (json-read-from-string json-contents)))
+						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
+							(setq project-src-path (gethash "srcPath" testing))
+							(setq project-tests-path (gethash "testsPath" testing))
+							(setq project-tests-ext (gethash "testsExt" testing)))
             (mapc
 						 #'(lambda (hash)
 								 (progn
@@ -85,6 +85,7 @@
   "Changes the project path and reloads the new cache"
   (interactive (list (read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
   (setq PROJECTPATH arg)
+	(setq external-cache-hash (make-hash-table :test 'equal))
 	(project-refresh)
 	(message "New project directory is %s." arg))
 
