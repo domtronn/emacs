@@ -145,6 +145,10 @@
 									 res-require-path))))
 	 (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
 
+(defun insert-random-return ()
+	(interactive)
+	(let ((word (random-return)))
+		(insert word)))
 
 (defun random-return ()
   (interactive)
@@ -920,7 +924,7 @@ or nil if not found."
 	"Get and set the tags file"
 	(interactive)
 	(if (eq tags-table-list nil)
-			(let ((my-tags-file (find-file-upwards ".tags")))
+			(let ((my-tags-file (file-truename (find-file-upwards ".tags"))))
 				(when my-tags-file
 					(clear-tags-table)
 					(ac-etags-clear-cache)
