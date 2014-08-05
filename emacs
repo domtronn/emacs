@@ -34,11 +34,9 @@
 (if (require 'package)
 		(progn (require 'package)
 			 (add-to-list 'package-archives 
-										'("marmalade" .
-											"http://marmalade-repo.org/packages/"))
+										'("marmalade" . "http://marmalade-repo.org/packages/"))
 			 (add-to-list 'package-archives
-										'("melpa" . 
-											"http://melpa.milkbox.net/packages/") t)
+										'("melpa" . "http://melpa.milkbox.net/packages/") t)
 			 (package-initialize))
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
