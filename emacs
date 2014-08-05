@@ -63,8 +63,8 @@
 (require 'autopair)
 (autopair-global-mode)
 
-(require 'key-chord)
-(key-chord-mode 1)
+;; (require 'key-chord)
+;; (key-chord-mode 1)
 
 ;; ;; Extra Packages
 ;; (require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
@@ -82,8 +82,19 @@
 (global-undo-tree-mode)
 
 (require 'highlight)
+(require 'fill-column-indicator)
 (require 'button-lock)
+
 (require 'json)
+(require 'json-snatcher)
+
+(defun js-mode-bindings ()
+	"Sets a hotkey for using the json-snatcher plugin"
+	(when (string-match  "\\.json$" (buffer-name))
+		(local-set-key (kbd "C-c C-c") 'jsons-print-path)))
+
+(add-hook 'js-mode-hook 'js-mode-bindings)
+(add-hook 'js2-mode-hook 'js-mode-bindings)
 
 (eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
