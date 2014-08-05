@@ -1,10 +1,11 @@
-(require 'filecache)
 (defvar external-cache-hash nil)
 (defvar project-tests-path nil)
+(defvar project-src-path nil)
+(defvar project-tests-cmd nil)
 (defvar project-tests-ext nil)
 (defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
-(setq file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
+(setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -27,7 +28,9 @@
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
 						(setq project-tests-path (gethash "testsPath" (json-read-from-string json-contents)))
+            (setq project-src-path (gethash "srcPath" (json-read-from-string json-contents)))
             (setq project-tests-ext (gethash "testsExt" (json-read-from-string json-contents)))
+            (setq project-tests-cmd (gethash "testsCmd" (json-read-from-string json-contents)))
             (mapc
 						 #'(lambda (hash)
 								 (progn
