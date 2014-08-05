@@ -27,7 +27,6 @@
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
-(load-file (concat USERPATH "/elisp/powerline.el"))
 
 ;;------------------
 ;; Requires
