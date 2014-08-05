@@ -37,9 +37,7 @@
  '(rainbow-delimiters-depth-8-face ((((class color) (min-colors 89)) (:foreground "#ffcc66"))))
  '(rainbow-delimiters-depth-9-face ((t (:foreground "DarkGoldenrod1"))))
  '(rainbow-delimiters-unmatched-face ((t (:foreground "#f2777a"))))
- '(show-paren-match ((t (:foreground "gray18" :background "gold1" :weight extra-bold))))
- '(mode-line-inactive ((t (:inherit mode-line :background "#393939" :foreground "#999999" :box nil))))
- '(mode-line ((t (:background "gray18" :box (:line-width 1 :color "burlywood1" :style released-button))))))
+ '(show-paren-match ((t (:foreground "gray18" :background "gold1" :weight extra-bold)))))
 
 (set-face-foreground (quote font-lock-comment-face) "dimgray")
 (set-face-foreground (quote font-lock-comment-delimiter-face) "gray25")
