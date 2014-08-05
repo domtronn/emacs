@@ -64,6 +64,12 @@
 (require 'autopair)
 (autopair-global-mode)
 
+(require 'auto-indent-mode)
+(auto-indent-global-mode)
+
+(require 'anzu)
+(global-anzu-mode +1)
+
 (require 'key-chord)
 (key-chord-mode 1)
 
