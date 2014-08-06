@@ -23,14 +23,11 @@
 
 ;;; Code:
 
-(provide 'cacheproject)
-;;; cacheproject.el ends here
-
 (defvar external-cache-hash nil)
-(defvar project-tests-path nil)
 (defvar project-src-path nil)
-(defvar project-tests-cmd nil)
-(defvar project-tests-ext nil)
+(defvar project-test-path nil)
+(defvar project-test-cmd nil)
+(defvar project-test-ext nil)
 (defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
 (setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
@@ -57,8 +54,9 @@
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
 						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
 							(setq project-src-path (gethash "srcPath" testing))
-							(setq project-tests-path (gethash "testsPath" testing))
-							(setq project-tests-ext (gethash "testsExt" testing)))
+							(setq project-test-path (gethash "testPath" testing))
+							(setq project-test-cmd (gethash "testCmd" testing))
+							(setq project-test-ext (gethash "testExt" testing)))
             (mapc
 						 #'(lambda (hash)
 								 (progn
