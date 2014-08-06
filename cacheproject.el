@@ -1,3 +1,31 @@
+
+;;; cacheproject.el --- 
+
+;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
+
+;; Author: Dominic Charlesworth <dgc336@gmail.com>
+;; Keywords: files, convenience
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; Code:
+
+(provide 'cacheproject)
+;;; cacheproject.el ends here
+
 (defvar external-cache-hash nil)
 (defvar project-tests-path nil)
 (defvar project-src-path nil)
@@ -59,13 +87,8 @@
 								 (progn 
 									 (let ((temp-file-cache-alist file-cache-alist))
 										 (setq file-cache-alist nil)
-										 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
-												 (progn 
-													 (file-cache-add-directory-recursively (gethash "dir" hash))
-													 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache")))
-											 nil)
-										 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
-										 (message "[filecache] Added External Dependency %s from cache..." (gethash "dir" hash))
+										 (file-cache-add-directory-recursively (gethash "dir" hash))
+										 (message "[filecache] Adding Cache recursively for External Dependency %s..." (gethash "dir" hash))
 										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
 										 (setq file-cache-alist temp-file-cache-alist)))
 								 (create-tags (gethash "dir" hash))
@@ -106,16 +129,8 @@ The file cache can be saved to a file using
     (setq file-cache-alist (append (read buf) file-cache-alist))
     (kill-buffer buf)))
 
-(message (format "%s" file-cache-filter-regexps))
-
 (unless (boundp 'PROJECTPATH)
 	(call-interactively 'project-change))
-
-; Cache environment files to find them easily!
-; These are defined in ./projects.cs
-;; ========================================
-;;  Caching Functions
-;; ========================================
 
 
 (defun file-cache-ido-find-file (file)
@@ -142,3 +157,7 @@ directory, select directory. Lastly the file is opened."
 	 (lambda ()
 	   (setq ido-temp-list choices))))
     (ido-read-buffer prompt)))
+
+
+(provide 'cacheproject)
+;;; cacheproject.el ends here
