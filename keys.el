@@ -30,6 +30,8 @@
 (global-set-key (kbd "M-\\") 'hippie-expand)
 (global-set-key [M-tab] 'dabbrev-expand)
 
+(global-set-key (kbd "RET") 'smart-newline)
+
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
 (global-set-key (kbd "s-W") 
