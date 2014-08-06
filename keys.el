@@ -191,8 +191,8 @@
 (global-set-key (kbd "s-<return>") 'yas/expand)
 
 (global-set-key "\M-}" 'flycheck-mode)
-(global-set-key "\M-]" 'flycheck-next-error)
-(global-set-key "\M-[" 'flycheck-previous-error)
+(global-set-key "\M-]" 'next-error)
+(global-set-key "\M-[" 'previous-error)
 
 (define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
