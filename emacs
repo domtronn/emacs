@@ -1,12 +1,27 @@
-;;; Emacs --- my .emacs file setup change
+;;; emacs --- 
 
+;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
+
+;; Author: Dominic Charlesworth <dgc336@gmail.com>
+;; Keywords: internal
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
-;; Games Dev Websites
-;;  enginuity, nehe productions, opengl tutorial
-
 ;;; Code:
+
 (load-file (concat USERPATH "/functions.el"))
 (add-to-list 'load-path (concat USERPATH "/elisp"))
 
@@ -27,16 +42,18 @@
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
+(load-file (concat USERPATH "/elisp/powerline.el"))
+
+;; Cool but needs some work
+;; (load-file (concat USERPATH "/elisp/minimap.el"))
 
 ;;------------------
 ;; Requires
 ;;------------------
 (if (require 'package)
 		(progn (require 'package)
-			 (add-to-list 'package-archives 
-										'("marmalade" . "http://marmalade-repo.org/packages/"))
-			 (add-to-list 'package-archives
-										'("melpa" . "http://melpa.milkbox.net/packages/") t)
+					 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+					 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 			 (package-initialize))
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
@@ -67,6 +84,12 @@
 (require 'anzu)
 (global-anzu-mode +1)
 
+(add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/powerline")))
+(require 'powerline)
+
+(add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
+(require 'rails)
+
 ;; (require 'key-chord)
 ;; (key-chord-mode 1)
 
@@ -90,6 +113,18 @@
 (require 'fill-column-indicator)
 (require 'button-lock)
 
+(require 'rfringe)
+(require 'git-gutter-fringe)
+(global-git-gutter-mode)
+
+(require 'git-messenger)
+
+(require 'flycheck-tip)
+(require 'flycheck)
+;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
+(add-hook 'javascript-mode-hook (lambda () (flycheck-mode t)))
+(flycheck-tip-use-timer 'verbose)
+
 (require 'rvm)
 (rvm-use "ruby-2.1.2" "global")
 
@@ -110,6 +145,7 @@
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-javascript-dependency))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
+(eval-after-load 'js '(define-key js-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (add-hook 'js-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-ext-lib-cache)))
@@ -139,27 +175,14 @@
 											(etags-select-by-tag-number-without-prompt (thing-at-point 'symbol))))
 								:face 'inherit :mouse-face 'mouse-over :face-policy 'append)))
 
-(require 'rfringe)
-(require 'git-gutter-fringe)
-(global-git-gutter-mode)
-
-(require 'git-messenger)
-
-(require 'flycheck-tip)
-(require 'flycheck)
-;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
-(add-hook 'javascript-mode-hook
-         (lambda () (flycheck-mode t)))
-(flycheck-tip-use-timer 'verbose)
-
 ;; (add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
 ;; (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
-(yas/load-directory (concat USERPATH "/snippets"))
 
 (require 'auto-complete-config)
 (require 'auto-complete-etags)
@@ -190,17 +213,13 @@
 									 ac-source-files-in-current-dir
 									 ))
 
-;; Smart mode line causes troubles with flymake modes
-;; (setq sml/theme 'dark)
-;; (require 'smart-mode-line)
-;; (sml/setup)
-
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names 
 (setq uniquify-separator "/")              ; including parts of the path
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
+(add-to-list 'custom-theme-load-path (concat USERPATH "/emacs.packages/themes"))
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
       '(
@@ -305,6 +324,7 @@
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "d") #'vc-ediff)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "q") #'kill-this-buffer)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "r") #'vc-revert)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "P") #'magit-push)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "c") #'vc-resolve-conflicts)))
 (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
@@ -383,7 +403,7 @@
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
 
-;; Load Theme
-(load-file (concat USERPATH "/emacs.packages/dgc-dark-theme.el"))
-
 (server-start)
+
+(provide 'keys)
+;;; keys.el ends here
