@@ -4,8 +4,8 @@
 (custom-theme-set-variables
  'gruvbox
  '(ansi-color-names-vector ["#3c3836" "#fb4934" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
- '(powerline-color1 "gray22")
- '(powerline-color2 "gray40"))
+ '(powerline-color2 "#515151")
+ '(powerline-color1 "#3C3C3C"))
 
 (custom-theme-set-faces
  'gruvbox
@@ -75,6 +75,7 @@
  '(term-color-yellow ((t (:foreground "#fabd2f"))))
  '(term-default-fg-color ((t (:foreground "#fdf4c1"))))
  '(term-default-bg-color ((t (:background "#282828"))))
+ '(highlight-current-line-face ((t (:background "#323232"))))
  '(default ((t (:background "#282828" :foreground "#fdf4c1")))))
 
 (provide-theme 'gruvbox)
