@@ -450,7 +450,9 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 				(split-window-horizontally)
 				(enlarge-window-horizontally 50)
 				(visit-ansi-term)
-				(execute-kbd-macro 'cd-tests-grunt-watch)
+				(if (not (eq nil project-test-cmd))
+						(auto-type-string project-test-cmd)
+					)
 				(rotate-windows)
 				(other-window 1)
 				(set-window-dedicated-p (get-buffer-window) t)
@@ -991,12 +993,12 @@ otherwise raises an error."
 	"replace name "
 	(interactive)
 	(let ((file-ext (file-name-extension (buffer-file-name))))
-		(if (string-match project-tests-path (file-truename ( buffer-file-name )))
-				(find-file (replace-regexp-in-string project-tests-path project-src-path
-										(replace-regexp-in-string (concat project-tests-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
+		(if (string-match project-test-path (file-truename ( buffer-file-name )))
+				(find-file (replace-regexp-in-string project-test-path project-src-path
+										(replace-regexp-in-string (concat project-test-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
 			(find-file
-			 (replace-regexp-in-string project-src-path project-tests-path
-																 (replace-regexp-in-string (concat "\\\." file-ext) (concat project-tests-ext "\." file-ext) (buffer-file-name)))))))
+			 (replace-regexp-in-string project-src-path project-test-path
+																 (replace-regexp-in-string (concat "\\\." file-ext) (concat project-test-ext "\." file-ext) (buffer-file-name)))))))
 
 (defun grunt ()
   "Run grunt"
@@ -1068,6 +1070,18 @@ otherwise raises an error."
 			(replace-string-in-buffer "    " "	") ; Reformat for the use of tabs over spaces
 			))
 
+(defun js2r--extract-method ()
+  (interactive)
+  (js2-mode)
+	(call-interactively (js2r-extract-method))
+	(js-mode))
+
+(defun auto-type-string (string)
+  (interactive)
+	(mapc #'(lambda (letter) (execute-kbd-macro letter)) (split-string string ""))
+	(execute-kbd-macro [return])
+	nil)
+
 (defun load-custom-theme (arg)
 	(interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
 	(load-file arg))
@@ -1083,10 +1097,6 @@ otherwise raises an error."
 	 (save-excursion
 		 (beginning-of-buffer)
 		 (replace-regexp arg1 arg2)))
-
-;; ----------------------------------------------------------------------------
-;; YASNIPPET FUNCTIONS
-;; ----------------------------------------------------------------------------
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS
