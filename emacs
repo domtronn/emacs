@@ -130,6 +130,7 @@
 
 (require 'json)
 (require 'json-snatcher)
+(require 'js2-refactor)
 
 (defun js-mode-bindings ()
 	"Sets a hotkey for using the json-snatcher plugin"
