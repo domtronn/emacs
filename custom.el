@@ -10,7 +10,8 @@
  '(ac-auto-start t)
  '(ac-candidate-limit 15)
  '(ac-expand-on-auto-complete t)
- '(ack-and-a-half-arguments (quote ("--color-filename=\"yellow\"" "--color-match=\"green\"" "--group")))
+ '(ack-and-a-half-arguments (quote ("--color-match=green" "--color-file=yellow" "-w")))
+ '(ack-and-a-half-executable "/usr/local/bin/ack")
  '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector (vector "#c5c8c6" "#cc6666" "#698b22" "#f0c674" "#81a2be" "#b294bb" "#8abe76" "#2e2e2e"))
  '(backup-by-copying-when-mismatch nil)
@@ -77,6 +78,8 @@
  '(vc-ignore-dir-regexp "\\`\\(?:[\\/][\\/][^\\/]+[\\/]\\|/\\(?:net\\|biscuit\\|tvpjslib\\|node_modules\\|tags\\|filecache\\|afs\\|\\.\\.\\.\\)/\\)\\'|biscuit|tvpjslib|node_modules|.tags")
  '(vc-revert-show-diff nil)
  '(vc-svn-program "/usr/local/bin/svn")
+ '(xkcd-cache-dir "~/.xkcd/")
+ '(xkcd-cache-latest "~/.xkcd/latest")
  '(yas-fallback-behavior (quote call-other-command)))
 
 (set-face-foreground (quote font-lock-comment-face) "dimgray")
