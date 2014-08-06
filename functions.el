@@ -1,11 +1,27 @@
 ;;; functions.el --- List of my own functions
 
+;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
+
+;; Author: Dominic Charlesworth <dgc336@gmail.com>
+;; Keywords: lisp
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
-;; common functions used in Emacs
+;;; common functions used in Emacs
 
-
-;;; Code: 
-;; ============================================================================
+;;; Code:
 
 (defun dgc-kill-line ()
   "Kill from beginning of line to beginning of next."
@@ -406,9 +422,9 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(toggle-truncate-lines))))))
 
 (defun create-tags (dir-name)
-     "Create tags file."
-     (shell-command
-      (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+	"Create tags file."
+	(let* ((cmd (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.rb$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+		(shell-command cmd)))
 
 (defun create-tags-for-project ()
 	"Creates tags files in the base of each project module in PROJECTPATH"
