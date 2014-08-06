@@ -149,6 +149,13 @@
 			(if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
 					(format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
+(defun minimap-toggle ()
+  (interactive)
+	(if (buffer-exists minimap-buffer-name)
+			(minimap-kill)
+		(minimap-create)))
+
+
 (defun inject-dependency (dep-list)
   (interactive)
 	(mapconcat
@@ -382,7 +389,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					((string-equal fSuffix "tex")
 					 (find-file (concat (file-name-sans-extension fName) ".pdf")))
 					((string-equal fSuffix "js")
-						 (grunt-this-test-file))
+						 (grunt-exec))
 					(t (if progName
 							(progn
 								(message "Running…")
@@ -1060,6 +1067,10 @@ otherwise raises an error."
 			(replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
 			(replace-string-in-buffer "    " "	") ; Reformat for the use of tabs over spaces
 			))
+
+(defun load-custom-theme (arg)
+	(interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
+	(load-file arg))
 
 (defun replace-regexp-in-buffer (arg1 arg2)
 	"Goes to beginning of buffer for each replace-regexp"
