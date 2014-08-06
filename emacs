@@ -405,5 +405,5 @@
 
 (server-start)
 
-(provide 'keys)
-;;; keys.el ends here
+(provide 'emacs)
+;;; emacs.el ends here
