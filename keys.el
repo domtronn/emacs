@@ -1,3 +1,27 @@
+;;; keys.el --- My key bindings
+
+;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
+
+;; Author: Dominic Charlesworth <dgc336@gmail.com>
+;; Keywords: lisp
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; Code:
+
 ;; My Keys
 ;; note: C-h k is the command used to discover keypresses
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
@@ -54,7 +78,7 @@
 (global-set-key (kbd "C-`") 'shell-pop)
 
 ;; Tag searching
-(global-set-key (kbd "H-.") 'go-to-thing-at-point);;etags-select-find-tag-at-point)
+(global-set-key (kbd "H-.") 'etags-select-find-tag-at-point);;etags-select-find-tag-at-point)
 (global-set-key (kbd "H-?") 'etags-select-find-tag)
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 
@@ -135,7 +159,7 @@
 
 ;; Amazing mode to mark all instances in a definiton 
 (global-set-key (kbd "H-s-r") 'mark-word-at-point)
-(global-set-key (kbd "M-q") 'mark-word-at-point)
+(global-set-key (kbd "M-q") 'er/expand-region)
 
 (global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
@@ -156,13 +180,6 @@
 (global-set-key (kbd "H-\\") 'go-to-agenda)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-;; (global-set-key (kbd "C-x C-b") '(lambda () (interactive) 
-;;   (if (buffer-exists "*Ibuffer*")
-;; 	  (popwin:popup-buffer "*Ibuffer*")
-;; 	(let ((current-buf (buffer-name)))
-;; 		  (message current-buf)
-;; 		  (ibuffer)
-;; 		  (close-and-pop-buffer current-buf "*Ibuffer*")))))
 
 (global-set-key (kbd "C-x C-c") 'goto-line)
 
