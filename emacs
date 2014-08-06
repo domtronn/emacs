@@ -75,17 +75,13 @@
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
 
+(require 'smart-newline)
 (require 'autopair)
 (autopair-global-mode)
 
-(require 'auto-indent-mode)
-(auto-indent-global-mode)
 
 (require 'anzu)
 (global-anzu-mode +1)
-
-(add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/powerline")))
-(require 'powerline)
 
 (add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
 (require 'rails)
@@ -129,6 +125,8 @@
 (rvm-use "ruby-2.1.2" "global")
 
 (require 'filecache)
+
+(require 'grunt)
 
 (require 'json)
 (require 'json-snatcher)
@@ -183,6 +181,8 @@
 
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
+(yas-global-mode)
+(add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
 
 (require 'auto-complete-config)
 (require 'auto-complete-etags)
