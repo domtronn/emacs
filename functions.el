@@ -64,7 +64,8 @@
 (defun f3-true-fullscreen ()
 	"Makes true fullscreen"
 	(interactive)
-	(set-frame-height (selected-frame) 70))
+	(let* ((res-alist '((800 . 53) (1050 . 70))))
+		(set-frame-height (selected-frame) (cdr (assoc (x-display-pixel-height) res-alist)))))
 
 (defun latex-make ()
   (interactive)
