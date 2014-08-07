@@ -119,6 +119,8 @@
 (require 'dired-subtree)
 (require 'dired-rainbow)
 (require 'dired-filter)
+(require 'dired-k)
+(define-key dired-mode-map (kbd "K") 'dired-k)
 
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "i") #'dired-subtree-insert)))
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "r") #'dired-subtree-remove)))
