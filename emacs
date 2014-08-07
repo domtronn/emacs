@@ -71,6 +71,8 @@
 ;; (hideshowvis-symbols)
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
+(require 'ibuffer-vc)
+(require 'ibuffer-git)
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
@@ -78,7 +80,6 @@
 (require 'smart-newline)
 (require 'autopair)
 (autopair-global-mode)
-
 
 (require 'anzu)
 (global-anzu-mode +1)
@@ -113,7 +114,21 @@
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
 
+(require 'peep-dired)
+(require 'dired+)
+(require 'dired-subtree)
+(require 'dired-rainbow)
+(require 'dired-filter)
+
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "i") #'dired-subtree-insert)))
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "r") #'dired-subtree-remove)))
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "P") #'peep-dired)))
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") '(lambda () (interactive) (kill-all-dired-buffers)))))
+
 (require 'git-messenger)
+
+(require 'ack-and-a-half)
+(add-hook 'ack-and-a-half-mode 'wgrep-change-to-wgrep-mode)
 
 (require 'flycheck-tip)
 (require 'flycheck)
@@ -305,8 +320,7 @@
 (add-to-list 'repository-root-matchers repository-root-matcher/git)
 
 ;; Load stuff to do with grep initially
-(eval-after-load "grep"
-  '(grep-compute-defaults))
+(eval-after-load "grep" '(grep-compute-defaults))
 
 ;; change vc-diff to use vc-ediff
 (eval-after-load "vc-hooks"
@@ -350,7 +364,7 @@
 (setq-default indent-tabs-mode t)           ; always replace tabs with spaces
 (setq-default tab-width 2)
 (setq js-indent-level 2)
-(setq dired-listing-switches "-alk")        ; dired less info
+;; (setq dired-listing-switches "-alk")        ; dired less info
 
 ;; Get rid of stupid menu bar and Tool Bar.. 
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
