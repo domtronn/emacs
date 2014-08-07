@@ -68,11 +68,12 @@
 (require 'hideshowvis)
 (autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
-;; (hideshowvis-symbols)
 
-(autoload 'ibuffer "ibuffer" "List buffers." t)
-(require 'ibuffer-vc)
 (require 'ibuffer-git)
+(require 'ibuffer-vc)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
+(add-hook 'ibuffer-mode-hook 'ibuffer-vc-set-filter-groups-by-vc-root)
+(add-to-list 'ibuffer-never-show-predicates "^\\*")
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
