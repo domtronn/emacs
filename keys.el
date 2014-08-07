@@ -100,16 +100,14 @@
 (global-set-key (kbd "C-c C-c") 'dgc-comment)
 
 (global-set-key [f1] 'set-up-test-watch)
-(global-set-key [f11] 'browse-sandbox)
 (global-set-key [f2] 'set-up-ack-results)
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (file-name-directory (buffer-file-name)))))
-(global-set-key [f5] 'vc-ediff)
 (global-set-key [f4] 'vc-next-action)
+(global-set-key [f5] 'vc-ediff)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
-
 
 (global-set-key [f7] 'occur-at-point)
 (global-set-key [f8] 'run-current-file)
@@ -118,6 +116,9 @@
 (global-set-key (kbd "<M-S-f8>") 'f1-toggle-fullscreen)
 (global-set-key (kbd "<M-S-f9>") 'f2-remove-tool-bar)
 (global-set-key (kbd "<M-S-f10>") 'f3-true-fullscreen)
+
+(global-set-key [f11] 'browse-sandbox)
+(global-set-key [f10] 'xkcd)
 
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
