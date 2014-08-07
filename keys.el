@@ -99,15 +99,17 @@
 (global-set-key (kbd "s-/") 'dgc-comment)
 (global-set-key (kbd "C-c C-c") 'dgc-comment)
 
-(global-set-key [f1] 'set-up-grunt-watch-format)
+(global-set-key [f1] 'set-up-test-watch)
 (global-set-key [f11] 'browse-sandbox)
-(global-set-key [f2] 'set-up-rgrep-results)
-(global-set-key (kbd "<M-f2>") 'set-up-rgrep-results-with-prompt)
+(global-set-key [f2] 'set-up-ack-results)
+(global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 
+(global-set-key [f3] '(lambda () (interactive) (dired (file-name-directory (buffer-file-name)))))
 (global-set-key [f5] 'vc-ediff)
 (global-set-key [f4] 'vc-next-action)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
+
 
 (global-set-key [f7] 'occur-at-point)
 (global-set-key [f8] 'run-current-file)
@@ -200,7 +202,7 @@
 ;; It's Key Chord Time!
 (key-chord-define-global "IO" 'open-in-and-activate-intellj)
 (key-chord-define-global (kbd "C-c C-d") 'dash-at-point)
-(key-chord-define-global "??" 'set-up-rgrep-results-with-prompt)
+(key-chord-define-global "??" 'set-up-ack-results-with-prompt)
 
 (provide 'keys)
 ;;; keys.el ends here
