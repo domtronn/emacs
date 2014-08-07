@@ -399,7 +399,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(message "No recognized program file suffix for this file.")
 						)))))
 
-(defun set-up-rgrep-results ()
+(defun set-up-ack-results ()
 	"Opens a pop up for rgrep results"
 	(interactive )
 	(save-excursion
@@ -408,24 +408,27 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
 						(match-dir (repository-root))
 						(current-buf (current-buffer)))
-				(ack (concat "ack --column --nogroup --smart-case --env --color-filename=yellow --color-match=green " match-string) match-dir)
+				(ack-and-a-half match-string t match-dir)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*ack*")
+				(popwin:popup-buffer "*Ack-and-a-half*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))))))
 
-(defun set-up-rgrep-results-with-prompt (search-string match-type)
+(defun set-up-ack-results-with-prompt (search-string match-type)
 	"Opens a pop up for rgrep results with a search string"
 	(interactive "sEnter search string : \nsEnter file type : ")
 	(save-excursion
 		(progn
 			(let ((match-dir (repository-root))
-						(current-buf (current-buffer)))
-				(ack (concat "ack --column --nogroup --smart-case --env --" match-type " --color-filename=yellow --color-match=green " search-string) match-dir)
+						(current-buf (current-buffer))
+						(old-ack-args ack-and-a-half-arguments))
+				(setq ack-and-a-half-arguments (list "--color-match=green" "--color-match=yellow" (concat "--" match-type)))
+				(ack-and-a-half match-string t match-dir)
+				(setq ack-and-a-half-arguments old-ack-args)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*ack*")
+				(popwin:popup-buffer "*Ack-and-a-half*")
 				(if (not (print truncate-lines))
 						(toggle-truncate-lines))))))
 
@@ -441,7 +444,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 	 'create-tags
 	 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
 
-(defun set-up-grunt-watch-format ()
+(defun set-up-test-watch ()
 	"Sets the display ready for grunt watching"
 	(interactive)
 	(save-excursion
@@ -758,7 +761,17 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					(beginning-of-buffer)
 					(while (search-forward marked-word) (vc-dir-kill-line))))))
 
-
+(defun kill-all-dired-buffers ()
+	"Kill all dired buffers."
+	(interactive)
+	(save-excursion
+		(let ((count 0))
+			(dolist (buffer (buffer-list))
+				(set-buffer buffer)
+				(when (equal major-mode 'dired-mode)
+					(setq count (1+ count))
+					(kill-buffer buffer)))
+			(message "Killed %i dired buffer(s)." count))))
 
 
 ;; ============================================================================
