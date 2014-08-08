@@ -188,6 +188,8 @@
 
 (global-set-key (kbd "C-x C-c") 'goto-line)
 
+(global-set-key (kbd "C-=") 'insert-random-return)
+
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
