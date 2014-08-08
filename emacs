@@ -108,8 +108,9 @@
 (global-undo-tree-mode)
 
 (require 'highlight)
-(require 'fill-column-indicator)
 (require 'button-lock)
+(require 'fill-column-indicator)
+(setq fci-rule-column 160)
 
 (require 'rfringe)
 (require 'git-gutter-fringe)
