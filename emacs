@@ -132,7 +132,6 @@
 (require 'git-messenger)
 
 (require 'ack-and-a-half)
-(add-hook 'ack-and-a-half-mode 'wgrep-change-to-wgrep-mode)
 
 (require 'flycheck-tip)
 (require 'flycheck)
