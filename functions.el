@@ -424,7 +424,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(current-buf (current-buffer))
 						(old-ack-args ack-and-a-half-arguments))
 				(setq ack-and-a-half-arguments (list "--color-match=green" "--color-match=yellow" (concat "--" match-type)))
-				(ack-and-a-half match-string t match-dir)
+				(ack-and-a-half search-string t match-dir)
 				(setq ack-and-a-half-arguments old-ack-args)
 				(sticky-window-delete-other-windows)
 				(switch-to-buffer current-buf)
@@ -497,12 +497,20 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 		(mark-word)
 		(backward-word)))
 
+(defun mc/malt ()
+  (interactive)
+  (mc/mark-all-like-this))
+
 (defun malt ()
 	"Uses mc/mark-all-like-this at point"
 	(interactive)
 	(progn
 		(mark-word-at-point)
 		(mc/mark-all-symbols-like-this)))
+
+(defun mc/dalt ()
+  (interactive)
+  (mc/mark-all-like-this-in-defun))
 
 (defun dalt ()
 	"Uses mc/mark-all-like-this-in-defun at point"
