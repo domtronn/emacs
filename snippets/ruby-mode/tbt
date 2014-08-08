@@ -1,0 +1,4 @@
+#name : rspec expect to be true
+#group : definitions
+# --
+expect($1).should be_true

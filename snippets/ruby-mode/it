@@ -1,0 +1,6 @@
+#name : rspec it definition
+#group : definitions
+# --
+it "$1" do
+  $0
+end

@@ -1,0 +1,4 @@
+#name : rspec expect to equal
+#group : definitions
+# --
+expect($1).to eq $2
