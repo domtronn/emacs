@@ -23,15 +23,6 @@
 
 ;;; Code:
 
-(defun dgc-kill-line ()
-  "Kill from beginning of line to beginning of next."
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (let ((bol (point)))
-      (end-of-line)
-      (kill-region bol (1+ (point))))))
-
 (defun use-tabs ()
   (interactive)
   (setq indent-tabs-mode t))
@@ -41,285 +32,270 @@
   (setq indent-tabs-mode nil))
 
 (defun toggle-fullscreen ()
-	"Toggle full screen."
+  "Toggle full screen."
   (interactive)
   (set-frame-parameter
-     nil 'fullscreen
-     (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
-	(if (not (frame-parameter nil 'fullscreen))
-			(progn (tool-bar-mode 1)
-						 (tool-bar-mode -1)
-						 (set-frame-height (selected-frame) 69))))
+   nil 'fullscreen
+   (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
+  (if (not (frame-parameter nil 'fullscreen))
+      (progn (tool-bar-mode 1)
+             (tool-bar-mode -1)
+             (set-frame-height (selected-frame) 69))))
 
 (defun f1-toggle-fullscreen ()
-	(interactive)
-	(toggle-fullscreen))
+  (interactive)
+  (toggle-fullscreen))
 
 (defun f2-remove-tool-bar ()
-	"Remove the toolbar"
-	(interactive)
-	(tool-bar-mode 1)
-	(tool-bar-mode -1)) 
+  "Remove the toolbar"
+  (interactive)
+  (tool-bar-mode 1)
+  (tool-bar-mode -1))
 
 (defun f3-true-fullscreen ()
-	"Makes true fullscreen"
-	(interactive)
-	(let* ((res-alist '((800 . 53) (1050 . 70))))
-		(set-frame-height (selected-frame) (cdr (assoc (x-display-pixel-height) res-alist)))))
+  "Makes true fullscreen"
+  (interactive)
+  (let* ((res-alist '((800 . 53) (1050 . 70))))
+    (set-frame-height (selected-frame) (cdr (assoc (x-display-pixel-height) res-alist)))))
 
 (defun latex-make ()
   (interactive)
-	(setq buffer-save-without-query t)
-	(if (buffer-modified-p) (save-buffer))
+  (setq buffer-save-without-query t)
+  (if (buffer-modified-p) (save-buffer))
   (let ((f1 (current-frame-configuration))
         (retcode (shell-command (concat "rubber --pdf " (buffer-file-name)))))
-		(message "Return code : %s" retcode)
+    (message "Return code : %s" retcode)
     (if (= retcode 0) (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))))
-
-(defun alt-run-current-file ()
-	(interactive)
-	(let* ((fSuffix (file-name-extension (buffer-file-name))))
-		(cond ((string-equal fSuffix "js")
-					 (grunt-spec))
-					((string-equal (buffer-mode (buffer-name)) "latex-mode")
-					 (xelatex-make)))))
 
 (defun xelatex-make ()
   (interactive)
-	(if (string-equal (buffer-mode (buffer-name)) "latex-mode")
-			(progn
-				(setq buffer-save-without-query t)
-				(if (buffer-modified-p) (save-buffer))
-				(let ((f1 (current-frame-configuration))
-							(retcode (shell-command (concat "xelatex " (buffer-file-name)))))
-					(message "Return code : %s" retcode)
-					(if (= retcode 0) 
-							(progn
-								(if (buffer-exists (concat (file-name-sans-extension (buffer-name)) ".pdf"))
-										(kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
-								(find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
-								(delete-other-windows)))))
-		nil))
+  (if (string-equal (buffer-mode (buffer-name)) "latex-mode")
+      (progn
+        (setq buffer-save-without-query t)
+        (if (buffer-modified-p) (save-buffer))
+        (let ((f1 (current-frame-configuration))
+              (retcode (shell-command (concat "xelatex " (buffer-file-name)))))
+          (message "Return code : %s" retcode)
+          (if (= retcode 0)
+              (progn
+                (if (buffer-exists (concat (file-name-sans-extension (buffer-name)) ".pdf"))
+                    (kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
+                (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
+                (delete-other-windows)))))
+    nil))
 
 (defun grunt-spec ()
   "Run grunt"
   (interactive)
-	(if (buffer-exists "*grunt*")
-			(kill-buffer "*grunt*"))
-	(let* ((grunt-buffer (get-buffer-create "*grunt*"))
-				 (result (call-process-shell-command
-									(concat "grunt spec --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t)))))
+  (if (buffer-exists "*grunt*")
+      (kill-buffer "*grunt*"))
+  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
+         (result (call-process-shell-command
+                  (concat "grunt spec --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t)))))
 
 (defun inject-javascript-dependency ()
-	(interactive)
-	(let ((class-name (thing-at-point 'word)))
-		(save-excursion
-			(beginning-of-buffer)
-			(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
-						(aEnd (- (search-forward-regexp "\\s-*\\]") 1))
-						(bStart (search-forward-regexp "function\\s-*("))
-						(bEnd (- (search-forward ")") 1)))				
-				(let ((pos (position class-name
-																	 (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
-																	 :test #'string-equal)))
-					(beginning-of-buffer)
-					(let ((my-point 
-								 (search-forward (nth (- pos 1) (split-string (buffer-substring aStart aEnd) ",\\s-*\n\\s-*" t)))))
-						(message "%s" pos)
-						(message "%s" (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
-						(if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t))) 
-								(progn (message "Setting q backwards") (setq my-point (+ 1(search-backward "\"")))))
-						(progn (goto-char my-point)
-									 (insert (format ",\n%s" (inject-dependency class-name))))))))))
+  (interactive)
+  (let ((class-name (thing-at-point 'word)))
+    (save-excursion
+      (beginning-of-buffer)
+      (let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
+            (aEnd (- (search-forward-regexp "\\s-*\\]") 1))
+            (bStart (search-forward-regexp "function\\s-*("))
+            (bEnd (- (search-forward ")") 1)))
+        (let ((pos (position class-name
+                             (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
+                             :test #'string-equal)))
+          (beginning-of-buffer)
+          (let ((my-point
+                 (search-forward (nth (- pos 1) (split-string (buffer-substring aStart aEnd) ",\\s-*\n\\s-*" t)))))
+            (message "%s" pos)
+            (message "%s" (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
+            (if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
+                (progn (message "Setting q backwards") (setq my-point (+ 1(search-backward "\"")))))
+            (progn (goto-char my-point)
+                   (insert (format ",\n%s" (inject-dependency class-name))))))))))
 
 (defun update-javascript-dependency ()
-	(interactive)
-	(save-excursion
-		(beginning-of-buffer)
-		(let ((bStart (search-forward-regexp "function\\s-*("))
-					(bEnd (- (search-forward ")") 1)))
-				(beginning-of-buffer)
-				(replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
-												(format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd)))))))
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (let ((bStart (search-forward-regexp "function\\s-*("))
+          (bEnd (- (search-forward ")") 1)))
+      (beginning-of-buffer)
+      (replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
+                      (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd)))))))
 
 (defun get-last-spy ()
-	(interactive)
-	(save-excursion
-		(let ((start (+ (search-backward-regexp "spyOn(" 6)))
-					(end (- (search-forward-regexp ")") 1)))
-			(if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
-					(format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
-
-(defun minimap-toggle ()
   (interactive)
-	(if (buffer-exists minimap-buffer-name)
-			(minimap-kill)
-		(minimap-create)))
-
+  (save-excursion
+    (let ((start (+ (search-backward-regexp "spyOn(" 6)))
+          (end (- (search-forward-regexp ")") 1)))
+      (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
+          (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
 (defun inject-dependency (dep-list)
   (interactive)
-	(mapconcat
-	 #'(lambda (arg)
-			 (let ((res-require-path nil))
-				 (maphash #'(lambda (id assoc-list)
-											(let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
-												(if (eq res-require-path nil)
-														(setq res-require-path
-															(if (= (length record) 2)
-																	(concat (replace-regexp-in-string ".*script" id (cadr record)) 
-																					(file-name-sans-extension (car record)))
-																nil)))))
-									external-cache-hash)
-				 (format "\t\t\"%s\"" 
-								 (if (eq res-require-path nil)
-										 (concat "???/" (downcase arg))
-									 res-require-path))))
-	 (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
+  (mapconcat
+   #'(lambda (arg)
+       (let ((res-require-path nil))
+         (maphash #'(lambda (id assoc-list)
+                      (let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
+                        (if (eq res-require-path nil)
+                            (setq res-require-path
+                                  (if (= (length record) 2)
+                                      (concat (replace-regexp-in-string ".*script" id (cadr record))
+                                              (file-name-sans-extension (car record)))
+                                    nil)))))
+                  external-cache-hash)
+         (format "\t\t\"%s\""
+                 (if (eq res-require-path nil)
+                     (concat "???/" (downcase arg))
+                   res-require-path))))
+   (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
 
 (defun insert-random-return ()
-	(interactive)
-	(let ((word (random-return)))
-		(insert word)))
+  (interactive)
+  (let ((word (random-return)))
+    (insert word)))
 
 (defun random-return ()
   (interactive)
-  (setq words '("pow" "shazam" "foo" "bar" "wollop" "bam" "smash" 
-								"boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky" 
-								"hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
-								"mimsy" "snicker" "snack" "vorpal" "wabe" "zorp" "fam"
-								"horcrux" "muggle" "shiwu" "hokey" "cokey"))
-	(random t)
-	(message (nth (random (length words)) words)))
+  (setq words '("pow" "shazam" "foo" "bar" "wollop" "bam" "smash"
+                "boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky"
+                "hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
+                "mimsy" "snicker" "snack" "vorpal" "wabe" "zorp" "fam"
+                "horcrux" "muggle" "shiwu" "hokey" "cokey"))
+  (random t)
+  (message (nth (random (length words)) words)))
 
 (defun browse-sandbox ()
-	(interactive)
-	(browse-url "http://pal.sandbox.dev.bbc.co.uk/sprtiptvjs/?brand=chrome&model=20_0&config=beta"))
+  (interactive)
+  (browse-url "http://pal.sandbox.dev.bbc.co.uk/sprtiptvjs/?brand=chrome&model=20_0&config=beta"))
 
 (defun js-hlt-nonused-dependencies ()
-	"Will highlght the parts of the function include that are not used in the class"
+  "Will highlght the parts of the function include that are not used in the class"
   (interactive)
-	(if (eq (buffer-mode (buffer-name)) 'js-mode)
-			(save-excursion
-				(beginning-of-buffer)
-				(let ((start) (end))
-					(if (search-forward-regexp "function\\s-*(" (point-max) t)
-							(progn (setq start (point))
-										 (search-forward-regexp ")" (point-max) t)
-										 (setq end (- (point) 1))						
-										 (mapc #'(lambda (arg)
-															 (unhighlight-regexp (format "[^a-zA-Z]%s" arg))
-															 (if (< (count-words-region start (point-max) arg) 2)
-																	 (progn													
-																		 (message "%s is not used" arg)
-																		 (highlight-regexp (format "[^a-zA-Z]%s" arg) 'js2-non-used)
-																		 )))
-													 (split-string (buffer-substring start end) ",\\s-*\n*\\s-*" t))))))))
+  (if (eq (buffer-mode (buffer-name)) 'js-mode)
+      (save-excursion
+        (beginning-of-buffer)
+        (let ((start) (end))
+          (if (search-forward-regexp "function\\s-*(" (point-max) t)
+              (progn (setq start (point))
+                     (search-forward-regexp ")" (point-max) t)
+                     (setq end (- (point) 1))
+                     (mapc #'(lambda (arg)
+                               (unhighlight-regexp (format "[^a-zA-Z]%s" arg))
+                               (if (< (count-words-region start (point-max) arg) 2)
+                                   (progn
+                                     (message "%s is not used" arg)
+                                     (highlight-regexp (format "[^a-zA-Z]%s" arg) 'js2-non-used)
+                                     )))
+                           (split-string (buffer-substring start end) ",\\s-*\n*\\s-*" t))))))))
 
 (defun js-hlt-nonused-vars ()
   (interactive)
   (if (eq (buffer-mode (buffer-name)) 'js-mode)
-			(save-excursion
-					(beginning-of-buffer)
-					(while (and (< (point) (point-max))
-											(search-forward-regexp "var\\s-*\\\w+" (point-max) t))
-						(let ((temp-point (point))
-									(arg (thing-at-point 'symbol)))
-							(unhighlight-regexp (format "var\\s-*%s" arg))
-							(if (< (count-words-region temp-point (point-max) arg) 1)
-									(progn (message "%s is not used" arg)
-												 (highlight-regexp (format "var\\s-*%s" arg) 'js2-non-used-var)))
-							(goto-char temp-point))))))
+      (save-excursion
+        (beginning-of-buffer)
+        (while (and (< (point) (point-max))
+                    (search-forward-regexp "var\\s-*\\\w+" (point-max) t))
+          (let ((temp-point (point))
+                (arg (thing-at-point 'symbol)))
+            (unhighlight-regexp (format "var\\s-*%s" arg))
+            (if (< (count-words-region temp-point (point-max) arg) 1)
+                (progn (message "%s is not used" arg)
+                       (highlight-regexp (format "var\\s-*%s" arg) 'js2-non-used-var)))
+            (goto-char temp-point))))))
 
 (defun count-words-buffer (arg)
   (interactive "r")
-	(save-excursion
-		(let (wordCount) 
-			(setq wordCount 0)
-			(beginning-of-buffer)
-			(while (and (< (point) (point-max))
-									(search-forward arg (point-max) t))
-				(setq wordCount (1+ wordCount)))
-			wordCount)))
+  (save-excursion
+    (let (wordCount)
+      (setq wordCount 0)
+      (beginning-of-buffer)
+      (while (and (< (point) (point-max))
+                  (search-forward arg (point-max) t))
+        (setq wordCount (1+ wordCount)))
+      wordCount)))
 
 (defun count-words-region (posStart posEnd arg)
   (interactive "r")
-	(save-excursion
-		(let (wordCount) 
-			(setq wordCount 0)
-			(goto-char posStart)
-			(while (and (< (point) posEnd)
-									(search-forward arg posEnd t))
-				(if (string-equal arg (thing-at-point 'symbol))
-						(setq wordCount (1+ wordCount))))
-			wordCount)))
+  (save-excursion
+    (let (wordCount)
+      (setq wordCount 0)
+      (goto-char posStart)
+      (while (and (< (point) posEnd)
+                  (search-forward arg posEnd t))
+        (if (string-equal arg (thing-at-point 'symbol))
+            (setq wordCount (1+ wordCount))))
+      wordCount)))
 
 (defun go-to-class ()
   "Find and go to the class at point"
-	(interactive)
-	(let ((class-name (thing-at-point 'symbol)))
-	(save-excursion 
-		(beginning-of-buffer)
-		(let ((start (search-forward-regexp "function\\s-*("))
-				 (end (- (search-forward ")") 1)))		
-			(goto-char start)
-			(if (search-forward class-name end t)
-					(maphash #'(lambda (id file-alist)
-								(let ((record (assoc (concat (downcase class-name) ".js") file-alist)))
-									(if (and record (= (length record) 2))
-								 (let ((found-file (concat (car (cdr record)) (car record))))
-									 (message "Found %s" found-file)
-									 (ring-insert find-tag-marker-ring (point-marker))
-									 (find-file found-file))
-								 (message "Couldn't find a cached file for %s..." class-name))))
-								external-cache-hash)
-				nil)))))
+  (interactive)
+  (let ((class-name (thing-at-point 'symbol)))
+    (save-excursion
+      (beginning-of-buffer)
+      (let ((start (search-forward-regexp "function\\s-*("))
+            (end (- (search-forward ")") 1)))
+        (goto-char start)
+        (if (search-forward class-name end t)
+            (maphash #'(lambda (id file-alist)
+                         (let ((record (assoc (concat (downcase class-name) ".js") file-alist)))
+                           (if (and record (= (length record) 2))
+                               (let ((found-file (concat (car (cdr record)) (car record))))
+                                 (message "Found %s" found-file)
+                                 (ring-insert find-tag-marker-ring (point-marker))
+                                 (find-file found-file))
+                             (message "Couldn't find a cached file for %s..." class-name))))
+                     external-cache-hash)
+          nil)))))
 
 (defun go-to-thing-at-point ()
-	"Go to the thing at point assuming if it's not a class or function it's a variable"
+  "Go to the thing at point assuming if it's not a class or function it's a variable"
   (interactive)
-	(let ((thing (thing-at-point 'symbol))
-				(thing-point (point)))
-		(if (eq nil (go-to-class))
-				(if (eq nil (search-backward-regexp 
-										 (format "var\\s-*%s" thing) (point-min) t))
-						(if (eq nil (search-backward-regexp
-												 (format "function\\s-*(.*%s" thing) (point-min) t))
-								(progn
-									(search-backward ".")
-									(let ((thing-clazz (thing-at-point 'symbol)))
-										(goto-char thing-point)
-										(etags-select-find-tag-at-point)
-										(if (string-equal "*etags-select*" (buffer-name))
-												(progn
-													(search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
-													(next-line)
-													(etags-select-goto-tag)))))
-							(progn
-								(search-forward thing)
-								(backward-word)))))))
+  (let ((thing (thing-at-point 'symbol))
+        (thing-point (point)))
+    (if (eq nil (go-to-class))
+        (if (eq nil (search-backward-regexp
+                     (format "var\\s-*%s" thing) (point-min) t))
+            (if (eq nil (search-backward-regexp
+                         (format "function\\s-*(.*%s" thing) (point-min) t))
+                (progn
+                  (search-backward ".")
+                  (let ((thing-clazz (thing-at-point 'symbol)))
+                    (goto-char thing-point)
+                    (etags-select-find-tag-at-point)
+                    (if (string-equal "*etags-select*" (buffer-name))
+                        (progn
+                          (search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
+                          (next-line)
+                          (etags-select-goto-tag)))))
+              (progn
+                (search-forward thing)
+                (backward-word)))))))
 
 
 (defun close-and-pop-buffer (oldbuffer buffer)
   (switch-to-buffer oldbuffer)
   (popwin:popup-buffer buffer))
-  
+
 (defun occur-at-point ()
-	"Run occur on a thing."
-	(interactive)
-	(occur (thing-at-point 'symbol))
-	(toggle-read-only))
+  "Run occur on a thing."
+  (interactive)
+  (occur (thing-at-point 'symbol))
+  (toggle-read-only))
 
 (defun open-in-and-activate-intellj ()
-	"Opens the current file in intellij for n00b5!"
-	(interactive)
-	(shell-command
-	 (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 13\\\" to activate\"" (buffer-file-name))))
+  "Opens the current file in intellij for n00b5!"
+  (interactive)
+  (shell-command
+   (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 13\\\" to activate\"" (buffer-file-name))))
 
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a buffer."
   (with-current-buffer buffer-or-string
-     major-mode))
+    major-mode))
 
 (defun my-isearch-yank-word-or-char-from-beginning ()
   "Move to beginning of word before yanking word in isearch-mode."
@@ -330,21 +306,29 @@
       (beginning-of-thing 'word))
   (isearch-yank-word-or-char)
   ;; Revert to 'isearch-yank-word-or-char for subsequent calls
-  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning 
-			     'isearch-yank-word-or-char
-			     isearch-mode-map))
+  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning
+                             'isearch-yank-word-or-char
+                             isearch-mode-map))
 
 (add-hook 'isearch-mode-hook
- (lambda ()
-   "Activate my customized Isearch word yank command."
-   (substitute-key-definition 'isearch-yank-word-or-char 
-			      'my-isearch-yank-word-or-char-from-beginning
-			      isearch-mode-map)))
+          (lambda ()
+            "Activate my customized Isearch word yank command."
+            (substitute-key-definition 'isearch-yank-word-or-char
+                                       'my-isearch-yank-word-or-char-from-beginning
+                                       isearch-mode-map)))
 
 (defun my-vc-dir ()
-	"calls vc-dir on the appropriate project"
-	(interactive)
-	(vc-dir (repository-root)))
+  "calls vc-dir on the appropriate project"
+  (interactive)
+  (vc-dir (repository-root)))
+
+(defun alt-run-current-file ()
+  (interactive)
+  (let* ((fSuffix (file-name-extension (buffer-file-name))))
+    (cond ((string-equal fSuffix "js")
+           (grunt-spec))
+          ((string-equal (buffer-mode (buffer-name)) "latex-mode")
+           (xelatex-make)))))
 
 (defun run-current-file ()
   "Execute the current file.
@@ -369,99 +353,99 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
             ("sh" . "bash")
             ("ml" . "ocaml")
             ("vbs" . "cscript")
-						("cpp" . "make")
-						("tex" . "rubber --pdf")
+            ("cpp" . "make")
+            ("tex" . "rubber --pdf")
             )
           )
          (fName (buffer-file-name))
          (fSuffix (file-name-extension fName))
          (progName (cdr (assoc fSuffix suffixMap)))
-				 (cmdStr (cond ((string-equal (buffer-mode (buffer-name)) "c++-mode") 
-												(concat progName " \""  (file-name-sans-extension fName) "\"; " (file-name-sans-extension fName)))
-											 (t (concat progName " \"" fName "\""))
-											 )))
+         (cmdStr (cond ((string-equal (buffer-mode (buffer-name)) "c++-mode")
+                        (concat progName " \""  (file-name-sans-extension fName) "\"; " (file-name-sans-extension fName)))
+                       (t (concat progName " \"" fName "\""))
+                       )))
 
     (when (buffer-modified-p)
       (when (y-or-n-p "Buffer modified. Do you want to save first?")
-          (save-buffer) ) )
+        (save-buffer) ) )
 
     (cond ((string-equal fSuffix "el") ; special case for emacs lisp
-					 (load (file-name-sans-extension fName)))
-					((string-equal fSuffix "tex")
-					 (find-file (concat (file-name-sans-extension fName) ".pdf")))
-					((string-equal fSuffix "js")
-						 (grunt-exec))
-					(t (if progName
-							(progn
-								(message "Running…")
-								(shell-command cmdStr "*run-current-file output*" )
-								)
-						(message "No recognized program file suffix for this file.")
-						)))))
+           (load (file-name-sans-extension fName)))
+          ((string-equal fSuffix "tex")
+           (find-file (concat (file-name-sans-extension fName) ".pdf")))
+          ((string-equal fSuffix "js")
+           (grunt-exec))
+          (t (if progName
+                 (progn
+                   (message "Running…")
+                   (shell-command cmdStr "*run-current-file output*" )
+                   )
+               (message "No recognized program file suffix for this file.")
+               )))))
 
 (defun set-up-ack-results ()
-	"Opens a pop up for rgrep results"
-	(interactive )
-	(save-excursion
-		(progn
-			(let ((match-string (thing-at-point 'symbol))
-						(match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-						(match-dir (repository-root))
-						(current-buf (current-buffer)))
-				(ack-and-a-half match-string t match-dir)
-				(sticky-window-delete-other-windows)
-				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*Ack-and-a-half*")
-				(if (not (print truncate-lines))
-						(toggle-truncate-lines))))))
+  "Opens a pop up for rgrep results"
+  (interactive )
+  (save-excursion
+    (progn
+      (let ((match-string (thing-at-point 'symbol))
+            (match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
+            (match-dir (repository-root))
+            (current-buf (current-buffer)))
+        (ack-and-a-half match-string t match-dir)
+        (sticky-window-delete-other-windows)
+        (switch-to-buffer current-buf)
+        (popwin:popup-buffer "*Ack-and-a-half*")
+        (if (not (print truncate-lines))
+            (toggle-truncate-lines))))))
 
 (defun set-up-ack-results-with-prompt (search-string match-type)
-	"Opens a pop up for rgrep results with a search string"
-	(interactive "sEnter search string : \nsEnter file type : ")
-	(save-excursion
-		(progn
-			(let ((match-dir (repository-root))
-						(current-buf (current-buffer))
-						(old-ack-args ack-and-a-half-arguments))
-				(setq ack-and-a-half-arguments (list "--color-match=green" "--color-match=yellow" (concat "--" match-type)))
-				(ack-and-a-half search-string t match-dir)
-				(setq ack-and-a-half-arguments old-ack-args)
-				(sticky-window-delete-other-windows)
-				(switch-to-buffer current-buf)
-				(popwin:popup-buffer "*Ack-and-a-half*")
-				(if (not (print truncate-lines))
-						(toggle-truncate-lines))))))
+  "Opens a pop up for rgrep results with a search string"
+  (interactive "sEnter search string : \nsEnter file type : ")
+  (save-excursion
+    (progn
+      (let ((match-dir (repository-root))
+            (current-buf (current-buffer))
+            (old-ack-args ack-and-a-half-arguments))
+        (setq ack-and-a-half-arguments (list "--color-match=green" "--color-match=yellow" (concat "--" match-type)))
+        (ack-and-a-half search-string t match-dir)
+        (setq ack-and-a-half-arguments old-ack-args)
+        (sticky-window-delete-other-windows)
+        (switch-to-buffer current-buf)
+        (popwin:popup-buffer "*Ack-and-a-half*")
+        (if (not (print truncate-lines))
+            (toggle-truncate-lines))))))
 
 (defun create-tags (dir-name)
-	"Create tags file."
-	(let* ((cmd (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.rb$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
-		(shell-command cmd)))
+  "Create tags file."
+  (let* ((cmd (format "find %s -type f -follow | grep -E \"\\\.groovy$|\\\.rb$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name)))
+    (shell-command cmd)))
 
 (defun create-tags-for-project ()
-	"Creates tags files in the base of each project module in PROJECTPATH"
-	(interactive)
-	(mapc
-	 'create-tags
-	 (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
+  "Creates tags files in the base of each project module in PROJECTPATH"
+  (interactive)
+  (mapc
+   'create-tags
+   (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
 
 (defun set-up-test-watch ()
-	"Sets the display ready for grunt watching"
-	(interactive)
-	(save-excursion
-		(let (running (buffer-exists "*ansi-term*"))
-			(progn
-				(delete-other-windows)
-				(split-window-horizontally)
-				(enlarge-window-horizontally 50)
-				(visit-ansi-term)
-				(if (not (eq nil project-test-cmd))
-						(auto-type-string project-test-cmd)
-					)
-				(rotate-windows)
-				(other-window 1)
-				(set-window-dedicated-p (get-buffer-window) t)
-				(setq window-size-fixed t)
-				(other-window 1)))))
+  "Sets the display ready for grunt watching"
+  (interactive)
+  (save-excursion
+    (let (running (buffer-exists "*ansi-term*"))
+      (progn
+        (delete-other-windows)
+        (split-window-horizontally)
+        (enlarge-window-horizontally 50)
+        (visit-ansi-term)
+        (if (not (eq nil project-test-cmd))
+            (auto-type-string project-test-cmd)
+          )
+        (rotate-windows)
+        (other-window 1)
+        (set-window-dedicated-p (get-buffer-window) t)
+        (setq window-size-fixed t)
+        (other-window 1)))))
 
 (defun visit-ansi-term ()
   "If the current buffer is:
@@ -491,54 +475,33 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (ansi-term term-cmd)))))
 
 (defun mark-word-at-point ()
-	"Marks the current word at point"
-	(interactive)
-	(progn
-		(mark-word)
-		(backward-word)))
+  "Marks the current word at point"
+  (interactive)
+  (progn
+    (mark-word)
+    (backward-word)))
 
 (defun mc/malt ()
   (interactive)
   (mc/mark-all-like-this))
 
 (defun malt ()
-	"Uses mc/mark-all-like-this at point"
-	(interactive)
-	(progn
-		(mark-word-at-point)
-		(mc/mark-all-symbols-like-this)))
+  "Uses mc/mark-all-like-this at point"
+  (interactive)
+  (progn
+    (mark-word-at-point)
+    (mc/mark-all-symbols-like-this)))
 
 (defun mc/dalt ()
   (interactive)
   (mc/mark-all-like-this-in-defun))
 
 (defun dalt ()
-	"Uses mc/mark-all-like-this-in-defun at point"
-	(interactive)
-	(progn
-		(mark-word-at-point)
-		(mc/mark-all-like-this-in-defun))) 
-
-;; ============================================================================
-(defun dgc-copy-line ()
-  "Copy from beginning of line to end of line."
+  "Uses mc/mark-all-like-this-in-defun at point"
   (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (let ((bol (point)))
-      (end-of-line)
-      (forward-char)
-      (copy-region-as-kill bol (point)))))
-
-;; ============================================================================
-(defun dgc-scroll-line-one (event)
-  "Scroll the line in the file maintaining cursor position"
-  (interactive "e")
-  (condition-case nil
-      (if (< (car (cdr (cdr event))) 0)
-	  (dgc-scroll-up-in-place 1)
-	(dgc-scroll-down-in-place 1))
-    (error nil)))
+  (progn
+    (mark-word-at-point)
+    (mc/mark-all-like-this-in-defun)))
 
 ;; ============================================================================
 (defun domtronn-timestamp ()
@@ -548,52 +511,34 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 ;; ============================================================================
 (defun domtronn-sign ()
-	"Insert my name and data"
-	(interactive)
-	(insert "-- Dom Charlesworth (dgc336@gmail.com)\n   ")
-	(domtronn-timestamp))
+  "Insert my name and data"
+  (interactive)
+  (insert "-- Dom Charlesworth (dgc336@gmail.com)\n   ")
+  (domtronn-timestamp))
 
 (defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
 
-(defun go-to-grep-and-rgrep ()
-	"Goes to the *grep* buffer and runs the rgrep command"
-	(interactive)
-	(progn 
-		(if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*grep*"))))
-				(switch-to-buffer-other-frame (get-buffer "*grep*")))
-		(call-interactively 'rgrep)))
-
 (defun go-to-calendar ()
-	"Goes to the *grep* buffer and runs the rgrep command"
-	(interactive)
-	(progn 
-		(if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*Calendar*"))))
-				(switch-to-buffer-other-frame (get-buffer "*Calendar*")))
-		(calendar)))
+  "Goes to the *grep* buffer and runs the rgrep command"
+  (interactive)
+  (progn
+    (if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*Calendar*"))))
+        (switch-to-buffer-other-frame (get-buffer "*Calendar*")))
+    (calendar)))
 
 (defun go-to-agenda ()
-	"Goes to the *grep* buffer and runs the rgrep command"
-	(interactive)
-	(if (buffer-exists "*Org Agenda*")
-			(switch-to-buffer (get-buffer "*Org Agenda*"))
-		(org-agenda-list)))
-	
-;; ============================================================================
-(defun domtronn-sign-professional ()
-	"Insert my name and data"
-	(interactive)
-	(insert "-- Dominic Charlesworth (Dominic.Charlesworth@bbc.co.uk)\n   ")
-	(domtronn-timestamp))
+  "Goes to the *grep* buffer and runs the rgrep command"
+  (interactive)
+  (if (buffer-exists "*Org Agenda*")
+      (switch-to-buffer (get-buffer "*Org Agenda*"))
+    (org-agenda-list)))
 
 ;; ============================================================================
-(defun dgc-scroll-line-five (event)
-  "Scroll the line in the file maintaining cursor position"
-  (interactive "e")
-  (condition-case nil
-      (if (< (car (cdr (cdr event))) 0)
-	  (dgc-scroll-up-in-place 5)
-	(dgc-scroll-down-in-place 5))
-    (error nil)))
+(defun domtronn-sign-professional ()
+  "Insert my name and data"
+  (interactive)
+  (insert "-- Dominic Charlesworth (Dominic.Charlesworth@bbc.co.uk)\n   ")
+  (domtronn-timestamp))
 
 ;; ============================================================================
 (defun dgc-scroll-up-in-place (x)
@@ -601,7 +546,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   (interactive)
   (scroll-up x)
   (next-line x))
-    
+
 ;; ============================================================================
 (defun dgc-scroll-down-in-place (x)
   "Scroll down one line in the file maintaining cursor position in window"
@@ -611,37 +556,37 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 ;; ============================================================================
 (defun dgc-forward-word ()
-   "Move one word forward. Leave the pointer at start of word"
-   (interactive)
-   (forward-char 1)
-   (backward-word 1)
-   (forward-word 2)
-   (backward-word 1)
-   (backward-char 1)
-   (cond ((looking-at "_") (forward-char 1) (dgc-forward-word))
-         (t (forward-char 1))))
+  "Move one word forward. Leave the pointer at start of word"
+  (interactive)
+  (forward-char 1)
+  (backward-word 1)
+  (forward-word 2)
+  (backward-word 1)
+  (backward-char 1)
+  (cond ((looking-at "_") (forward-char 1) (dgc-forward-word))
+        (t (forward-char 1))))
 
 ;; ============================================================================
 (defun dgc-forward-word-2 ()
-   "Move one word forward. Leave the pointer at end of word"
-   (interactive)
-   (forward-word 1))
+  "Move one word forward. Leave the pointer at end of word"
+  (interactive)
+  (forward-word 1))
 
 ;; ============================================================================
 (defun dgc-backward-word ()
-   "Move one word backward. Leave the pointer at start of word"
-   (interactive)
-   (backward-word 1)
-   (backward-char 1)
-   (cond ((looking-at "_") (dgc-backward-word))
-         (t (forward-char 1))))
+  "Move one word backward. Leave the pointer at start of word"
+  (interactive)
+  (backward-word 1)
+  (backward-char 1)
+  (cond ((looking-at "_") (dgc-backward-word))
+        (t (forward-char 1))))
 
 ;; ============================================================================
 (defun dgc-backward-word-2 ()
-   "Move one word backward. Leave the pointer at end of word"
-   (interactive)
-   (backward-word 2)
-   (forward-word 1))
+  "Move one word backward. Leave the pointer at end of word"
+  (interactive)
+  (backward-word 2)
+  (forward-word 1))
 
 ;; ============================================================================
 (defun dgc-indent-buffer ()
@@ -651,290 +596,238 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-(defun dgc-indent-newline ()
-  "indents to the correct amount"
-  (interactive)
-  (progn (newline-and-indent)
-         (backward-char 2)))
-
 ;; ============================================================================
 (defun dgc-comment ()
-  "comment or uncomment highlighted region or line" 
-  (interactive)																			
-  (if mark-active																		
-      (comment-or-uncomment-region (region-beginning) (region-end)) 
-      (comment-or-uncomment-region (line-beginning-position) (line-end-position)))) 
+  "comment or uncomment highlighted region or line"
+  (interactive)
+  (if mark-active
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
-;; ============================================================================
 (defun move-line-region-up (&optional start end n)
   (interactive "r\np")
   (if (use-region-p) (move-region-up start end n) (move-line-up n)))
 
-;; ============================================================================
 (defun move-line-region-down (&optional start end n)
   (interactive "r\np")
   (if (use-region-p) (move-region-down start end n) (move-line-down n)))
 
-;; ============================================================================a
-(defun dgc-log (arg)
-	"Inserts a log"
-	(interactive "sEnter your log message: ")
-	(progn
-		(setq len (+ (length arg) 2))
-		
-		(insert "log.log\(\"")
-		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;")
-		(indent-according-to-mode)
-		(insert (concat "\nlog.log\(" arg "\)\;"))
-		(indent-according-to-mode)
-		(insert "\nlog.log\(\"")
-		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;")
-		(indent-according-to-mode)))
-		;; (insert-char "=" '(string-to-int (+ (length arg) 2)))))
-
-(defun dgc-level-log (level msg)
-	"Inserts a with custom levellog"
-	(interactive "sEnter log level: \nsEnter your log message: ")
-	(progn
-		(setq len (+ (length msg) 2))
-		
-		(insert (concat "log." level "\(\""))
-		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;")
-		(indent-according-to-mode)
-		(insert (concat "\nlog." level "\(" msg "\)\;"))
-		(indent-according-to-mode)
-		(insert "\nlog." level "\(\"")
-		(insert (concat (make-list len '?=)))
-		(insert"\"\)\;")
-		(indent-according-to-mode)))
-
-;; ============================================================================
 (defun close-all-buffers ()
   "Kills all open buffers"
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
 
 ;; ============================================================================
-(defun random-colour ()
-	"Returns a random colour"
-	(stringp)
-	(random t)
-	(message (nth (random (length (defined-colors))) (defined-colors)) ""))
-
-;; ============================================================================
 
 (defvar my-ediff-bwin-config nil "Window configuration before ediff.")
 (defcustom my-ediff-bwin-reg ?b
-	"*Register to be set up to hold `my-ediff-bwin-config'
+  "*Register to be set up to hold `my-ediff-bwin-config'
     configuration.")
 
 (defvar my-ediff-awin-config nil "Window configuration after ediff.")
 (defcustom my-ediff-awin-reg ?e
-	"*Register to be used to hold `my-ediff-awin-config' window
+  "*Register to be used to hold `my-ediff-awin-config' window
     configuration.")
 
 (defun my-ediff-bsh ()
-	"Function to be called before any buffers or window setup for
+  "Function to be called before any buffers or window setup for
     ediff."
-	(setq my-ediff-bwin-config (current-window-configuration))
-	(when (characterp my-ediff-bwin-reg)
-		(set-register my-ediff-bwin-reg
-									(list my-ediff-bwin-config (point-marker)))))
+  (setq my-ediff-bwin-config (current-window-configuration))
+  (when (characterp my-ediff-bwin-reg)
+    (set-register my-ediff-bwin-reg
+                  (list my-ediff-bwin-config (point-marker)))))
 
 (defun my-ediff-ash ()
-	"Function to be called after buffers and window setup for ediff."
-	(setq my-ediff-awin-config (current-window-configuration))
-	(when (characterp my-ediff-awin-reg)
-    	(set-register my-ediff-awin-reg
-										(list my-ediff-awin-config (point-marker)))))
+  "Function to be called after buffers and window setup for ediff."
+  (setq my-ediff-awin-config (current-window-configuration))
+  (when (characterp my-ediff-awin-reg)
+    (set-register my-ediff-awin-reg
+                  (list my-ediff-awin-config (point-marker)))))
 
 (defun my-ediff-qh ()
-	"Function to be called when ediff quits."
-	(if (buffer-exists "*vc-dir*")
-			(progn (switch-to-buffer "*vc-dir*")
-						 (delete-other-windows))
-		(when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config))))
+  "Function to be called when ediff quits."
+  (if (buffer-exists "*vc-dir*")
+      (progn (switch-to-buffer "*vc-dir*")
+             (delete-other-windows))
+    (when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config))))
 
 (defun vc-dir-kill-all-lines-at-mark ()
-	"remove all files with certain status"
-	(interactive)
-	(backward-word)
-	(let ((marked-word (thing-at-point 'word)))
-		(if (eq (buffer-mode (buffer-name)) "vc-dir-mode")
-				(message marked-word)
-				(save-excursion
-					(beginning-of-buffer)
-					(while (search-forward marked-word) (vc-dir-kill-line))))))
+  "remove all files with certain status"
+  (interactive)
+  (backward-word)
+  (let ((marked-word (thing-at-point 'word)))
+    (if (eq (buffer-mode (buffer-name)) "vc-dir-mode")
+        (message marked-word)
+      (save-excursion
+        (beginning-of-buffer)
+        (while (search-forward marked-word) (vc-dir-kill-line))))))
 
 (defun kill-all-dired-buffers ()
-	"Kill all dired buffers."
-	(interactive)
-	(save-excursion
-		(let ((count 0))
-			(dolist (buffer (buffer-list))
-				(set-buffer buffer)
-				(when (equal major-mode 'dired-mode)
-					(setq count (1+ count))
-					(kill-buffer buffer)))
-			(message "Killed %i dired buffer(s)." count))))
-
+  "Kill all dired buffers."
+  (interactive)
+  (save-excursion
+    (let ((count 0))
+      (dolist (buffer (buffer-list))
+        (set-buffer buffer)
+        (when (equal major-mode 'dired-mode)
+          (setq count (1+ count))
+          (kill-buffer buffer)))
+      (message "Killed %i dired buffer(s)." count))))
 
 ;; ============================================================================
 (defun copy-file-name ()
-	"Returns a random colour"
-	(interactive)
-	(message (concat "Copied " (buffer-file-name)))
-	(kill-new (buffer-file-name)))
+  "Returns a random colour"
+  (interactive)
+  (message (concat "Copied " (buffer-file-name)))
+  (kill-new (buffer-file-name)))
 
 (defun random-hex ()
   "Return a string in the form of #FFFFFF. Choose the number for
    #xffffff randomly using Emacs Lisp's builtin function (random)."
   ;; seed our random number generator: current datetime plus Emacs's
   ;; process ID
-	(interactive)
+  (interactive)
   (random t)
   (message "%s" (format "#%06x" (random #xffffff)))
   )
+
 ;; ============================================================================
 (defun ahahah ()
-	"You know what it displays..."
-	(interactive)
-	(random t)
-	(setq clr (nth (random (length (defined-colors))) (defined-colors)))
-	(message "%s" (propertize "Ah ah ah, you didn't say the magic word!" 
-											'face 
-											`(:foreground ,clr))))
+  "You know what it displays..."
+  (interactive)
+  (random t)
+  (setq clr (nth (random (length (defined-colors))) (defined-colors)))
+  (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
+                            'face
+                            `(:foreground ,clr))))
 
 (defun ido-sort-mtime ()
-	(setq ido-temp-list
-				(sort ido-temp-list
-  (lambda (a b)
-      (let ((a-tramp-file-p (string-match-p ":\\'" a))
-            (b-tramp-file-p (string-match-p ":\\'" b)))
-        (cond
-         ((and a-tramp-file-p b-tramp-file-p)
-          (string< a b))
-         (a-tramp-file-p nil)
-         (b-tramp-file-p t)
-         (t (time-less-p
-             (sixth (file-attributes (concat ido-current-directory b)))
-             (sixth (file-attributes (concat ido-current-directory a))))))))))
-	(ido-to-end  ;; move . files to end (again)
-	 (delq nil (mapcar
-							(lambda (x) (and (char-equal (string-to-char x) ?.) x))
-							ido-temp-list))))
+  (setq ido-temp-list
+        (sort ido-temp-list
+              (lambda (a b)
+                (let ((a-tramp-file-p (string-match-p ":\\'" a))
+                      (b-tramp-file-p (string-match-p ":\\'" b)))
+                  (cond
+                   ((and a-tramp-file-p b-tramp-file-p)
+                    (string< a b))
+                   (a-tramp-file-p nil)
+                   (b-tramp-file-p t)
+                   (t (time-less-p
+                       (sixth (file-attributes (concat ido-current-directory b)))
+                       (sixth (file-attributes (concat ido-current-directory a))))))))))
+  (ido-to-end  ;; move . files to end (again)
+   (delq nil (mapcar
+              (lambda (x) (and (char-equal (string-to-char x) ?.) x))
+              ido-temp-list))))
 
 (defun rotate-windows ()
-   "Rotate your windows" 
-   (interactive) 
-   (cond 
-    ((not (> (count-windows) 1))
-     (message "You can't rotate a single window!"))
-    (t
-     (setq i 1)
-     (setq numWindows (count-windows))
-     (while  (< i numWindows)
-       (let* (
-              (w1 (elt (window-list) i))
-              (w2 (elt (window-list) (+ (% i numWindows) 1)))
-              (b1 (window-buffer w1))
-              (b2 (window-buffer w2))
-              (s1 (window-start w1))
-              (s2 (window-start w2)))
-         (set-window-buffer w1  b2)
-         (set-window-buffer w2 b1)
-         (set-window-start w1 s2)
-         (set-window-start w2 s1)
-         (setq i (1+ i)))))))
+  "Rotate your windows"
+  (interactive)
+  (cond
+   ((not (> (count-windows) 1))
+    (message "You can't rotate a single window!"))
+   (t
+    (setq i 1)
+    (setq numWindows (count-windows))
+    (while  (< i numWindows)
+      (let* (
+             (w1 (elt (window-list) i))
+             (w2 (elt (window-list) (+ (% i numWindows) 1)))
+             (b1 (window-buffer w1))
+             (b2 (window-buffer w2))
+             (s1 (window-start w1))
+             (s2 (window-start w2)))
+        (set-window-buffer w1  b2)
+        (set-window-buffer w2 b1)
+        (set-window-start w1 s2)
+        (set-window-start w2 s1)
+        (setq i (1+ i)))))))
 
 
 (defun find-top-level-dir (dir find-dir)
-	(interactive)
-	(let* ((parent (mapconcat 'identity (butlast (split-string dir "\\/")) "/")))
-		(if (file-exists-p (concat parent "/" find-dir))
-				(progn 
-					(setq ret nil)
-					(find-top-level-dir parent find-dir))
-			(setq ret dir))
-		)
-	ret)
+  (interactive)
+  (let* ((parent (mapconcat 'identity (butlast (split-string dir "\\/")) "/")))
+    (if (file-exists-p (concat parent "/" find-dir))
+        (progn
+          (setq ret nil)
+          (find-top-level-dir parent find-dir))
+      (setq ret dir))
+    )
+  ret)
 
 (defun format-member-vars (var-list &optional UNDERSCORES)
   (interactive)
-	(format "\n\t\t%s\n"
-		(mapconcat
-		 #'(lambda (arg) 
-				 (if UNDERSCORES (format "\t\tvar _%s;" arg) (format "\t\tvar %s;" arg)))
-		 (split-string var-list ",\\s-*" t) "\n")))
+  (format "\n\t\t%s\n"
+          (mapconcat
+           #'(lambda (arg)
+               (if UNDERSCORES (format "\t\tvar _%s;" arg) (format "\t\tvar %s;" arg)))
+           (split-string var-list ",\\s-*" t) "\n")))
 
 (defun format-member-vars-single-line (var-list &optional UNDERSCORES)
   (interactive)
-	(format "\n\t\tvar %s;\n"
-					(mapconcat
-					 #'(lambda (arg) 
-							 (if UNDERSCORES (format "_%s" arg) (format "%s" arg)))
-					 (split-string var-list ",\\s-*" t) ", ")))
+  (format "\n\t\tvar %s;\n"
+          (mapconcat
+           #'(lambda (arg)
+               (if UNDERSCORES (format "_%s" arg) (format "%s" arg)))
+           (split-string var-list ",\\s-*" t) ", ")))
 
 (defun format-init-members (var-list &optional UNDERSCORES)
   (interactive)
   (mapconcat
-	 #'(lambda (arg)
-			 (if UNDERSCORES (format "_%s = %s;" arg arg) (format "this.%s = %s;" arg arg)))
-	 (split-string var-list ",\\s-*" t) "\n\t\t\t\t"))
+   #'(lambda (arg)
+       (if UNDERSCORES (format "_%s = %s;" arg arg) (format "this.%s = %s;" arg arg)))
+   (split-string var-list ",\\s-*" t) "\n\t\t\t\t"))
 
 (defun format-getters (var-list &optional UNDERSCORES)
   (interactive)
-	(mapconcat
-	 #'(lambda (var)
-			 (format ",\n\n%s" (inject-getter var UNDERSCORES)))
-	 (split-string var-list ",\\s-*" t) ""))
-	 
+  (mapconcat
+   #'(lambda (var)
+       (format ",\n\n%s" (inject-getter var UNDERSCORES)))
+   (split-string var-list ",\\s-*" t) ""))
+
 (defun inject-getter (var-name &optional UNDERSCORES)
-	(interactive)
-	(if (not (boundp 'UNDERSCORES))
-			(setq UNDERSCORES nil))
-	(with-temp-buffer
-		(js-mode)
-		(insert "reqgetter")
-		(yas-expand)
-		(insert (upcase-initials var-name))
-		(yas-next-field)
-		(insert (if UNDERSCORES (concat "_" var-name ) var-name))
-		(format "%s" (buffer-substring (point-min) (point-max)))))
+  (interactive)
+  (if (not (boundp 'UNDERSCORES))
+      (setq UNDERSCORES nil))
+  (with-temp-buffer
+    (js-mode)
+    (insert "reqgetter")
+    (yas-expand)
+    (insert (upcase-initials var-name))
+    (yas-next-field)
+    (insert (if UNDERSCORES (concat "_" var-name ) var-name))
+    (format "%s" (buffer-substring (point-min) (point-max)))))
 
 (defun add-file-to-project-cache ()
   (interactive)
-	(if (and (not (assoc-string (file-name-nondirectory (buffer-file-name)) file-cache-alist))
-					 (find-file-upwards ".tags")
-					 (eq (buffer-mode (buffer-name)) 'js-mode)
-					 (not (string-match "Spec" (buffer-name))))
-			(progn 
-				(message "[filecache] Adding %s to the file cache..." (buffer-file-name))
-				(push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
-	t)
+  (if (and (not (assoc-string (file-name-nondirectory (buffer-file-name)) file-cache-alist))
+           (find-file-upwards ".tags")
+           (eq (buffer-mode (buffer-name)) 'js-mode)
+           (not (string-match "Spec" (buffer-name))))
+      (progn
+        (message "[filecache] Adding %s to the file cache..." (buffer-file-name))
+        (push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
+  t)
 
 (defun add-file-to-ext-lib-cache ()
-	(interactive)
-		(let ((lib-cache (gethash project-id external-cache-hash))
-					(temp-file-cache-alist file-cache-alist))
-			(if (and (boundp 'project-id) 
-							 (not (eq project-id nil))
-							 (not (assoc-string (file-name-nondirectory (buffer-file-name)) (gethash project-id external-cache-hash)))
-							 (find-file-upwards ".filecache")
-							 (eq (buffer-mode (buffer-name)) 'js-mode))
-					(progn 
-						(message "[filecache] Adding %s to the external library cache..." (buffer-file-name))
-						(push 
-						 (list (file-name-nondirectory (buffer-file-name))
-									 (file-name-directory (buffer-file-name)))
-						 (gethash project-id external-cache-hash))
-						(setq file-cache-alist (gethash project-id external-cache-hash))
-						(file-cache-save-cache-to-file (find-file-upwards ".filecache"))
-						(setq file-cache-alist temp-file-cache-alist))))
-		t)
+  (interactive)
+  (let ((lib-cache (gethash project-id external-cache-hash))
+        (temp-file-cache-alist file-cache-alist))
+    (if (and (boundp 'project-id)
+             (not (eq project-id nil))
+             (not (assoc-string (file-name-nondirectory (buffer-file-name)) (gethash project-id external-cache-hash)))
+             (find-file-upwards ".filecache")
+             (eq (buffer-mode (buffer-name)) 'js-mode))
+        (progn
+          (message "[filecache] Adding %s to the external library cache..." (buffer-file-name))
+          (push
+           (list (file-name-nondirectory (buffer-file-name))
+                 (file-name-directory (buffer-file-name)))
+           (gethash project-id external-cache-hash))
+          (setq file-cache-alist (gethash project-id external-cache-hash))
+          (file-cache-save-cache-to-file (find-file-upwards ".filecache"))
+          (setq file-cache-alist temp-file-cache-alist))))
+  t)
 
 
 
@@ -973,36 +866,36 @@ or nil if not found."
 
 
 (defun find-tags-file-upwards ()
-	"Get and set the tags file"
-	(interactive)
-	(if (eq tags-table-list nil)
-			(let ((my-tags-file (file-truename (find-file-upwards ".tags"))))
-				(when my-tags-file
-					(clear-tags-table)
-					(ac-etags-clear-cache)
-					(message "Loading tags file: %s" my-tags-file)
-					(visit-tags-table my-tags-file)))
-		(progn (ac-etags-setup)
-					 (ac-etags-ac-setup))))
+  "Get and set the tags file"
+  (interactive)
+  (if (eq tags-table-list nil)
+      (let ((my-tags-file (file-truename (find-file-upwards ".tags"))))
+        (when my-tags-file
+          (clear-tags-table)
+          (ac-etags-clear-cache)
+          (message "Loading tags file: %s" my-tags-file)
+          (visit-tags-table my-tags-file)))
+    (progn (ac-etags-setup)
+           (ac-etags-ac-setup))))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the
 path to that file or nil if a tags file is not found. Returns nil if the buffer is
 not visiting a file"
   (progn
-		(defun find-tags-file-r (path)
-			"find the tags file from the parent directories"
-			(let* ((parent (file-name-directory path))
-						 (possible-tags-file (concat parent ".tags")))
-				(cond
-				 ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
-				 ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
-				 (t (find-tags-file-r (directory-file-name parent))))))
-		
+    (defun find-tags-file-r (path)
+      "find the tags file from the parent directories"
+      (let* ((parent (file-name-directory path))
+             (possible-tags-file (concat parent ".tags")))
+        (cond
+         ((file-exists-p possible-tags-file) (throw 'found-it possible-tags-file))
+         ((string= "/TAGS" possible-tags-file) (error "no tags file found"))
+         (t (find-tags-file-r (directory-file-name parent))))))
+
     (if (buffer-file-name)
-        (catch 'found-it 
+        (catch 'found-it
           (find-tags-file-r (buffer-file-name)))
-			(error "buffer is not visiting a file"))))
+      (error "buffer is not visiting a file"))))
 
 (defun jds-set-tags-file-path ()
   "calls `jds-find-tags-file' to recursively search up the directory tree to find
@@ -1012,137 +905,134 @@ otherwise raises an error."
   (setq tags-table-list (cons (jds-find-tags-file) tags-table-list)))
 
 (defun open-test ()
-	"replace name "
-	(interactive)
-	(let ((file-ext (file-name-extension (buffer-file-name))))
-		(if (string-match project-test-path (file-truename ( buffer-file-name )))
-				(find-file (replace-regexp-in-string project-test-path project-src-path
-										(replace-regexp-in-string (concat project-test-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
-			(find-file
-			 (replace-regexp-in-string project-src-path project-test-path
-																 (replace-regexp-in-string (concat "\\\." file-ext) (concat project-test-ext "\." file-ext) (buffer-file-name)))))))
+  "replace name "
+  (interactive)
+  (let ((file-ext (file-name-extension (buffer-file-name))))
+    (if (string-match project-test-path (file-truename ( buffer-file-name )))
+        (find-file (replace-regexp-in-string project-test-path project-src-path
+                                             (replace-regexp-in-string (concat project-test-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
+      (find-file
+       (replace-regexp-in-string project-src-path project-test-path
+                                 (replace-regexp-in-string (concat "\\\." file-ext) (concat project-test-ext "\." file-ext) (buffer-file-name)))))))
 
 (defun grunt ()
   "Run grunt"
-	(if (buffer-exists "*grunt*")
-			(kill-buffer "*grunt*"))
+  (if (buffer-exists "*grunt*")
+      (kill-buffer "*grunt*"))
   (interactive)
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-        (result (call-process-shell-command (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
-        (output (with-current-buffer grunt-buffer (buffer-string))))
+         (result (call-process-shell-command (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
+         (output (with-current-buffer grunt-buffer (buffer-string))))
     (cond ((zerop result)
            (message "Grunt completed without errors"))
           (t
            (message nil)
-					 (delete-windows-on "*grunt*")
+           (delete-windows-on "*grunt*")
            (popwin:popup-buffer "*grunt*")))))
 
 (defun grunt-this-test-file ()
   "Run grunt"
   (interactive)
-	(if (buffer-exists "*grunt*")
-			(kill-buffer "*grunt*"))
+  (if (buffer-exists "*grunt*")
+      (kill-buffer "*grunt*"))
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-        (result (call-process-shell-command
-								 (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
-        (output (with-current-buffer grunt-buffer (buffer-string))))
+         (result (call-process-shell-command
+                  (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
+         (output (with-current-buffer grunt-buffer (buffer-string))))
     (cond ((zerop result)
            (message "Grunt completed without errors"))
           (t
            (message nil)
-					 (delete-windows-on "*grunt*")
+           (delete-windows-on "*grunt*")
            (popwin:popup-buffer "*grunt*")))))
 
 (defun json-format ()
-	(interactive)
-	(save-excursion
-		(shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
 
 (defun format-code ()
-	"Prints cool message if in javascript mode"
-	(interactive)
-	(if (eq (buffer-mode (buffer-name)) 'js-mode)
-			(jshint-code))
-	nil)
+  "Prints cool message if in javascript mode"
+  (interactive)
+  (if (eq (buffer-mode (buffer-name)) 'js-mode)
+      (jshint-code))
+  nil)
 
 (defun jshint-code ()
-	"Reformats the code to go with jshint."
-	(interactive)
-		(save-excursion
-			(replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
-			(replace-string-in-buffer "function(" "function (")	; Add space between function and parantheses
-			(replace-string-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
-			(replace-string-in-buffer "if(" "if (") ; Add space between if and parantheses
-			(replace-string-in-buffer "for(" "for (") ; Add space between for and parantheses
-			(replace-string-in-buffer "){" ") {") ; Add space between close paren and open brace
-			(replace-string-in-buffer "{}" "{ }") ; Add space between open-close braces
-			(replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
-			(replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
-			(replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-			(replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)") 
-			;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
-			(replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
-			(replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
-			(replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
-			(replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "")	; Remove double whitespace
-			(replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
-			(replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
-			(replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
-			(replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
-			(replace-string-in-buffer "    " "	") ; Reformat for the use of tabs over spaces
-			))
+  "Reformats the code to go with jshint."
+  (interactive)
+  (save-excursion
+    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
+    (replace-string-in-buffer "function(" "function (") ; Add space between function and parantheses
+    (replace-string-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
+    (replace-string-in-buffer "if(" "if (") ; Add space between if and parantheses
+    (replace-string-in-buffer "for(" "for (") ; Add space between for and parantheses
+    (replace-string-in-buffer "){" ") {") ; Add space between close paren and open brace
+    (replace-string-in-buffer "{}" "{ }") ; Add space between open-close braces
+    (replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
+    (replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
+    (replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
+    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)")
+    ;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
+    (replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
+    (replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
+    (replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
+    (replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
+    (replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
+    (replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
+    (replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
+    (replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
+    (replace-string-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
+    ))
 
 (defun js2r--extract-method ()
   (interactive)
   (js2-mode)
-	(call-interactively (js2r-extract-method))
-	(js-mode))
+  (call-interactively (js2r-extract-method))
+  (js-mode))
 
 (defun auto-type-string (string)
   (interactive)
-	(mapc #'(lambda (letter) (execute-kbd-macro letter)) (split-string string ""))
-	(execute-kbd-macro [return])
-	nil)
+  (mapc #'(lambda (letter) (execute-kbd-macro letter)) (split-string string ""))
+  (execute-kbd-macro [return])
+  nil)
 
 (defun load-custom-theme (arg)
-	(interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
-	(load-file arg))
+  (interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
+  (load-file arg))
 
 (defun replace-regexp-in-buffer (arg1 arg2)
-	"Goes to beginning of buffer for each replace-regexp"
-	 (save-excursion
-		 (beginning-of-buffer)
-		 (replace-regexp arg1 arg2)))
+  "Goes to beginning of buffer for each replace-regexp"
+  (save-excursion
+    (beginning-of-buffer)
+    (replace-regexp arg1 arg2)))
 
 (defun replace-string-in-buffer (arg1 arg2)
-	"Goes to beginning of buffer for each replace-regexp"
-	 (save-excursion
-		 (beginning-of-buffer)
-		 (replace-regexp arg1 arg2)))
+  "Goes to beginning of buffer for each replace-regexp"
+  (save-excursion
+    (beginning-of-buffer)
+    (replace-regexp arg1 arg2)))
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
 
-; Clears the double blank lines from a file leaving only single lines
+;Clears the double blank lines from a file leaving only single lines
 (fset 'clear-all-double-lines
-   [?\M-> ?\C-u ?0 ?\M-x ?c ?l ?e ?a ?r ?- ?d ?o ?u ?b ?l ?e ?- ?l ?i ?n ?e return ?\C-x ?\C-o ?\C-x ?\C-o ?\C-x ?\C-o])
+      [?\M-> ?\C-u ?0 ?\M-x ?c ?l ?e ?a ?r ?- ?d ?o ?u ?b ?l ?e ?- ?l ?i ?n ?e return ?\C-x ?\C-o ?\C-x ?\C-o ?\C-x ?\C-o])
 
 (fset 'clear-double-line
-   "\C-r^\C-q\C-j$\C-x\C-o")
+      "\C-r^\C-q\C-j$\C-x\C-o")
 
 ; Hide all functions in a file using hs minor mode
 (fset 'hide-prev-function
-   [?\C-r ?: ?. ?* ?f ?u ?n ?c ?t ?i ?o ?n ?\C-e ?\s-- ?\C-a])
+      [?\C-r ?: ?. ?* ?f ?u ?n ?c ?t ?i ?o ?n ?\C-e ?\s-- ?\C-a])
 
 (fset 'press-return
-			[?c ?d ? ?$ ?T ?E ?S ?T ?S return])
+      [?c ?d ? ?$ ?T ?E ?S ?T ?S return])
 
 (fset 'hide-all-functions
-   [?\M-> ?\C-u ?0 ?\M-x ?h ?i ?d ?e ?- ?p ?r ?e ?v ?- ?f ?u ?n ?c ?t ?i ?o ?n return ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e])
-
-(fset 'cd-tests-grunt-watch
-			[?c ?d ?  ?$ ?T ?E ?S ?T ?S return ?g ?r ?u ?n ?t ? ?w ?a ?t ?c ?h return])
+      [?\M-> ?\C-u ?0 ?\M-x ?h ?i ?d ?e ?- ?p ?r ?e ?v ?- ?f ?u ?n ?c ?t ?i ?o ?n return ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e ?\C-e])
 
 (provide 'functions)
 ;;; functions.el ends here

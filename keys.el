@@ -179,10 +179,7 @@
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
 
-(global-set-key (kbd "C-§") 'dgc-log)
-(global-set-key (kbd "C-±") 'dgc-level-log)
-(global-set-key (kbd "H-/") 'go-to-grep-and-rgrep)
-(global-set-key (kbd "H-\\") 'go-to-agenda)
+(global-set-key (kbd "H-/") 'set-up-ack-results-with-prompt)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -205,7 +202,6 @@
 ;; It's Key Chord Time!
 (key-chord-define-global "IO" 'open-in-and-activate-intellj)
 (key-chord-define-global (kbd "C-c C-d") 'dash-at-point)
-(key-chord-define-global "??" 'set-up-ack-results-with-prompt)
 
 (provide 'keys)
 ;;; keys.el ends here
