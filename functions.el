@@ -1013,6 +1013,14 @@ otherwise raises an error."
     (beginning-of-buffer)
     (replace-regexp arg1 arg2)))
 
+(defun add-quotation ()
+  (interactive)
+  (if (use-region-p)
+			(save-excursion
+				(insert "\"")
+				(goto-char (region-end))
+				(insert "\""))))
+
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------

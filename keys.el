@@ -31,6 +31,7 @@
 (global-set-key [M-tab] 'dabbrev-expand)
 
 (global-set-key (kbd "RET") 'smart-newline)
+(global-set-key (kbd "M-\"") 'add-quotation)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
