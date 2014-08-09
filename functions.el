@@ -606,11 +606,11 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun move-line-region-up (&optional start end n)
   (interactive "r\np")
-  (if (use-region-p) (move-region-up start end n) (move-line-up n)))
+  (if (use-region-p) (move-region-up start end n) (move-line-up)))
 
 (defun move-line-region-down (&optional start end n)
   (interactive "r\np")
-  (if (use-region-p) (move-region-down start end n) (move-line-down n)))
+  (if (use-region-p) (move-region-down start end n) (move-line-down)))
 
 (defun close-all-buffers ()
   "Kills all open buffers"
@@ -1016,8 +1016,8 @@ otherwise raises an error."
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
-
-;Clears the double blank lines from a file leaving only single lines
+																				;
+; Clears the double blank lines from a file leaving only single lines
 (fset 'clear-all-double-lines
       [?\M-> ?\C-u ?0 ?\M-x ?c ?l ?e ?a ?r ?- ?d ?o ?u ?b ?l ?e ?- ?l ?i ?n ?e return ?\C-x ?\C-o ?\C-x ?\C-o ?\C-x ?\C-o])
 
