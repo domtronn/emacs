@@ -344,9 +344,9 @@ install the memoized function over the original function."
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
   (let ((plface (powerline-make-face color)))
     (if (eq 'right (get-scroll-bar-mode))
-        (propertize " " 'display '((space :align-to (- right-fringe 21)))
-                    'face plface)
-      (propertize " " 'display '((space :align-to (- right-fringe 24)))
+        (propertize " " 'display '((space :align-to (- right-fringe 27))
+                    'face plface))
+      (propertize " " 'display '((space :align-to (- right-fringe 30)))
                   'face plface))))
 
 (defun powerline-make-text
@@ -447,6 +447,11 @@ install the memoized function over the original function."
 (defpowerline status      "%s")
 (defpowerline emacsclient mode-line-client)
 (defpowerline vc vc-mode)
+(defpowerline time (format-time-string "%H:%M"))
+(defpowerline emms			 (if (not (eq nil (emms-playlist-current-selected-track))) 
+														 (concat (emms-mode-line-icon-function) "[" emms-playing-time-string "]")
+														 (format "")
+													 ))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -470,11 +475,13 @@ install the memoized function over the original function."
                              (powerline-minor-modes    'left        powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
                              (powerline-vc             'center                        powerline-color2  )
+                             (powerline-emms           'center                        powerline-color2  )
                              (powerline-make-fill                                     powerline-color2  )
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
                              (powerline-percent        'right  nil  powerline-color1  )
+                             (powerline-time           'right  nil  )
                              (powerline-make-text      "  "    nil  )))))
 
 (provide 'powerline)
