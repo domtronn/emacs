@@ -42,7 +42,6 @@
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
-(load-file (concat USERPATH "/elisp/powerline.el"))
 
 ;; Cool but needs some work
 ;; (load-file (concat USERPATH "/elisp/minimap.el"))
@@ -130,6 +129,16 @@
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") '(lambda () (interactive) (kill-all-dired-buffers)))))
 
 (require 'git-messenger)
+
+(require 'emms-setup)
+(require 'emms-info-mediainfo)
+(require 'emms-playing-time)
+(require 'emms-mode-line-icon)
+(require 'emms-browser)
+(emms-all)
+(emms-default-players)
+(add-to-list 'emms-info-functions #'emms-info-mediainfo)
+(setq emms-source-file-default-directory "~/Music/iTunes/iTunes Media/Music")
 
 (require 'ack-and-a-half)
 
@@ -420,6 +429,7 @@
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
+(load-file (concat USERPATH "/elisp/powerline.el"))
 
 (server-start)
 
