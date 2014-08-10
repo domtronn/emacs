@@ -105,18 +105,25 @@
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (file-name-directory (buffer-file-name)))))
-(global-set-key [f4] 'vc-next-action)
+(global-set-key [f4] 'run-current-file)
+(global-set-key (kbd "<S-f4>") 'alt-run-current-file)
+
 (global-set-key [f5] 'vc-ediff)
+(global-set-key (kbd "<M-f5>") 'vc-next-action)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
 (global-set-key [f7] 'occur-at-point)
-(global-set-key [f8] 'run-current-file)
-(global-set-key (kbd "<S-f8>") 'alt-run-current-file)
 
-(global-set-key (kbd "<M-S-f8>") 'f1-toggle-fullscreen)
-(global-set-key (kbd "<M-S-f9>") 'f2-remove-tool-bar)
-(global-set-key (kbd "<M-S-f10>") 'f3-true-fullscreen)
+(global-set-key [f8] 'emms-smart-browse)
+(global-set-key (kbd "<S-f8>") 'go-to-emms-playlist)
+(global-set-key (kbd "<M-f9>") 'emms-next)
+(global-set-key (kbd "<M-f8>") 'emms-next)
+(global-set-key (kbd "<M-f7>") 'emms-previous)
+
+(global-set-key (kbd "<M-S-f1>") 'f1-toggle-fullscreen)
+(global-set-key (kbd "<M-S-f2>") 'f2-remove-tool-bar)
+(global-set-key (kbd "<M-S-f3>") 'f3-true-fullscreen)
 
 (global-set-key [f11] 'browse-sandbox)
 (global-set-key [f10] 'xkcd)
@@ -124,19 +131,21 @@
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
 
+(global-set-key (kbd "C-c P") 'emms-pause)
+
 ;; Buffer Movemenet
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
 (global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
 
-(global-set-key [s-down] 'move-line-region-down)
-(global-set-key [s-up] 'move-line-region-up)
+(global-set-key (kbd "s-N") 'move-section-down)
+(global-set-key [s-down] 'move-section-down)
+(global-set-key (kbd "s-P") 'move-section-up)
+(global-set-key [s-up] 'move-section-up)
 
 (global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
 (global-set-key [C-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [C-down] '(lambda () (interactive) (next-line 5)))
-(global-set-key (kbd "M-p") '(lambda () (interactive) (previous-line 5)))
-(global-set-key (kbd "M-n") '(lambda () (interactive) (next-line 5)))
 
 (global-set-key [S-M-up] '(lambda () (interactive) (previous-line 15)))
 (global-set-key [S-M-down] '(lambda () (interactive) (next-line 15)))
