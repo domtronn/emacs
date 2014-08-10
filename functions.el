@@ -428,6 +428,21 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
    'create-tags
    (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
 
+(defun go-to-emms-playlist ()
+  (interactive)
+	(if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
+			(delete-window)
+			(if (buffer-exists " *EMMS Playlist*")
+					(progn
+						(delete-other-windows)
+						(split-window-horizontally)
+						(enlarge-window-horizontally 50)
+						(switch-to-buffer " *EMMS Playlist*")
+						(rotate-windows)
+						(other-window 1)
+						(set-window-dedicated-p (get-buffer-window) t)
+						(setq window-size-fixed t)))))
+
 (defun set-up-test-watch ()
   "Sets the display ready for grunt watching"
   (interactive)
@@ -604,11 +619,11 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
-(defun move-line-region-up (&optional start end n)
+(defun move-section-up (&optional start end n)
   (interactive "r\np")
   (if (use-region-p) (move-region-up start end n) (move-line-up)))
 
-(defun move-line-region-down (&optional start end n)
+(defun move-section-down (&optional start end n)
   (interactive "r\np")
   (if (use-region-p) (move-region-down start end n) (move-line-down)))
 
