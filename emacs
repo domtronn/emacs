@@ -68,7 +68,6 @@
 (autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
 
-(require 'ibuffer-git)
 (require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-to-list 'ibuffer-never-show-predicates "^\\*")
