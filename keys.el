@@ -118,7 +118,7 @@
 (global-set-key [f8] 'emms-smart-browse)
 (global-set-key (kbd "<S-f8>") 'go-to-emms-playlist)
 (global-set-key (kbd "<M-f9>") 'emms-next)
-(global-set-key (kbd "<M-f8>") 'emms-next)
+(global-set-key (kbd "<M-f8>") 'emms-pause)
 (global-set-key (kbd "<M-f7>") 'emms-previous)
 
 (global-set-key (kbd "<M-S-f1>") 'f1-toggle-fullscreen)
