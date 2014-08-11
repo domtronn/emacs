@@ -15,9 +15,11 @@
 
 (require 'cl)
 
+(defvar powerline-color0)
 (defvar powerline-color1)
 (defvar powerline-color2)
 
+(setq powerline-color0 "grey12")
 (setq powerline-color1 "grey22")
 (setq powerline-color2 "grey40")
 
@@ -470,11 +472,11 @@ install the memoized function over the original function."
                     '(:eval (concat
                              (powerline-lcl            'left   nil  )
                              (powerline-rmw            'left   nil  )
-                             (powerline-buffer-id      'left   nil  powerline-color1  )
-                             (powerline-major-mode     'left        powerline-color1  )
+                             (powerline-buffer-id      'left   nil  powerline-color0  )
+														 (powerline-major-mode     'left        powerline-color0  powerline-color1  )
                              (powerline-minor-modes    'left        powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
-                             (powerline-vc             'center                        powerline-color2  )
+                             (powerline-vc             'center                        powerline-color2)
                              (powerline-emms           'center                        powerline-color2  )
                              (powerline-make-fill                                     powerline-color2  )
                              (powerline-row            'right       powerline-color1  powerline-color2  )
