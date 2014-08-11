@@ -4,8 +4,9 @@
 (custom-theme-set-variables
  'gruvbox
  '(ansi-color-names-vector ["#3c3836" "#fb4934" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
- '(powerline-color2 "#515151")
- '(powerline-color1 "#3C3C3C"))
+ '(powerline-color0 "#3c3836")
+ '(powerline-color1 "#3C3C3C")
+ '(powerline-color2 "#515151"))
 
 (custom-theme-set-faces
  'gruvbox
