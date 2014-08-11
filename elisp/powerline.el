@@ -451,7 +451,7 @@ install the memoized function over the original function."
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
 (defpowerline emms			 (if (not (eq nil (emms-playlist-current-selected-track))) 
-														 (concat (emms-mode-line-icon-function) "[" emms-playing-time-string "]")
+														 (emms-mode-line-icon-function)
 														 (format "")
 													 ))
 
