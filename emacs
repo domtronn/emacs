@@ -138,7 +138,7 @@
 (emms-all)
 (emms-default-players)
 (add-to-list 'emms-info-functions #'emms-info-mediainfo)
-(setq emms-source-file-default-directory "~/Music/iTunes/iTunes Media/Music")
+(setq emms-source-file-default-directory "~/Music/")
 
 (require 'ack-and-a-half)
 
