@@ -6,6 +6,7 @@
 *srecode*
 *.mc-lists.el*
 *.emmscache*
+*archive*
 
 # Dynamic Emacs Files #
 #######################
