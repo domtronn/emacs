@@ -71,7 +71,6 @@
 (require 'ibuffer-git)
 (require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
-(add-hook 'ibuffer-mode-hook 'ibuffer-vc-set-filter-groups-by-vc-root)
 (add-to-list 'ibuffer-never-show-predicates "^\\*")
 
 (autoload 'css-color-mode "mon-css-color" "" t)
@@ -393,7 +392,6 @@
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
-(setq ido-use-finename-at-point 'guess)
 (setq ido-create-new-buffer 'always)
 (setq ido-file-extensions-order '(".js" ".json" ".css" ".as" ".php" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
 
