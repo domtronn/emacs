@@ -230,6 +230,11 @@
             (setq wordCount (1+ wordCount))))
       wordCount)))
 
+(defun my-malabar-jump-to-thing ()
+  (interactive)
+	(ring-insert find-tag-marker-ring (point-marker))
+  (malabar-jump-to-thing (point)))
+
 (defun go-to-class ()
   "Find and go to the class at point"
   (interactive)
@@ -375,6 +380,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
            (find-file (concat (file-name-sans-extension fName) ".pdf")))
           ((string-equal fSuffix "js")
            (grunt-exec))
+					((string-equal fSuffix "java")
+           (malabar-run-junit-test))
           (t (if progName
                  (progn
                    (message "Running…")
@@ -430,6 +437,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun go-to-emms-playlist ()
   (interactive)
+	(if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
+			(delete-window))
 	(if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
 			(delete-window)
 			(if (buffer-exists " *EMMS Playlist*")
@@ -442,6 +451,27 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 						(other-window 1)
 						(set-window-dedicated-p (get-buffer-window) t)
 						(setq window-size-fixed t)))))
+
+(defun go-to-emms-browser ()
+  (interactive)
+	(if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
+			(delete-window))
+	(if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
+			(delete-window)
+		(progn
+			(delete-other-windows)
+			(split-window-horizontally)
+			(other-window 1)
+			(enlarge-window-horizontally 50)
+			(other-window 1)
+			(if (buffer-exists "Browsing by: artist")
+					(switch-to-buffer "Browsing by: artist"))
+			(if (buffer-exists "Browsing by: album")
+					(switch-to-buffer "Browsing by: album"))
+			(if (buffer-exists "Browsing by: genre")
+					(switch-to-buffer "Browsing by: genre"))
+			(set-window-dedicated-p (get-buffer-window) t)
+			(setq window-size-fixed t))))
 
 (defun set-up-test-watch ()
   "Sets the display ready for grunt watching"
