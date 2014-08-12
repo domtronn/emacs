@@ -128,15 +128,19 @@
 
 (require 'git-messenger)
 
-(require 'emms-setup)
+(require 'emms-setup)  ;; brew install mediainfo
 (require 'emms-info-mediainfo)
 (require 'emms-playing-time)
 (require 'emms-mode-line-icon)
 (require 'emms-browser)
+(require 'emms-get-lyrics)
 (emms-all)
 (emms-default-players)
 (add-to-list 'emms-info-functions #'emms-info-mediainfo)
 (setq emms-source-file-default-directory "~/Music/")
+
+(add-to-list 'load-path (concat USERPATH "/elisp/emacs-w3m/"))
+(require 'w3m-load)   ;; brew install w3m
 
 (require 'ack-and-a-half)
 
