@@ -84,6 +84,7 @@
 (global-set-key (kbd "H-.") 'etags-select-find-tag-at-point);;etags-select-find-tag-at-point)
 (global-set-key (kbd "H-?") 'etags-select-find-tag)
 (global-set-key (kbd "H-,") 'pop-tag-mark)
+(global-set-key (kbd "H-<") 'pop-to-mark-command)
 
 ;; move and resize windows
 (global-set-key [M-s-left] 'windmove-left)
