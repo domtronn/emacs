@@ -71,6 +71,7 @@
 (require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-to-list 'ibuffer-never-show-predicates "^\\*")
+(add-hook 'ibuffer-mode-hook 'ibuffer-vc-set-filter-groups-by-vc-root)
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
@@ -320,15 +321,13 @@
 					))))
 
 ;; Java Mode - Malabar Mode
-;; (require 'cedet)
-;; (require 'semantic)
+(require 'cedet)
+(require 'semantic)
+(require 'malabar-mode)
+(semantic-mode 1)
+(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
+(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
 
-;; (semantic-mode 1)
-;; (require 'malabar-mode)
-;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
-
-;; (add-to-list 'load-path (concat USERPATH "/elisp/jdee/lisp"))
-;; (load "jde")
 
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
 (add-to-list 'repository-root-matchers repository-root-matcher/git)
