@@ -139,10 +139,15 @@
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
 (global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
 
-(global-set-key (kbd "s-N") 'move-section-down)
-(global-set-key [s-down] 'move-section-down)
-(global-set-key (kbd "s-P") 'move-section-up)
-(global-set-key [s-up] 'move-section-up)
+(global-set-key (kbd "s-[") 'backward-paragraph)
+(global-set-key (kbd "M-p") 'backward-paragraph)
+(global-set-key (kbd "s-]") 'forward-paragraph)
+(global-set-key (kbd "M-n") 'forward-paragraph)
+
+(global-set-key (kbd "s-N") 'drag-stuff-down)
+(global-set-key [s-down] 'drag-stuff-down)
+(global-set-key (kbd "s-P") 'drag-stuff-up)
+(global-set-key [s-up] 'drag-stuff-up)
 
 (global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
 (global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
