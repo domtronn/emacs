@@ -110,6 +110,7 @@ If the file is not under version control, nil is returned instead."
           (let* ((root-fn-name (intern (format "vc-%s-root" (downcase (symbol-name backend)))))
                  (root-dir
                   (cond
+									 ((memq backend '(svn SVN)) (repository-root file-name))
                    ((fboundp root-fn-name) (funcall root-fn-name file-name)) ; git, svn, hg, bzr (at least)
                    ((memq backend '(darcs DARCS)) (vc-darcs-find-root file-name))
                    ((memq backend '(cvs CVS)) (vc-find-root file-name "CVS"))
