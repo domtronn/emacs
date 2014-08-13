@@ -30,7 +30,6 @@
 ;;------------------
 (load-file (concat USERPATH "/elisp/buffer_move.el"))
 (load-file (concat USERPATH "/elisp/framemove.el"))
-(load-file (concat USERPATH "/elisp/move_line_region.el"))
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
 (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
@@ -68,10 +67,11 @@
 (autoload 'hideshowvis-enable "hideshowvis")
 (autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
 
+(require 'ibuffer-git)
 (require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-to-list 'ibuffer-never-show-predicates "^\\*")
-(add-hook 'ibuffer-mode-hook 'ibuffer-vc-set-filter-groups-by-vc-root)
+(eval-after-load 'ibuffer '(ibuffer-vc-set-filter-groups-by-vc-root))
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
@@ -109,6 +109,9 @@
 (require 'button-lock)
 (require 'fill-column-indicator)
 (setq fci-rule-column 160)
+
+(require 'drag-stuff)
+(drag-stuff-global-mode 1)
 
 (require 'rfringe)
 (require 'git-gutter-fringe)
@@ -327,7 +330,8 @@
 (semantic-mode 1)
 (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
-
+(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
+(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
 
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
 (add-to-list 'repository-root-matchers repository-root-matcher/git)
