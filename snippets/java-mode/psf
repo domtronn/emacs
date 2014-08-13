@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: psf
+# key: psf
+# --
+private static final ${1:Type} ${2:NAME} = $3;
