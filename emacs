@@ -41,6 +41,8 @@
 (load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
+(load-file (concat USERPATH "/elisp/drag-stuff.el"))
+(load-file (concat USERPATH "/elisp/git-timemachine.el"))
 
 ;; Cool but needs some work
 ;; (load-file (concat USERPATH "/elisp/minimap.el"))
@@ -110,7 +112,6 @@
 (require 'fill-column-indicator)
 (setq fci-rule-column 160)
 
-(require 'drag-stuff)
 (drag-stuff-global-mode 1)
 
 (require 'rfringe)
