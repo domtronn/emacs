@@ -85,6 +85,8 @@
 (require 'anzu)
 (global-anzu-mode +1)
 
+(require 'operate-on-number)
+
 (add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
 (require 'rails)
 
@@ -400,7 +402,7 @@
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)
-(setq ido-file-extensions-order '(".js" ".json" ".css" ".as" ".php" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
+(setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
 
 ;; sort ido filelist by mtime instead of alphabetically
 (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
