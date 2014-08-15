@@ -25,11 +25,11 @@
 
 (defun use-tabs ()
   (interactive)
-  (setq indent-tabs-mode t))
+  (setq-default indent-tabs-mode t))
 
 (defun use-spaces ()
   (interactive)
-  (setq indent-tabs-mode nil))
+  (setq-default indent-tabs-mode nil))
 
 (defun toggle-fullscreen ()
   "Toggle full screen."
