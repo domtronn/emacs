@@ -135,6 +135,8 @@
 
 (global-set-key (kbd "C-c P") 'emms-pause)
 
+(global-set-key (kbd "s-@") 'operate-on-number-at-point)
+
 ;; Buffer Movemenet
 (global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
 (global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
@@ -176,6 +178,7 @@
 
 ;; Duplicate line
 (global-set-key (kbd "s-d") "\C-a\C- \C-n\M-w\C-y\C-p")
+(global-set-key (kbd "M-W") "\C-a\C- \C-n\M-w\C-p\C-e")
 
 (global-set-key (kbd "C-S-w") 'mark-word)
 
