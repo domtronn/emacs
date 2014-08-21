@@ -239,6 +239,7 @@
   "Find and go to the class at point"
   (interactive)
   (let ((class-name (thing-at-point 'symbol)))
+		(ring-insert find-tag-marker-ring (point-marker))
     (save-excursion
       (beginning-of-buffer)
       (let ((start (search-forward-regexp "function\\s-*("))
@@ -250,7 +251,6 @@
                            (if (and record (= (length record) 2))
                                (let ((found-file (concat (car (cdr record)) (car record))))
                                  (message "Found %s" found-file)
-                                 (ring-insert find-tag-marker-ring (point-marker))
                                  (find-file found-file))
                              (message "Couldn't find a cached file for %s..." class-name))))
                      external-cache-hash)
@@ -723,6 +723,12 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   "Returns a random colour"
   (interactive)
   (message (concat "Copied " (buffer-file-name)))
+  (kill-new (buffer-file-name)))
+
+(defun copy-file-dir ()
+  "Copies the files directory to the kill region"
+  (interactive)
+  (message (concat "Copied " (file-name-directory (buffer-file-name))))
   (kill-new (buffer-file-name)))
 
 (defun random-hex ()
