@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : soact
+# --
+spyOn(${1:class}, '${2:method}').andCallThrough();$0
