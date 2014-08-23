@@ -145,6 +145,8 @@
 (emms-default-players)
 (add-to-list 'emms-info-functions #'emms-info-mediainfo)
 (setq emms-source-file-default-directory "~/Music/")
+(define-key emms-browser-mode-map (kbd "C-J")
+	'(lambda () (interactive) (progn (emms-browser-add-tracks-and-play) (emms-get-lyrics-current-song))))
 
 (add-to-list 'load-path (concat USERPATH "/elisp/emacs-w3m/"))
 (require 'w3m-load)   ;; brew install w3m
