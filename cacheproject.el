@@ -30,6 +30,7 @@
 (defvar project-test-ext nil)
 (defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
+(setq-default project-id "EMACS")
 (setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
 
 (defun project-clear ()
@@ -52,6 +53,12 @@
 					(let ((json-object-type 'hash-table)
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
+						(use-tabs)
+						(if (gethash "tabs" (json-read-from-string json-contents))
+								(if (eq :json-false (gethash "tabs" (json-read-from-string json-contents)))
+										(use-spaces)))
+						(if (gethash "indent" (json-read-from-string json-contents))
+								(setq js-indent-level (gethash "indent" (json-read-from-string json-contents))))
 						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
 							(setq project-src-path (gethash "srcPath" testing))
 							(setq project-test-path (gethash "testPath" testing))
@@ -100,6 +107,7 @@
 			;; Else Load as a directory
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
+				(setq project-id (upcase (file-name-base PROJECTPATH)))
 				(file-cache-add-directory-recursively PROJECTPATH)))))
 
 (defun project-change (arg)
