@@ -396,6 +396,7 @@ install the memoized function over the original function."
 (defpowerline arrow       "")
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
+
 (defvar powerline-buffer-size-suffix t)
 (defpowerline buffer-size (propertize
                             (if powerline-buffer-size-suffix
@@ -449,6 +450,7 @@ install the memoized function over the original function."
 (defpowerline status      "%s")
 (defpowerline emacsclient mode-line-client)
 (defpowerline vc vc-mode)
+(defpowerline project-id (upcase project-id))
 (defpowerline time (format-time-string "%H:%M"))
 (defpowerline emms			 (if (not (eq nil (emms-playlist-current-selected-track))) 
 														 (emms-mode-line-icon-function)
@@ -471,6 +473,7 @@ install the memoized function over the original function."
               (list "%e"
                     '(:eval (concat
                              (powerline-lcl            'left   nil  )
+                             (powerline-project-id     'left   nil  )
                              (powerline-rmw            'left   nil  )
                              (powerline-buffer-id      'left   nil  powerline-color0  )
 														 (powerline-major-mode     'left        powerline-color0  powerline-color1  )
