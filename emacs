@@ -67,7 +67,6 @@
 
 (require 'hideshowvis)
 (autoload 'hideshowvis-enable "hideshowvis")
-(autoload 'hideshowvis-minor-mode "hideshowvis" 'interactive)
 
 (require 'ibuffer-git)
 (require 'ibuffer-vc)
@@ -145,7 +144,7 @@
 (emms-default-players)
 (add-to-list 'emms-info-functions #'emms-info-mediainfo)
 (setq emms-source-file-default-directory "~/Music/")
-(define-key emms-browser-mode-map (kbd "C-J")
+(define-key emms-browser-mode-map (kbd "C-S-j")
 	'(lambda () (interactive) (progn (emms-browser-add-tracks-and-play) (emms-get-lyrics-current-song))))
 
 (add-to-list 'load-path (concat USERPATH "/elisp/emacs-w3m/"))
