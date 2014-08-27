@@ -122,6 +122,7 @@
                    (if (or
 												(search-backward "Credits" (point-min) t)
 												(search-backward "Written by" (point-min) t)
+												(search-backward-regexp "Written by\\(.*?\\)\n\\(.*?\\)by" (point-min) t)
 												(search-backward "Music by" (point-min) t)
                         (search-backward "External links" (point-min) t)
                         (search-backward "Retrieved from" (point-min) t)
