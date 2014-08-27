@@ -65,9 +65,6 @@
 ;(require 'tex)
 ;(TeX-global-PDF-mode t)
 
-(require 'hideshowvis)
-(autoload 'hideshowvis-enable "hideshowvis")
-
 (require 'ibuffer-git)
 (require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -288,7 +285,6 @@
 (setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook 'hideshowvis-enable)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
