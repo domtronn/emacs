@@ -35,8 +35,9 @@
 (defvar emms-get-lyrics-use-files t)
 (defvar emms-get-lyrics-dir nil)
 (defvar emms-get-lyrics-match-lyric-notfound "This page needs content.")
-(defvar emms-get-lyrics-match-ad-top "Ringtone to your Cell phone")
-(defvar emms-get-lyrics-match-ad-bottom "Ringtone to your Cell phone")
+(defvar emms-get-lyrics-match-ad-top-ringtone "Ringtone to your\\(.*?\\)Ad")
+(defvar emms-get-lyrics-match-ad-top-javascript "You must enable javascript\\(.*?\\)\n\\(.*?\\)Gracenote.")
+(defvar emms-get-lyrics-match-ad-bottom-ringtone "Ringtone to your")
 (defvar emms-get-lyrics-debug nil)
 
 (defun emms-get-lyrics-url (artist title)
@@ -50,9 +51,6 @@
      ":"
      title))
    "&printable=yes")))
-    (if emms-get-lyrics-debug
-	(message "emms-get-lyrics-url %s" url)
-	)
     url))
 
 (defun emms-get-lyrics-w3m (url buffer)
@@ -110,17 +108,24 @@
                    (insert "(from " frominsert ")\n\n")
                    (insert title " (" artist ")\n")
 		   ; delete ads, and save disk space ;D
-		   (let ((trash-point (point)))
-		     (search-forward emms-get-lyrics-match-ad-top)
-		     (delete-region trash-point (point)))
-		   (search-forward emms-get-lyrics-match-ad-bottom)
+			 (let ((trash-point (point)))
+				 (if (or
+							 (search-forward-regexp emms-get-lyrics-match-ad-top-ringtone (point-max) t)
+							 (search-forward-regexp emms-get-lyrics-match-ad-top-javascript (point-max) t)
+							)
+		     (delete-region trash-point (point))))
+		   (search-forward emms-get-lyrics-match-ad-bottom-ringtone (point-max) t)
 		   (move-beginning-of-line nil)
 		   (kill-line)
 		   ; delete bottom
                    (goto-char (point-max))   (move-beginning-of-line nil)
                    (if (or
-                        (search-backward "External links" nil t)
-                        (search-backward "Retrieved from" nil t))
+												(search-backward "Credits" (point-min) t)
+												(search-backward "Written by" (point-min) t)
+												(search-backward "Music by" (point-min) t)
+                        (search-backward "External links" (point-min) t)
+                        (search-backward "Retrieved from" (point-min) t)
+												(search-backward "ITunes icon iTunes" (point-min) t))
                        (delete-region (point) (point-max)))
                    (when file 
                      (rename-buffer bname)
