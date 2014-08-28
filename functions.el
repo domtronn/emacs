@@ -456,6 +456,30 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 								(set-window-dedicated-p (get-buffer-window) t)
 								(setq window-size-fixed t)))))))
 
+(defun get-lyrics-and-display ()
+  (interactive)
+	(if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
+			(delete-window))
+	(if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
+			(delete-window))
+	(other-window 1)
+	(if (not (eq nil (string-match "Lyrics:" (buffer-name (current-buffer)))))
+			(progn
+				(other-window 1)
+				(delete-other-windows))
+			(if emms-player-playing-p
+					(progn
+						(delete-other-windows)
+						(split-window-horizontally)
+						(enlarge-window-horizontally 50)
+						(emms-get-lyrics-current-song)
+						(rotate-windows)
+						(other-window 1)
+						(set-window-dedicated-p (get-buffer-window) t)
+						(setq window-size-fixed t)
+						(other-window 1))
+				(message "EMMS is currently not playing."))))
+
 (defun go-to-emms-browser ()
   (interactive)
 	(if (not (eq nil (buffer-exists " *EMMS Playlist*")))
