@@ -481,11 +481,11 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun get-lyrics-and-display ()
   (interactive)
   (let ((prev-buffer-name (buffer-name (current-buffer))))
-    (message prev-buffer-name)
-    (if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
-        (delete-window))
-    (if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
-        (delete-window))
+    (if (or (string-match "Browsing by:" (buffer-name (current-buffer)))
+            (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*"))
+        (progn
+          (delete-window)
+          (setq prev-buffer-name (buffer-name (current-buffer)))))
     (other-window 1)
     (if (not (eq nil (string-match "Lyrics:" (buffer-name (current-buffer)))))
         (progn
@@ -495,12 +495,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 					(progn
 						(delete-other-windows)
 						(emms-get-lyrics-current-song)
-            (if (string-match "lyrics$" (buffer-name (current-buffer)))
+            (if (string-match "Lyrics" (buffer-name (current-buffer)))
               (progn
+                (switch-to-buffer prev-buffer-name)
                 (split-window-horizontally)
                 (enlarge-window-horizontally 50)
-                (rotate-windows)
                 (other-window 1)
+                (emms-get-lyrics-current-song)
                 (set-window-dedicated-p (get-buffer-window) t)
                 (setq window-size-fixed t)
                 (other-window 1))
@@ -512,7 +513,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun go-to-emms-browser ()
   (interactive)
   (let ((prev-buffer-name (buffer-name (current-buffer))))
-    (message prev-buffer-name)
     (if (not (eq nil (buffer-exists " *EMMS Playlist*")))
         (progn
           (if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
@@ -532,7 +532,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
                 (progn (switch-to-buffer prev-buffer-name)
                        (delete-other-windows)
                        (split-window-horizontally)
-                       (other-window 1)
                        (enlarge-window-horizontally 50)
                        (other-window 1)
                        (if (buffer-exists "Browsing by: artist")
