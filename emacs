@@ -323,7 +323,10 @@
 ;; Java Mode - Malabar Mode
 (require 'cedet)
 (require 'semantic)
+(add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
 (require 'malabar-mode)
+(setq malabar-groovy-java-options nil)
+(setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
 (semantic-mode 1)
 (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))       
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
