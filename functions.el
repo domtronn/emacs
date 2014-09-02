@@ -1093,26 +1093,26 @@ otherwise raises an error."
   "Reformats the code to go with jshint."
   (interactive)
   (save-excursion
-    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
+    (replace-regexp-in-string "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
     (replace-string-in-buffer "function(" "function (") ; Add space between function and parantheses
     (replace-string-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
     (replace-string-in-buffer "if(" "if (") ; Add space between if and parantheses
     (replace-string-in-buffer "for(" "for (") ; Add space between for and parantheses
     (replace-string-in-buffer "){" ") {") ; Add space between close paren and open brace
     (replace-string-in-buffer "{}" "{ }") ; Add space between open-close braces
-    (replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
-    (replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
-    (replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)")
-    ;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
-    (replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
-    (replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
-    (replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
-    (replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
-    (replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
-    (replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
-    (replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
-    (replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
+    (replace-regexp-in-string "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
+    (replace-regexp-in-string "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
+    (replace-regexp-in-string "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
+    (replace-regexp-in-string "\\(\\\w+\\)\\\s+\)" "\\1\)")
+    ;; (replace-regexp-in-string "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
+    (replace-regexp-in-string "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
+    (replace-regexp-in-string "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
+    (replace-regexp-in-string "[ \t]*$" "") ; Remove trailing whitespace
+    (replace-regexp-in-string "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
+    (replace-regexp-in-string "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
+    (replace-regexp-in-string "\\\s+;" ";") ; Replace whitespace before semi-colon
+    (replace-regexp-in-string "}\\\s+," "},") ; Replace whitespace between end brace and comma
+    (replace-regexp-in-string "\\\s+$" "") ; Remove trailing whitespace
     (replace-string-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
     ))
 
@@ -1132,7 +1132,7 @@ otherwise raises an error."
   (interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
   (load-file arg))
 
-(defun replace-regexp-in-buffer (arg1 arg2)
+(defun replace-regexp-in-string (arg1 arg2)
   "Goes to beginning of buffer for each replace-regexp"
   (save-excursion
     (beginning-of-buffer)
@@ -1179,21 +1179,50 @@ otherwise raises an error."
 				(if (yes-or-no-p (concat "Project " project-path project-name " already exists. Would you like to replace it?"))
 						(shell-command (concat "rm -rf " project-path project-name))
 					(setq create nil)))
-			(cond ((string-equal type "Java")
-						 (if create
-								 (progn
-									 (message "Building project...")
-									 (set-up-term-and-run
-										temp-buffer-name
-										(concat
-										 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
-										 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
-										 "grep -v ^Downloading"))
-									 (other-window 1)
-									 )))
-						((string-equal type "Ruby"))
-						)))
-;; )
+		(cond ((string-equal type "Java")
+					 (if create
+							 (progn
+								 (message "Building project...")
+								 (set-up-term-and-run
+									temp-buffer-name
+									(concat
+									 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
+									 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
+									 "grep -v ^Downloading"))
+								 (other-window 1)
+								 )))
+					((string-equal type "Ruby"))
+					((string-equal type "JavaScript")
+					 (if create
+							 (progn
+								 (message "Building project...")
+								 (set-up-term-and-run
+									temp-buffer-name
+									(concat "cd " project-path
+													"; mkdir " project-name "; cd " project-name
+													"; yo requirejs-jasmine-karma:" project-name))
+								 (other-window 1)
+								 (auto-type-string "")
+								 (auto-type-string "")
+								 (generate-project-file project-name project-path "app" "test" "Spec" "grunt test")))))
+		))
+
+(defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
+	(let ((project-dir "~/Documents/Projects/")
+				(template-file "~/Documents/Projects/.projectTemplate")
+				(result ""))
+		(if (file-exists-p (concat project-dir project-name ".json"))
+				(delete-file (concat project-dir project-name ".json")))
+		(with-temp-buffer
+			(insert-file-contents template-file)
+			(setq result (replace-regexp-in-string "%PROJECT_NAME%" project-name (buffer-string) t))
+			(setq result (replace-regexp-in-string "%PROJECT_PATH%" project-path result t ))
+			(setq result (replace-regexp-in-string "%SRC%" src-path result t ))
+			(setq result (replace-regexp-in-string "%TEST%" test-path result t ))
+			(setq result (replace-regexp-in-string "%EXT%" test-ext result t ))
+			(setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t )))
+		(with-temp-file (concat project-dir project-name ".json")
+			(insert result)) t))
 
 (defun convert-css (from to)
   (interactive "nConvert from resolution : \nnTo resolution : ")
@@ -1204,6 +1233,7 @@ otherwise raises an error."
 									(search-forward-regexp "\\([0-9]+\\)px" nil t))
 				(replace-match (concat (number-to-string (round (* (string-to-number (match-string 1)) factor))) "px") t nil)
 				))))
+
 (defun for-each-marked-file-run-convert-css (from to)
   (interactive)
   (mapc
