@@ -552,7 +552,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (delete-other-windows)
         (split-window-horizontally)
         (enlarge-window-horizontally 50)
-        (visit-ansi-term)
+        (visit-ansi-term "ansi-term")
         (if (not (eq nil project-test-cmd))
             (auto-type-string project-test-cmd)
           )
@@ -562,32 +562,50 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (setq window-size-fixed t)
         (other-window 1)))))
 
-(defun visit-ansi-term ()
+(defun set-up-term-and-run (name cmd)
+	"Sets up an ansi terminal named name and then runs cmd"
+	  (save-excursion
+    (let (running (buffer-exists name))
+      (progn
+        (delete-other-windows)
+        (split-window-horizontally)
+        (enlarge-window-horizontally 37)
+        (visit-ansi-term name)
+				(auto-type-string cmd)
+        (rotate-windows)
+        (other-window 1)
+        (set-window-dedicated-p (get-buffer-window) t)
+        (setq window-size-fixed t)
+        (other-window 1)))))
+  
+
+(defun visit-ansi-term (name)
   "If the current buffer is:
      1) a running ansi-term named *ansi-term*, rename it.
      2) a stopped ansi-term, kill it and create a new one.
      3) a non ansi-term, go to an already running ansi-term
         or start a new one while killing a defunt one"
   (interactive)
-  (let ((is-term (string= "term-mode" major-mode))
-        (is-running (term-check-proc (buffer-name)))
-        (term-cmd "/bin/bash")
-        (anon-term (get-buffer "*ansi-term*")))
-    (if is-term
-        (if is-running
-            (if (string= "*ansi-term*" (buffer-name))
-                (call-interactively 'rename-buffer)
-              (if anon-term
-                  (switch-to-buffer "*ansi-term*")
-                (ansi-term term-cmd)))
-          (kill-buffer (buffer-name))
-          (ansi-term term-cmd))
-      (if anon-term
-          (if (term-check-proc "*ansi-term*")
-              (switch-to-buffer "*ansi-term*")
-            (kill-buffer "*ansi-term*")
-            (ansi-term term-cmd))
-        (ansi-term term-cmd)))))
+	(let ((proc-buffer-name (concat "*" name "*")))
+		(let ((is-term (string= "term-mode" major-mode))
+					(is-running (term-check-proc proc-buffer-name))
+					(term-cmd "/bin/bash")
+					(anon-term (get-buffer proc-buffer-name)))
+			(if is-term
+					(if is-running
+							(if (string= name (buffer-name))
+									(call-interactively 'rename-buffer)
+								(if anon-term
+										(switch-to-buffer name)
+									(ansi-term term-cmd name)))
+						(kill-buffer (buffer-name))
+						(ansi-term term-cmd name))
+				(if anon-term
+						(if (term-check-proc proc-buffer-name)
+								(switch-to-buffer proc-buffer-name)
+							(kill-buffer proc-buffer-name)
+							(ansi-term term-cmd name))
+					(ansi-term term-cmd name))))))
 
 (defun mark-word-at-point ()
   "Marks the current word at point"
@@ -1149,6 +1167,32 @@ otherwise raises an error."
 				(insert "[")
 				(goto-char (region-end))
 				(insert "]"))))
+
+(defun create-project (type)
+  (interactive (list (ido-completing-read "Project Type : " '("Java" "JavaScript" "Ruby"))))
+	(let ((project-path (read-directory-name "Project Location : " "~/code/"))
+				(project-name (read-string "Project Name : " (concat "my-"(downcase type)"-app")))
+				(temp-buffer-name (concat (downcase type) "-project-setup"))
+				(create t))
+		(message "%s %s" project-path project-name)
+		(if (file-exists-p (concat project-path project-name))
+				(if (yes-or-no-p (concat "Project " project-path project-name " already exists. Would you like to replace it?"))
+						(shell-command (concat "rm -rf " project-path project-name))
+					(setq create nil)))
+			(cond ((string-equal type "Java")
+						 (if create
+								 (progn
+									 (message "Building project...")
+									 (set-up-term-and-run
+										temp-buffer-name
+										(concat
+										 "cd " project-path "; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
+										 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
+										 "grep -v ^Downloading"))
+									 (other-window 1))))
+						((string-equal type "Ruby"))
+						)))
+;; )
 
 (defun convert-css (from to)
   (interactive "nConvert from resolution : \nnTo resolution : ")
