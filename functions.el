@@ -552,12 +552,11 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (delete-other-windows)
         (split-window-horizontally)
         (enlarge-window-horizontally 50)
+        (other-window 1)
         (visit-ansi-term "ansi-term")
         (if (not (eq nil project-test-cmd))
             (auto-type-string project-test-cmd)
           )
-        (rotate-windows)
-        (other-window 1)
         (set-window-dedicated-p (get-buffer-window) t)
         (setq window-size-fixed t)
         (other-window 1)))))
@@ -1038,12 +1037,14 @@ otherwise raises an error."
 (defun open-test ()
   "replace name "
   (interactive)
-  (let ((file-ext (file-name-extension (buffer-file-name))))
+  (let ((file-ext (file-name-extension (buffer-file-name)))
+				(src-path (concat "/" project-src-path "/"))
+				(test-path (concat "/" project-test-path "/")))
     (if (string-match project-test-path (file-truename ( buffer-file-name )))
-        (find-file (replace-regexp-in-string project-test-path project-src-path
+        (find-file (replace-regexp-in-string test-path src-path
                                              (replace-regexp-in-string (concat project-test-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
       (find-file
-       (replace-regexp-in-string project-src-path project-test-path
+       (replace-regexp-in-string src-path test-path
                                  (replace-regexp-in-string (concat "\\\." file-ext) (concat project-test-ext "\." file-ext) (buffer-file-name)))))))
 
 (defun grunt ()
@@ -1186,10 +1187,13 @@ otherwise raises an error."
 								 (set-up-term-and-run
 									temp-buffer-name
 									(concat
-									 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
+									 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com."
+									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
 									 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
-									 "grep -v ^Downloading"))
+									 "grep -v ^Downloading; sed -i '' -e 's/3\.8\.1/4\.8\.1/g' " project-path project-name "/pom.xml"))
 								 (other-window 1)
+								 (generate-project-file project-name project-path "src/main/java" "src/test/java" "Test"
+																				"mvn test --quiet")
 								 )))
 					((string-equal type "Ruby"))
 					((string-equal type "JavaScript")
@@ -1215,12 +1219,12 @@ otherwise raises an error."
 				(delete-file (concat project-dir project-name ".json")))
 		(with-temp-buffer
 			(insert-file-contents template-file)
-			(setq result (replace-regexp-in-string "%PROJECT_NAME%" project-name (buffer-string) t))
-			(setq result (replace-regexp-in-string "%PROJECT_PATH%" project-path result t ))
-			(setq result (replace-regexp-in-string "%SRC%" src-path result t ))
-			(setq result (replace-regexp-in-string "%TEST%" test-path result t ))
-			(setq result (replace-regexp-in-string "%EXT%" test-ext result t ))
-			(setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t )))
+			(setq result (replace-regexp-in-string "%PROJECT_NAME%" project-name (buffer-string) t t))
+			(setq result (replace-regexp-in-string "%PROJECT_PATH%" project-path result t t))
+			(setq result (replace-regexp-in-string "%SRC%" src-path result t t))
+			(setq result (replace-regexp-in-string "%TEST%" test-path result t t))
+			(setq result (replace-regexp-in-string "%EXT%" test-ext result t t))
+			(setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t t)))
 		(with-temp-file (concat project-dir project-name ".json")
 			(insert result)) t))
 
