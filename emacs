@@ -67,7 +67,6 @@
 
 (require 'ibuffer-git)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
-(add-to-list 'ibuffer-never-show-predicates "^\\*")
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
