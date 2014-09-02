@@ -1150,6 +1150,17 @@ otherwise raises an error."
 				(goto-char (region-end))
 				(insert "]"))))
 
+(defun convert-css (from to)
+  (interactive "nConvert from resolution : \nnTo resolution : ")
+	(let ((factor (/ (float to) (float from))))
+		(save-excursion
+			(beginning-of-buffer)
+			(while (and (< (point) (point-max))
+									(search-forward-regexp "\\([0-9]+\\)px" nil t))
+				;; (message "%s" (match-string 1))
+				(replace-match (concat (number-to-string (round (* (string-to-number (match-string 1)) factor))) "px") t nil)
+				;; (replace-match "hi guys" t nil)
+				))))
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
