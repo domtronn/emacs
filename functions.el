@@ -569,7 +569,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
       (progn
         (delete-other-windows)
         (split-window-horizontally)
-        (enlarge-window-horizontally 37)
+        (enlarge-window-horizontally 35)
         (visit-ansi-term name)
 				(auto-type-string cmd)
         (rotate-windows)
@@ -1186,10 +1186,11 @@ otherwise raises an error."
 									 (set-up-term-and-run
 										temp-buffer-name
 										(concat
-										 "cd " project-path "; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
+										 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com.dgc -DartifactId="
 										 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
 										 "grep -v ^Downloading"))
-									 (other-window 1))))
+									 (other-window 1)
+									 )))
 						((string-equal type "Ruby"))
 						)))
 ;; )
