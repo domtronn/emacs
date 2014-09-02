@@ -42,7 +42,7 @@
  '(ibuffer-fontification-alist (quote ((10 buffer-read-only font-lock-constant-face) (15 (and buffer-file-name (string-match ibuffer-compressed-file-name-regexp buffer-file-name)) font-lock-doc-face) (20 (string-match "^*" (buffer-name)) font-lock-keyword-face) (25 (and (string-match "^ " (buffer-name)) (null buffer-file-name)) italic) (30 (memq major-mode ibuffer-help-buffer-modes) font-lock-comment-face) (35 (eq major-mode (quote dired-mode)) font-lock-function-name-face))))
  '(ibuffer-formats (quote ((mark modified read-only " " (name 30 30 :left :elide) " " (mode 16 16 :left :elide) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ibuffer-git-column-length 24)
- '(ibuffer-never-show-predicates (quote ("^\\\\*")) nil (ibuf-ext))
+ '(ibuffer-never-show-predicates (quote ("^\\*")) nil (ibuf-ext))
  '(ibuffer-show-empty-filter-groups nil)
  '(icicle-download-dir "~/.env/elisp/icicles")
  '(ido-buffer-disable-smart-matches nil)
