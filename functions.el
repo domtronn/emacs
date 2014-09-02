@@ -1202,10 +1202,17 @@ otherwise raises an error."
 			(beginning-of-buffer)
 			(while (and (< (point) (point-max))
 									(search-forward-regexp "\\([0-9]+\\)px" nil t))
-				;; (message "%s" (match-string 1))
 				(replace-match (concat (number-to-string (round (* (string-to-number (match-string 1)) factor))) "px") t nil)
-				;; (replace-match "hi guys" t nil)
 				))))
+(defun for-each-marked-file-run-convert-css (from to)
+  (interactive)
+  (mapc
+	 #'(lambda (file) (progn
+											(find-file file)
+											(convert-css from to)
+											(save-buffer)
+											(kill-this-buffer))) (dired-get-marked-files)))
+
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
