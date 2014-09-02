@@ -32,6 +32,8 @@
 
 (global-set-key (kbd "RET") 'smart-newline)
 (global-set-key (kbd "M-\"") 'add-quotation)
+(global-set-key (kbd "M-{") 'add-brace)
+(global-set-key (kbd "M-H-{") 'add-bracket)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
