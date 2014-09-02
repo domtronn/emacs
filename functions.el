@@ -569,10 +569,9 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (delete-other-windows)
         (split-window-horizontally)
         (enlarge-window-horizontally 35)
+        (other-window 1)
         (visit-ansi-term name)
 				(auto-type-string cmd)
-        (rotate-windows)
-        (other-window 1)
         (set-window-dedicated-p (get-buffer-window) t)
         (setq window-size-fixed t)
         (other-window 1)))))
@@ -1190,12 +1189,12 @@ otherwise raises an error."
 									 "cd " project-path "; clear; mvn archetype:generate -DgroupId=com."
 									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
 									 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
-									 "grep -v ^Downloading; sed -i '' -e 's/3\.8\.1/4\.8\.1/g' " project-path project-name "/pom.xml"))
-								 (other-window 1)
-								 (generate-project-file project-name project-path "src/main/java" "src/test/java" "Test"
-																				"mvn test --quiet")
+									 "grep -v ^Downloading; sed -i '' -e 's/3\.8\.1/4\.8\.1/g' " project-path project-name "/pom.xml"
+									 "; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
+								 (generate-project-file project-name project-path "src/main/java" "src/test/java" "Test" "mvn test --quiet")
 								 )))
-					((string-equal type "Ruby"))
+					((string-equal type "Ruby")
+					 (message "I'm sorry, but ruby project creation has not been implemented yet! It'll just use rails though"))
 					((string-equal type "JavaScript")
 					 (if create
 							 (progn
@@ -1204,12 +1203,12 @@ otherwise raises an error."
 									temp-buffer-name
 									(concat "cd " project-path
 													"; mkdir " project-name "; cd " project-name
-													"; yo requirejs-jasmine-karma:" project-name))
+													"; yo requirejs-jasmine-karma:" project-name
+													"; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
 								 (other-window 1)
 								 (auto-type-string "")
 								 (auto-type-string "")
-								 (generate-project-file project-name project-path "app" "test" "Spec" "grunt test")))))
-		))
+								 (generate-project-file project-name project-path "app" "test" "Spec" "grunt test")))))))
 
 (defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
 	(let ((project-dir "~/Documents/Projects/")
