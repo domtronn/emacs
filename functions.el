@@ -1134,6 +1134,22 @@ otherwise raises an error."
 				(goto-char (region-end))
 				(insert "\""))))
 
+(defun add-brace ()
+	(interactive)
+  (if (use-region-p)
+			(save-excursion
+				(insert "{")
+				(goto-char (region-end))
+				(insert "}"))))
+
+(defun add-bracket ()
+	(interactive)
+  (if (use-region-p)
+			(save-excursion
+				(insert "[")
+				(goto-char (region-end))
+				(insert "]"))))
+
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
