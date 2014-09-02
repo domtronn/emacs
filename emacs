@@ -66,10 +66,8 @@
 ;(TeX-global-PDF-mode t)
 
 (require 'ibuffer-git)
-(require 'ibuffer-vc)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-to-list 'ibuffer-never-show-predicates "^\\*")
-(eval-after-load 'ibuffer '(ibuffer-vc-set-filter-groups-by-vc-root))
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
