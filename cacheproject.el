@@ -108,6 +108,7 @@
 			(progn 
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
 				(setq project-id (upcase (file-name-base PROJECTPATH)))
+				(setq project-test-cmd "!!")
 				(file-cache-add-directory-recursively PROJECTPATH)))))
 
 (defun project-change (arg)
