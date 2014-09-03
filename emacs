@@ -84,6 +84,16 @@
 
 (add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
 (require 'rails)
+(defadvice rails-script:generate-model (after refresh-cache activate)
+	"Refreshes the cache to include the new generated model"
+	(project-refresh))
+(defadvice rails-script:generate-controller (after refresh-cache activate)
+	"Refreshes the cache to include the new generated model"
+	(message "ABOUT TO REFRESH THE PROJECt")
+	(project-refresh))
+(defadvice rails-script:generate-observer (after refresh-cache activate)
+	"Refreshes the cache to include the new generated model"
+	(project-refresh))
 
 ;; (require 'key-chord)
 ;; (key-chord-mode 1)
@@ -156,6 +166,7 @@
 
 (require 'rvm)
 (rvm-use "ruby-2.1.2" "global")
+(add-hook 'ruby-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 
 (require 'filecache)
 
@@ -217,6 +228,8 @@
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
 (yas-global-mode)
 (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
+(defadvice ansi-term (after advise-ansi-term-coding-system activate)
+	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 
 (require 'auto-complete-config)
 (require 'auto-complete-etags)
@@ -334,6 +347,7 @@
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
+(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
 (add-to-list 'repository-root-matchers repository-root-matcher/git)
