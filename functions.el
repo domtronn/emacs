@@ -1186,7 +1186,7 @@ otherwise raises an error."
 							 (progn
 								 (message "Building project...")
 								 (set-up-term-and-run
-									15 temp-buffer-name
+									temp-buffer-name 15
 									(concat
 									 "cd " project-path "; clear; mvnc archetype:generate -DgroupId=com."
 									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
@@ -1196,13 +1196,21 @@ otherwise raises an error."
 								 (generate-project-file project-name project-path "src/main/java" "src/test/java" "Test" "mvnc test --quiet")
 								 )))
 					((string-equal type "Ruby")
-					 (message "I'm sorry, but ruby project creation has not been implemented yet! It'll just use rails though"))
+					 (if create
+							 (progn
+								 (message "Building project...")
+								 (set-up-term-and-run
+									temp-buffer-name 15
+									(concat "cd " project-path"; rails new " project-name
+													"; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
+								 (generate-project-file project-name project-path "app" "test" "_test" "rake test")
+								 )))
 					((string-equal type "JavaScript")
 					 (if create
 							 (progn
 								 (message "Building project...")
 								 (set-up-term-and-run
-									15 temp-buffer-name
+									temp-buffer-name 15
 									(concat "cd " project-path
 													"; mkdir " project-name "; cd " project-name
 													"; yo requirejs-jasmine-karma:" project-name
@@ -1210,6 +1218,7 @@ otherwise raises an error."
 								 (other-window 1)
 								 (auto-type-string "")
 								 (auto-type-string "")
+								 (other-window 1)
 								 (generate-project-file project-name project-path "app" "test" "Spec" "grunt test")))))))
 
 (defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
