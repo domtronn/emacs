@@ -355,7 +355,7 @@
     (cond ((string-equal fSuffix "js")
            (grunt-spec))
 					((string-equal fSuffix "java")
-           (set-up-test-watch))
+           (set-up-test-watch 30))
           ((string-equal (buffer-mode (buffer-name)) "latex-mode")
            (xelatex-make)))))
 
@@ -543,15 +543,17 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
                        (set-window-dedicated-p (get-buffer-window) t)
                        (setq window-size-fixed t)))))))))
 
-(defun set-up-test-watch ()
+(defun set-up-test-watch (&optional user-size)
   "Sets the display ready for grunt watching"
   (interactive)
   (save-excursion
-    (let (running (buffer-exists "*ansi-term*"))
+    (let ((size 50))
       (progn
+				(if user-size
+						(setq size (- size user-size)))
         (delete-other-windows)
         (split-window-horizontally)
-        (enlarge-window-horizontally 50)
+        (enlarge-window-horizontally size)
         (other-window 1)
         (visit-ansi-term "ansi-term")
         (if (not (eq nil project-test-cmd))
@@ -561,14 +563,14 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (setq window-size-fixed t)
         (other-window 1)))))
 
-(defun set-up-term-and-run (name cmd)
+(defun set-up-term-and-run (name size cmd)
 	"Sets up an ansi terminal named name and then runs cmd"
 	  (save-excursion
     (let (running (buffer-exists name))
       (progn
         (delete-other-windows)
         (split-window-horizontally)
-        (enlarge-window-horizontally 35)
+        (enlarge-window-horizontally (- 50 size))
         (other-window 1)
         (visit-ansi-term name)
 				(auto-type-string cmd)
@@ -1093,27 +1095,27 @@ otherwise raises an error."
   "Reformats the code to go with jshint."
   (interactive)
   (save-excursion
-    (replace-regexp-in-string "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
-    (replace-string-in-buffer "function(" "function (") ; Add space between function and parantheses
-    (replace-string-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
-    (replace-string-in-buffer "if(" "if (") ; Add space between if and parantheses
-    (replace-string-in-buffer "for(" "for (") ; Add space between for and parantheses
-    (replace-string-in-buffer "){" ") {") ; Add space between close paren and open brace
-    (replace-string-in-buffer "{}" "{ }") ; Add space between open-close braces
-    (replace-regexp-in-string "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
-    (replace-regexp-in-string "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
-    (replace-regexp-in-string "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-    (replace-regexp-in-string "\\(\\\w+\\)\\\s+\)" "\\1\)")
-    ;; (replace-regexp-in-string "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
-    (replace-regexp-in-string "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
-    (replace-regexp-in-string "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
-    (replace-regexp-in-string "[ \t]*$" "") ; Remove trailing whitespace
-    (replace-regexp-in-string "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
-    (replace-regexp-in-string "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
-    (replace-regexp-in-string "\\\s+;" ";") ; Replace whitespace before semi-colon
-    (replace-regexp-in-string "}\\\s+," "},") ; Replace whitespace between end brace and comma
-    (replace-regexp-in-string "\\\s+$" "") ; Remove trailing whitespace
-    (replace-string-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
+    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
+    (replace-regexp-in-buffer "function(" "function (") ; Add space between function and parantheses
+    (replace-regexp-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
+    (replace-regexp-in-buffer "if(" "if (") ; Add space between if and parantheses
+    (replace-regexp-in-buffer "for(" "for (") ; Add space between for and parantheses
+    (replace-regexp-in-buffer "){" ") {") ; Add space between close paren and open brace
+    (replace-regexp-in-buffer "{}" "{ }") ; Add space between open-close braces
+    (replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
+    (replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
+    (replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
+    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)")
+    ;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
+    (replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
+    (replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
+    (replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
+    (replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
+    (replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
+    (replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
+    (replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
+    (replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
+    (replace-regexp-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
     ))
 
 (defun js2r--extract-method ()
@@ -1184,7 +1186,7 @@ otherwise raises an error."
 							 (progn
 								 (message "Building project...")
 								 (set-up-term-and-run
-									temp-buffer-name
+									15 temp-buffer-name
 									(concat
 									 "cd " project-path "; clear; mvnc archetype:generate -DgroupId=com."
 									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
@@ -1200,7 +1202,7 @@ otherwise raises an error."
 							 (progn
 								 (message "Building project...")
 								 (set-up-term-and-run
-									temp-buffer-name
+									15 temp-buffer-name
 									(concat "cd " project-path
 													"; mkdir " project-name "; cd " project-name
 													"; yo requirejs-jasmine-karma:" project-name
