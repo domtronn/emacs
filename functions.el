@@ -933,7 +933,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   (interactive)
   (if (and (not (assoc-string (file-name-nondirectory (buffer-file-name)) file-cache-alist))
            (find-file-upwards ".tags")
-           (eq (buffer-mode (buffer-name)) 'js-mode)
+					 (string-match project-id (buffer-file-name))
            (not (string-match "Spec" (buffer-name))))
       (progn
         (message "[filecache] Adding %s to the file cache..." (buffer-file-name))
