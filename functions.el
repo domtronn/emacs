@@ -1188,6 +1188,8 @@ otherwise raises an error."
 								 (set-up-term-and-run
 									temp-buffer-name 15
 									(concat
+									 "ps aux | grep spring | grep -v grep | awk '{print $2'} | xargs kill -9; "
+									 "ps aux | grep rails | grep -v grep | awk '{print $2'} | xargs kill -9; "
 									 "cd " project-path "; clear; mvnc archetype:generate -DgroupId=com."
 									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
 									 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
