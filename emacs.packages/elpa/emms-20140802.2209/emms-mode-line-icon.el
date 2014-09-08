@@ -84,32 +84,39 @@ static char *note[] = {
 \"#.############\",
 \"##############\"};")))
 
-(defvar emms-mode-line-play-pause-icon-image-cache
+(defvar emms-mode-line-pause-icon-image-cache
   `(image :type xpm :ascent center :data ,(concat "/* XPM */
 static char *note[] = {
 /* width height num_colors chars_per_pixel */
-\"    17   11        2            1\",
+\"    11   11        2            1\",
 /* colors */
 \". c " emms-mode-line-icon-color  "\",
 \"# c None s None\",
 /* pixels */
-\"#################\",
-\"#.########..##..#\",
-\"#...######..##..#\",
-\"#.....####..##..#\",
-\"#.......##..##..#\",
-\"#........#..##..#\",
-\"#......###..##..#\",
-\"#....#####..##..#\",
-\"#...######..##..#\",
-\"#.########..##..#\",
-\"#################\"};")))
+\"###########\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"###########\"};")))
 
 (defun emms-mode-line-icon-function ()
-  (concat " "
-          emms-mode-line-icon-before-format
-          (emms-propertize "NP:" 'display emms-mode-line-icon-image-cache)
-          (emms-mode-line-playlist-current)))
+	(if emms-player-paused-p
+			(concat " "
+							emms-mode-line-icon-before-format
+							(emms-propertize "NP:" 'display emms-mode-line-icon-image-cache)
+							(emms-mode-line-playlist-current)
+							(emms-propertize "NP:" 'display emms-mode-line-pause-icon-image-cache))
+		(concat " "
+						emms-mode-line-icon-before-format
+						(emms-propertize "NP:" 'display emms-mode-line-icon-image-cache)
+						(emms-mode-line-playlist-current)
+						(emms-propertize "NP:" 'display emms-mode-line-play-icon-image-cache))))
 
 (setq emms-mode-line-mode-line-function 'emms-mode-line-icon-function)
 
