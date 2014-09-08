@@ -3,13 +3,76 @@
 
 (custom-theme-set-variables
  'solarized-light
- '(ac-auto-show-menu t)
+ '(ac-auto-show-menu t) 
+ '(emms-mode-line-icon-image-cache
+	 `(image :type xpm :ascent center :data ,(concat "/* XPM */
+static char *note[] = {
+/* width height num_colors chars_per_pixel */
+\"    10   11        2            1\",
+/* colors */
+\". c #657b83 \",
+\"# c None s None\",
+/* pixels */
+\"###...####\",
+\"###.#...##\",
+\"###.###...\",
+\"###.#####.\",
+\"###.#####.\",
+\"#...#####.\",
+\"....#####.\",
+\"#..######.\",
+\"#######...\",
+\"######....\",
+\"#######..#\"};")))
+ '(emms-mode-line-play-icon-image-cache
+	 `(image :type xpm :ascent center :data ,(concat "/* XPM */
+static char *note[] = {
+/* width height num_colors chars_per_pixel */
+\"    10   11        2            1\",
+/* colors */
+\". c #657b83 \",
+\"# c None s None\",
+/* pixels */
+\"##############\",
+\"#.############\",
+\"#...##########\",
+\"#.....########\",
+\"#.......######\",
+\"#........#####\",
+\"#......#######\",
+\"#....#########\",
+\"#...##########\",
+\"#.############\",
+\"##############\"};")))
+ '(emms-mode-line-pause-icon-image-cache
+	 `(image :type xpm :ascent center :data ,(concat "/* XPM */
+static char *note[] = {
+/* width height num_colors chars_per_pixel */
+\"    11   11        2            1\",
+/* colors */
+\". c #657b83 \",
+\"# c None s None\",
+/* pixels */
+\"###########\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"#...###...#\",
+\"###########\"};")))
+
  '(ac-auto-start t)
  '(ac-candidate-limit 15)
  '(ac-expand-on-auto-complete t)
  '(powerline-color0 "#60B3A5")
  '(powerline-color1 "#CDC8AB")
  '(powerline-color2 "#E6E1C4")
+ '(powerline-foreground "#657b83")
+ '(emms-mode-line-icon-color "#657b83")
  '(ack-and-a-half-arguments (quote ("--color-match=green" "--color-file=yellow" "-w")))
  '(ack-and-a-half-executable "/usr/local/bin/ack")
  '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
