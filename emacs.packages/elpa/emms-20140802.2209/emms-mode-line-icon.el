@@ -63,6 +63,47 @@ static char *note[] = {
 \"######....\",
 \"#######..#\"};")))
 
+(defvar emms-mode-line-play-icon-image-cache
+  `(image :type xpm :ascent center :data ,(concat "/* XPM */
+static char *note[] = {
+/* width height num_colors chars_per_pixel */
+\"    10   11        2            1\",
+/* colors */
+\". c " emms-mode-line-icon-color  "\",
+\"# c None s None\",
+/* pixels */
+\"##############\",
+\"#.############\",
+\"#...##########\",
+\"#.....########\",
+\"#.......######\",
+\"#........#####\",
+\"#......#######\",
+\"#....#########\",
+\"#...##########\",
+\"#.############\",
+\"##############\"};")))
+
+(defvar emms-mode-line-play-pause-icon-image-cache
+  `(image :type xpm :ascent center :data ,(concat "/* XPM */
+static char *note[] = {
+/* width height num_colors chars_per_pixel */
+\"    17   11        2            1\",
+/* colors */
+\". c " emms-mode-line-icon-color  "\",
+\"# c None s None\",
+/* pixels */
+\"#################\",
+\"#.########..##..#\",
+\"#...######..##..#\",
+\"#.....####..##..#\",
+\"#.......##..##..#\",
+\"#........#..##..#\",
+\"#......###..##..#\",
+\"#....#####..##..#\",
+\"#...######..##..#\",
+\"#.########..##..#\",
+\"#################\"};")))
 
 (defun emms-mode-line-icon-function ()
   (concat " "
