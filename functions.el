@@ -810,7 +810,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   "Copies the files directory to the kill region"
   (interactive)
   (message (concat "Copied " (file-name-directory (buffer-file-name))))
-  (kill-new (buffer-file-name)))
+  (kill-new (file-name-directory (buffer-file-name))))
 
 (defun random-hex ()
   "Return a string in the form of #FFFFFF. Choose the number for
