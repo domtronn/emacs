@@ -7,7 +7,10 @@
  '(fci-rule-character-color "#452E2E")
  '(ansi-color-names-vector ["#1F1611" "#660000" "#144212" "#EFC232" "#5798AE" "#BE73FD" "#93C1BC" "#E6E1DC"])
  '(powerline-color1 "#3C2421")
- '(powerline-color2 "#452E2E"))
+ '(powerline-color0 "#CC4232")
+ '(powerline-color2 "#452E2E")
+ '(powerline-foreground "#E6E1DC")
+ )
 
 (custom-theme-set-faces
  'birds-of-paradise-plus
