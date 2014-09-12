@@ -51,6 +51,8 @@
 (global-set-key (kbd "s-=") 'hs-show-block)
 (global-set-key (kbd "s-+") 'hs-show-all)
 
+(global-set-key (kbd "M-;") 'semi-colon-end)
+
 (global-set-key [C-right] 'dgc-forward-word-2)
 (global-set-key [C-left] 'dgc-backward-word)
 (global-set-key [M-right] 'dgc-forward-word-2)
@@ -115,6 +117,7 @@
 (global-set-key (kbd "<M-f5>") 'vc-next-action)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
+(global-set-key (kbd "<s-f6>") 'magit-branch-manager)
 
 (global-set-key [f7] 'occur-at-point)
 
@@ -188,6 +191,7 @@
 ;; Amazing mode to mark all instances in a definiton 
 (global-set-key (kbd "H-s-r") 'mark-word-at-point)
 (global-set-key (kbd "M-q") 'er/expand-region)
+(global-set-key (kbd "H-q") 'er/expand-region)
 
 (global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
