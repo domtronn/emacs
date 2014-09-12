@@ -1,0 +1,4 @@
+# -*- mode: java-mode -*-
+#name : prvar
+# --
+private ${1:$(upcase-initials yas-text)} ${1:a};$0
