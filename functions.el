@@ -1240,6 +1240,12 @@ otherwise raises an error."
 		(with-temp-file (concat project-dir project-name ".json")
 			(insert result)) t))
 
+(defun semi-colon-end ()
+  (interactive)
+  (delete-trailing-whitespace)
+  (end-of-line)
+  (insert (format "%s" ";")))
+
 (defun convert-css (from to)
   (interactive "nConvert from resolution : \nnTo resolution : ")
 	(let ((factor (/ (float to) (float from))))
