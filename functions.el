@@ -355,7 +355,8 @@
     (cond ((string-equal fSuffix "js")
            (grunt-spec))
 					((string-equal fSuffix "java")
-           (set-up-test-watch 30))
+           (set-up-test-watch 30 (format " -Dtest=%s"
+																				 (file-name-sans-extension (file-name-base (buffer-file-name))))))
           ((string-equal (buffer-mode (buffer-name)) "latex-mode")
            (xelatex-make)))))
 
@@ -543,22 +544,22 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
                        (set-window-dedicated-p (get-buffer-window) t)
                        (setq window-size-fixed t)))))))))
 
-(defun set-up-test-watch (&optional user-size)
+(defun set-up-test-watch (&optional user-size extra-cmd)
   "Sets the display ready for grunt watching"
   (interactive)
   (save-excursion
     (let ((size 50))
       (progn
-				(if user-size
-						(setq size (- size user-size)))
+				(if user-size (setq size (- size user-size)))
         (delete-other-windows)
         (split-window-horizontally)
         (enlarge-window-horizontally size)
         (other-window 1)
         (visit-ansi-term "ansi-term")
         (if (not (eq nil project-test-cmd))
-            (auto-type-string project-test-cmd)
-          )
+						(if (not (eq nil extra-cmd))
+								(auto-type-string (concat project-test-cmd extra-cmd))
+							(auto-type-string project-test-cmd)))
         (set-window-dedicated-p (get-buffer-window) t)
         (setq window-size-fixed t)
         (other-window 1)))))
