@@ -1,5 +1,4 @@
 # -*- mode: js-mode -*-
 #name : csor
 # --
-var mock${1:$(upcase-initials yas-text)} = jasmine.createSpyObjWithReturns('${1:class}', ['${2:methods$$(when yas-modified-p (replace-regexp-in-string ", " "','" yas-text))}'], [${3:'returns'}]);
-$0
+var mock${1:$(upcase-initials yas-text)} = jasmine.createSpyObjWithReturns('${1:class}', ['${2:methods$$(when yas-modified-p (replace-regexp-in-string ", " "','" yas-text))}'], [${3:'returns'}]);$0
