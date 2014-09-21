@@ -1246,6 +1246,7 @@ otherwise raises an error."
 			(insert result)) t))
 
 (defun semi-colon-end ()
+	"Function to insert a semi colon at the end of the line from anywhere"
   (interactive)
   (delete-trailing-whitespace)
   (end-of-line)
