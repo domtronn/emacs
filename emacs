@@ -377,7 +377,9 @@
 (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
 (add-hook 'vc-annotate-mode-hook (lambda () (sticky-window-delete-other-windows)))
+
 (add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
+(add-hook 'magit-branch-manager-mode-hook (lambda () (sticky-window-delete-other-windows)))
 
 (add-hook 'dirtree-mode-hook (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
 
