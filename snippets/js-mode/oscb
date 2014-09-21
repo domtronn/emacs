@@ -2,6 +2,6 @@
 #name : oscb
 # --
 spyOn(${1:object},'${2:method}').and.callFake(function () { 
-	$1.$2.mostRecentCall.args[${3:0}].${4:$$(yas-choose-value '("onError" "onSuccess"))}('filtereMedia');
+	$1.$2.calls.mostRecent().args[${3:0}].${4:$$(yas-choose-value '("onError" "onSuccess"))}('filtereMedia');
 });
 $0
