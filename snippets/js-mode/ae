@@ -1,7 +1,6 @@
 # -*- mode: js-mode -*-
-#name : be
+#name : ae
 # --
 afterEach(function () {
 	$1
-});
-$0
+});$0
