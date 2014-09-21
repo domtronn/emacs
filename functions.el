@@ -347,7 +347,15 @@
 (defun my-vc-dir ()
   "calls vc-dir on the appropriate project"
   (interactive)
-  (vc-dir (repository-root)))
+	(let ((repo-root (repository-root)))
+		(if (repository-root-match repository-root-matcher/git repo-root repo-root)
+				(let ((type (ido-completing-read
+										 "Run which VC status manager: " '("Magit" "VC") nil nil)))
+					(cond ((string-equal type "Magit")
+								 (magit-status repo-root))
+								((string-equal type "VC")
+								 (vc-dir repo-root))))
+			(vc-dir repo-root))))
 
 (defun alt-run-current-file ()
   (interactive)
