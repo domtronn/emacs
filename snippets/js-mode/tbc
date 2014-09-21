@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : tbc
 # --
-expect(${1:$$(if yas-modified-p ( ) (get-last-spy))}).toHaveBeenCalled();$0
+expect(${1:$$(if yas-modified-p ( ) (ignore-errors (get-last-spy)))}).toHaveBeenCalled();$0
