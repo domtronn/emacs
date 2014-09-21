@@ -1155,29 +1155,25 @@ otherwise raises an error."
     (beginning-of-buffer)
     (replace-regexp arg1 arg2)))
 
+;; Enclose strings in delimiters
+(defun wrap-region-with-char (arg1 arg2)
+	(if (use-region-p)
+			(save-excursion
+				(insert arg1)
+				(goto-char (region-end))
+				(insert arg2))))
+
 (defun add-quotation ()
   (interactive)
-  (if (use-region-p)
-			(save-excursion
-				(insert "\"")
-				(goto-char (region-end))
-				(insert "\""))))
+	(wrap-region-with-char "\"" "\""))
 
 (defun add-brace ()
 	(interactive)
-  (if (use-region-p)
-			(save-excursion
-				(insert "{")
-				(goto-char (region-end))
-				(insert "}"))))
-
-(defun add-bracket ()
+	(wrap-region-with-char "{" "}")
+	
+	(defun add-bracket ()
 	(interactive)
-  (if (use-region-p)
-			(save-excursion
-				(insert "[")
-				(goto-char (region-end))
-				(insert "]"))))
+	(wrap-region-with-char "[" "]"))
 
 (defun create-project (type)
   (interactive (list (ido-completing-read "Project Type : " '("Java" "JavaScript" "Ruby"))))
