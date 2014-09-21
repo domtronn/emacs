@@ -1158,9 +1158,9 @@ otherwise raises an error."
 
 (defun add-brace ()
 	(interactive)
-	(wrap-region-with-char "{" "}")
+	(wrap-region-with-char "{" "}"))
 	
-	(defun add-bracket ()
+(defun add-bracket ()
 	(interactive)
 	(wrap-region-with-char "[" "]"))
 
