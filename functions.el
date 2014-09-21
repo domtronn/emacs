@@ -1326,12 +1326,8 @@ or a marker."
       "\C-r^\C-q\C-j$\C-x\C-o")
 
 ; Hide all functions in a file using hs minor mode
-(fset 'hide-prev-function
-      [?\C-r ?: ?. ?* ?f ?u ?n ?c ?t ?i ?o ?n ?\C-e ?\s-- ?\C-a])
-
 (fset 'press-return
       [?c ?d ? ?$ ?T ?E ?S ?T ?S return])
-
 
 (provide 'functions)
 ;;; functions.el ends here
