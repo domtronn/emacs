@@ -376,8 +376,9 @@
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "c") #'vc-resolve-conflicts)))
 (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
-(add-hook 'dirtree-mode-hook
-		  (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
+(add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
+
+(add-hook 'dirtree-mode-hook (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
