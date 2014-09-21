@@ -1122,12 +1122,6 @@ otherwise raises an error."
     (replace-regexp-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
     ))
 
-(defun js2r--extract-method ()
-  (interactive)
-  (js2-mode)
-  (call-interactively (js2r-extract-method))
-  (js-mode))
-
 (defun auto-type-string (string)
   (interactive)
   (mapc #'(lambda (letter) (execute-kbd-macro letter)) (split-string string ""))
