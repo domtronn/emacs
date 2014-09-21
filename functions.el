@@ -302,7 +302,6 @@
                 (search-forward thing)
                 (backward-word)))))))
 
-
 (defun close-and-pop-buffer (oldbuffer buffer)
   (switch-to-buffer oldbuffer)
   (popwin:popup-buffer buffer))
@@ -883,7 +882,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (set-window-start w2 s1)
         (setq i (1+ i)))))))
 
-
 (defun find-top-level-dir (dir find-dir)
   (interactive)
   (let* ((parent (mapconcat 'identity (butlast (split-string dir "\\/")) "/")))
@@ -969,8 +967,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
           (setq file-cache-alist temp-file-cache-alist))))
   t)
 
-
-
 (defun find-file-upwards (file-to-find)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
@@ -1003,7 +999,6 @@ or nil if not found."
       (when b
         (kill-buffer b)))
     (setq tags-file-name nil)))
-
 
 (defun find-tags-file-upwards ()
   "Get and set the tags file"
