@@ -454,6 +454,7 @@ install the memoized function over the original function."
 (defpowerline vc vc-mode)
 (defpowerline project-id (upcase project-id))
 (defpowerline time (format-time-string "%H:%M"))
+(defpowerline battery (concat (battery-format "%p%" (funcall battery-status-function)) "%  - "))
 (defpowerline emms			 (if (not (eq nil (emms-playlist-current-selected-track))) 
 														 (emms-mode-line-icon-function)
 														 (format "")
@@ -486,7 +487,7 @@ install the memoized function over the original function."
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
-                             (powerline-percent        'right  nil  powerline-color1  )
+                             (powerline-battery        'right  nil  powerline-color1  )
                              (powerline-time           'right  nil  )
                              (powerline-make-text      "  "    nil  )))))
 
