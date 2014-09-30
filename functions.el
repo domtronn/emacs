@@ -31,6 +31,9 @@
   (interactive)
   (setq-default indent-tabs-mode nil))
 
+;; ------------------------------------------
+;; Functions used in making emacs fullscreen
+;; ------------------------------------------
 (defun toggle-fullscreen ()
   "Toggle full screen."
   (interactive)
@@ -58,6 +61,9 @@
   (let* ((res-alist '((800 . 53) (1050 . 70))))
     (set-frame-height (selected-frame) (cdr (assoc (x-display-pixel-height) res-alist)))))
 
+;; --------------------------------------------
+;; Functions used in compiling latex & xelatex
+;; --------------------------------------------
 (defun latex-make ()
   (interactive)
   (setq buffer-save-without-query t)
@@ -102,6 +108,10 @@
             (aEnd (- (search-forward-regexp "\\s-*\\]") 1))
             (bStart (search-forward-regexp "function\\s-*("))
             (bEnd (- (search-forward ")") 1)))
+        (when (not (string-match (buffer-substring bStart bEnd) class-name))
+          (progn (goto-char bEnd)
+                 (insert (concat ", " class-name))
+                 (setq bEnd (+ bEnd (length class-name) 2))))
         (let ((pos (position class-name
                              (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
                              :test #'string-equal)))
@@ -113,7 +123,8 @@
             (if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
                 (progn (message "Setting q backwards") (setq my-point (+ 1(search-backward "\"")))))
             (progn (goto-char my-point)
-                   (insert (format ",\n%s" (inject-dependency class-name))))))))))
+                   (insert (format ",\n%s" (inject-dependency class-name)))
+                   (indent-according-to-mode))))))))
 
 (defun update-javascript-dependency ()
   (interactive)
@@ -147,7 +158,7 @@
                                               (file-name-sans-extension (car record)))
                                     nil)))))
                   external-cache-hash)
-         (format "\t\t\"%s\""
+         (format "\"%s\""
                  (if (eq res-require-path nil)
                      (concat "???/" (downcase arg))
                    res-require-path))))
@@ -971,7 +982,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
 or nil if not found."
-  (labels
+  (cl-labels
       ((find-file-r (path)
                     (let* ((parent (file-name-directory path))
                            (possible-file (concat parent file-to-find)))
