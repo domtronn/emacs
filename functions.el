@@ -99,32 +99,40 @@
          (result (call-process-shell-command
                   (concat "grunt spec --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t)))))
 
+(defun post-declare-var ()
+  (interactive)
+  (let ((var-name (thing-at-point 'word)))
+    (save-excursion
+      (search-backward "var")
+      (search-forward ";")
+      (goto-char (- (point) 1))
+      (insert (concat ", " var-name)))))
+
 (defun inject-javascript-dependency ()
   (interactive)
-  (let ((class-name (thing-at-point 'word)))
+  (let ((class-name (thing-at-point 'word))
+				(prev-point (point)))
     (save-excursion
       (beginning-of-buffer)
       (let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
             (aEnd (- (search-forward-regexp "\\s-*\\]") 1))
             (bStart (search-forward-regexp "function\\s-*("))
             (bEnd (- (search-forward ")") 1)))
-        (when (not (string-match (buffer-substring bStart bEnd) class-name))
+        (when (not (string-match (concat "[ ,(]" class-name "[,)]") (buffer-substring (- bStart 1) (+ bEnd 1))))
           (progn (goto-char bEnd)
                  (insert (concat ", " class-name))
                  (setq bEnd (+ bEnd (length class-name) 2))))
-        (let ((pos (position class-name
-                             (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
-                             :test #'string-equal)))
-          (beginning-of-buffer)
-          (let ((my-point
-                 (search-forward (nth (- pos 1) (split-string (buffer-substring aStart aEnd) ",\\s-*\n\\s-*" t)))))
-            (message "%s" pos)
-            (message "%s" (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
-            (if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
-                (progn (message "Setting q backwards") (setq my-point (+ 1(search-backward "\"")))))
-            (progn (goto-char my-point)
-                   (insert (format ",\n%s" (inject-dependency class-name)))
-                   (indent-according-to-mode))))))))
+				(let ((pos (position class-name
+														 (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t)
+														 :test #'string-equal)))
+					(beginning-of-buffer)
+					(let ((my-point
+								 (search-forward (nth (- pos 1) (split-string (buffer-substring aStart aEnd) ",\\s-*\n\\s-*" t)))))
+						(if (eq pos (length (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t)))
+								(setq my-point (+ 1 (search-backward "\""))))
+						(progn (goto-char my-point)
+									 (insert (format ",\n%s" (inject-dependency class-name prev-point)))
+									 (indent-according-to-mode))))))))
 
 (defun update-javascript-dependency ()
   (interactive)
@@ -134,7 +142,9 @@
           (bEnd (- (search-forward ")") 1)))
       (beginning-of-buffer)
       (replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
-                      (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd)))))))
+                      (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd))))
+      (beginning-of-buffer)
+			(indent-region (search-forward-regexp "\\s-*\\[\n\\s-*")  (- (search-forward-regexp "\\s-*\\]") 1)))))
 
 (defun get-last-spy ()
   (interactive)
@@ -144,24 +154,26 @@
       (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
           (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
-(defun inject-dependency (dep-list)
+(defun inject-dependency (dep-list &optional popup-point)
   (interactive)
   (mapconcat
    #'(lambda (arg)
-       (let ((res-require-path nil))
+       (let ((resultant-require-path (list)))
          (maphash #'(lambda (id assoc-list)
                       (let ((record (assoc (concat (downcase arg) ".js") assoc-list)))
-                        (if (eq res-require-path nil)
-                            (setq res-require-path
-                                  (if (= (length record) 2)
-                                      (concat (replace-regexp-in-string ".*script" id (cadr record))
-                                              (file-name-sans-extension (car record)))
-                                    nil)))))
+                        (if (= (length record) 2)
+														(if (or (eq resultant-require-path nil) (not (eq nil popup-point)))
+																(add-to-list 'resultant-require-path
+																						 (concat (replace-regexp-in-string ".*script" id (cadr record))
+																										 (file-name-sans-extension (car record))))))))
                   external-cache-hash)
+				 (message "%s" resultant-require-path)
          (format "\"%s\""
-                 (if (eq res-require-path nil)
+                 (if (eq resultant-require-path nil)
                      (concat "???/" (downcase arg))
-                   res-require-path))))
+                   (if (= (length resultant-require-path) 1)
+                       (car resultant-require-path)
+                     (popup-menu* resultant-require-path :point popup-point))))))
    (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
 
 (defun insert-random-return ()
@@ -1085,7 +1097,8 @@ otherwise raises an error."
       (kill-buffer "*grunt*"))
   (let* ((grunt-buffer (get-buffer-create "*grunt*"))
          (result (call-process-shell-command
-                  (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
+                  (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (file-name-sans-extension (buffer-name)))
+                  nil grunt-buffer t))
          (output (with-current-buffer grunt-buffer (buffer-string))))
     (cond ((zerop result)
            (message "Grunt completed without errors"))
