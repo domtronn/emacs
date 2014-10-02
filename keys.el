@@ -196,6 +196,9 @@
 (global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
 
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+
 (global-set-key (kbd "H-t") 'grunt)
 (global-set-key (kbd "S-s-t") 'grunt)
 
