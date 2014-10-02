@@ -186,6 +186,7 @@
 (eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-javascript-dependency))
+(eval-after-load 'js '(define-key js-mode-map (kbd "M-b") 'post-declare-var))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (add-hook 'js-mode-hook 'js-hlt-nonused-dependencies)
@@ -453,6 +454,7 @@
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
+(battery)
 (load-file (concat USERPATH "/elisp/powerline.el"))
 
 (server-start)
