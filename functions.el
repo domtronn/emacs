@@ -134,6 +134,11 @@
 									 (insert (format ",\n%s" (inject-dependency class-name prev-point)))
 									 (indent-according-to-mode))))))))
 
+(defun replace-region (region-start region-end replacement)
+	(goto-char region-start)
+	(delete-region region-start region-end)
+	(insert replacement))
+
 (defun update-javascript-dependency ()
   (interactive)
   (save-excursion
