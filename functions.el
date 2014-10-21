@@ -134,6 +134,19 @@
 									 (insert (format ",\n%s" (inject-dependency class-name prev-point)))
 									 (indent-according-to-mode))))))))
 
+(defun indent-require-block ()
+  (interactive)
+  (save-excursion
+		(beginning-of-buffer)
+		(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
+					(aEnd (search-forward-regexp "\\s-*\\]"))
+					(bStart (search-forward-regexp "function\\s-*(.*\n"))
+					(bEnd (- (search-forward ")") 1)))
+			(message "%s" bStart)
+			(indent-region bStart bEnd)
+			(indent-region aStart aEnd)
+			)))
+
 (defun replace-region (region-start region-end replacement)
 	(goto-char region-start)
 	(delete-region region-start region-end)
@@ -148,8 +161,7 @@
       (beginning-of-buffer)
       (replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
                       (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd))))
-      (beginning-of-buffer)
-			(indent-region (search-forward-regexp "\\s-*\\[\n\\s-*")  (- (search-forward-regexp "\\s-*\\]") 1)))))
+      (indent-require-block))))
 
 (defun get-last-spy ()
   (interactive)
