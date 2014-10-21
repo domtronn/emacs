@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : ar
 # --
-spyOn(${1:obj}, '${2:method}').andReturn('${3:`(random-return)`}');$0
+spyOn(${1:obj}, '${2:method}').and.returnValue('${3:`(random-return)`}');$0
