@@ -80,6 +80,9 @@
 (global-set-key (kbd "s-m") 'mark-paragraph)
 (global-set-key (kbd "s-:") 'eval-region)
 
+(global-unset-key (kbd "M-<down-mouse-1>"))
+(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)
+
 ;; Bring up shell terminal
 (global-set-key (kbd "C-~") 'shell-pop)
 (global-set-key (kbd "C-`") 'shell-pop)
