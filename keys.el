@@ -99,10 +99,8 @@
 (global-set-key [M-s-up] 'windmove-up)
 (global-set-key [M-s-down] 'windmove-down)
 
-(global-set-key (kbd "H--") 'shrink-window-horizontally)
-(global-set-key (kbd "H-_") 'shrink-window)
-(global-set-key (kbd "H-=") 'enlarge-window-horizontally)
-(global-set-key (kbd "H-+") 'enlarge-window)
+(global-set-key (kbd "H--") 'text-scale-decrease)
+(global-set-key (kbd "H-=") 'text-scale-increase)
 
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
@@ -198,9 +196,6 @@
 
 (global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
-
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
 (global-set-key (kbd "S-s-t") 'grunt)
