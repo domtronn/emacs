@@ -134,6 +134,31 @@
 									 (insert (format ",\n%s" (inject-dependency class-name prev-point)))
 									 (indent-according-to-mode))))))))
 
+(defun sort-javascript-dependencies ()
+  (interactive)
+  (save-excursion
+		(beginning-of-buffer)
+		(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
+					(aEnd (- (search-forward-regexp "\\s-*\\]") 1))
+					(bStart (search-forward-regexp "function\\s-*("))
+					(bEnd (- (search-forward ")") 1)))
+			(let ((require-list (split-string (buffer-substring aStart aEnd) ",\\s-*\n*\\s-*" t))
+						(class-list (split-string (buffer-substring bStart bEnd) ",\\s-*\n*\\s-*" t))
+						(require-class-alist '()))
+				(mapc #'(lambda (list-item)
+									(push (list (format "%s" list-item)  (pop class-list)) require-class-alist))
+							require-list)
+				(setq require-class-alist
+							(sort require-class-alist '(lambda (a b) (string< (car a) (car b)))))
+			  (setq class-list
+							(format-text-in-rectangle
+							 (mapconcat #'(lambda (arg) (format "%s" (car (cdr arg)))) require-class-alist ", ") 150))
+				(setq require-list (mapconcat #'(lambda (arg) (chomp (format "%s" (car arg)))) require-class-alist ",\n"))
+				(replace-region bStart bEnd (format "%s" class-list))
+				(replace-region aStart aEnd (format "%s\n" require-list))
+				(indent-require-block)
+				))))
+
 (defun indent-require-block ()
   (interactive)
   (save-excursion
