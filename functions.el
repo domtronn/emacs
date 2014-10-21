@@ -147,6 +147,16 @@
 			(indent-region aStart aEnd)
 			)))
 
+(defun format-text-in-rectangle (text width)
+	(with-temp-buffer
+		(insert text)
+		(goto-char (+ (point-min) width))
+		(while (< (point) (point-max))
+			(backward-word)
+			(newline)
+			(goto-char (+ (point) width)))
+		(format "%s" (buffer-substring (point-min) (point-max)))))
+
 (defun replace-region (region-start region-end replacement)
 	(goto-char region-start)
 	(delete-region region-start region-end)
