@@ -196,7 +196,7 @@
       (beginning-of-buffer)
       (replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
                       (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd))))
-      (indent-require-block))))
+      (sort-javascript-dependencies))))
 
 (defun get-last-spy ()
   (interactive)
@@ -238,8 +238,13 @@
   (setq words '("pow" "shazam" "foo" "bar" "wollop" "bam" "smash"
                 "boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky"
                 "hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
-                "mimsy" "snicker" "snack" "vorpal" "wabe" "zorp" "fam"
-                "horcrux" "muggle" "shiwu" "hokey" "cokey"))
+                "snicker" "snack" "zorp" "fam" "tootle" "toot" "root"
+                "muggle" "hokey" "cokey" "jiggery-pokery" "gazoo"
+							  "fiddlededee" "fiddle" "dedee" "blether" "doo" "ga"
+								"claptrap" "fadoodle" "fa" "ranny" "zoo" "fa" "foo"
+								"slip" "slop" "skittles" "tara" "taradiddle" "foodadoo"
+								"thinga" "majiga" "thingamajiga" "ma" "jiga" "twaddle"
+								)) 
   (random t)
   (message (nth (random (length words)) words)))
 
