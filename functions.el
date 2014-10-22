@@ -1392,6 +1392,29 @@ or a marker."
 														""
 														str))
 
+(defun git-commit-ticket-number (num)
+  (interactive "sEnter ticket number : ")
+	(let ((header-at (git-commit-find-pseudo-header-position)))
+    (save-excursion
+      (goto-char header-at)
+      (let ((pre (git-commit-determine-pre-for-pseudo-header)))
+        (insert (format "TVPSPORTV5-%s\n" num))))))
+
+(defun git-commit-review (initials)
+  (interactive "sEnter reviewer initials: ")
+	(let ((header-at (git-commit-find-pseudo-header-position)))
+    (save-excursion
+      (goto-char header-at)
+      (let ((pre (git-commit-determine-pre-for-pseudo-header))
+						(name-alist '(("JK" . "Julian Kimmings") ("GP" . "Graeme Phillipson")
+													("DC" . "Dom Charlesworth") ("CD" . "Chris Darlaston")
+													("EC" . "Emma Carruthers") ("RW" . "Ryan Waudby")
+													("MF" . "Max Farrell") ("WC" . "Will Crossland")
+													("AD" . "Andrew Markham-Davies"))))
+				
+        (insert (format "Reviewed by: %s\n" (or (cdr (assoc initials name-alist)) initials)))))
+  ))
+
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
