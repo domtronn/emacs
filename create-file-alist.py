@@ -14,8 +14,8 @@ for r in filter_regexp:
 result_dict = {}
 for f in resultant_files:
     if os.path.basename(f) in result_dict:
-        result_dict[os.path.basename(f)].append(os.path.dirname(f))
+        result_dict[os.path.basename(f)].append(os.path.dirname(f) + "/")
     else:
-        result_dict[os.path.basename(f)] = [os.path.dirname(f)]
+        result_dict[os.path.basename(f)] = [os.path.dirname(f) + "/"]
 
 print json.dumps(result_dict)
