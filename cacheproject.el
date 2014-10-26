@@ -31,7 +31,7 @@
 (defvar project-id nil)
 (setq external-cache-hash (make-hash-table :test 'equal))
 (setq-default project-id "EMACS")
-(setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" ",v$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
+(setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -72,17 +72,15 @@
 												 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
 														 (let ((temp-file-cache-alist file-cache-alist))																		
 															 (setq file-cache-alist nil)
-															 (file-cache-add-directory-recursively (gethash "dir" hash))
+															 (file-cache-add-directory-using-python (gethash "dir" hash))
 															 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache"))
 															 (setq file-cache-alist temp-file-cache-alist))
 													 nil)
-												 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache"))
-												 (message "[filecache] Added %s from cache..." (gethash "dir" hash))
-												 )
+												 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache")))
 										 (progn 
 											 (if (file-exists-p (concat (gethash "dir" hash) "/.filecache"))
 													 (delete-file (concat (gethash "dir" hash) "/.filecache")))
-											 (file-cache-add-directory-recursively (gethash "dir" hash)))
+											 (file-cache-add-directory-using-python (gethash "dir" hash)))
 										 )
 									 (create-tags (gethash "dir" hash))))
 						 (gethash "project" (json-read-from-string json-contents)))
@@ -92,8 +90,8 @@
 								 (progn 
 									 (let ((temp-file-cache-alist file-cache-alist))
 										 (setq file-cache-alist nil)
-										 (file-cache-add-directory-recursively (gethash "dir" hash))
-										 (message "[filecache] Adding Cache recursively for External Dependency %s..." (gethash "dir" hash))
+										 (file-cache-add-directory-using-python (gethash "dir" hash))
+										 ;; (message "[filecache] Adding Cache recursively for External Dependency %s..." (gethash "dir" hash))
 										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
 										 (setq file-cache-alist temp-file-cache-alist)))
 								 (create-tags (gethash "dir" hash))
@@ -109,7 +107,7 @@
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
 				(setq project-id (upcase (file-name-base PROJECTPATH)))
 				(setq project-test-cmd "!!")
-				(file-cache-add-directory-recursively PROJECTPATH)))))
+				(file-cache-add-directory-using-python PROJECTPATH)))))
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
@@ -151,7 +149,6 @@ The file cache can be saved to a file using
 
 (unless (boundp 'PROJECTPATH)
 	(call-interactively 'project-change))
-
 
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
