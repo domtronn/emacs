@@ -108,6 +108,34 @@
       (goto-char (- (point) 1))
       (insert (concat ", " var-name)))))
 
+(defun format-text-in-rectangle (text width)
+	(with-temp-buffer
+		(insert text)
+		(goto-char (+ (point-min) width))
+		(while (< (point) (point-max))
+			(backward-word)
+			(newline)
+			(goto-char (+ (point) width)))
+		(format "%s" (buffer-substring (point-min) (point-max)))))
+
+(defun replace-region (region-start region-end replacement)
+	(goto-char region-start)
+	(delete-region region-start region-end)
+	(insert replacement))
+
+(defun indent-require-block ()
+  (interactive)
+  (save-excursion
+		(beginning-of-buffer)
+		(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
+					(aEnd (search-forward-regexp "\\s-*\\]"))
+					(bStart (search-forward-regexp "function\\s-*(.*\n"))
+					(bEnd (- (search-forward ")") 1)))
+			(message "%s" bStart)
+			(indent-region bStart bEnd)
+			(indent-region aStart aEnd)
+			)))
+
 (defun inject-javascript-dependency ()
   (interactive)
   (let ((class-name (thing-at-point 'word))
@@ -159,52 +187,17 @@
 				(indent-require-block)
 				))))
 
-(defun indent-require-block ()
-  (interactive)
-  (save-excursion
-		(beginning-of-buffer)
-		(let ((aStart (search-forward-regexp "\\s-*\\[\n\\s-*"))
-					(aEnd (search-forward-regexp "\\s-*\\]"))
-					(bStart (search-forward-regexp "function\\s-*(.*\n"))
-					(bEnd (- (search-forward ")") 1)))
-			(message "%s" bStart)
-			(indent-region bStart bEnd)
-			(indent-region aStart aEnd)
-			)))
-
-(defun format-text-in-rectangle (text width)
-	(with-temp-buffer
-		(insert text)
-		(goto-char (+ (point-min) width))
-		(while (< (point) (point-max))
-			(backward-word)
-			(newline)
-			(goto-char (+ (point) width)))
-		(format "%s" (buffer-substring (point-min) (point-max)))))
-
-(defun replace-region (region-start region-end replacement)
-	(goto-char region-start)
-	(delete-region region-start region-end)
-	(insert replacement))
-
 (defun update-javascript-dependency ()
   (interactive)
-  (save-excursion
-    (beginning-of-buffer)
-    (let ((bStart (search-forward-regexp "function\\s-*("))
-          (bEnd (- (search-forward ")") 1)))
-      (beginning-of-buffer)
-      (replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
-                      (format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd))))
-      (sort-javascript-dependencies))))
-
-(defun get-last-spy ()
-  (interactive)
-  (save-excursion
-    (let ((start (+ (search-backward-regexp "spyOn(" 6)))
-          (end (- (search-forward-regexp ")") 1)))
-      (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
-          (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
+	(let ((prev-point (point)))
+		(save-excursion
+			(beginning-of-buffer)
+			(let ((bStart (search-forward-regexp "function\\s-*("))
+						(bEnd (- (search-forward ")") 1)))
+				(beginning-of-buffer)
+				(replace-regexp "\\[\\s-*\n\\(['\\\"a-z/, \n\t\r]*\\)\\s-\\]"
+												(format "\[\n%s\n\t\]" (inject-dependency (buffer-substring bStart bEnd) prev-point)))
+				(sort-javascript-dependencies)))))
 
 (defun inject-dependency (dep-list &optional popup-point)
   (interactive)
@@ -227,6 +220,14 @@
                        (car resultant-require-path)
                      (popup-menu* resultant-require-path :point popup-point))))))
    (split-string dep-list ",\\s-*\n*\\s-*" t) ",\n"))
+
+(defun get-last-spy ()
+  (interactive)
+  (save-excursion
+    (let ((start (+ (search-backward-regexp "spyOn(" 6)))
+          (end (- (search-forward-regexp ")") 1)))
+      (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
+          (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
 (defun insert-random-return ()
   (interactive)
@@ -1413,7 +1414,7 @@ or a marker."
 													("AD" . "Andrew Markham-Davies"))))
 				
         (insert (format "Reviewed by: %s\n" (or (cdr (assoc initials name-alist)) initials)))))
-  ))
+    ))
 
 ;; ----------------------------------------------------------------------------
 ;; MACROS
@@ -1423,12 +1424,11 @@ or a marker."
 (fset 'clear-all-double-lines
       [?\M-> ?\C-u ?0 ?\M-x ?c ?l ?e ?a ?r ?- ?d ?o ?u ?b ?l ?e ?- ?l ?i ?n ?e return ?\C-x ?\C-o ?\C-x ?\C-o ?\C-x ?\C-o])
 
-(fset 'clear-double-line
-      "\C-r^\C-q\C-j$\C-x\C-o")
+(fset 'clear-double-line "\C-r^\C-q\C-j$\C-x\C-o")
 
-; Hide all functions in a file using hs minor mode
-(fset 'press-return
-      [?c ?d ? ?$ ?T ?E ?S ?T ?S return])
+(fset 'press-return [?c ?d ? ?$ ?T ?E ?S ?T ?S return])
+
+(fset 'only-press-return [return])
 
 (provide 'functions)
 ;;; functions.el ends here
