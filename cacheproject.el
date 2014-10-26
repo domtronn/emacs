@@ -119,6 +119,19 @@
 	(project-refresh)
 	(message "New project directory is %s." arg))
 
+(defun file-cache-add-directory-using-python (dir)
+	(let ((json-object-type 'alist) (json-array-type 'list) (json-key-type 'string))
+		(setq file-cache-alist
+					(json-read-from-string
+					 (shell-command-to-string
+						(concat
+						 "/usr/bin/python "
+						 (concat USERPATH "/create-file-alist.py ")
+						 (concat "\"" (expand-file-name dir) "\" ")
+						 (concat "\"" (mapconcat 'identity file-cache-filter-regexps ",") "\""))
+						)))
+		t))
+
 (defun file-cache-save-cache-to-file (file)
   "Save contents of `file-cache-alist' to FILE.
 For later retrieval using `file-cache-read-cache-from-file'"
