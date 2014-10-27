@@ -174,6 +174,7 @@
 (require 'json)
 (require 'json-snatcher)
 (require 'js2-refactor)
+(require 'js-dependency-inject)
 
 (defun js-mode-bindings ()
 	"Sets a hotkey for using the json-snatcher plugin"
@@ -184,8 +185,10 @@
 (add-hook 'js2-mode-hook 'js-mode-bindings)
 
 (eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
-(eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-javascript-dependency))
-(eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-javascript-dependency))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-dependencies))
+(eval-after-load 'js '(define-key js-mode-map (kbd "C-c s-B") 'sort-dependencies))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-dependency-at-point))
+(eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js-mode-map (kbd "M-b") 'post-declare-var))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "H-.") 'go-to-thing-at-point))
