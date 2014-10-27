@@ -1298,7 +1298,8 @@ or a marker."
 													("DC" . "Dom Charlesworth") ("CD" . "Chris Darlaston")
 													("EC" . "Emma Carruthers") ("RW" . "Ryan Waudby")
 													("MF" . "Max Farrell") ("WC" . "Will Crossland")
-													("AD" . "Andrew Markham-Davies"))))
+													("AD" . "Andrew Markham-Davies")
+													("DD" . "Dimoklis Despotakis"))))
 				
         (insert (format "Reviewed by: %s\n" (or (cdr (assoc initials name-alist)) initials)))))
     ))
