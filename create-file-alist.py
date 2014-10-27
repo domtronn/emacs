@@ -7,9 +7,10 @@ resultant_files = []
 for root, dirs, files in os.walk(project_dir):
     for name in files:
         resultant_files.append(os.path.join(root, name))
-
+        
 for r in filter_regexp:
-    resultant_files = [f for f in resultant_files if not re.compile(r).search(f)]
+    regex = re.compile(r)
+    resultant_files = [f for f in resultant_files if not regex.search(f)]
         
 result_dict = {}
 for f in resultant_files:
