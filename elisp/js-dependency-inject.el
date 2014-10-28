@@ -125,7 +125,7 @@ The REPLACE flag will replace all require paths and class names with these."
 			(indent-require-block)))
 
 (defun get-dependency-alist ()
-	"Construct the dependency alist from the external-cache-hash.
+	"Construct the dependency alist from the external-lib-alist.
 It assossciates each file name to a list of locations of that file."
 		(let ((dependency-alist (list)))
 			(mapcar
@@ -152,7 +152,7 @@ It assossciates each file name to a list of locations of that file."
 												(push appended-results dependency-alist))))
 									))
 						(cdr project-assoc)))
-			 external-cache-hash)  dependency-alist))
+			 external-lib-alist)  dependency-alist))
 
 (defun get-require-path-list ()
 	(let ((a (car (get-require-path-region)))
