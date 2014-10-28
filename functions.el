@@ -918,26 +918,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
   t)
 
-(defun add-file-to-ext-lib-cache ()
-  (interactive)
-  (let ((lib-cache (gethash project-id external-cache-hash))
-        (temp-file-cache-alist file-cache-alist))
-    (if (and (boundp 'project-id)
-             (not (eq project-id nil))
-             (not (assoc-string (file-name-nondirectory (buffer-file-name)) (gethash project-id external-cache-hash)))
-             (find-file-upwards ".filecache")
-             (eq (buffer-mode (buffer-name)) 'js-mode))
-        (progn
-          (message "[filecache] Adding %s to the external library cache..." (buffer-file-name))
-          (push
-           (list (file-name-nondirectory (buffer-file-name))
-                 (file-name-directory (buffer-file-name)))
-           (gethash project-id external-cache-hash))
-          (setq file-cache-alist (gethash project-id external-cache-hash))
-          (file-cache-save-cache-to-file (find-file-upwards ".filecache"))
-          (setq file-cache-alist temp-file-cache-alist))))
-  t)
-
 (defun find-file-upwards (file-to-find)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
