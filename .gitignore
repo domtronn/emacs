@@ -20,6 +20,7 @@ emacs.packages/.cask
 *scratch*
 *url*
 *.yas-compiled-*el
+*tutorial*
 
 # Compiled source #
 ###################
