@@ -173,7 +173,10 @@
 (global-set-key (kbd "C-x t") 'open-test)
 (global-set-key (kbd "s-t") 'open-test)
 
-(global-set-key (kbd "C-x n p") 'project-change)
+(define-prefix-command 'project-map)
+(global-set-key (kbd "C-c p") 'project-map)
+(define-key 'project-map (kbd "c") 'project-change)
+(define-key 'project-map (kbd "r") 'project-refresh)
 
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
