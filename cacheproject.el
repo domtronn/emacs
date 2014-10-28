@@ -23,15 +23,17 @@
 
 ;;; Code:
 
-(defvar external-cache-hash nil)
+(defvar external-lib-alist nil)
 (defvar project-src-path nil)
 (defvar project-test-path nil)
 (defvar project-test-cmd nil)
 (defvar project-test-ext nil)
 (defvar project-id nil)
-(setq external-cache-hash (make-hash-table :test 'equal))
 (setq-default project-id "EMACS")
-(setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\.svn-base$" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/script-tests\\/tests" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\/testconfig\\/" "\\/.git\\/" "report")))
+(setq-default file-cache-filter-regexps (quote ("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$"
+																								"\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$"
+																								"\\/build\\/" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache"
+																								"\\.cache$" "\\/.git\\/" "report")))
 
 (defun project-clear ()
 	"Clears the cache of projects"
@@ -47,58 +49,39 @@
 	(progn
 		(project-clear)
 		(if (string-equal "0\n"
-											(shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
-				;; If it's a file project file do this
+					(shell-command-to-string (format "if [ -d %s ]; then echo 1; else echo 0; fi" PROJECTPATH)))
+				;; If it's a project file do this
 				(progn 
 					(let ((json-object-type 'hash-table)
 								(json-contents (shell-command-to-string (concat "cat " PROJECTPATH))))
 						(setq project-id (gethash "projectId" (json-read-from-string json-contents)))
+						
+						;; Set up the indentation settings i.e. tabs vs spaces
 						(use-tabs)
 						(if (gethash "tabs" (json-read-from-string json-contents))
 								(if (eq :json-false (gethash "tabs" (json-read-from-string json-contents)))
 										(use-spaces)))
 						(if (gethash "indent" (json-read-from-string json-contents))
 								(setq js-indent-level (gethash "indent" (json-read-from-string json-contents))))
+						
+						;; Set up variables used in opening and running tests
 						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
 							(setq project-src-path (gethash "srcPath" testing))
 							(setq project-test-path (gethash "testPath" testing))
 							(setq project-test-cmd (gethash "testCmd" testing))
 							(setq project-test-ext (gethash "testExt" testing)))
-            (mapc
-						 #'(lambda (hash)
-								 (progn
-									 (if (not (eq (gethash "cache" hash) :json-false))
-											 (progn 
-												 (if (not (file-exists-p (concat (gethash "dir" hash) "/.filecache")))
-														 (let ((temp-file-cache-alist file-cache-alist))																		
-															 (setq file-cache-alist nil)
-															 (file-cache-add-directory-using-python (gethash "dir" hash))
-															 (file-cache-save-cache-to-file (concat (gethash "dir" hash) "/.filecache"))
-															 (setq file-cache-alist temp-file-cache-alist))
-													 nil)
-												 (file-cache-add-cache-from-file (concat (gethash "dir" hash) "/.filecache")))
-										 (progn 
-											 (if (file-exists-p (concat (gethash "dir" hash) "/.filecache"))
-													 (delete-file (concat (gethash "dir" hash) "/.filecache")))
-											 (file-cache-add-directory-using-python (gethash "dir" hash)))
-										 )
-									 (create-tags (gethash "dir" hash))))
-						 (gethash "project" (json-read-from-string json-contents)))
-						;; This block handles the libs section which is used for javascript dependency injection
-						(mapc 
-						 #'(lambda (hash) 
-								 (progn 
-									 (let ((temp-file-cache-alist file-cache-alist))
-										 (setq file-cache-alist nil)
-										 (file-cache-add-directory-using-python (gethash "dir" hash))
-										 ;; (message "[filecache] Adding Cache recursively for External Dependency %s..." (gethash "dir" hash))
-										 (puthash (gethash "id" hash) file-cache-alist external-cache-hash)
-										 (setq file-cache-alist temp-file-cache-alist)))
-								 (create-tags (gethash "dir" hash))
-								 (setq tags-table-list (cons 
-																				(file-truename (concat (gethash "dir" hash) "/.tags"))
-																				tags-table-list )))
-						 (gethash "libs" (json-read-from-string json-contents))))
+
+						(set-external-lib-alist-using-python PROJECTPATH)
+						(setq file-cache-alist (cdr (assoc project-id external-lib-alist)))
+						
+						;; Create tags files for all of the project files
+						(let ((project (gethash "project" (json-read-from-string json-contents)))
+									(libs (gethash "libs" (json-read-from-string json-contents))))
+
+							(setq tags-tag-list nil)
+							(mapc #'create-tags-and-append project)
+							(mapc #'create-tags-and-append libs)))
+					
 					(setq tags-table-list (reverse tags-table-list))
 					(ac-etags-setup) 
 					(ac-etags-ac-setup))
@@ -107,13 +90,19 @@
 				(message (concat PROJECTPATH " is not a project file - Interpreting as Directory"))
 				(setq project-id (upcase (file-name-base PROJECTPATH)))
 				(setq project-test-cmd "!!")
-				(file-cache-add-directory-using-python PROJECTPATH)))))
+				(file-cache-add-directory-recursively PROJECTPATH)))))
+
+(defun create-tags-and-append (hash)
+	(when (not (eq :json-false (gethash "create-tags" hash)))
+		(create-tags (gethash "dir" hash))
+		(setq tags-table-list
+					(append tags-table-list (list (file-truename (concat (gethash "dir" hash) "/.tags")))))))
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
   (interactive (list (read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
   (setq PROJECTPATH arg)
-	(setq external-cache-hash (make-hash-table :test 'equal))
+	(setq external-lib-alist (make-hash-table :test 'equal))
 	(project-refresh)
 	(message "New project directory is %s." arg))
 
@@ -129,6 +118,19 @@
 										 (concat "\"" (expand-file-name dir) "\" ")
 										 (concat "\"" (mapconcat 'identity file-cache-filter-regexps ",") "\""))
 										)))) t))
+
+(defun set-external-lib-alist-using-python (dir)
+	(let ((json-object-type 'alist) (json-array-type 'list) (json-key-type 'string))
+		(setq external-lib-alist
+				  (json-read-from-string
+					 (shell-command-to-string
+						(concat
+						 "/usr/bin/python "
+						 (concat USERPATH "/create-file-alist.py ")
+						 (expand-file-name dir)
+						 (concat " \"" (mapconcat 'identity file-cache-filter-regexps ",") "\""))
+						))))
+	t)
 
 (defun file-cache-save-cache-to-file (file)
   "Save contents of `file-cache-alist' to FILE.
