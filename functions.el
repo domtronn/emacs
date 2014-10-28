@@ -277,8 +277,7 @@
 (defun occur-at-point ()
   "Run occur on a thing."
   (interactive)
-  (occur (thing-at-point 'symbol))
-  (toggle-read-only))
+  (occur (thing-at-point 'symbol)))
 
 (defun open-in-and-activate-intellj ()
   "Opens the current file in intellij for n00b5!"
