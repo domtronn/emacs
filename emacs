@@ -165,7 +165,6 @@
 
 (require 'rvm)
 (rvm-use "ruby-2.1.2" "global")
-(add-hook 'ruby-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 
 (require 'filecache)
 
@@ -194,8 +193,6 @@
 (eval-after-load 'js '(define-key js-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (add-hook 'js-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
-(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-ext-lib-cache)))
-(add-hook 'js-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 (add-hook 'js-mode-hook #'(lambda () 
 			    (button-lock-set-button "\\.\\(\\w+\\)("
 						    #'(lambda (event)
