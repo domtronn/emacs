@@ -128,8 +128,8 @@ The REPLACE flag will replace all require paths and class names with these."
 	"Construct the dependency alist from the external-cache-hash.
 It assossciates each file name to a list of locations of that file."
 		(let ((dependency-alist (list)))
-			(maphash
-			 #'(lambda (id assoc-list)
+			(mapcar
+			 #'(lambda (project-assoc)
 					 (mapcar
 						#'(lambda (elt)
 								;; Filter results by /script/ regexp
@@ -138,7 +138,7 @@ It assossciates each file name to a list of locations of that file."
 									(when filtered-results
 										(let ((modified-results
 													 (mapcar #'(lambda (x)
-																			 (concat (replace-regexp-in-string ".*script" id x)
+																			 (concat (replace-regexp-in-string ".*script" (car project-assoc) x)
 																							 (replace-regexp-in-string ".js" "" (car elt)))) filtered-results)))
 											
 											;; Create alist element of file to folder
@@ -151,7 +151,7 @@ It assossciates each file name to a list of locations of that file."
 
 												(push appended-results dependency-alist))))
 									))
-						assoc-list))
+						(cdr project-assoc)))
 			 external-cache-hash)  dependency-alist))
 
 (defun get-require-path-list ()
