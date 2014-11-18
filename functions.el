@@ -431,9 +431,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun create-tags-for-project ()
   "Creates tags files in the base of each project module in PROJECTPATH"
   (interactive)
-  (mapc
-   'create-tags
-   (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
+  (mapc 'create-tags (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
 
 (defun go-to-emms-playlist ()
   (interactive)
