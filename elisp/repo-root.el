@@ -410,7 +410,7 @@ is reached. If `repository-root-exhaustive-scan' is nil, return a list
 with a single cons pair - namely, the result of the first call to
 `repository-root-and-matcher-index'."
   (unless matchers-list
-    (setq matchers-list (mapcar '(lambda (matcher)
+    (setq matchers-list (mapcar #'(lambda (matcher)
                                    ;; expand built-in matchers
                                    (if (and (symbolp matcher)
                                             (not (functionp matcher)))
