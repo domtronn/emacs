@@ -379,7 +379,6 @@
 
 (add-hook 'vc-annotate-mode-hook (lambda () (sticky-window-delete-other-windows)))
 
-(add-hook 'git-commit-mode-hook (lambda () (local-set-key (kbd "C-c C-l") #'git-commit-ticket-number)))
 (add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
 (add-hook 'magit-branch-manager-mode-hook (lambda () (sticky-window-delete-other-windows)))
 
