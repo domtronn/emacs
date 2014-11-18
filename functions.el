@@ -282,7 +282,23 @@
   "Opens the current file in intellij for n00b5!"
   (interactive)
   (shell-command
-   (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 13\\\" to activate\"" (buffer-file-name))))
+   (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 12\\\" to activate\"" (buffer-file-name))))
+
+(defun open-in-and-activate-sublime ()
+  "Opens the current file in Sublime!"
+  (interactive)
+  (shell-command
+   (format "subl %s" (buffer-file-name))))
+
+(defun my-open-current-file ()
+  "calls vc-dir on the appropriate project"
+  (interactive)
+  (let ((type (ido-completing-read
+               "Run which VC status manager: " '("IntelliJ IDEA" "Sublime Text") nil nil)))
+    (cond ((string-equal type "IntelliJ IDEA")
+           (open-in-and-activate-intellj))
+          ((string-equal type "Sublime Text")
+           (open-in-and-activate-sublime)))))
 
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a buffer."
