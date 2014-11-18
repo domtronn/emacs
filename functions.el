@@ -117,12 +117,9 @@
           (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
 (defun insert-random-return ()
-  (interactive)
-  (let ((word (random-return)))
-    (insert word)))
+  (interactive) (insert (random-return)))
 
 (defun random-return ()
-  (interactive)
   (setq words '("pow" "shazam" "foo" "bar" "wollop" "bam" "smash"
                 "boom" "vrooom" "splat" "kapow" "krunch" "jabberwocky"
                 "hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
@@ -134,7 +131,7 @@
 								"thinga" "majiga" "thingamajiga" "ma" "jiga" "twaddle"
 								)) 
   (random t)
-  (message (nth (random (length words)) words)))
+  (nth (random (length words)) words))
 
 (defun browse-sandbox ()
   (interactive)
