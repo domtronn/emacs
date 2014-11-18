@@ -227,6 +227,8 @@
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
 
+(global-set-key (kbd "s-o") 'my-open-current-file)
+
 (define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
 
