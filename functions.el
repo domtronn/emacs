@@ -529,8 +529,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (enlarge-window-horizontally size)
         (other-window 1)
         (visit-ansi-term "ansi-term")
-        (if (not (eq nil project-test-cmd))
-						(if (not (eq nil extra-cmd))
+        (if project-test-cmd
+						(if extra-cmd
 								(auto-type-string (concat project-test-cmd extra-cmd))
 							(auto-type-string project-test-cmd)))
         (set-window-dedicated-p (get-buffer-window) t)
