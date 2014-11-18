@@ -95,8 +95,9 @@
 (defun create-tags-and-append (hash)
 	(when (not (eq :json-false (gethash "create-tags" hash)))
 		(create-tags (gethash "dir" hash))
-		(setq tags-table-list
-					(append tags-table-list (list (file-truename (concat (gethash "dir" hash) "/.tags")))))))
+    (when (file-exists-p (concat (gethash "dir" hash) "/.tags"))
+      (setq tags-table-list
+            (append tags-table-list (list (file-truename (concat (gethash "dir" hash) "/.tags"))))))))
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
