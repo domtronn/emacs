@@ -1184,9 +1184,10 @@ otherwise raises an error."
 (defun semi-colon-end ()
 	"Function to insert a semi colon at the end of the line from anywhere"
   (interactive)
-  (delete-trailing-whitespace)
-  (end-of-line)
-  (insert (format "%s" ";")))
+	(save-excursion
+		(delete-trailing-whitespace)
+		(end-of-line)
+		(insert (format "%s" ";"))))
 
 (defun swap-regions (beg1 end1 beg2 end2)
   "Swap region between BEG1 and END1 with region BEG2 and END2.
