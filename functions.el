@@ -1287,7 +1287,7 @@ or a marker."
       (let ((pre (git-commit-determine-pre-for-pseudo-header)))
         (insert (format "TVPSPORTV5-%s\n" num))))))
 
-(defun git-commit-review (initials)
+(defun my-commit-review (initials)
   (interactive "sEnter reviewer initials: ")
 	(let ((header-at (git-commit-find-pseudo-header-position)))
     (save-excursion
