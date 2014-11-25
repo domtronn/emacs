@@ -1303,6 +1303,13 @@ or a marker."
         (insert (format "Reviewed by: %s\n" (or (cdr (assoc initials name-alist)) initials)))))
     ))
 
+(defun kill-whitespace ()
+	"Kill the whitespace between two non-whitespace characters"
+	(interactive)
+	(save-excursion
+		(progn
+			(re-search-forward "[ \t\r\n]+" nil t)
+			(replace-match "" nil nil))))
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
