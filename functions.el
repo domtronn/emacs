@@ -58,8 +58,12 @@
 (defun f3-true-fullscreen ()
   "Makes true fullscreen"
   (interactive)
-  (let* ((res-alist '((800 . 53) (1050 . 70))))
-    (set-frame-height (selected-frame) (cdr (assoc (x-display-pixel-height) res-alist)))))
+  (let* ((res-alist '((800 . 53) (1050 . 70)))
+         (res-constant 0.06645))
+    (set-frame-height (selected-frame)
+                      (if (assoc (x-display-pixel-height) res-alist)
+                          (cdr (assoc (x-display-pixel-height) res-alist))
+                        (round (* (x-display-pixel-height) res-constant))))))
 
 ;; --------------------------------------------
 ;; Functions used in compiling latex & xelatex
