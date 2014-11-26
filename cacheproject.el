@@ -101,7 +101,7 @@
 
 (defun project-change (arg)
   "Changes the project path and reloads the new cache"
-  (interactive (list (read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
+  (interactive (list (ido-read-file-name "Enter path to Project file: " "~/Documents/Projects/")))
   (setq PROJECTPATH arg)
 	(setq external-lib-alist (make-hash-table :test 'equal))
 	(project-refresh)
@@ -132,23 +132,6 @@
 						 (concat " \"" (mapconcat 'identity file-cache-filter-regexps ",") "\""))
 						))))
 	t)
-
-(defun file-cache-save-cache-to-file (file)
-  "Save contents of `file-cache-alist' to FILE.
-For later retrieval using `file-cache-read-cache-from-file'"
-  (interactive "FFile: ")
-  (with-temp-file (expand-file-name file)
-    (prin1 file-cache-alist (current-buffer))))
-
-(defun file-cache-add-cache-from-file (file)
-  "Clear `file-cache-alist' and read cache from FILE.
-The file cache can be saved to a file using
-`file-cache-save-cache-to-file'."
-  (interactive "fFile: ")
-	(message "%s" (concat "Looking for cache in " file))
-  (let ((buf (find-file-noselect file)))
-    (setq file-cache-alist (append (read buf) file-cache-alist))
-    (kill-buffer buf)))
 
 (unless (boundp 'PROJECTPATH)
 	(call-interactively 'project-change))
