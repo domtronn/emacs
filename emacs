@@ -444,6 +444,7 @@
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
+(load-file (concat USERPATH "/advice.el"))
 (battery)
 (load-file (concat USERPATH "/elisp/powerline.el"))
 
