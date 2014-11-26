@@ -58,13 +58,12 @@ minibuffer."
 		(let* ((popup-point (point))
 					 (class-symbol (or (thing-at-point 'word) (save-excursion (backward-word) (thing-at-point 'word))))
 					 (class-name (concat (downcase class-symbol) ".js"))
-					 (result (assoc class-name (get-dependency-alist))))
-
+					 (result (assoc class-name (get-dependency-alist)))
+					 (qc (get-quote-char)))
 			(if result
-					(let ((require-path (show-popup-with-options result popup-point "\"%s\"")))
+					(let ((require-path (show-popup-with-options result popup-point (concat qc "%s"qc ))))
 						(inject-dependency (list require-path) (list class-symbol)))
-				(message "%s does not exist in any dependencies" class-symbol))
-			)))
+				(message "%s does not exist in any dependencies" class-symbol)))))
 
 (defun update-dependencies ()
 	"Update all of the classes in the function block.
@@ -82,11 +81,12 @@ arguments."
 			(mapcar
 			 #'(lambda (class-symbol)
 					 (let* ((class-name (concat (downcase class-symbol) ".js"))
-									(result (assoc class-name dependency-alist)))
+									(result (assoc class-name dependency-alist))
+									(qc (get-quote-char)))
 						 (setq require-path-list
 									 (append require-path-list
 													 (list (if result
-																		 (show-popup-with-options result popup-point "\"%s\"")
+																		 (show-popup-with-options result popup-point (concat qc "%s" qc))
 																	 (format "\"???/%s\"" (downcase class-symbol))))))))
 			 class-name-list)
 			(inject-dependency require-path-list class-name-list t)
@@ -172,9 +172,15 @@ It assossciates each file name to a list of locations of that file."
 
 (defun get-region (regex-a regex-b)
 		(beginning-of-buffer)
+		(search-forward-regexp "require\.def")
 		(let ((start (search-forward-regexp regex-a))
 					(end (- (search-forward-regexp regex-b) 1)))
 			(list start end)))
+
+(defun get-quote-char ()
+  (if (> (count-matches "\"" (point-min) (point-max))
+				 (count-matches "'" (point-min) (point-max)))
+			"\"" "'"))
 
 (defun filter-list (condp lst)
 	(delq nil (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
