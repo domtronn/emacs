@@ -83,16 +83,6 @@
 
 (add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
 (require 'rails)
-(defadvice rails-script:generate-model (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(project-refresh))
-(defadvice rails-script:generate-controller (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(message "ABOUT TO REFRESH THE PROJECt")
-	(project-refresh))
-(defadvice rails-script:generate-observer (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(project-refresh))
 
 ;; (require 'key-chord)
 ;; (key-chord-mode 1)
