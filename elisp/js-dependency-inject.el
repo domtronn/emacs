@@ -189,7 +189,8 @@ It assossciates each file name to a list of locations of that file."
   (save-excursion
 		(beginning-of-buffer)
 		(indent-region (search-forward-regexp "function\\s-*(.*\n") (cadr (get-class-name-region)))
-		(indent-region (car (get-require-path-region)) (cadr (get-require-path-region)))))
+		(indent-region (car (get-require-path-region)) (cadr (get-require-path-region)))
+		(goto-char (cadr (get-require-path-region))) (indent-according-to-mode)))
 
 (defun replace-region (region-start region-end replacement)
 	(goto-char region-start)
