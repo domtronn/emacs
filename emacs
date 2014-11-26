@@ -28,11 +28,11 @@
 ;;------------------
 ;; Load Files
 ;;------------------
-(load-file (concat USERPATH "/elisp/buffer_move.el"))
+(load-file (concat USERPATH "/elisp/buffer_move.elc"))
 (load-file (concat USERPATH "/elisp/framemove.el"))
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
-(load-file (concat USERPATH "/elisp/actionscript-mode.el"))
+;; (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 (load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
 (load-file (concat USERPATH "/elisp/popwin.el"))
@@ -43,6 +43,7 @@
 (load-file (concat USERPATH "/elisp/repo-root.el"))
 (load-file (concat USERPATH "/elisp/drag-stuff.el"))
 (load-file (concat USERPATH "/elisp/git-timemachine.el"))
+(load-file (concat USERPATH "/elisp/ido-ubiquitous.el"))
 
 ;; Cool but needs some work
 ;; (load-file (concat USERPATH "/elisp/minimap.el"))
@@ -91,6 +92,8 @@
 ;; (require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
 ;; (require 'feature-mode) ;; https://github.com/michaelklishin/cucumber.el
 ;; (require 'groovy-mode)  ;; http://groovy.codehaus.org/Emacs+Groovy+Mode
+
+(require 'smex)
 
 (require 'popup)
 (popwin-mode 1)
@@ -176,7 +179,6 @@
 (eval-after-load 'js '(define-key js-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js-mode-map (kbd "C-c s-B") 'sort-dependencies))
-(eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js-mode-map (kbd "M-b") 'post-declare-var))
 (eval-after-load 'js '(define-key js-mode-map (kbd "s-§") 'button-lock-mode))
@@ -405,7 +407,10 @@
 (show-paren-mode t)   ; Show paranthesis matching
 
 ;; Ido Support
+(require 'ido-vertical-mode)
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
+(ido-vertical-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
