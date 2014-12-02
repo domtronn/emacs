@@ -1115,9 +1115,15 @@ otherwise raises an error."
 (defun wrap-region-with-char (arg1 arg2)
 	(if (use-region-p)
 			(save-excursion
-				(insert arg1)
-				(goto-char (region-end))
-				(insert arg2))))
+				(if (eq (point) (region-end))
+						(progn
+							(insert arg2)
+							(goto-char (region-beginning))
+							(insert arg1))
+					(progn
+						(insert arg1)
+						(goto-char (region-end))
+						(insert arg2))))))
 
 (defun add-quotation ()
   (interactive)
