@@ -28,7 +28,6 @@
 	(project-refresh))
 (defadvice rails-script:generate-controller (after refresh-cache activate)
 	"Refreshes the cache to include the new generated model"
-	(message "ABOUT TO REFRESH THE PROJECt")
 	(project-refresh))
 (defadvice rails-script:generate-observer (after refresh-cache activate)
 	"Refreshes the cache to include the new generated model"
@@ -51,6 +50,12 @@
 	(interactive)
   (ido-vertical-mode 1)
 	(call-interactively 'project-change))
+
+(defun ido-vertical-load-custom-theme ()
+	"Enable `ido-vertical-mode` when calling `load-custom-theme`"
+	(interactive)
+	(ido-vertical-mode 1)
+	(call-interactively 'load-custom-theme))
 
 (defun my-file-cache-ido-find-file ()
 	"Wrapper to enable `ido-vertical-mode` before calling `file-cache-ido-find-file`."
