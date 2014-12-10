@@ -105,10 +105,10 @@ With prefix arguement select `dirtree-buffer'"
       (unless (eq major-mode 'dirtree-mode)
         (dirtree-mode))
       (dolist (atree tree-mode-list)
-        (if (string= (widget-get atree :file) "~/workspace")
+        (if (string= (widget-get atree :file) "~/code")
             (setq tree atree)))
       (or tree
-          (setq tree (tree-mode-insert (dirtree-root-widget "~/workspace")))))
+          (setq tree (tree-mode-insert (dirtree-root-widget "~/code")))))
     (setq win (get-buffer-window dirtree-buffer))
     (unless win
       (setq win (apply 'windata-display-buffer dirtree-buffer dirtree-windata)))
@@ -201,7 +201,9 @@ With prefix arguement select `dirtree-buffer'"
   (let ((widget (widget-at (1- (line-end-position))))
         file)
     (if (setq file (widget-get widget :file))
-        (find-file-other-window file))))
+        (progn (other-window 1)
+							 (find-file file)
+							 (other-window 1)))))
 
 (define-key dirtree-mode-map "\C-o" 'dirtree-display)
 (provide 'dirtree)
