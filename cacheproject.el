@@ -133,9 +133,6 @@
 						))))
 	t)
 
-(unless (boundp 'PROJECTPATH)
-	(call-interactively 'project-change))
-
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
 First select a file, matched using ido-switch-buffer against the contents
