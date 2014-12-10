@@ -32,6 +32,7 @@
 (load-file (concat USERPATH "/elisp/framemove.el"))
 (load-file (concat USERPATH "/elisp/highlight_current_line.el"))
 (load-file (concat USERPATH "/elisp/js2-mode.el"))
+(load-file (concat USERPATH "/elisp/lorem-ipsum.el"))
 ;; (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 (load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
