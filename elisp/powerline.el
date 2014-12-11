@@ -1,29 +1,34 @@
-;;; powerline.el --- fancy statusline
+3;;; powerline.el --- fancy statusline
 
 ;; Name: Emacs Powerline
-;; Author: Unknown
-;; Version: 1.0
+;; Author: Nicolas Rougier and Chen Yuan
+;; Version: 1.2
 ;; Keywords: statusline
+;; Repository: https://github.com/yuanotes/powerline (not maintained)
+;; Alternative: https://github.com/milkypostman/powerline by Donald Curtis
 
 ;;; Commentary:
 
 ;; This package simply provides a minor mode for fancifying the status line.
 
-;; Modified by: Jonathan Chu
+;;; Changelog:
+
+;; v1.0 - Nicolas Rougier posted to wiki (http://www.emacswiki.org/emacs/PowerLine)
+;; v1.1 - Guard clause around the powerline output, so that if
+;;        powerline tries to output something unexpected, it won't
+;;        just fail and flail-barf.  (JonathanArkell)
+;; v1.2 - Fixed the Guard Clause to not just sit there and message like mad
+;;        When a list is encountered, it is interpreted as a mode line. Fixes 
+;;        problems with shell mode and nXhtml mode. 
 
 ;;; Code:
 
-(require 'cl)
-
-(defvar powerline-color0)
 (defvar powerline-color1)
 (defvar powerline-color2)
-(defvar powerline-foreground)
 
-(setq powerline-color0 "grey12")
+
 (setq powerline-color1 "grey22")
 (setq powerline-color2 "grey40")
-(setq powerline-foreground "white")
 
 (set-face-attribute 'mode-line nil
                     :background "OliveDrab3"
@@ -31,60 +36,69 @@
 (set-face-attribute 'mode-line-inactive nil
                     :box nil)
 
-(defun get-arrow-dots
-  (leftp width height)
-  (mapconcat
-   (apply-partially 'format "\"%s\"")
-   (mapcar
-    (lambda (n)
-       (let* ((nx (if (< n (/ height 2)) n (- height n)))
-              (dots (make-string nx ?.))
-              (spaces (make-string (- width nx) ? )))
-         (if leftp (concat dots spaces) (concat spaces dots))))
-    (number-sequence 1 height))
-   ",\n"))
-
-(defun get-arrow-xpm
-  (direction width height &optional color1 color2)
-  "Create an XPM left arrow."
-  (let* ((leftp (eq 'left direction))
-         (fg (if leftp color1 color2))
-         (bg (if leftp color2 color1)))
-    (create-image
-     (format "/* XPM */
-static char * arrow_left[] = {
-\"%d %d 2 1\",
-\". c %s\",
-\"  c %s\",
-%s};"
-             width height
-             (if fg fg "None")
-             (if bg bg "None")
-             (get-arrow-dots leftp width height))
-     'xpm t :ascent 'center)))
-
-(defun mode-line-height ()
-  "The mode line height with its current font face."
-  (- (elt (window-pixel-edges) 3)
-     (elt (window-inside-pixel-edges) 3)))
-
-(defun proportional-arrow-xpm
-  (direction color1 color2)
-  (let* ((r 1.5)
-         (m-height (mode-line-height))
-         (height (if (evenp m-height) m-height (+ 1 m-height)))
-         (width (floor (/ height r))))
-    (get-arrow-xpm direction width height color1 color2)))
+(scroll-bar-mode -1)
 
 (defun arrow-left-xpm
   (color1 color2)
   "Return an XPM left arrow string representing."
-  (proportional-arrow-xpm 'left color1 color2))
+  (create-image
+   (format "/* XPM */
+static char * arrow_left[] = {
+\"12 18 2 1\",
+\". c %s\",
+\"  c %s\",
+\".           \",
+\"..          \",
+\"...         \",
+\"....        \",
+\".....       \",
+\"......      \",
+\".......     \",
+\"........    \",
+\".........   \",
+\".........   \",
+\"........    \",
+\".......     \",
+\"......      \",
+\".....       \",
+\"....        \",
+\"...         \",
+\"..          \",
+\".           \"};"
+           (if color1 color1 "None")
+           (if color2 color2 "None"))
+   'xpm t :ascent 'center))
 
 (defun arrow-right-xpm
   (color1 color2)
   "Return an XPM right arrow string representing."
-  (proportional-arrow-xpm 'right color1 color2))
+  (create-image
+   (format "/* XPM */
+static char * arrow_right[] = {
+\"12 18 2 1\",
+\". c %s\",
+\"  c %s\",
+\"           .\",
+\"          ..\",
+\"         ...\",
+\"        ....\",
+\"       .....\",
+\"      ......\",
+\"     .......\",
+\"    ........\",
+\"   .........\",
+\"   .........\",
+\"    ........\",
+\"     .......\",
+\"      ......\",
+\"       .....\",
+\"        ....\",
+\"         ...\",
+\"          ..\",
+\"           .\"};"
+           (if color2 color2 "None")
+           (if color1 color1 "None"))
+   'xpm t :ascent 'center))
 
 (defun curve-right-xpm
   (color1 color2)
@@ -222,15 +236,15 @@ install the memoized function over the original function."
 (defun memoize-wrap (func)
   "Return the memoized version of the given function."
   (let ((table-sym (gensym))
-    (val-sym (gensym))
-    (args-sym (gensym)))
+	(val-sym (gensym))
+	(args-sym (gensym)))
     (set table-sym (make-hash-table :test 'equal))
     `(lambda (&rest ,args-sym)
        ,(concat (documentation func) "\n(memoized function)")
        (let ((,val-sym (gethash ,args-sym ,table-sym)))
-     (if ,val-sym
-         ,val-sym
-       (puthash ,args-sym (apply ,func ,args-sym) ,table-sym))))))
+	 (if ,val-sym
+	     ,val-sym
+	   (puthash ,args-sym (apply ,func ,args-sym) ,table-sym))))))
 
 (memoize 'arrow-left-xpm)
 (memoize 'arrow-right-xpm)
@@ -249,7 +263,7 @@ install the memoized function over the original function."
                                    "-"
                                    (if fg
                                        (format "%s" fg)
-                                     powerline-foreground)))))
+                                     "white")))))
         (make-face cface)2
         (if fg
             (if (eq fg 0)
@@ -261,7 +275,7 @@ install the memoized function over the original function."
                                   :background bg
                                   :box nil))
           (set-face-attribute cface nil
-                            :foreground powerline-foreground
+                            :foreground "white"
                             :background bg
                             :box nil))
         cface)
@@ -284,6 +298,7 @@ install the memoized function over the original function."
          (propertize " " 'face plface)
        "")
      (if arrow
+				 ;; (message "%s & %s" color1 color2)
          (propertize " " 'display
                      (cond ((eq powerline-arrow-shape 'arrow)
                             (arrow-left-xpm color1 color2))
@@ -339,18 +354,14 @@ install the memoized function over the original function."
          ""
        (propertize " " 'face plface)))))
 
-;; get-scroll-bar-mode is not available in emacs 23.2
-(if (not (functionp 'get-scroll-bar-mode))
-    (defun get-scroll-bar-mode () scroll-bar-mode))
-
 (defun powerline-make-fill
   (color)
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
   (let ((plface (powerline-make-face color)))
     (if (eq 'right (get-scroll-bar-mode))
-        (propertize " " 'display '((space :align-to (- right-fringe 27))
-                    'face plface))
-      (propertize " " 'display '((space :align-to (- right-fringe 30)))
+        (propertize " " 'display '((space :align-to (- right-fringe 21)))
+                    'face plface)
+      (propertize " " 'display '((space :align-to (- right-fringe 24)))
                   'face plface))))
 
 (defun powerline-make-text
@@ -370,11 +381,22 @@ install the memoized function over the original function."
         (t                             (powerline-make-text   string color1 localmap))))
 
 (defmacro defpowerline (name string)
+  "Macro to create a powerline chunk."
   `(defun ,(intern (concat "powerline-" (symbol-name name)))
      (side color1 &optional color2)
      (powerline-make side
-                     ,string
+                     (let ((result ,string))
+					   (cond ((listp result)
+							  (format-mode-line result)) 
+							 ((not (or (stringp result)
+									   (null result)))
+							  (progn
+								" ERR"))
+							 (t
+							  result)))
                      color1 color2)))
+
+
 
 (defun powerline-mouse (click-group click-type string)
   (cond ((eq click-group 'minor)
@@ -398,7 +420,6 @@ install the memoized function over the original function."
 (defpowerline arrow       "")
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
-
 (defvar powerline-buffer-size-suffix t)
 (defpowerline buffer-size (propertize
                             (if powerline-buffer-size-suffix
@@ -409,9 +430,8 @@ install the memoized function over the original function."
                                                    (setq powerline-buffer-size-suffix
                                                          (not powerline-buffer-size-suffix))
                                                    (redraw-modeline)))))
-(defpowerline lcl         current-input-method-title)
 (defpowerline rmw         "%*")
-(defpowerline major-mode  (propertize (format-mode-line mode-name)
+(defpowerline major-mode  (propertize mode-name
                                       'help-echo "Major mode\n\ mouse-1: Display major mode menu\n\ mouse-2: Show help for major mode\n\ mouse-3: Toggle minor modes"
                                       'local-map (let ((map (make-sparse-keymap)))
                                                    (define-key map [mode-line down-mouse-1]
@@ -420,6 +440,7 @@ install the memoized function over the original function."
                                                    (define-key map [mode-line mouse-2] 'describe-mode)
                                                    (define-key map [mode-line down-mouse-3] mode-line-mode-menu)
                                                    map)))
+(defpowerline process      mode-line-process)
 (defpowerline minor-modes (let ((mms (split-string (format-mode-line minor-mode-alist))))
                             (apply 'concat
                                    (mapcar #'(lambda (mm)
@@ -450,15 +471,15 @@ install the memoized function over the original function."
                                           'local-map (make-mode-line-mouse-map
                                                       'mouse-1 'mode-line-widen)))))
 (defpowerline status      "%s")
+(defpowerline global      global-mode-string)
 (defpowerline emacsclient mode-line-client)
-(defpowerline vc vc-mode)
 (defpowerline project-id (upcase project-id))
+
+;; (defpowerline vc          (when (and (buffer-file-name (current-buffer))
+;;                                      vc-mode)
+;; 														(symbol-name (vc-mode-line (buffer-file-name (current-buffer) )))))
+(defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
-(defpowerline battery (concat (battery-format "%p%" (funcall battery-status-function)) "%  - "))
-(defpowerline emms			 (if (not (eq nil (emms-playlist-current-selected-track))) 
-														 (emms-mode-line-icon-function)
-														 (format "")
-													 ))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -475,21 +496,25 @@ install the memoized function over the original function."
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
-                             (powerline-lcl            'left   nil  )
-                             (powerline-project-id     'left   nil  )
+                             (powerline-buffer-size    'left   nil  )
                              (powerline-rmw            'left   nil  )
-                             (powerline-buffer-id      'left   nil  powerline-color0  )
-														 (powerline-major-mode     'left        powerline-color0  powerline-color1  )
-                             (powerline-vc             'left        powerline-color1  )
+                             (powerline-project-id	   'left   nil  )
+                             (powerline-rmw            'left   nil  )
+                             (powerline-buffer-id      'left   nil  powerline-color1  )
+                             (powerline-major-mode     'left        powerline-color1  )
+                             (powerline-process        'text        powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
-                             (powerline-emms           'center                        powerline-color2)
+                             (powerline-global         'center                        powerline-color2  )
+                             (powerline-vc             'center                        powerline-color2  )
                              (powerline-make-fill                                     powerline-color2  )
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
-                             (powerline-battery        'right  nil  powerline-color1  )
-                             (powerline-time           'right  nil  )
+                             (powerline-time		       'right  nil  powerline-color1  )
                              (powerline-make-text      "  "    nil  )))))
+
+
+
 
 (provide 'powerline)
 
