@@ -10,6 +10,7 @@
 emacs.packages/emms
 emacs.packages/.cask
 xkcd
+*readme.txt
 
 # Dynamic Emacs Files #
 #######################
