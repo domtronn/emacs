@@ -409,7 +409,7 @@ Note if the tree is not opened, It will open some node when need.
   (let ((me (tree-mode-icon-current-line))
         expandp open)
     (if (tree-widget-leaf-node-icon-p me)
-        (message "Not a tree under point!")
+        (dirtree-display)
       (setq me (widget-get me :parent))
       (setq expandp (widget-get me :open))
       (setq open (if (null arg)
