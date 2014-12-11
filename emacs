@@ -38,7 +38,6 @@
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
-(load-file (concat USERPATH "/elisp/etags-select.el"))
 (load-file (concat USERPATH "/elisp/sticky-windows.el"))
 (load-file (concat USERPATH "/elisp/repo-root.el"))
 (load-file (concat USERPATH "/elisp/drag-stuff.el"))
@@ -113,6 +112,8 @@
 (setq fci-rule-column 160)
 
 (drag-stuff-global-mode 1)
+
+(require 'etags-select)
 
 (require 'rfringe)
 (require 'git-gutter-fringe)
@@ -451,7 +452,7 @@
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
 (load-file (concat USERPATH "/advice.el"))
-(battery)
+
 (load-file (concat USERPATH "/elisp/powerline.el"))
 
 (server-start)
