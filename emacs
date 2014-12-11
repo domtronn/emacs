@@ -36,7 +36,6 @@
 ;; (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
 (load-file (concat USERPATH "/elisp/noflet.el"))
 (load-file (concat USERPATH "/elisp/shell-pop.el"))
-(load-file (concat USERPATH "/elisp/popwin.el"))
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
 (load-file (concat USERPATH "/elisp/etags-select.el"))
@@ -97,6 +96,7 @@
 (require 'smex)
 
 (require 'popup)
+(require 'popwin)
 (popwin-mode 1)
 (setq popwin:close-popup-window-timer-interval 0.1)
 (setq popwin:close-popup-window-timer nil)
