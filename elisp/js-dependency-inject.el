@@ -117,7 +117,7 @@ The REPLACE flag will replace all require paths and class names with these."
 							 (setf (nth index require-path-list) require-path))
 						 ))
 			 require-paths)
-
+			
 			(replace-region (car class-name-region) (cadr class-name-region)
 											(format-text-in-rectangle (mapconcat 'identity class-name-list ", ") 150))
 			(replace-region (car require-path-region) (cadr require-path-region)
@@ -162,7 +162,9 @@ It assossciates each file name to a list of locations of that file."
 (defun get-class-name-list  ()
 	(let ((a (car (get-class-name-region)))
 				(b (cadr (get-class-name-region))))
-		(mapcar #'chomp (split-string (buffer-substring a b) ",\\s-*"))))
+		(if (not (eq a b))
+				(mapcar #'chomp (split-string (buffer-substring a b) ",\\s-*"))
+			nil)))
 
 (defun get-require-path-region ()
   (get-region "\\s-*\\[\n\\s-*" "\\s-*\\]"))
