@@ -135,9 +135,7 @@
 (global-set-key (kbd "<M-f8>") 'emms-pause)
 (global-set-key (kbd "<M-f7>") 'emms-previous)
 
-(global-set-key (kbd "<M-S-f1>") 'f1-toggle-fullscreen)
-(global-set-key (kbd "<M-S-f2>") 'f2-remove-tool-bar)
-(global-set-key (kbd "<M-S-f3>") 'f3-true-fullscreen)
+(global-set-key (kbd "<M-S-f1>") 'toggle-fullscreen)
 
 (global-set-key [f11] 'browse-sandbox)
 (global-set-key [f10] 'xkcd)

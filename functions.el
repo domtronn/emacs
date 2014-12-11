@@ -31,40 +31,6 @@
   (interactive)
   (setq-default indent-tabs-mode nil))
 
-;; ------------------------------------------
-;; Functions used in making emacs fullscreen
-;; ------------------------------------------
-(defun toggle-fullscreen ()
-  "Toggle full screen."
-  (interactive)
-  (set-frame-parameter
-   nil 'fullscreen
-   (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
-  (if (not (frame-parameter nil 'fullscreen))
-      (progn (tool-bar-mode 1)
-             (tool-bar-mode -1)
-             (set-frame-height (selected-frame) 69))))
-
-(defun f1-toggle-fullscreen ()
-  (interactive)
-  (toggle-fullscreen))
-
-(defun f2-remove-tool-bar ()
-  "Remove the toolbar"
-  (interactive)
-  (tool-bar-mode 1)
-  (tool-bar-mode -1))
-
-(defun f3-true-fullscreen ()
-  "Makes true fullscreen"
-  (interactive)
-  (let* ((res-alist '((800 . 53) (1050 . 70)))
-         (res-constant 0.06645))
-    (set-frame-height (selected-frame)
-                      (if (assoc (x-display-pixel-height) res-alist)
-                          (cdr (assoc (x-display-pixel-height) res-alist))
-                        (round (* (x-display-pixel-height) res-constant))))))
-
 ;; --------------------------------------------
 ;; Functions used in compiling latex & xelatex
 ;; --------------------------------------------
