@@ -9,6 +9,7 @@
 *archive*
 emacs.packages/emms
 emacs.packages/.cask
+xkcd
 
 # Dynamic Emacs Files #
 #######################
