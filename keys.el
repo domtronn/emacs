@@ -72,6 +72,7 @@
 (global-set-key (kbd "C-x f") 'ido-find-file)
 
 ;; change to use regexp searching rather than normal isearch
+(global-set-key (kbd "H-s") 'isearch-forward-symbol-at-point)
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-?") 'query-replace-regexp)
