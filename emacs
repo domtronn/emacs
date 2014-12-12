@@ -21,7 +21,7 @@
 ;;; Commentary:
 
 ;;; Code:
-
+(toggle-frame-fullscreen)
 (load-file (concat USERPATH "/functions.el"))
 (add-to-list 'load-path (concat USERPATH "/elisp"))
 
