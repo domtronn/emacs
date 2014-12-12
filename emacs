@@ -103,6 +103,8 @@
 (autoload 'dash-at-point "dash-at-point"
           "Search the word at point with Dash." t nil)
 
+(global-prettify-symbols-mode)
+
 (require 'undo-tree)
 (global-undo-tree-mode)
 
