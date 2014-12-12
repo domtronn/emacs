@@ -432,9 +432,6 @@
 (global-rainbow-delimiters-mode 1)
 (set-fringe-mode '(nil . 0))
 
-;; Set start up dimesnions in characters
-(maximize-frame)
-
 ;; ;; Tree file browser
 (require 'tree-mode)
 (require 'windata)
