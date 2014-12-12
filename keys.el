@@ -116,7 +116,7 @@
 (global-set-key [f2] 'set-up-ack-results)
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 
-(global-set-key [f3] '(lambda () (interactive) (dired (file-name-directory (buffer-file-name)))))
+(global-set-key [f3] '(lambda () (interactive) (dired (if (buffer-file-name) (file-name-directory (buffer-file-name)) USERPATH))))
 (global-set-key [f4] 'run-current-file)
 (global-set-key (kbd "<S-f4>") 'alt-run-current-file)
 
