@@ -1,4 +1,4 @@
-3;;; powerline.el --- fancy statusline
+;;; powerline.el --- fancy statusline
 
 ;; Name: Emacs Powerline
 ;; Author: Nicolas Rougier and Chen Yuan
@@ -27,8 +27,8 @@
 (defvar powerline-color2)
 
 
-(setq powerline-color1 "grey22")
-(setq powerline-color2 "grey40")
+(setq powerline-color1 "#383838")
+(setq powerline-color2 "#666666")
 
 (set-face-attribute 'mode-line nil
                     :background "OliveDrab3"
@@ -281,6 +281,17 @@ install the memoized function over the original function."
         cface)
     nil))
 
+(defun darken-by-6 (col)
+	(unless (eq nil col)
+		(let ((rgb-list (mapcar (lambda (x) (* x 0.78)) (css-color:hex-to-rgb (format "%s" col)))))
+			(format "#%s"
+							(css-color:rgb-to-hex
+							 (car rgb-list)
+							 (cadr rgb-list)
+							 (caddr rgb-list)
+							 )
+							))))
+
 (defun powerline-make-left
   (string color1 &optional color2 localmap)
   (let ((plface (powerline-make-face color1))
@@ -301,13 +312,13 @@ install the memoized function over the original function."
 				 ;; (message "%s & %s" color1 color2)
          (propertize " " 'display
                      (cond ((eq powerline-arrow-shape 'arrow)
-                            (arrow-left-xpm color1 color2))
+                            (arrow-left-xpm (darken-by-6 color1) (darken-by-6 color2)))
                            ((eq powerline-arrow-shape 'curve)
-                            (curve-left-xpm color1 color2))
+                            (curve-left-xpm (darken-by-6 color1) (darken-by-6 color2)))
                            ((eq powerline-arrow-shape 'half)
-                            (half-xpm color2 color1))
+                            (half-xpm (darken-by-6 color2) (darken-by-6 color1)))
                            (t
-                            (arrow-left-xpm color1 color2)))
+                            (arrow-left-xpm (darken-by-6 color1) (darken-by-6 color2))))
                      'local-map (make-mode-line-mouse-map
                                  'mouse-1 (lambda () (interactive)
                                             (setq powerline-arrow-shape
@@ -326,11 +337,11 @@ install the memoized function over the original function."
      (if arrow
        (propertize " " 'display
                    (cond ((eq powerline-arrow-shape 'arrow)
-                          (arrow-right-xpm color1 color2))
+                          (arrow-right-xpm (darken-by-6 color1) (darken-by-6 color2)))
                          ((eq powerline-arrow-shape 'curve)
-                          (curve-right-xpm color1 color2))
+                          (curve-right-xpm (darken-by-6 color1) (darken-by-6 color2)))
                          ((eq powerline-arrow-shape 'half)
-                          (half-xpm color2 color1))
+                          (half-xpm (darken-by-6 color2) (darken-by-6 color1)))
                          (t
                           (arrow-right-xpm color1 color2)))
                    'local-map (make-mode-line-mouse-map
@@ -496,8 +507,6 @@ install the memoized function over the original function."
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
-                             (powerline-buffer-size    'left   nil  )
-                             (powerline-rmw            'left   nil  )
                              (powerline-project-id	   'left   nil  )
                              (powerline-rmw            'left   nil  )
                              (powerline-buffer-id      'left   nil  powerline-color1  )
