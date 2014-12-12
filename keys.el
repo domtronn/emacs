@@ -58,10 +58,10 @@
 
 (global-set-key (kbd "M-;") 'semi-colon-end)
 
-(global-set-key [C-right] 'dgc-forward-word-2)
-(global-set-key [C-left] 'dgc-backward-word)
-(global-set-key [M-right] 'dgc-forward-word-2)
-(global-set-key [M-left] 'dgc-backward-word)
+(global-set-key [C-right] 'forward-word)
+(global-set-key [C-left] 'backward-word)
+(global-set-key [M-right] 'forward-word)
+(global-set-key [M-left] 'backward-word)
 
 ;; Navigate parantheses
 (global-set-key (kbd "s-.") 'forward-list)
