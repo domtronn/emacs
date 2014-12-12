@@ -122,6 +122,7 @@
 (global-git-gutter-mode)
 
 (require 'peep-dired)
+(require 'image+)
 (require 'dired+)
 (require 'dired-subtree)
 (require 'dired-rainbow)
