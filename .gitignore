@@ -8,6 +8,7 @@
 *.emmscache*
 *archive*
 emacs.packages/emms
+emacs.packages/games
 emacs.packages/.cask
 xkcd
 *readme.txt
