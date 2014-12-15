@@ -28,21 +28,10 @@
 ;;------------------
 ;; Load Files
 ;;------------------
-(load-file (concat USERPATH "/elisp/buffer_move.elc"))
-(load-file (concat USERPATH "/elisp/framemove.el"))
-(load-file (concat USERPATH "/elisp/highlight_current_line.el"))
-(load-file (concat USERPATH "/elisp/js2-mode.el"))
 (load-file (concat USERPATH "/elisp/lorem-ipsum.el"))
-;; (load-file (concat USERPATH "/elisp/actionscript-mode.el"))
-(load-file (concat USERPATH "/elisp/noflet.el"))
-(load-file (concat USERPATH "/elisp/shell-pop.el"))
+(load-file (concat USERPATH "/elisp/drag-stuff.el"))      ;;; Leave this package for key binding overrides
 (load-file (concat USERPATH "/elisp/linum-off.el"))
 (load-file (concat USERPATH "/elisp/mon-css-color.el"))
-(load-file (concat USERPATH "/elisp/sticky-windows.el"))
-(load-file (concat USERPATH "/elisp/repo-root.el"))
-(load-file (concat USERPATH "/elisp/drag-stuff.el"))
-(load-file (concat USERPATH "/elisp/git-timemachine.el"))
-(load-file (concat USERPATH "/elisp/ido-ubiquitous.el"))
 
 ;; Cool but needs some work
 ;; (load-file (concat USERPATH "/elisp/minimap.el"))
@@ -124,17 +113,15 @@
 (require 'peep-dired)
 (require 'image+)
 (require 'dired+)
-(require 'dired-subtree)
 (require 'dired-rainbow)
 (require 'dired-filter)
 (require 'dired-k)
 (define-key dired-mode-map (kbd "K") 'dired-k)
 
-(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "i") #'dired-subtree-insert)))
-(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "r") #'dired-subtree-remove)))
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "P") #'peep-dired)))
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") '(lambda () (interactive) (kill-all-dired-buffers)))))
 
+(require 'git-timemachine)
 (require 'git-messenger)
 
 (require 'emms-setup)  ;; brew install mediainfo
@@ -170,7 +157,9 @@
 
 (require 'json)
 (require 'json-snatcher)
+
 (require 'js2-refactor)
+(require 'js2-mode)
 (require 'js-dependency-inject)
 
 (defun js-mode-bindings ()
@@ -224,6 +213,7 @@
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
 (yas-global-mode)
+
 (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
@@ -267,10 +257,10 @@
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
       '(
-    "/usr/local/bin"
-    "/usr/bin"
-		"/bin"
-    ))
+				"/usr/local/bin"
+				"/usr/bin"
+				"/bin"
+				))
 
 ;;---------------
 ;; Mode Hooks
@@ -281,24 +271,26 @@
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.html" . web-mode))
 
 ;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
 ;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
 
-(setq js2-basic-offset 2)
 (setq js2-enter-indents-newline t)
-;;(setq js2-use-font-lock-faces t)
 
 (setq framemove-hook-into-windmove t)
 (setq truncate-lines t)
 (setq org-agenda-include-diary t)
+
+(require 'web-mode)
+(define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
-(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 ;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
@@ -332,21 +324,22 @@
 								 " *, *" t))
 					))))
 
-;; Java Mode - Malabar Mode
-(require 'cedet)
-(require 'semantic)
-(add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
-(require 'malabar-mode)
-(setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
-(semantic-mode 1)
-(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
-(eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
-(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
-(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
-(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
-(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
-(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
+;; ;; Java Mode - Malabar Mode
+;; ;; (require 'semantic)
+;; ;; (semantic-mode 1)
+;; (require 'cedet)
+;; (add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
+;; (require 'malabar-mode)
+;; (setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
+;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
+;; (eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
+;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
+;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
+;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
+;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
+;; (add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
 
+(require 'repository-root)
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
 (add-to-list 'repository-root-matchers repository-root-matcher/git)
 
@@ -404,7 +397,7 @@
 ;; Get rid of stupid menu bar and Tool Bar.. 
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (setq skeleton-pair t)
 (setq skeleton-pair-on-word t)
@@ -412,6 +405,7 @@
 (show-paren-mode t)   ; Show paranthesis matching
 
 ;; Ido Support
+(require 'ido-ubiquitous)
 (require 'ido-vertical-mode)
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
@@ -429,7 +423,6 @@
 ;; Global Mode Stuff
 (setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
-(global-rainbow-delimiters-mode 1)
 (set-fringe-mode '(nil . 0))
 
 ;; ;; Tree file browser
@@ -441,10 +434,6 @@
 (define-derived-mode dirtree-mode tree-mode "Dir-Tree"
   "A mode to display tree of directory"
   (tree-widget-set-theme "ASCII"))
-
-;; Set translucency
-;;(set-frame-parameter (selected-frame) 'alpha '(85 50))
-;;(add-to-list 'default-frame-alist '(alpha 85 50))
 
 ;;------------------
 ;; My Key Shortcuts
