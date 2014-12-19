@@ -411,10 +411,7 @@
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
 (ido-vertical-mode 1)
-(flx-ido-mode 1)
-(setq flx-ido-use-faces t)
 (setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)

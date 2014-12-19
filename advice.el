@@ -35,33 +35,47 @@
 
 (defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
-  (ido-vertical-mode 0))
+	(disable-vertical))
 
 (defadvice smex (before activate-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `smex`."
-  (ido-vertical-mode 0))
+	(disable-vertical))
 
 (defadvice ido-find-file (before activate-ido-vertical nil activate)
 	"Enable `ido-vertical-mode` when calling `ido-find-file`."
-  (ido-vertical-mode 1))
+	(enable-vertical))
 
 (defun ido-vertical-project-change ()
 	"Enable `ido-vertical-mode` when calling `project-change`."
 	(interactive)
-  (ido-vertical-mode 1)
+	(enable-vertical)
 	(call-interactively 'project-change))
 
 (defun ido-vertical-load-custom-theme ()
 	"Enable `ido-vertical-mode` when calling `load-custom-theme`"
 	(interactive)
-	(ido-vertical-mode 1)
+	(enable-vertical)
 	(call-interactively 'load-custom-theme))
 
 (defun my-file-cache-ido-find-file ()
 	"Wrapper to enable `ido-vertical-mode` before calling `file-cache-ido-find-file`."
   (interactive)
-  (ido-vertical-mode 1)
+	(enable-vertical)
   (call-interactively 'file-cache-ido-find-file))
+
+(defun enable-vertical ()
+	(setq flx-ido-use-faces t)
+	(setq ido-use-faces nil)
+	(flx-ido-mode 1)
+  (ido-vertical-mode 1))
+
+
+(defun disable-vertical ()
+	(setq flx-ido-use-faces nil)
+	(setq ido-use-faces t)
+	(flx-ido-mode 0)
+  (ido-vertical-mode 0))
+
 
 (provide 'advice)
 ;;; advice.el ends here
