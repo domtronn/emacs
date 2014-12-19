@@ -110,7 +110,7 @@
 (defun js-hlt-nonused-dependencies ()
   "Will highlght the parts of the function include that are not used in the class"
   (interactive)
-  (if (eq (buffer-mode (buffer-name)) 'js-mode)
+  (if (or (eq (buffer-mode (buffer-name)) 'js-mode) (eq (buffer-mode (buffer-name)) 'js2-mode) )
       (save-excursion
         (beginning-of-buffer)
         (let ((start) (end))
