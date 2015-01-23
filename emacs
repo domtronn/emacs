@@ -144,9 +144,12 @@
 
 (require 'flycheck-tip)
 (require 'flycheck)
+(require 'flycheck-rust)
 ;; (add-hook 'after-init-hook #'global-flycheck-mode) ;; Enable flycheck globally
 (add-hook 'javascript-mode-hook (lambda () (flycheck-mode t)))
 (flycheck-tip-use-timer 'verbose)
+
+(add-hook 'rust-mode-hook 'flycheck-mode)
 
 (require 'rvm)
 (rvm-use "ruby-2.1.2" "global")
