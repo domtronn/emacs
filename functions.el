@@ -1096,7 +1096,7 @@ otherwise raises an error."
   nil)
 
 (defun load-custom-theme (arg)
-  (interactive (list (read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
+  (interactive (list (ido-read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
   (load-file arg))
 
 (defun replace-regexp-in-buffer (arg1 arg2)
