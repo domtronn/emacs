@@ -369,6 +369,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
             ("rb" . "ruby")
             ("js" . "node")             ; node.js
             ("sh" . "bash")
+            ("rs" . "rustc")
             ("ml" . "ocaml")
             ("vbs" . "cscript")
             ("cpp" . "make")
@@ -380,9 +381,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
          (progName (cdr (assoc fSuffix suffixMap)))
          (cmdStr (cond ((string-equal (buffer-mode (buffer-name)) "c++-mode")
                         (concat progName " \""  (file-name-sans-extension fName) "\"; " (file-name-sans-extension fName)))
+											 ((string-equal (buffer-mode (buffer-name)) "rust-mode")
+                        (concat progName " "  fName "; " (file-name-sans-extension fName) "; rm " (file-name-sans-extension fName)))
                        (t (concat progName " \"" fName "\""))
                        )))
 
+		(message cmdStr)
+		
     (when (buffer-modified-p)
       (when (y-or-n-p "Buffer modified. Do you want to save first?")
         (save-buffer) ) )
