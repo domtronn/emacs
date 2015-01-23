@@ -35,7 +35,8 @@
 
 (defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
-	(disable-vertical))
+	(disable-vertical)
+	(flx-ido-mode 1))
 
 (defadvice smex (before activate-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `smex`."
@@ -69,13 +70,11 @@
 	(flx-ido-mode 1)
   (ido-vertical-mode 1))
 
-
 (defun disable-vertical ()
 	(setq flx-ido-use-faces nil)
 	(setq ido-use-faces t)
 	(flx-ido-mode 0)
   (ido-vertical-mode 0))
-
 
 (provide 'advice)
 ;;; advice.el ends here
