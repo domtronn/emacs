@@ -294,8 +294,8 @@
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
 (add-hook 'js-mode-hook 'js2-mode)
-(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
-(add-hook 'js-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
+(add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
+(add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 ;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
 
 ;; Allow cmd clicking on functions depricated by button locks
