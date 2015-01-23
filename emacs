@@ -337,6 +337,8 @@
 (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
 (eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
+(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H->") 'malabar-find-implementations))
+(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-<") 'malabar-start-find-parent))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
 (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
