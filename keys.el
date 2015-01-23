@@ -95,7 +95,6 @@
 (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;; Bring up shell terminal
-(global-set-key (kbd "C-~") 'shell-pop)
 (global-set-key (kbd "C-`") 'shell-pop)
 
 ;; Tag searching
@@ -115,7 +114,6 @@
 
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
-(global-set-key (kbd "C-c C-c") 'dgc-comment)
 
 (global-set-key [f1] 'set-up-test-watch)
 (global-set-key [f2] 'set-up-ack-results)
