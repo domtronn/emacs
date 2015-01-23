@@ -35,6 +35,11 @@
 (global-set-key (kbd "M-{") 'add-brace)
 (global-set-key (kbd "M-H-{") 'add-bracket)
 
+;; Ace jump keys
+(global-set-key (kbd "C-c SPC") 'ace-jump-char-mode)
+(global-set-key (kbd "C-c C-x SPC") 'ace-jump-zap-to-char)
+(global-set-key (kbd "C-c C-SPC") 'ace-jump-word-mode)
+
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
 (global-set-key (kbd "s-W") 
