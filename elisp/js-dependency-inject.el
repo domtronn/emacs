@@ -174,7 +174,7 @@ It assossciates each file name to a list of locations of that file."
 
 (defun get-region (regex-a regex-b)
 		(beginning-of-buffer)
-		(search-forward-regexp "require\.def")
+		(search-forward-regexp "require")
 		(let ((start (search-forward-regexp regex-a))
 					(end (- (search-forward-regexp regex-b) 1)))
 			(list start end)))
