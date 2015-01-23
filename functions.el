@@ -192,6 +192,35 @@
 	(ring-insert find-tag-marker-ring (point-marker))
   (malabar-jump-to-thing (point)))
 
+(defun malabar-start-find-parent ()
+	"Tries to find the most appropriate parents of a java class"
+	(interactive)
+	(malabar-find-parent '("implements" "extends")))
+
+(defun malabar-find-parent (types)
+	"Takes a list of types and recurses through finding the classes"
+	(if types
+			(save-excursion
+				(beginning-of-buffer)
+				(search-forward-regexp (concat (car types) "\\s-*\\([a-z]+\\)") nil t)
+				(if (match-string 1)
+						(malabar-jump-to-thing (- (point) 1))
+					(malabar-find-parent (cdr types))))
+	(message "Could not find parent to go to" )))
+
+(defun malabar-find-implementations ()
+  "Finds implementations of a java interface"
+  (interactive )
+  (save-excursion
+		(beginning-of-buffer)
+		(search-forward-regexp "interface\\s-*\\([a-z]+\\)" nil t)
+		(let ((match-string (match-string 1))
+					(match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
+			(if match-string
+					(progn (ring-insert find-tag-marker-ring (point-marker))
+								 (pop-ack-and-a-half (concat "implements " match-string) match-type (repository-root) (current-buffer) t "--output=\" \""))
+				(message "Class is not an interface")))))
+
 (defun go-to-class ()
   "Find and go to the class at point"
   (interactive)
