@@ -1,4 +1,4 @@
-;;; emacs --- 
+;;; emacs ---
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
@@ -61,6 +61,7 @@
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
 
+(require 'smart-forward)
 (require 'smart-newline)
 (require 'autopair)
 (autopair-global-mode)
@@ -90,7 +91,7 @@
 (setq popwin:close-popup-window-timer nil)
 
 (autoload 'dash-at-point "dash-at-point"
-          "Search the word at point with Dash." t nil)
+					"Search the word at point with Dash." t nil)
 
 (global-prettify-symbols-mode)
 
@@ -166,7 +167,7 @@
 (require 'js-dependency-inject)
 
 (defun js-mode-bindings ()
-	"Sets a hotkey for using the json-snatcher plugin"
+	"Set a hotkey for using the json-snatcher plugin."
 	(when (string-match  "\\.json$" (buffer-name))
 		(local-set-key (kbd "C-c C-c") 'jsons-print-path)))
 
@@ -183,8 +184,8 @@
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 (add-hook 'js2-mode-hook #'(lambda () 
-			    (button-lock-set-button "\\.\\(\\w+\\)("
-						    #'(lambda (event)
+					(button-lock-set-button "\\.\\(\\w+\\)("
+								#'(lambda (event)
 										(interactive "e")
 										(save-excursion
 											(mouse-set-point event)
@@ -197,9 +198,9 @@
 
 (add-hook 'etags-select-mode-hook #'(lambda () (message "Enabling Button Lock Mode")))
 (add-hook 'etags-select-mode-hook #'(lambda () 
-			    (button-lock-mode 1)
-			    (button-lock-set-button "^\\([0-9]+\\).*"
-						    #'(lambda (event)
+					(button-lock-mode 1)
+					(button-lock-set-button "^\\([0-9]+\\).*"
+								#'(lambda (event)
 										(interactive "e")
 										(save-excursion
 											(mouse-set-point event)
@@ -219,6 +220,7 @@
 
 (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
+	"Set the coding system of ansi terminals."
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 
 (require 'auto-complete-config)
@@ -240,7 +242,6 @@
 (define-key ac-complete-mode-map (kbd "s-4") 'ac-complete-select-4)
 (define-key ac-complete-mode-map (kbd "s-5") 'ac-complete-select-5)
 (define-key ac-complete-mode-map (kbd "s-6") 'ac-complete-select-6)
-(global-set-key "\C-f" 'ac-isearch)
 
 (set-default 'ac-sources '(
 									 ac-source-yasnippet
@@ -249,6 +250,9 @@
 									 ac-source-dabbrev									 
 									 ac-source-files-in-current-dir
 									 ))
+
+(require 'osx-dictionary)
+(push "*osx-dictionary*" popwin:special-display-config)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names 
@@ -259,11 +263,20 @@
 (add-to-list 'custom-theme-load-path (concat USERPATH "/emacs.packages/themes"))
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
-      '(
+			'(
 				"/usr/local/bin"
 				"/usr/bin"
 				"/bin"
 				))
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 
 ;;---------------
 ;; Mode Hooks
@@ -274,7 +287,7 @@
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.html" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
 ;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
@@ -284,9 +297,6 @@
 (setq framemove-hook-into-windmove t)
 (setq truncate-lines t)
 (setq org-agenda-include-diary t)
-
-(require 'web-mode)
-(define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
@@ -298,7 +308,7 @@
 (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 ;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
 
-;; Allow cmd clicking on functions depricated by button locks
+;; Allow cmd clicking on functions deprecated by button locks
 ;; (eval-after-load 'js
 ;; 	'(define-key js-mode-map (kbd "<s-mouse-1>")
 ;; 		 (lambda (event)
@@ -307,19 +317,19 @@
 ;;       (with-selected-window (posn-window posn)
 ;;         (goto-char (posn-point posn))
 ;; 				(etags-select-find-tag-at-point))))))
-	
+
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
 
 ;; Java Script 2 mode to load accepted variables to stop warnings for known globals
 (add-hook 'js2-post-parse-callbacks
-	  (lambda ()
-	    (when (> (buffer-size) 0)
-	      (let ((btext (replace-regexp-in-string
-			    ": *true" " "
-			    (replace-regexp-in-string "[\n\t ]+" " " 
-						      (buffer-substring-no-properties 1 (buffer-size)) t t))))
+		(lambda ()
+			(when (> (buffer-size) 0)
+				(let ((btext (replace-regexp-in-string
+					": *true" " "
+					(replace-regexp-in-string "[\n\t ]+" " " 
+									(buffer-substring-no-properties 1 (buffer-size)) t t))))
 					(mapc (apply-partially 'add-to-list 'js2-additional-externs)
 								(split-string
 								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) 
@@ -353,7 +363,7 @@
 
 ;; change vc-diff to use vc-ediff
 (eval-after-load "vc-hooks"
-  '(define-key vc-prefix-map "=" 'vc-ediff))
+	'(define-key vc-prefix-map "=" 'vc-ediff))
 (setq ediff-split-window-function (quote split-window-horizontally))
 (setq ediff-keep-variants nil)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -432,14 +442,15 @@
 (set-fringe-mode '(nil . 0))
 
 ;; ;; Tree file browser
+(require 'moe-theme)
 (require 'tree-mode)
 (require 'windata)
 (require 'dirtree)
 (setq dirtree-windata (quote (frame left 0.2 delete)))
 
 (define-derived-mode dirtree-mode tree-mode "Dir-Tree"
-  "A mode to display tree of directory"
-  (tree-widget-set-theme "ASCII"))
+	"A mode to display tree of directory"
+	(tree-widget-set-theme "ASCII"))
 
 ;;------------------
 ;; My Key Shortcuts
@@ -450,7 +461,13 @@
 
 (load-file (concat USERPATH "/elisp/powerline.el"))
 
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup)
+(defun my-minibuffer-setup ()
+	"Set the height of the minibuffer strings."
+	(set (make-local-variable 'face-remapping-alist)
+			 '((default :height 1.0))))
+
 (server-start)
 
 (provide 'emacs)
-;;; emacs.el ends here
+;;; emacs ends here
