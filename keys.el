@@ -23,12 +23,15 @@
 ;;; Code:
 
 ;; My Keys
-;; note: C-h k is the command used to discover keypresses
+;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'ac-expand)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 (global-set-key [M-tab] 'dabbrev-expand)
+
+(global-set-key (kbd "<end>") 'smart-forward)
+(global-set-key (kbd "<home>") 'smart-backward)
 
 (global-set-key (kbd "RET") 'smart-newline)
 (global-set-key (kbd "M-\"") 'add-quotation)
@@ -42,7 +45,7 @@
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
-(global-set-key (kbd "s-W") 
+(global-set-key (kbd "s-W")
   '(lambda () (interactive) (kill-buffer (buffer-name))))
 
 (global-set-key (kbd "M-x") 'smex)
@@ -62,6 +65,8 @@
 (global-set-key (kbd "s-+") 'hs-show-all)
 
 (global-set-key (kbd "M-;") 'semi-colon-end)
+
+(global-set-key (kbd "H-f") 'ac-isearch)
 
 (global-set-key [C-right] 'forward-word)
 (global-set-key [C-left] 'backward-word)
@@ -199,7 +204,7 @@
 
 (global-set-key (kbd "C-S-w") 'mark-word)
 
-;; Amazing mode to mark all instances in a definiton 
+;; Amazing mode to mark all instances in a definition
 (global-set-key (kbd "H-s-r") 'mark-word-at-point)
 (global-set-key (kbd "M-q") 'er/expand-region)
 (global-set-key (kbd "H-q") 'er/expand-region)
@@ -225,11 +230,13 @@
 
 (global-set-key (kbd "C-=") 'insert-random-return)
 
+(global-set-key "\C-c\C-d" 'osx-dictionary-search-pointer)
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 (global-set-key (kbd "s-<return>") 'yas/expand)
 
+(global-set-key (kbd "H-M-]") 'flyspell-mode)
 (global-set-key "\M-}" 'flycheck-mode)
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
