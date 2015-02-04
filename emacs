@@ -237,7 +237,7 @@
 (define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
 (define-key ac-complete-mode-map [return] 'ac-complete)
 (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
-(define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
+(define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
 (define-key ac-complete-mode-map (kbd "s-1") 'ac-complete-select-1)
 (define-key ac-complete-mode-map (kbd "s-2") 'ac-complete-select-2)
 (define-key ac-complete-mode-map (kbd "s-3") 'ac-complete-select-3)
