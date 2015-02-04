@@ -226,7 +226,6 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-(global-set-key (kbd "C-x C-c") 'goto-line)
 (global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
 (global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
 
