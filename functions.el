@@ -1111,32 +1111,6 @@ otherwise raises an error."
     (beginning-of-buffer)
     (replace-regexp arg1 arg2)))
 
-;; Enclose strings in delimiters
-(defun wrap-region-with-char (arg1 arg2)
-	(if (use-region-p)
-			(save-excursion
-				(if (eq (point) (region-end))
-						(progn
-							(insert arg2)
-							(goto-char (region-beginning))
-							(insert arg1))
-					(progn
-						(insert arg1)
-						(goto-char (region-end))
-						(insert arg2))))))
-
-(defun add-quotation ()
-  (interactive)
-	(wrap-region-with-char "\"" "\""))
-
-(defun add-brace ()
-	(interactive)
-	(wrap-region-with-char "{" "}"))
-	
-(defun add-bracket ()
-	(interactive)
-	(wrap-region-with-char "[" "]"))
-
 (defun create-project (type)
   (interactive (list (ido-completing-read "Project Type : " '("Java" "JavaScript" "Ruby"))))
 	(let ((project-path (read-directory-name "Project Location : " "~/code/"))
@@ -1316,6 +1290,7 @@ or a marker."
 		(progn
 			(re-search-forward "[ \t\r\n]+" nil t)
 			(replace-match "" nil nil))))
+
 ;; ----------------------------------------------------------------------------
 ;; MACROS
 ;; ----------------------------------------------------------------------------
