@@ -436,14 +436,11 @@
 (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
 ;; Global Mode Stuff
-(setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
 (set-fringe-mode '(nil . 0))
 
 ;; ;; Tree file browser
 (require 'moe-theme)
-(require 'tree-mode)
-(require 'windata)
 (require 'dirtree)
 (setq dirtree-windata (quote (frame left 0.2 delete)))
 
