@@ -63,8 +63,8 @@
 
 (require 'smart-forward)
 (require 'smart-newline)
-(require 'autopair)
-(autopair-global-mode)
+(require 'smartparens)
+(smartparens-global-mode)
 
 (require 'anzu)
 (global-anzu-mode +1)
@@ -214,6 +214,8 @@
 (add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(sp-local-pair 'emacs-lisp-mode "'" "")
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
 (yas-global-mode)
@@ -414,9 +416,6 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 ;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-(setq skeleton-pair t)
-(setq skeleton-pair-on-word t)
-
 (show-paren-mode t)   ; Show paranthesis matching
 
 ;; Ido Support
@@ -453,7 +452,7 @@
 	(tree-widget-set-theme "ASCII"))
 
 ;;------------------
-;; My Key Shortcuts
+;; My Load Files
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
