@@ -439,7 +439,7 @@
 ;; Global Mode Stuff
 (setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
-(set-fringe-mode '(nil . 0))
+(set-fringe-mode '(2 . 0))
 
 ;; ;; Tree file browser
 (require 'moe-theme)
