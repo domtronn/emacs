@@ -63,8 +63,9 @@
 
 (require 'smart-forward)
 (require 'smart-newline)
-(require 'autopair)
-(autopair-global-mode)
+(require 'smartparens)
+(require 'smartscan)
+(smartparens-global-mode)
 
 (require 'anzu)
 (global-anzu-mode +1)
@@ -214,6 +215,8 @@
 (add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(sp-local-pair 'emacs-lisp-mode "'" "")
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
 (yas-global-mode)
@@ -235,7 +238,7 @@
 (define-key ac-complete-mode-map [return] 'ac-complete)
 (define-key ac-complete-mode-map (kbd "C-f") 'ac-isearch)
 (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
-(define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
+(define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
 (define-key ac-complete-mode-map (kbd "s-1") 'ac-complete-select-1)
 (define-key ac-complete-mode-map (kbd "s-2") 'ac-complete-select-2)
 (define-key ac-complete-mode-map (kbd "s-3") 'ac-complete-select-3)
@@ -302,6 +305,7 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
+(add-hook 'prog-mode-hook 'smartscan-mode)
 
 (add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
@@ -414,9 +418,6 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 ;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-(setq skeleton-pair t)
-(setq skeleton-pair-on-word t)
-
 (show-paren-mode t)   ; Show paranthesis matching
 
 ;; Ido Support
@@ -437,14 +438,11 @@
 (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
 ;; Global Mode Stuff
-(setq global-linum-mode t) ; enable line numbers
 (global-linum-mode 1) ; enable line numbers
 (set-fringe-mode '(2 . 0))
 
 ;; ;; Tree file browser
 (require 'moe-theme)
-(require 'tree-mode)
-(require 'windata)
 (require 'dirtree)
 (setq dirtree-windata (quote (frame left 0.2 delete)))
 
@@ -453,7 +451,7 @@
 	(tree-widget-set-theme "ASCII"))
 
 ;;------------------
-;; My Key Shortcuts
+;; My Load Files
 ;;------------------
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))

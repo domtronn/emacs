@@ -34,7 +34,7 @@
 (global-set-key (kbd "<home>") 'smart-backward)
 
 (global-set-key (kbd "RET") 'smart-newline)
-(global-set-key (kbd "M-\"") 'add-quotation)
+;; (global-set-key (kbd "M-\"") 'add-quotation)
 (global-set-key (kbd "M-{") 'add-brace)
 (global-set-key (kbd "M-H-{") 'add-bracket)
 
@@ -226,7 +226,8 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-(global-set-key (kbd "C-x C-c") 'goto-line)
+(global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
+(global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
 
 (global-set-key (kbd "C-=") 'insert-random-return)
 
@@ -234,7 +235,7 @@
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
-(global-set-key (kbd "s-<return>") 'yas/expand)
+(global-set-key (kbd "s-<return>") 'eval-defun)
 
 (global-set-key (kbd "H-M-]") 'flyspell-mode)
 (global-set-key "\M-}" 'flycheck-mode)
