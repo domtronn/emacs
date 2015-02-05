@@ -1,4 +1,4 @@
-;;; emacs ---
+;;; emacs --- My Emacs file
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
