@@ -230,10 +230,10 @@
 (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 (ac-config-default)
 
-(ac-set-trigger-key "TAB")
-(define-key ac-complete-mode-map [tab] 'ac-expand-common)
 (define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
+(define-key ac-complete-mode-map [tab] 'ac-expand-common)
 (define-key ac-complete-mode-map [return] 'ac-complete)
+(define-key ac-complete-mode-map (kbd "C-f") 'ac-isearch)
 (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
 (define-key ac-complete-mode-map (kbd "C-b") 'ac-previous)
 (define-key ac-complete-mode-map (kbd "s-1") 'ac-complete-select-1)
