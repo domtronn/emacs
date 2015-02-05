@@ -41,7 +41,6 @@
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
  '(global-writeroom-mode t nil (writeroom-mode))
- '(highlight-current-line-globally t nil (highlight-current-line))
  '(ibuffer-default-sorting-mode (quote major-mode))
  '(ibuffer-filter-group-name-face (quote font-lock-builtin-face))
  '(ibuffer-fontification-alist
