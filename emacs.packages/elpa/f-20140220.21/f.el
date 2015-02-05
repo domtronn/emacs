@@ -1,10 +1,11 @@
-;;; f.el --- Modern API for working with files and directories
+;;; f.el --- Modern API for working with files and directories -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2013 Johan Andersson
 
 ;; Author: Johan Andersson <johan.rejeep@gmail.com>
 ;; Maintainer: Johan Andersson <johan.rejeep@gmail.com>
-;; Version: 0.11.0
+;; Version: 20140220.21
+;; X-Original-Version: 0.16.2
 ;; Keywords: files, directories
 ;; URL: http://github.com/rejeep/f.el
 ;; Package-Requires: ((s "1.7.0") (dash "2.2.0"))
@@ -30,8 +31,30 @@
 
 ;;; Code:
 
+
+
 (require 's)
 (require 'dash)
+
+(put 'f-guard-error 'error-conditions '(error f-guard-error))
+(put 'f-guard-error 'error-message "Destructive operation outside sandbox")
+
+(defvar f--guard-paths nil
+  "List of allowed paths to modify when guarded.
+
+Do not modify this variable.")
+
+(defmacro f--destructive (path &rest body)
+  "If PATH is allowed to be modified, yield BODY.
+
+If PATH is not allowed to be modified, throw error."
+  (declare (indent 1))
+  `(if f--guard-paths
+       (if (--any? (or (f-same? it ,path)
+                       (f-ancestor-of? it ,path)) f--guard-paths)
+           (progn ,@body)
+         (signal 'f-guard-error (list ,path f--guard-paths)))
+     ,@body))
 
 
 ;;;; Paths
@@ -45,6 +68,13 @@
      args)
     (if relative (f-relative path) path)))
 
+(defun f-split (path)
+  "Split PATH and return list containing parts."
+  (let ((parts (s-split (f-path-separator) path 'omit-nulls)))
+    (if (f-absolute? path)
+        (push (f-path-separator) parts)
+      parts)))
+
 (defun f-expand (path &optional dir)
   "Expand PATH relative to DIR (or `default-directory')."
   (directory-file-name (expand-file-name path dir)))
@@ -57,9 +87,10 @@
 (defun f-dirname (path)
   "Return the parent directory to PATH."
   (let ((parent (file-name-directory (f-expand path default-directory))))
-    (if (f-relative? path)
-        (f-relative parent)
-      (directory-file-name parent))))
+    (unless (f-same? path parent)
+      (if (f-relative? path)
+          (f-relative parent)
+        (directory-file-name parent)))))
 
 (defun f-ext (path)
   "Return the file extension of PATH."
@@ -95,13 +126,41 @@
 
 Some functions, such as `call-process' requires there to be an
 ending slash."
-  (if (or (f-file? path) (s-ends-with? (f-path-separator) path))
-      path
-    (s-concat path (f-path-separator))))
+  (if (f-dir? path)
+      (file-name-as-directory path)
+    path))
 
 (defun f-full (path)
   "Return absolute path to PATH, with ending slash."
   (f-slash (f-long path)))
+
+(defun f--uniquify (paths)
+  "Helper for `f-uniquify' and `f-uniquify-alist'."
+  (let* ((files-length (length paths))
+         (uniq-filenames (--map (cons it (f-filename it)) paths))
+         (uniq-filenames-next (-group-by 'cdr uniq-filenames)))
+    (while (/= files-length (length uniq-filenames-next))
+      (setq uniq-filenames-next
+            (-group-by 'cdr
+                       (--mapcat
+                        (let ((conf-files (cdr it)))
+                          (if (> (length conf-files) 1)
+                              (--map (cons (car it) (concat (f-filename (s-chop-suffix (cdr it) (car it))) (f-path-separator) (cdr it))) conf-files)
+                            conf-files))
+                        uniq-filenames-next))))
+    uniq-filenames-next))
+
+(defun f-uniquify (files)
+  "Return unique suffixes of PATHS.
+
+This function expects no duplicate paths."
+  (-map 'car (f--uniquify files)))
+
+(defun f-uniquify-alist (files)
+  "Return alist mapping PATHS to unique suffixes of PATHS.
+
+This function expects no duplicate paths."
+  (-map 'cadr (f--uniquify files)))
 
 
 ;;;; I/O
@@ -141,14 +200,15 @@ TEXT with.  PATH is a file name to write to."
   "Write binary DATA to PATH.
 
 DATA is a unibyte string.  PATH is a file name to write to."
-  (unless (f-unibyte-string-p data)
-    (signal 'wrong-type-argument (list 'f-unibyte-string-p data)))
-  (let ((file-coding-system-alist nil)
-        (coding-system-for-write 'binary))
-    (with-temp-file path
-      (setq buffer-file-coding-system 'binary)
-      (set-buffer-multibyte nil)
-      (insert data))))
+  (f--destructive path
+    (unless (f-unibyte-string-p data)
+      (signal 'wrong-type-argument (list 'f-unibyte-string-p data)))
+    (let ((file-coding-system-alist nil)
+          (coding-system-for-write 'binary))
+      (with-temp-file path
+        (setq buffer-file-coding-system 'binary)
+        (set-buffer-multibyte nil)
+        (insert data)))))
 
 
 ;;;; Destructive
@@ -157,39 +217,53 @@ DATA is a unibyte string.  PATH is a file name to write to."
   "Create directories DIRS."
   (let (path)
     (-each
-     dirs
-     (lambda (dir)
-       (setq path (f-expand dir path))
-       (unless (f-directory? path)
-         (make-directory path))))))
+        dirs
+      (lambda (dir)
+        (setq path (f-expand dir path))
+        (unless (f-directory? path)
+          (f--destructive path (make-directory path)))))))
 
 (defun f-delete (path &optional force)
   "Delete PATH, which can be file or directory.
 
 If FORCE is t, a directory will be deleted recursively."
-  (if (f-file? path)
-      (delete-file path)
-    (delete-directory path force)))
+  (f--destructive path
+    (if (or (f-file? path) (f-symlink? path))
+        (delete-file path)
+      (delete-directory path force))))
 
 (defun f-symlink (source path)
   "Create a symlink to `source` from `path`."
-  (make-symbolic-link source path))
+  (f--destructive path (make-symbolic-link source path)))
 
 (defun f-move (from to)
   "Move or rename FROM to TO."
-  (rename-file from to t))
+  (f--destructive to (rename-file from to t)))
 
 (defun f-copy (from to)
-  "Copy file or directory."
-  (if (f-file? from)
-      (copy-file from to)
-    (copy-directory from to)))
+  "Copy file or directory FROM to TO."
+  (f--destructive to
+    (if (f-file? from)
+        (copy-file from to)
+      ;; The behavior of `copy-directory' differs between Emacs 23 and
+      ;; 24 in that in Emacs 23, the contents of `from' is copied to
+      ;; `to', while in Emacs 24 the directory `from' is copied to
+      ;; `to'. We want the Emacs 24 behavior.
+      (if (> emacs-major-version 23)
+          (copy-directory from to)
+        (if (f-dir? to)
+            (progn
+              (apply 'f-mkdir (f-split to))
+              (let ((new-to (f-expand (f-filename from) to)))
+                (copy-directory from new-to)))
+          (copy-directory from to))))))
 
 (defun f-touch (path)
   "Update PATH last modification date or create if it does not exist."
-  (if (f-file? path)
-      (set-file-times path)
-    (f-write-bytes "" path)))
+  (f--destructive path
+    (if (f-file? path)
+        (set-file-times path)
+      (f-write-bytes "" path))))
 
 
 ;;;; Predicates
@@ -209,7 +283,7 @@ If FORCE is t, a directory will be deleted recursively."
 
 (defun f-symlink? (path)
   "Return t if PATH is symlink, false otherwise."
-  (file-symlink-p path))
+  (not (not (file-symlink-p path))))
 
 (defun f-readable? (path)
   "Return t if PATH is readable, false otherwise."
@@ -233,7 +307,7 @@ If FORCE is t, a directory will be deleted recursively."
 
 (defun f-root? (path)
   "Return t if PATH is root directory, false otherwise."
-  (f-same? path (f-parent path)))
+  (not (f-parent path)))
 
 (defun f-ext? (path &optional ext)
   "Return t if extension of PATH is EXT, false otherwise.
@@ -253,33 +327,25 @@ false otherwise."
 
 (defun f-parent-of? (path-a path-b)
   "Return t if PATH-A is parent of PATH-B."
-  (unless (f-same? path-a path-b)
-    (f-same? path-a (f-parent path-b))))
+  (--when-let (f-parent path-b)
+    (f-same? path-a it)))
 
 (defun f-child-of? (path-a path-b)
   "Return t if PATH-A is child of PATH-B."
-  (unless (f-same? path-a path-b)
-    (f-same? (f-parent path-a) path-b)))
+  (--when-let (f-parent path-a)
+    (f-same? it path-b)))
 
 (defun f-ancestor-of? (path-a path-b)
   "Return t if PATH-A is ancestor of PATH-B."
   (unless (f-same? path-a path-b)
-    (f-same?
-     path-a
-     (f-up
-      (lambda (path)
-        (f-same? path path-a))
-      path-b))))
+    (s-starts-with? (f-full path-a)
+                    (f-full path-b))))
 
 (defun f-descendant-of? (path-a path-b)
   "Return t if PATH-A is desendant of PATH-B."
   (unless (f-same? path-a path-b)
-    (f-same?
-     path-b
-     (f-up
-      (lambda (path)
-        (f-same? path path-b))
-      path-a))))
+    (s-starts-with? (f-full path-b)
+                    (f-full path-a))))
 
 
 ;;;; Stats
@@ -306,8 +372,7 @@ directory, return sum of all files in PATH."
 
 (defun f-path-separator ()
   "Return path separator."
-  (let ((x (f-expand "x" "y")))
-    (substring x (- (length x) 2) (- (length x) 1))))
+  (substring (f-join "x" "y") 1 2))
 
 (defun f-glob (pattern &optional path)
   "Find PATTERN in PATH."
@@ -381,13 +446,6 @@ RECURSIVE - Search for files and directories recursive."
   (let ((files (-select 'f-file? (f--collect-entries path recursive))))
     (if fn (-select fn files) files)))
 
-(defun f-root ()
-  "Return absolute root."
-  (let ((dir default-directory))
-    (while (not (f-root? dir))
-      (setq dir (f-parent dir)))
-    dir))
-
 (defmacro f--up (body &optional dir)
   "Anaphoric version of `f-up'."
   `(f-up
@@ -395,6 +453,8 @@ RECURSIVE - Search for files and directories recursive."
       (let ((it path))
         ,body))
     ,dir))
+
+(make-obsolete 'f-up 'f-traverse-upwards "0.14.0")
 
 (defun f-up (fn &optional dir)
   "Traverse up as long as FN returns nil, starting at DIR."
@@ -405,11 +465,51 @@ RECURSIVE - Search for files and directories recursive."
   (unless (f-exists? dir)
     (error "File %s does not exist" dir))
   (let ((parent (f-parent dir)))
-    (if (f-root? parent)
+    (if (and parent (f-root? parent))
         parent
       (if (funcall fn dir)
           dir
         (f-up fn parent)))))
+
+(defmacro f--traverse-upwards (body &optional path)
+  "Anaphoric version of `f-traverse-upwards'."
+  `(f-traverse-upwards
+    (lambda (dir)
+      (let ((it dir))
+        ,body))
+    ,path))
+
+(defun f-traverse-upwards (fn &optional path)
+  "Traverse up as long as FN returns nil, starting at PATH.
+
+If FN returns a non-nil value, the path sent as argument to FN is
+returned. If no function callback return a non-nil value, nil is
+returned."
+  (unless path
+    (setq path default-directory))
+  (when (f-relative? path)
+    (setq path (f-expand path)))
+  (unless (f-exists? path)
+    (error "File %s does not exist" path))
+  (if (funcall fn path)
+      path
+    (unless (f-root? path)
+      (f-traverse-upwards fn (f-parent path)))))
+
+(defun f-root ()
+  "Return absolute root."
+  (f-traverse-upwards 'f-root?))
+
+(defmacro f-with-sandbox (path-or-paths &rest body)
+  "Only allow PATH-OR-PATHS and decendants to be modified in BODY."
+  (declare (indent 1))
+  `(let ((paths (if (listp ,path-or-paths)
+                    ,path-or-paths
+                  (list ,path-or-paths))))
+     (unwind-protect
+         (let ((f--guard-paths paths))
+           ,@body)
+       (setq f--guard-paths nil))))
 
 (provide 'f)
 
