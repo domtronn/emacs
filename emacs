@@ -43,7 +43,7 @@
 		(progn (require 'package)
 					 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 					 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-			 (package-initialize))
+					 (package-initialize))
 	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
 (require 'rainbow-delimiters)
@@ -179,6 +179,12 @@
 (add-hook 'js-mode-hook 'js-mode-bindings)
 (add-hook 'js2-mode-hook 'js-mode-bindings)
 
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'web-mode-hook 'skewer-html-mode)
+
+(eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
+
 (eval-after-load 'js '(define-key js2-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
@@ -186,6 +192,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "M-b") 'post-declare-var))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
+
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 (add-hook 'js2-mode-hook #'(lambda () 
@@ -220,7 +227,7 @@
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(sp-local-pair 'emacs-lisp-mode "'" "")
+
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat USERPATH "/snippets"))
 (yas-global-mode)
@@ -468,6 +475,10 @@
 	"Set the height of the minibuffer strings."
 	(set (make-local-variable 'face-remapping-alist)
 			 '((default :height 1.0))))
+
+(add-hook 'dirtree-mode-hook
+					(lambda () (set (make-local-variable 'face-remapping-alist)
+										 '((default :height 1.0)))))
 
 (server-start)
 
