@@ -40,7 +40,8 @@
 
 (defadvice smex (before activate-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `smex`."
-	(disable-vertical))
+	(disable-vertical)
+	(flx-ido-mode 1))
 
 (defadvice ido-find-file (before activate-ido-vertical nil activate)
 	"Enable `ido-vertical-mode` when calling `ido-find-file`."
