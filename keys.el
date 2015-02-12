@@ -230,6 +230,7 @@
 
 (global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
 (global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
+(define-key sp-keymap (kbd "s-<backspace>") 'sp-splice-sexp-killing-around)
 
 (global-set-key (kbd "C-=") 'insert-random-return)
 
