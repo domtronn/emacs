@@ -237,7 +237,7 @@
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
-(global-set-key (kbd "s-<return>") 'eval-defun)
+(global-set-key (kbd "<s-return>") 'eval-defun)
 
 (global-set-key (kbd "H-M-]") 'flyspell-mode)
 (global-set-key "\M-}" 'flycheck-mode)
