@@ -177,6 +177,8 @@
 
 (global-set-key [S-M-up] '(lambda () (interactive) (previous-line 15)))
 (global-set-key [S-M-down] '(lambda () (interactive) (next-line 15)))
+(global-set-key (kbd "M-P") '(lambda () (interactive) (previous-line 15)))
+(global-set-key (kbd "M-N") '(lambda () (interactive) (next-line 15)))
 (global-set-key [C-S-M-up] '(lambda () (interactive) (progn(previous-line 15) (recenter))))
 (global-set-key [C-S-M-down] '(lambda () (interactive) (progn (next-line 15) (recenter))))
 
