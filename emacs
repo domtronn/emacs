@@ -189,7 +189,6 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
-(eval-after-load 'js '(define-key js2-mode-map (kbd "M-b") 'post-declare-var))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
 
