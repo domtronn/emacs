@@ -1181,6 +1181,12 @@ otherwise raises an error."
 		(with-temp-file (concat project-dir project-name ".json")
 			(insert result)) t))
 
+(defun set-buffer-width (buffer n)
+  "Sets the width of a window buffer"
+	(let ((w (get-buffer-window buffer)))
+		(when w (adjust-window-trailing-edge w (- n (window-width w)) t)))
+	)
+
 (defun semi-colon-end ()
 	"Function to insert a semi colon at the end of the line from anywhere"
   (interactive)
