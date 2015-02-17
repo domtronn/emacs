@@ -457,10 +457,6 @@
 (require 'dirtree)
 (setq dirtree-windata (quote (frame left 0.2 delete)))
 
-(define-derived-mode dirtree-mode tree-mode "Dir-Tree"
-	"A mode to display tree of directory"
-	(tree-widget-set-theme "ASCII"))
-
 ;;------------------
 ;; My Load Files
 ;;------------------
@@ -475,10 +471,6 @@
 	"Set the height of the minibuffer strings."
 	(set (make-local-variable 'face-remapping-alist)
 			 '((default :height 1.0))))
-
-(add-hook 'dirtree-mode-hook
-					(lambda () (set (make-local-variable 'face-remapping-alist)
-										 '((default :height 1.0)))))
 
 (server-start)
 

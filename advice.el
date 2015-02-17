@@ -38,6 +38,18 @@
 	(disable-vertical)
 	(flx-ido-mode 1))
 
+(defadvice dirtree-start (after set-dedicated nil activate)
+	"Make the dirtree dedicated after it loads"
+	(set (make-local-variable 'face-remapping-alist)
+			 '((default :height 1.0)))
+	(tree-widget-set-theme "folder")
+	(set-window-dedicated-p (get-buffer-window "*dirtree*") t)
+	(set-buffer-width "*dirtree*" 40))
+
+(defadvice sticky-window-delete-other-windows (after resize-dirtree nil activate)
+	"Resizes the dirtree back to original size i.e. forces fixed size"
+	(set-buffer-width "*dirtree*" 40))
+
 (defadvice smex (before activate-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `smex`."
 	(disable-vertical)
