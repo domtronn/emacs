@@ -195,7 +195,8 @@
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
 
-(global-set-key (kbd "C-x C-x") 'delete-other-windows)
+(global-set-key (kbd "C-x C-x") 'sticky-window-delete-other-windows)
+(global-set-key (kbd "C-S-x C-x") 'delete-other-windows)
 
 (global-set-key (kbd "C-,") 'rotate-windows)
 (global-set-key (kbd "H-l") (kbd "C-l"))
