@@ -40,7 +40,7 @@
  '(flymake-log-level 3)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
- '(col-highlight hl-line-face)
+ '(col-highlight-face hl-line-face)
  '(global-writeroom-mode t nil (writeroom-mode))
  '(ibuffer-default-sorting-mode (quote major-mode))
  '(ibuffer-filter-group-name-face (quote font-lock-builtin-face))
