@@ -71,9 +71,6 @@
 (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
 (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
 
-(require 'anzu)
-(global-anzu-mode +1)
-
 (require 'operate-on-number)
 
 (add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
