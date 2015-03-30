@@ -63,8 +63,8 @@
 										(use-spaces)))
 						(when (gethash "indent" (json-read-from-string json-contents))
               (let ((indent-level (gethash "indent" (json-read-from-string json-contents))))
-                (setq js-indent-level indent-level)
-                (setq js2-basic-offset indent-level)))
+                (setq-default js-indent-level indent-level)
+                (setq-default js2-basic-offset indent-level)))
 						
 						;; Set up variables used in opening and running tests
 						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
