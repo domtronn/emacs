@@ -64,7 +64,6 @@
 (require 'smart-forward)
 (require 'smart-newline)
 (require 'smartparens)
-(require 'smartscan)
 (smartparens-global-mode)
 
 (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
@@ -312,7 +311,6 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
-(add-hook 'prog-mode-hook 'smartscan-mode)
 
 (add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
