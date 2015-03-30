@@ -60,9 +60,11 @@
 (global-set-key (kbd "C-+") 'undo-tree-redo)
 
 (global-set-key (kbd "s-_") 'origami-close-node-recursively)
-(global-set-key (kbd "s--") 'origami-close-node)
-(global-set-key (kbd "s-=") 'origami-open-node)
+(global-set-key (kbd "s--") 'origami-show-only-node)
+(global-set-key (kbd "s-=") 'origami-toggle-node)
 (global-set-key (kbd "s-+") 'origami-open-all-nodes)
+(global-set-key (kbd "H-s-=") 'origami-next-fold)
+(global-set-key (kbd "H-s--") 'origami-previous-fold)
 
 (global-set-key (kbd "M-;") 'semi-colon-end)
 
