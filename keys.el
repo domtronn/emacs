@@ -119,7 +119,7 @@
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
-(global-set-key [f1] 'set-up-test-watch)
+(global-set-key [f1] 'neotree)
 (global-set-key [f2] 'set-up-ack-results)
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 

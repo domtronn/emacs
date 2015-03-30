@@ -405,8 +405,6 @@
 (add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
 (add-hook 'magit-branch-manager-mode-hook (lambda () (sticky-window-delete-other-windows)))
 
-(add-hook 'dirtree-mode-hook (lambda () (local-set-key (kbd "<return>") #'tree-mode-toggle-expand)))
-
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
 (setq inhibit-startup_message t)            ; disable start up message
@@ -455,10 +453,7 @@
 (global-linum-mode 1) ; enable line numbers
 (set-fringe-mode '(2 . 0))
 
-;; ;; Tree file browser
 (require 'moe-theme)
-(require 'dirtree)
-(setq dirtree-windata (quote (frame left 0.2 delete)))
 
 ;;------------------
 ;; My Load Files
