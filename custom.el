@@ -112,6 +112,8 @@
  '(minimap-update-delay 0)
  '(minimap-width-fraction 0.1)
  '(minimap-window-location (quote right))
+ '(neo-auto-indent-point t)
+ '(neo-theme (quote ascii))
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
  '(org-agenda-files (quote ("/Users/charld13/Documents/Calendar.org")))
  '(org-calendar-insert-diary-entry-key (quote i))
