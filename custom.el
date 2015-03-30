@@ -16,14 +16,15 @@
  '(calendar-mark-diary-entries-flag t)
  '(calendar-setup (quote one-frame))
  '(calendar-view-diary-initially-flag t)
+ '(col-highlight-face hl-line-face)
  '(completion-ignored-extensions
 	 (quote
-		(".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".svn-base")))
+		(".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".svn-base" ".gcov.html")))
  '(confluence-url "http://confluence.dev.bbc.co.uk/rpc/xmlrpc")
  '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
  '(custom-safe-themes
 	 (quote
-		("9e7e1bd71ca102fcfc2646520bb2f25203544e7cc464a30c1cbd1385c65898f4" "70945ec5fa00eef126b82c5efb7dce1f567fc772388c879b748e3552f38889fc" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "e1fbe2e10e5acc07e82ea4244be29f5fd47e3123d1856b77db527d496ca25e63" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "23be8bd26bdcc5bd3abc6800870869a978cbc1cde0ea065a4838169d4cc707b3" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" "fa942713c74b5ad27893e72ed8dccf791c9d39e5e7336e52d76e7125bfa51d4c" "022a515bd470f04d54018e9d34ca383193f6b20487610e83bd34e3bf060dafb3" "51542917f2503fcd17cc57278acf6135c87f9487ae4e7d763688d773fa8b341e" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "60f04e478dedc16397353fb9f33f0d895ea3dab4f581307fbf0aa2f07e658a40" "c4e6fe8f5728a5d5fd0e92538f68c3b4e8b218bcfb5e07d8afff8731cc5f3df0" "454dc6f3a1e9e062f34c0f988bcef5d898146edc5df4aa666bf5c30bed2ada2e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
+		("d60eb8ab8fc31c9058dd1b5b297549f19d5cf63778c677ea16649f0f1e527b3c" "36cbfa09a3733f2ce7bb193df4c2ae1cc5f542f914d47717bf705fbf3fb18ddc" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "9e7e1bd71ca102fcfc2646520bb2f25203544e7cc464a30c1cbd1385c65898f4" "70945ec5fa00eef126b82c5efb7dce1f567fc772388c879b748e3552f38889fc" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "e1fbe2e10e5acc07e82ea4244be29f5fd47e3123d1856b77db527d496ca25e63" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "23be8bd26bdcc5bd3abc6800870869a978cbc1cde0ea065a4838169d4cc707b3" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" "fa942713c74b5ad27893e72ed8dccf791c9d39e5e7336e52d76e7125bfa51d4c" "022a515bd470f04d54018e9d34ca383193f6b20487610e83bd34e3bf060dafb3" "51542917f2503fcd17cc57278acf6135c87f9487ae4e7d763688d773fa8b341e" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "60f04e478dedc16397353fb9f33f0d895ea3dab4f581307fbf0aa2f07e658a40" "c4e6fe8f5728a5d5fd0e92538f68c3b4e8b218bcfb5e07d8afff8731cc5f3df0" "454dc6f3a1e9e062f34c0f988bcef5d898146edc5df4aa666bf5c30bed2ada2e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(doc-view-continuous t)
@@ -40,8 +41,9 @@
  '(flymake-log-level 3)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
- '(col-highlight-face hl-line-face)
  '(global-writeroom-mode t nil (writeroom-mode))
+ '(helm-reuse-last-window-split-state nil)
+ '(helm-split-window-default-side (quote right))
  '(ibuffer-default-sorting-mode (quote major-mode))
  '(ibuffer-filter-group-name-face (quote font-lock-builtin-face))
  '(ibuffer-fontification-alist
@@ -137,6 +139,7 @@
 		("ansi-term" "*ansi-term*"
 		 (lambda nil
 			 (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-term-shell "/bin/bash")
  '(shell-pop-universal-key "C-t")
  '(shell-pop-window-height 40)
  '(shell-pop-window-position "bottom")
