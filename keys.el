@@ -85,8 +85,6 @@
 (global-set-key (kbd "H-s") 'isearch-forward-symbol-at-point)
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-?") 'query-replace-regexp)
-
 
 (global-set-key (kbd "M-?") 'ispell-word)
 
@@ -213,7 +211,6 @@
 (global-set-key (kbd "M-q") 'er/expand-region)
 (global-set-key (kbd "H-q") 'er/expand-region)
 
-(global-set-key (kbd "s-r") 'query-replace-regexp)
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
