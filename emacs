@@ -317,9 +317,12 @@
 (setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook 'origami-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
+
+(add-hook 'prog-mode-hook 'origami-mode)
+(add-to-list 'origami-parser-alist '(malabar-mode . origami-c-style-parser))
+(add-to-list 'origami-parser-alist '(php-mode . origami-c-style-parser))
 
 (add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
