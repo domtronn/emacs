@@ -552,7 +552,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun mc/malt ()
   (interactive)
-  (mc/mark-all-like-this))
+  (mc/mark-all-symbols-like-this))
 
 (defun malt ()
   "Uses mc/mark-all-like-this at point"
@@ -563,14 +563,14 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 
 (defun mc/dalt ()
   (interactive)
-  (mc/mark-all-like-this-in-defun))
+  (mc/mark-all-symbols-like-this-in-defun))
 
 (defun dalt ()
   "Uses mc/mark-all-like-this-in-defun at point"
   (interactive)
   (progn
     (mark-word-at-point)
-    (mc/mark-all-like-this-in-defun)))
+    (mc/mark-all-symbols-like-this-in-defun)))
 
 ;; ============================================================================
 (defun domtronn-timestamp ()
