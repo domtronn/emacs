@@ -361,35 +361,27 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun set-up-ack-results ()
   "Opens a pop up for rgrep results"
   (interactive )
-  (save-excursion
-    (progn
-      (let ((match-string (thing-at-point 'symbol))
-            (match-type (concat "*" (replace-regexp-in-string ".*\\(\\\.\\\w+\\)$" "\\1" (buffer-name))))
-            (match-dir (repository-root))
-            (current-buf (current-buffer)))
-        (ack-and-a-half match-string t match-dir)
-        (sticky-window-delete-other-windows)
-        (switch-to-buffer current-buf)
-        (popwin:popup-buffer "*Ack-and-a-half*")
-        (if (not (print truncate-lines))
-            (toggle-truncate-lines))))))
+	(let ((match-string (thing-at-point 'symbol))
+				(match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
+		(pop-ack-and-a-half match-string (repository-root) (current-buffer) t)))
 
-(defun set-up-ack-results-with-prompt (search-string match-type)
+(defun set-up-ack-results-with-prompt (search-string)
   "Opens a pop up for rgrep results with a search string"
-  (interactive "sEnter search string : \nsEnter file type : ")
-  (save-excursion
-    (progn
-      (let ((match-dir (repository-root))
-            (current-buf (current-buffer))
-            (old-ack-args ack-and-a-half-arguments))
-        (setq ack-and-a-half-arguments (list "--color-match=green" "--color-match=yellow" (concat "--" match-type)))
-        (ack-and-a-half search-string t match-dir)
-        (setq ack-and-a-half-arguments old-ack-args)
-        (sticky-window-delete-other-windows)
-        (switch-to-buffer current-buf)
-        (popwin:popup-buffer "*Ack-and-a-half*")
-        (if (not (print truncate-lines))
-            (toggle-truncate-lines))))))
+  (interactive "sEnter search string : ")
+	(pop-ack-and-a-half search-string (repository-root) (current-buffer) t))
+
+(defun pop-ack-and-a-half (search-string match-dir current-buf &optional pop args)
+	(save-excursion
+		(message search-string)
+		(ack-and-a-half search-string t match-dir)
+		(if pop
+				(progn (sticky-window-delete-other-windows)
+							 (switch-to-buffer current-buf)
+							 (popwin:popup-buffer "*Ack-and-a-half*")
+							 (if (not (print truncate-lines))
+									 (toggle-truncate-lines)))
+			(progn (rotate-windows))
+		)))
 
 (defun create-tags (dir-name)
   "Create tags file."
