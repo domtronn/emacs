@@ -325,6 +325,11 @@
 (add-to-list 'origami-parser-alist '(malabar-mode . origami-c-style-parser))
 (add-hook 'prog-mode-hook 'origami-mode)
 
+(require 'key-combo)
+(key-combo-mode 1)
+(key-combo-load-default)
+(key-combo-define emacs-lisp-mode-map "="  '("= " "eq " "equal "))
+
 (add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
