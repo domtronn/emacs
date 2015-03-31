@@ -142,51 +142,6 @@
                        (highlight-regexp (format "var\\s-*%s" arg) 'js2-non-used-var)))
             (goto-char temp-point))))))
 
-(defun collapse-all-its ()
-  (interactive)
-	(save-excursion
-		(beginning-of-buffer)
-		(while (and (< (point) (point-max))
-								(search-forward-regexp "[a-z]+Each.*{" (point-max) t))
-			(hs-hide-block))
-		(beginning-of-buffer)
-		(while (and (< (point) (point-max))
-								(search-forward-regexp "it(\".+\"" (point-max) t))
-			(end-of-line)
-			(hs-hide-block))))
-
-(defun collapse-all-functions ()
-  (interactive)
-	(save-excursion
-		(beginning-of-buffer)
-		(while (and (< (point) (point-max))
-								(search-forward-regexp "[a-zA-Z]+: function (" (point-max) t))
-			(end-of-line)
-			(hs-hide-block))))
-
-(defun count-words-buffer (arg)
-  (interactive "r")
-  (save-excursion
-    (let (wordCount)
-      (setq wordCount 0)
-      (beginning-of-buffer)
-      (while (and (< (point) (point-max))
-                  (search-forward arg (point-max) t))
-        (setq wordCount (1+ wordCount)))
-      wordCount)))
-
-(defun count-words-region (posStart posEnd arg)
-  (interactive "r")
-  (save-excursion
-    (let (wordCount)
-      (setq wordCount 0)
-      (goto-char posStart)
-      (while (and (< (point) posEnd)
-                  (search-forward arg posEnd t))
-        (if (string-equal arg (thing-at-point 'symbol))
-            (setq wordCount (1+ wordCount))))
-      wordCount)))
-
 (defun my-malabar-jump-to-thing ()
   (interactive)
 	(ring-insert find-tag-marker-ring (point-marker))
