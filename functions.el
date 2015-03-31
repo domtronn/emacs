@@ -1207,30 +1207,6 @@ or a marker."
 														""
 														str))
 
-(defun git-commit-ticket-number (num)
-  (interactive "sEnter ticket number : ")
-	(let ((header-at (git-commit-find-pseudo-header-position)))
-    (save-excursion
-      (goto-char header-at)
-      (let ((pre (git-commit-determine-pre-for-pseudo-header)))
-        (insert (format "TVPSPORTV5-%s\n" num))))))
-
-(defun my-commit-review (initials)
-  (interactive "sEnter reviewer initials: ")
-	(let ((header-at (git-commit-find-pseudo-header-position)))
-    (save-excursion
-      (goto-char header-at)
-      (let ((pre (git-commit-determine-pre-for-pseudo-header))
-						(name-alist '(("JK" . "Julian Kimmings") ("GP" . "Graeme Phillipson")
-													("DC" . "Dom Charlesworth") ("CD" . "Chris Darlaston")
-													("EC" . "Emma Carruthers") ("RW" . "Ryan Waudby")
-													("MF" . "Max Farrell") ("WC" . "Will Crossland")
-													("AD" . "Andrew Markham-Davies")
-													("DD" . "Dimoklis Despotakis"))))
-				
-        (insert (format "Reviewed by: %s\n" (or (cdr (assoc initials name-alist)) initials)))))
-    ))
-
 (defun kill-whitespace ()
 	"Kill the whitespace between two non-whitespace characters"
 	(interactive)
@@ -1239,19 +1215,13 @@ or a marker."
 			(re-search-forward "[ \t\r\n]+" nil t)
 			(replace-match "" nil nil))))
 
-;; ----------------------------------------------------------------------------
-;; MACROS
-;; ----------------------------------------------------------------------------
-																				;
-; Clears the double blank lines from a file leaving only single lines
-(fset 'clear-all-double-lines
-      [?\M-> ?\C-u ?0 ?\M-x ?c ?l ?e ?a ?r ?- ?d ?o ?u ?b ?l ?e ?- ?l ?i ?n ?e return ?\C-x ?\C-o ?\C-x ?\C-o ?\C-x ?\C-o])
+(global-set-key "\M-u" 'upcase-case-next-letter)
 
-(fset 'clear-double-line "\C-r^\C-q\C-j$\C-x\C-o")
-
-(fset 'press-return [?c ?d ? ?$ ?T ?E ?S ?T ?S return])
-
-(fset 'only-press-return [return])
+(defun upcase-case-next-letter ()
+  "Toggles the case of the next letter, then moves the point forward one character"
+  (interactive)
+  (upcase-region (point) (+ 1 (point)))
+  (forward-char))
 
 (provide 'functions)
 ;;; functions.el ends here
