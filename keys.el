@@ -252,9 +252,5 @@
 (define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
 (define-key dgc-map (kbd "t") 'domtronn-timestamp)
 
-;; It's Key Chord Time!
-(key-chord-define-global "IO" 'open-in-and-activate-intellj)
-(key-chord-define-global (kbd "C-c C-d") 'dash-at-point)
-
 (provide 'keys)
 ;;; keys.el ends here
