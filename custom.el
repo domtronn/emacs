@@ -42,7 +42,6 @@
  '(flymake-log-level 3)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
- '(global-writeroom-mode t nil (writeroom-mode))
  '(helm-reuse-last-window-split-state nil)
  '(helm-split-window-default-side (quote right))
  '(ibuffer-default-sorting-mode (quote major-mode))
