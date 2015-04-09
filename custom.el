@@ -112,7 +112,7 @@
  '(minimap-update-delay 0)
  '(minimap-width-fraction 0.1)
  '(minimap-window-location (quote right))
- '(neo-auto-indent-point t)
+ '(neo-auto-indent-point nil)
  '(neo-theme (quote ascii))
  '(neo-window-width 35)
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
