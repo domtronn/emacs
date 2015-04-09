@@ -10,7 +10,7 @@
  '(ac-auto-start t)
  '(ac-candidate-limit 15)
  '(ac-expand-on-auto-complete t)
- '(ack-and-a-half-arguments (quote ("--color-match=green" "--color-file=yellow" "-w")))
+ '(ack-and-a-half-arguments (quote (nil)))
  '(ack-and-a-half-executable "/usr/local/bin/ack")
  '(backup-by-copying-when-mismatch nil)
  '(calendar-mark-diary-entries-flag t)
