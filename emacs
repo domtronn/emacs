@@ -180,9 +180,9 @@
 (add-hook 'js-mode-hook 'js-mode-bindings)
 (add-hook 'js2-mode-hook 'js-mode-bindings)
 
-;; (add-hook 'js2-mode-hook 'skewer-mode)
-;; (add-hook 'css-mode-hook 'skewer-css-mode)
-;; (add-hook 'web-mode-hook 'skewer-html-mode)
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'web-mode-hook 'skewer-html-mode)
 
 ;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
 
