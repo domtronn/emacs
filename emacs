@@ -250,12 +250,6 @@
 (define-key ac-complete-mode-map (kbd "C-f") 'ac-isearch)
 (define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
 (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
-(define-key ac-complete-mode-map (kbd "s-1") 'ac-complete-select-1)
-(define-key ac-complete-mode-map (kbd "s-2") 'ac-complete-select-2)
-(define-key ac-complete-mode-map (kbd "s-3") 'ac-complete-select-3)
-(define-key ac-complete-mode-map (kbd "s-4") 'ac-complete-select-4)
-(define-key ac-complete-mode-map (kbd "s-5") 'ac-complete-select-5)
-(define-key ac-complete-mode-map (kbd "s-6") 'ac-complete-select-6)
 
 (set-default 'ac-sources '(
 									 ac-source-yasnippet
