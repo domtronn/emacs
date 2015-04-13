@@ -57,6 +57,7 @@
 (require 'ibuffer-git)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-hook 'ibuffer-mode-hook (lambda () (local-set-key (kbd "G") #'ibuffer-vc-set-filter-groups-by-vc-root)))
+(define-key ibuffer-mode-map (kbd "M-u") 'ibuffer-unmark-all)
 
 (autoload 'css-color-mode "mon-css-color" "" t)
 (css-color-global-mode)
