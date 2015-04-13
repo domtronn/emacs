@@ -1180,6 +1180,15 @@ or a marker."
 					(p3 (search-forward "("))
 					(p4 (- (search-forward ");") 2)))
 			(swap-regions p1 p2 p3 p4))))
+(setq compilation-finish-function
+  (lambda (buf str)
+    (if (null (string-match ".*exited abnormally.*" str))
+        ;;no errors, make the compilation window go away in a few seconds
+        (progn
+          (run-at-time
+           "1 sec" nil 'delete-windows-on
+           (get-buffer-create "*compilation*"))
+          (message "No Compilation Errors!")))))
 
 (defun convert-css (from to)
   (interactive "nConvert from resolution : \nnTo resolution : ")
