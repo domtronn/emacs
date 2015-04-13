@@ -286,6 +286,8 @@
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 
+(define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
+
 ;;---------------
 ;; Mode Hooks
 ;;---------------
