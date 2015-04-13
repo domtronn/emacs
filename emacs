@@ -288,6 +288,8 @@
 
 (define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
 
+(setq scss-compile-at-save t)
+
 ;;---------------
 ;; Mode Hooks
 ;;---------------
@@ -298,6 +300,7 @@
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss?\\'" . scss-mode))
 
 ;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
 ;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
