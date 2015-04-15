@@ -139,7 +139,7 @@
 	
 	(add-to-list 'load-path (concat USERPATH "/elisp/emacs-w3m/"))
 	;; brew install w3m
-	(require 'w3m-load)   )
+	(require 'w3m-load))
 
 (require 'ack-and-a-half)
 
@@ -363,21 +363,21 @@
 					))))
 
 ;; Java Mode - Malabar Mode
-;; (require 'semantic)
-;; (semantic-mode 1)
-;; (require 'cedet)
-;; (add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
-;; (require 'malabar-mode)
-;; (setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
-;; (add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
-;; (eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H->") 'malabar-find-implementations))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-<") 'malabar-start-find-parent))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
-;; (eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
-;; (add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache)))
+(when (require 'malabar-mode nil 'no-error)
+	(require 'semantic)
+	(semantic-mode 1)
+	(require 'cedet)
+	(add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
+	(setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
+	(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
+	(eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H->") 'malabar-find-implementations))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-<") 'malabar-start-find-parent))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
+	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
+	(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache))))
 
 (require 'repository-root)
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
