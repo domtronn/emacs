@@ -411,6 +411,8 @@
 
 (add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
 (add-hook 'magit-branch-manager-mode-hook (lambda () (sticky-window-delete-other-windows)))
+(setq-default magit-auto-revert-mode nil)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
