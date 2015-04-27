@@ -204,7 +204,7 @@
 (global-set-key (kbd "H-l") (kbd "C-l"))
 
 ;; Duplicate line
-(global-set-key (kbd "s-d") "\C-a\C- \C-n\M-w\C-y\C-p")
+(global-set-key (kbd "s-d") 'duplicate-line)
 (global-set-key (kbd "M-W") "\C-a\C- \C-n\M-w\C-p\C-e")
 
 (global-set-key (kbd "C-S-w") 'mark-word)

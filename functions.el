@@ -236,7 +236,7 @@
   "Opens the current file in intellij for n00b5!"
   (interactive)
   (shell-command
-   (format "idea %s; osascript -e \"tell application \\\"IntelliJ Idea 12\\\" to activate\"" (buffer-file-name))))
+   (format "/Applications/IntelliJ\\ IDEA\\ 14\\ CE.app/Contents/MacOS/idea %s; osascript -e \"tell application \\\"IntelliJ Idea 14 CE\\\" to activate\"" (buffer-file-name))))
 
 (defun open-in-and-activate-sublime ()
   "Opens the current file in Sublime!"
