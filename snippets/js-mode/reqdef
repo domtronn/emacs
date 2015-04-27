@@ -4,7 +4,7 @@
 # --
 `(setq use-underscores nil)``(setq available-exts nil)`require.def("`(replace-regexp-in-string ".*script/" (concat project-id "/") (file-name-sans-extension (buffer-file-name)))`",
 	[
-${1:$(inject-dependency yas-text)}
+
 	],
 
 	function (${1:$$(setq available-exts yas-text)}) {

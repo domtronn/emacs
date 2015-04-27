@@ -4,10 +4,9 @@
 # --
 `(setq use-underscores nil)``(setq available-exts nil)`define(
 	[
-${1:$(inject-dependency yas-text)}
 	],
 
-	function (${1:$$(setq available-exts yas-text)}) {
+	function ($1) {
 		"use strict";
 		
 		$0
