@@ -295,13 +295,14 @@
 ;;---------------
 ;; Mode Hooks
 ;;---------------
-(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.[s]json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.spv?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss?\\'" . scss-mode))
 
 ;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
