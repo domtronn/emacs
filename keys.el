@@ -215,6 +215,8 @@
 (global-set-key (kbd "H-q") 'er/expand-region)
 
 (global-set-key (kbd "s-R") 'mc/mark-all-like-this)
+(global-set-key (kbd "s-n") 'mc/mark-next-symbol-like-this)
+(global-set-key (kbd "s-p") 'mc/mark-previous-symbol-like-this)
 
 (global-set-key (kbd "H-t") 'grunt)
 (global-set-key (kbd "S-s-t") 'grunt)
