@@ -254,12 +254,13 @@
 (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
 
 (set-default 'ac-sources '(
-									 ac-source-yasnippet
-									 ac-source-etags
-									 ac-source-semantic
-									 ac-source-dabbrev									 
-									 ac-source-files-in-current-dir
-									 ))
+									ac-source-tern-completion
+									ac-source-yasnippet
+									ac-source-etags
+									ac-source-semantic
+									ac-source-dabbrev									 
+									ac-source-files-in-current-dir
+									))
 
 (require 'osx-dictionary)
 (push "*osx-dictionary*" popwin:special-display-config)
