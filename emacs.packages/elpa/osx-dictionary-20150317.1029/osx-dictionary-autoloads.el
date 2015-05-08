@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "osx-dictionary" "osx-dictionary.el" (21798
-;;;;;;  10699 0 0))
-;;; Generated autoloads from osx-dictionary.el
+;;;### (autoloads nil "osx-dictionary" "../../../../.emacs.d/elpa/osx-dictionary-20150317.1029/osx-dictionary.el"
+;;;;;;  "e0d1e6716b04397e9e57695a549cc1c3")
+;;; Generated autoloads from ../../../../.emacs.d/elpa/osx-dictionary-20150317.1029/osx-dictionary.el
 
 (autoload 'osx-dictionary-search-input "osx-dictionary" "\
 Search input word and display result with buffer.
@@ -19,8 +19,10 @@ Search word around and display result with buffer.
 
 ;;;***
 
-;;;### (autoloads nil nil ("osx-dictionary-pkg.el") (21798 10699
-;;;;;;  285620 0))
+;;;### (autoloads nil nil ("../../../../.emacs.d/elpa/osx-dictionary-20150317.1029/osx-dictionary-autoloads.el"
+;;;;;;  "../../../../.emacs.d/elpa/osx-dictionary-20150317.1029/osx-dictionary-pkg.el"
+;;;;;;  "../../../../.emacs.d/elpa/osx-dictionary-20150317.1029/osx-dictionary.el")
+;;;;;;  (21836 45692 172807 0))
 
 ;;;***
 
