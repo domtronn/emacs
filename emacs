@@ -254,13 +254,19 @@
 (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
 
 (set-default 'ac-sources '(
-									ac-source-tern-completion
 									ac-source-yasnippet
 									ac-source-etags
 									ac-source-semantic
 									ac-source-dabbrev									 
 									ac-source-files-in-current-dir
 									))
+
+(add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
+
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
 
 (require 'osx-dictionary)
 (push "*osx-dictionary*" popwin:special-display-config)
