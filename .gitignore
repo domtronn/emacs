@@ -11,6 +11,7 @@ emacs.packages/emms
 emacs.packages/games
 emacs.packages/.cask
 xkcd
+.tern-port
 *readme.txt
 
 # Dynamic Emacs Files #
