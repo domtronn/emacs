@@ -30,6 +30,8 @@
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 (global-set-key [M-tab] 'dabbrev-expand)
 
+(global-set-key (kbd "SPC") 'wrap-space-or-space)
+
 (global-set-key (kbd "<end>") 'smart-forward)
 (global-set-key (kbd "<home>") 'smart-backward)
 
