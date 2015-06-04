@@ -1216,6 +1216,14 @@ or a marker."
 														""
 														str))
 
+(defun wrap-space-or-space ()
+	(interactive)
+	(if (use-region-p)
+			(insert-pair 1 " " " " )
+			(insert " ")
+		)
+	)
+
 (defun kill-whitespace ()
 	"Kill the whitespace between two non-whitespace characters"
 	(interactive)
