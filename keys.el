@@ -125,7 +125,7 @@
 
 (global-set-key [f1] 'neotree)
 (global-set-key (kbd "<S-f1>") '(lambda () (interactive) (call-interactively 'neotree-find)))
-(global-set-key [f2] 'set-up-ack-results)
+(global-set-key [f2] 'ag-project-at-point)
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (if (buffer-file-name) (file-name-directory (buffer-file-name)) USERPATH))))
