@@ -1,0 +1,1 @@
+(define-package "shell-pop" "20150604.2223" "helps you to use shell easily on Emacs. Only one key action to work." 'nil :url "http://github.com/kyagi/shell-pop-el" :keywords '("shell" "terminal" "tools"))
