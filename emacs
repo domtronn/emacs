@@ -93,7 +93,6 @@
 (global-undo-tree-mode)
 
 (require 'highlight)
-(require 'button-lock)
 
 (drag-stuff-global-mode 1)
 
