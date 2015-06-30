@@ -102,15 +102,13 @@
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
 
-(require 'peep-dired)
 (require 'image+)
 (require 'dired+)
-(require 'dired-rainbow)
+;; (require 'dired-rainbow)
 (require 'dired-filter)
 (require 'dired-k)
 (define-key dired-mode-map (kbd "K") 'dired-k)
 
-(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "P") #'peep-dired)))
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") '(lambda () (interactive) (kill-all-dired-buffers)))))
 
 (require 'git-timemachine)
