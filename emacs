@@ -71,9 +71,6 @@
 
 (require 'operate-on-number)
 
-(add-to-list 'load-path (expand-file-name (concat USERPATH "/elisp/rails-minor-mode")))
-(require 'rails)
-
 ;; ;; Extra Packages
 ;; (require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
 ;; (require 'feature-mode) ;; https://github.com/michaelklishin/cucumber.el
