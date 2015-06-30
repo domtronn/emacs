@@ -170,6 +170,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
