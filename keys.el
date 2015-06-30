@@ -45,6 +45,8 @@
 (global-set-key (kbd "C-c C-x SPC") 'ace-jump-zap-to-char)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-word-mode)
 
+(global-set-key (kbd "C-x c") 'compile)
+
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
 (global-set-key (kbd "s-W")
