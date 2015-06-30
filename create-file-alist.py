@@ -25,6 +25,8 @@ for project_id, resultant_files in resultant_dict.iteritems():
     result_dict = {}
     for f in resultant_files:
         if os.path.basename(f) in result_dict:
+            if any(os.path.dirname(f) + "/" in f for f in result_dict[os.path.basename(f)]):
+                continue
             result_dict[os.path.basename(f)].append(os.path.dirname(f) + "/")
         else:
             result_dict[os.path.basename(f)] = [os.path.dirname(f) + "/"]
