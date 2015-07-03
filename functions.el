@@ -1240,6 +1240,11 @@ or a marker."
   (upcase-region (point) (+ 1 (point)))
   (forward-char))
 
+(defun disable-all-themes ()
+  "disable all active themes."
+  (dolist (i custom-enabled-themes)
+    (disable-theme i)))
+
 (defun duplicate-line ()
   (interactive)
   (move-beginning-of-line 1)

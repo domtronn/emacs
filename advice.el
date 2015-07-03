@@ -89,5 +89,10 @@
 	(flx-ido-mode 0)
   (ido-vertical-mode 0))
 
+;; Disable all themese before loading a new one
+
+(defadvice load-theme (before disable-themes-first activate)
+  (disable-all-themes))
+
 (provide 'advice)
 ;;; advice.el ends here
