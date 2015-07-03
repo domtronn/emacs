@@ -125,8 +125,8 @@
 
 (add-hook 'rust-mode-hook 'flycheck-mode)
 
-(require 'rvm)
-(rvm-use "ruby-2.1.2" "global")
+;; (require 'rvm)
+;; (rvm-use "ruby-2.1.2" "global")
 
 (require 'filecache)
 
@@ -455,14 +455,7 @@
 (load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
 (load-file (concat USERPATH "/advice.el"))
-
 (load-file (concat USERPATH "/elisp/powerline.el"))
-
-(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup)
-(defun my-minibuffer-setup ()
-	"Set the height of the minibuffer strings."
-	(set (make-local-variable 'face-remapping-alist)
-			 '((default :height 1.0))))
 
 (server-start)
 
