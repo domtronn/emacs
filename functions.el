@@ -1172,14 +1172,6 @@ or a marker."
 	    (delete-and-extract-region beg1 end1))
 	   (goto-char beg1))))))
 
-(defun swap-expect-and-actual ()
-  (interactive)
-	(save-excursion
-		(let ((p1 (search-forward "("))
-					(p2 (- (search-forward ")") 1))
-					(p3 (search-forward "("))
-					(p4 (- (search-forward ");") 2)))
-			(swap-regions p1 p2 p3 p4))))
 (setq compilation-finish-function
   (lambda (buf str)
     (if (null (string-match ".*exited abnormally.*" str))
