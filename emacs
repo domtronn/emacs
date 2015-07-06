@@ -204,28 +204,6 @@
 	"Set the coding system of ansi terminals."
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 
-(require 'auto-complete-config)
-(require 'auto-complete-etags)
-;(require 'auto-complete-auctex)
-(require 'ac-dabbrev)
-(add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
-(ac-config-default)
-
-(define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
-(define-key ac-complete-mode-map [tab] 'ac-expand-common)
-(define-key ac-complete-mode-map [return] 'ac-complete)
-(define-key ac-complete-mode-map (kbd "C-f") 'ac-isearch)
-(define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
-(define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
-
-(set-default 'ac-sources '(
-									ac-source-yasnippet
-									ac-source-etags
-									ac-source-semantic
-									ac-source-dabbrev									 
-									ac-source-files-in-current-dir
-									))
-
 (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
 
 (eval-after-load 'tern
@@ -264,6 +242,40 @@
 (define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
 
 (setq scss-compile-at-save t)
+
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+
+(require 'auto-complete-etags)
+(require 'auto-complete-auctex)
+(require 'ac-dabbrev)
+
+;; (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
+
+(define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
+(define-key ac-complete-mode-map [tab] 'ac-expand-common)
+(define-key ac-complete-mode-map [return] 'ac-complete)
+(define-key ac-complete-mode-map (kbd "C-f") 'ac-isearch)
+(define-key ac-complete-mode-map (kbd "C-n") 'ac-next)
+(define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
+
+(set-default 'ac-sources '(
+									ac-source-yasnippet
+									ac-source-etags
+									ac-source-html-tag
+									ac-source-semantic
+									ac-source-dabbrev									 
+									ac-source-files-in-current-dir
+									))
+
+(add-hook 'web-mode-hook 'ac-html-enable)
+(add-to-list 'web-mode-ac-sources-alist
+             '("html" . (ac-source-html-attribute-value
+                         ac-source-html-tag
+                         ac-source-html-attribute)))
+
+(auto-complete-mode 1)
 
 ;;---------------
 ;; Mode Hooks
