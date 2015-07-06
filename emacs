@@ -163,27 +163,15 @@
 (define-key c++-mode-map (kbd "M-q") 'er/expand-region)
 
 ;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
-
-(eval-after-load 'js '(define-key js2-mode-map (kbd "<s-down-mouse>") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
-(eval-after-load 'js '(define-key js2-mode-map (kbd "s-§") 'button-lock-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
-(add-hook 'js2-mode-hook #'(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
-(add-hook 'js2-mode-hook #'(lambda () 
-					(button-lock-set-button "\\.\\(\\w+\\)("
-								#'(lambda (event)
-										(interactive "e")
-										(save-excursion
-											(mouse-set-point event)
-											(etags-select-find (thing-at-point 'word))
-											))
-								:face 'function-link :mouse-face 'function-mouse-link 
-								:face-policy 'append :grouping 1 :mouse-binding 'mouse-1)))
+(add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
+(add-hook 'js2-mode-hook '(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 
 ;(add-hook 'latex-mode 'flyspell-mode)
 
