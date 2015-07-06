@@ -13,6 +13,7 @@ emacs.packages/.cask
 xkcd
 .tern-port
 *readme.txt
+*-cli
 
 # Dynamic Emacs Files #
 #######################
