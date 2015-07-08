@@ -248,8 +248,10 @@
 (ac-config-default)
 
 (require 'auto-complete-etags)
-(require 'auto-complete-auctex)
+;; (require 'auto-complete-auctex)
 (require 'ac-dabbrev)
+(require 'ac-math)
+
 
 ;; (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
 
@@ -275,7 +277,17 @@
                          ac-source-html-tag
                          ac-source-html-attribute)))
 
-(auto-complete-mode 1)
+(add-to-list 'ac-modes 'latex-mode)
+(add-hook 'LaTeX-mode-hook
+					'(lambda () (setq ac-sources
+											 (append '(ac-source-math-unicode
+																 ac-source-math-latex
+																 ac-source-latex-commands
+																 )
+															 ac-sources))))
+(setq ac-math-unicode-in-math-p t)
+
+(global-auto-complete-mode t)
 
 ;;---------------
 ;; Mode Hooks
