@@ -103,6 +103,10 @@
   (random t)
   (nth (random (length words)) words))
 
+(defun browse-sandbox ()
+  (interactive)
+  (browse-url "http://pal.sandbox.dev.bbc.co.uk/sprtiptvjs/?brand=chrome&model=20_0&config=beta"))
+
 (defun js-hlt-nonused-dependencies ()
   "Will highlght the parts of the function include that are not used in the class"
   (interactive)
@@ -1221,10 +1225,6 @@ or a marker."
 			(replace-match "" nil nil))))
 
 (global-set-key "\M-u" 'upcase-case-next-letter)
-
-(defun ansi (name)
-  (interactive "sEnter terminal name : ")
-  (ansi-term "/bin/bash" name))
 
 (defun upcase-case-next-letter ()
   "Toggles the case of the next letter, then moves the point forward one character"
