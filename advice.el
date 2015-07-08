@@ -23,16 +23,6 @@
 
 ;;; Code:
 
-(defadvice rails-script:generate-model (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(project-refresh))
-(defadvice rails-script:generate-controller (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(project-refresh))
-(defadvice rails-script:generate-observer (after refresh-cache activate)
-	"Refreshes the cache to include the new generated model"
-	(project-refresh))
-
 (defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
 	"Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
 	(disable-vertical)
