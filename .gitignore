@@ -15,6 +15,9 @@ xkcd
 *readme.txt
 *-cli
 
+*bookmarks*
+*ede-projects*
+
 # Dynamic Emacs Files #
 #######################
 *.emacs.desktop*
