@@ -1172,16 +1172,6 @@ or a marker."
 	    (delete-and-extract-region beg1 end1))
 	   (goto-char beg1))))))
 
-(setq compilation-finish-function
-  (lambda (buf str)
-    (if (null (string-match ".*exited abnormally.*" str))
-        ;;no errors, make the compilation window go away in a few seconds
-        (progn
-          (run-at-time
-           "1 sec" nil 'delete-windows-on
-           (get-buffer-create "*compilation*"))
-          (message "No Compilation Errors!")))))
-
 (defun convert-css (from to)
   (interactive "nConvert from resolution : \nnTo resolution : ")
 	(let ((factor (/ (float to) (float from))))
