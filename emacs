@@ -161,6 +161,7 @@
 (add-hook 'web-mode-hook 'skewer-html-mode)
 
 (define-key c++-mode-map (kbd "M-q") 'er/expand-region)
+(define-key java-mode-map (kbd "M-q") 'er/expand-region)
 
 ;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
