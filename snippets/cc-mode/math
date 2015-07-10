@@ -2,5 +2,5 @@
 # name: math
 # key: math
 # --
-#include <math.h>
+#include <cmath>
 $0
