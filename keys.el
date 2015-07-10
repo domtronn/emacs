@@ -24,7 +24,7 @@
 
 ;; My Keys
 ;; note: C-h k is the command used to discover key-presses
-(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+(global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key [C-return] 'dabbrev-expand)
 (global-set-key [S-tab] 'auto-complete)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
