@@ -239,7 +239,6 @@ static char *note[] = {
      ("Browsing by" :regexp t :position left)
      ("*Completions*" :position bottom :noselect t)
      ("*vc-log*" :position bottom)
-     ("*compilation*" :position top :noselect t)
      ("*Occur*" :position bottom))) nil nil "op")
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
