@@ -370,9 +370,9 @@ install the memoized function over the original function."
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
   (let ((plface (powerline-make-face color)))
     (if (eq 'right (get-scroll-bar-mode))
-        (propertize " " 'display '((space :align-to (- right-fringe 21)))
+        (propertize " " 'display '((space :align-to (- right-fringe 35)))
                     'face plface)
-      (propertize " " 'display '((space :align-to (- right-fringe 24)))
+      (propertize " " 'display '((space :align-to (- right-fringe 35)))
                   'face plface))))
 
 (defun powerline-make-text
@@ -394,17 +394,17 @@ install the memoized function over the original function."
 (defmacro defpowerline (name string)
   "Macro to create a powerline chunk."
   `(defun ,(intern (concat "powerline-" (symbol-name name)))
-     (side color1 &optional color2)
+       (side color1 &optional color2)
      (powerline-make side
                      (let ((result ,string))
-					   (cond ((listp result)
-							  (format-mode-line result)) 
-							 ((not (or (stringp result)
-									   (null result)))
-							  (progn
-								" ERR"))
-							 (t
-							  result)))
+                       (cond ((listp result)
+                              (format-mode-line result)) 
+                             ((not (or (stringp result)
+                                       (null result)))
+                              (progn
+                                " ERR"))
+                             (t
+                              result)))
                      color1 color2)))
 
 
@@ -429,8 +429,7 @@ install the memoized function over the original function."
             nil))))
 
 (defpowerline arrow       "")
-(defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
-                                      'face (powerline-make-face color1)))
+
 (defvar powerline-buffer-size-suffix t)
 (defpowerline buffer-size (propertize
                             (if powerline-buffer-size-suffix
@@ -491,6 +490,10 @@ install the memoized function over the original function."
 ;; 														(symbol-name (vc-mode-line (buffer-file-name (current-buffer) )))))
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
+(defpowerline eb-indicator (eyebrowse-mode-line-indicator))
+
+(defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
+                                      'face (powerline-make-face color1)))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -519,6 +522,7 @@ install the memoized function over the original function."
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
                              (powerline-time		       'right  nil  powerline-color1  )
+                             (eyebrowse-mode-line-indicator)
                              (powerline-make-text      "  "    nil  )))))
 
 
