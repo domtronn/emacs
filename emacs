@@ -265,7 +265,6 @@
 (set-default 'ac-sources '(
 									ac-source-yasnippet
 									ac-source-etags
-									ac-source-html-tag
 									ac-source-semantic
 									ac-source-dabbrev									 
 									ac-source-files-in-current-dir
