@@ -199,29 +199,53 @@
                      external-lib-alist)
           nil)))))
 
+
+
+(defun go-to-require ()
+  "Tries to load the require path assoscaited with a variable for node includes"
+  (interactive)
+  (save-excursion
+    (ring-insert find-tag-marker-ring (point-marker))
+    (let ((require-pos (search-forward "require" (line-end-position) t)))
+      (when require-pos
+        (if (search-forward-regexp "(['\"]\\(.*?\\)['\"])" (line-end-position) t)
+            (mapcar #'(lambda (lib-alist)
+                        (let* ((id (car lib-alist))
+                               (file-alist (cdr lib-alist))
+                               (file (file-name-base (match-string 1)))
+                               (record (assoc (concat file ".js") file-alist)))
+                          (if (and record (= (length record) 2))
+                              (let ((found-file (concat (car (cdr record)) (car record))))
+                                (message "Found %s" found-file)
+                                (find-file found-file))
+                            (message "Couldn't find a cached file for %s..." file))))
+                    external-lib-alist)
+          nil)))))
+  
 (defun go-to-thing-at-point ()
   "Go to the thing at point assuming if it's not a class or function it's a variable"
   (interactive)
   (let ((thing (thing-at-point 'symbol))
         (thing-point (point)))
-    (if (eq nil (go-to-class))
-        (if (eq nil (search-backward-regexp
-                     (format "var\\s-*%s" thing) (point-min) t))
+    (if (eq nil (go-to-require))
+        (if (eq nil (go-to-class))
             (if (eq nil (search-backward-regexp
-                         (format "function\\s-*(.*%s" thing) (point-min) t))
-                (progn
-                  (search-backward ".")
-                  (let ((thing-clazz (thing-at-point 'symbol)))
-                    (goto-char thing-point)
-                    (etags-select-find-tag-at-point)
-                    (if (string-equal "*etags-select*" (buffer-name))
-                        (progn
-                          (search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
-                          (next-line)
-                          (etags-select-goto-tag)))))
-              (progn
-                (search-forward thing)
-                (backward-word)))))))
+                         (format "var\\s-*%s" thing) (point-min) t))
+                (if (eq nil (search-backward-regexp
+                             (format "function\\s-*(.*%s" thing) (point-min) t))
+                    (progn
+                      (search-backward ".")
+                      (let ((thing-clazz (thing-at-point 'symbol)))
+                        (goto-char thing-point)
+                        (etags-select-find-tag-at-point)
+                        (if (string-equal "*etags-select*" (buffer-name))
+                            (progn
+                              (search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
+                              (next-line)
+                              (etags-select-goto-tag)))))
+                  (progn
+                    (search-forward thing)
+                    (backward-word))))))))
 
 (defun close-and-pop-buffer (oldbuffer buffer)
   (switch-to-buffer oldbuffer)
