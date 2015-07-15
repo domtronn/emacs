@@ -499,6 +499,10 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (setq window-size-fixed t)
         (other-window 1)))))
 
+(defun quick-term (name)
+  (interactive "sEnter terminal name : ")
+  (ansi-term "/bin/bash" name))
+
 (defun set-up-term-and-run (name size cmd)
 	"Sets up an ansi terminal named name and then runs cmd"
 	  (save-excursion
