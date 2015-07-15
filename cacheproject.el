@@ -59,10 +59,12 @@
 						;; Set up the indentation settings i.e. tabs vs spaces
 						(use-tabs)
 						(if (gethash "tabs" (json-read-from-string json-contents))
-								(if (eq :json-false (gethash "tabs" (json-read-from-string json-contents)))
+								(when (eq :json-false (gethash "tabs" (json-read-from-string json-contents)))
+                    (message "Using spaces for project files")
 										(use-spaces)))
 						(when (gethash "indent" (json-read-from-string json-contents))
               (let ((indent-level (gethash "indent" (json-read-from-string json-contents))))
+                (message "Setting indent level to %s" indent-level)
                 (setq-default js-indent-level indent-level)
                 (setq-default js2-basic-offset indent-level)))
 						
