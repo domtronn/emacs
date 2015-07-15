@@ -138,7 +138,6 @@
 (global-set-key (kbd "<M-f5>") 'vc-next-action)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
-(global-set-key (kbd "<s-f6>") 'magit-branch-manager)
 
 (global-set-key [f7] 'occur-at-point)
 
