@@ -161,7 +161,11 @@
 (add-hook 'web-mode-hook 'skewer-html-mode)
 
 (define-key c++-mode-map (kbd "M-q") 'er/expand-region)
-(define-key java-mode-map (kbd "M-q") 'er/expand-region)
+(add-hook 'c++-mode-hook
+					(lambda () (unless (file-exists-p "makefile")
+									(set (make-local-variable 'compile-command)
+											 (let ((file (file-name-sans-extension buffer-file-name)))
+												 (format "g++ %s -o %s" buffer-file-name file))))))
 
 ;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
