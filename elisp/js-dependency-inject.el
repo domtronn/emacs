@@ -46,6 +46,26 @@ require paths."
 			
 			(inject-dependency require-path-list class-name-list t))))
 
+(defun require-dependency-at-point ()
+  "Inject the dependency at point.
+This function will take the word under point and look for it in the
+dependncy list. If it exists, it will add a require path as the variable argument"
+  (interactive)
+  (save-excursion
+    (let* ((popup-point (point))
+					 (class-symbol (or (thing-at-point 'word)
+                             (save-excursion (backward-word) (thing-at-point 'word))))
+           (class-name (concat class-symbol ".js"))
+           (result (assoc class-name (get-dependency-relative-alist)))
+           (qc (get-quote-char)))
+      (if result
+          (let ((require-path (show-popup-with-options result popup-point (concat qc "%s" qc))))
+            (end-of-line)
+            (insert (format " = require(%s);" require-path)))
+        (message "%s does not exist in any dependencies" class-symbol)
+          )
+      )))
+
 (defun inject-dependency-at-point ()
 	"Inject the dependency at point.
 This function will take the word under point and look for it in the
@@ -152,7 +172,34 @@ It assossciates each file name to a list of locations of that file."
 												(push appended-results dependency-alist))))
 									))
 						(cdr project-assoc)))
-			 external-lib-alist)  dependency-alist))
+			 external-lib-alist) dependency-alist))
+
+(defun get-dependency-relative-alist ()
+  "Constructs the dependency alist from external-lib-alist.
+It assosciates each file name to a list of relative file paths"
+  (let ((dependency-alist (list)))
+    (mapcar
+     #'(lambda (project-assoc)
+         (mapcar
+          #'(lambda (elt)
+              (let* ((cwd (file-name-directory (buffer-file-name)))
+                     (modified-results
+                      (mapcar #'(lambda (x)
+                                  (let ((relative-name (file-relative-name (concat x (car elt)) cwd)))
+                                    (if (string-match "^[a-zA-Z]" relative-name)
+                                        (concat "./" relative-name)
+                                      relative-name)))
+                              (cdr elt))))
+                (let ((appended-results (append (list (car elt)) modified-results)))
+
+                  ;; If entry already exists - remove and redefine appended-results
+                  (when (not (eq nil (assoc (car elt) dependency-alist)))
+                    (setq appended-results (append (assoc (car elt) dependency-alist) modified-results))
+                    (setq dependency-alist (delq (assoc (car elt) dependency-alist) dependency-alist)))
+                  
+                  (push appended-results dependency-alist)))
+              ) (cdr project-assoc))
+         ) external-lib-alist) dependency-alist))
 
 (defun get-require-path-list ()
 	(let ((a (car (get-require-path-region)))
@@ -185,7 +232,7 @@ It assossciates each file name to a list of locations of that file."
 			"\"" "'"))
 
 (defun filter-list (condp lst)
-	(delq nil (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
+  (delq nil (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
 
 (defun show-popup-with-options (options popup-point f)
 	(format f (if (= 1 (length (cdr options)))

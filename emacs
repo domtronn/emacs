@@ -171,6 +171,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "M-s-∫") 'require-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 
