@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : so
 # --
-spyOn(${1:class}, '${2:method}');$0
+spyOn(${1:class}, '${2:method}')$0

@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : te
 # --
-expect($1).toEqual($2);$0
+toEqual($1);$0

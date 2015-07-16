@@ -1,6 +1,6 @@
 # -*- mode: js-mode -*-
 #name : desc
 # --
-describe("${1:Description}", function () {
+describe(`(get-quote-char)`${1:Description}`(get-quote-char)`, function () {
 	$0
 });

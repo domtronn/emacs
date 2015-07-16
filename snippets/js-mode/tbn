@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : tbn
 # --
-expect($1).toBeNull();$0
+toBeNull();$0

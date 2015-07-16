@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : tbgt
 # --
-expect($1).toBeGreaterThan($2);$0
+toBeGreaterThan($1);$0

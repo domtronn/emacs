@@ -1,4 +1,6 @@
 # -*- mode: snippet -*-
 #name : jasmine.log
 # --
-jasmine.log($0);
+`(if (string-match project-test-ext (buffer-file-name))
+    (format "jasmine")
+  (format "console"))`.log($0);
