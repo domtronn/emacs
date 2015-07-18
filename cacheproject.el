@@ -66,7 +66,11 @@
               (let ((indent-level (gethash "indent" (json-read-from-string json-contents))))
                 (message "Setting indent level to %s" indent-level)
                 (setq-default js-indent-level indent-level)
-                (setq-default js2-basic-offset indent-level)))
+                (setq-default js2-basic-offset indent-level)
+                (setq-default css-indent-offset indent-level)
+                (setq-default web-mode-markup-indent-offset indent-level)
+                (setq-default c-basic-offset indent-level)
+                ))
 						
 						;; Set up variables used in opening and running tests
 						(let ((testing (gethash "testing" (json-read-from-string json-contents))))
