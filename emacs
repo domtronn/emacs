@@ -417,6 +417,8 @@
 (setq-default magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+(eval-after-load 'magit '(define-key magit-mode-map (kbd "C-<tab>") 'my-file-cache-ido-find-file))
+
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
 (setq inhibit-startup_message t)            ; disable start up message
