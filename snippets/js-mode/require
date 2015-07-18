@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 #name : require
 # --
-var $1 = `(if (string-match "require.*rewire" (buffer-string)) (yas-choose-value "require" "rewire") (format "require"))`(`(get-quote-char)`${$1}`(get-quote-char)`);$0
+var $1 = `(if (string-match "require.*rewire" (buffer-string)) (yas-choose-value "require" "rewire") (format "require"))`(`(get-quote-char)`$0${$1}`(get-quote-char)`);
