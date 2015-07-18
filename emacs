@@ -174,6 +174,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "M-s-∫") 'require-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-x c") 'grunt-exec))
 
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
