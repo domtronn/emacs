@@ -1,4 +1,4 @@
-;;; js-dependency-inject.el --- 
+;;; js-dependency-inject.el --- Inject paths to JS classes
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
@@ -25,7 +25,7 @@
 
 ;;; Code:
 (defun sort-dependencies ()
-	"Sorts the dependency require paths alphabetically.
+	"Sort the dependency require paths alphabetically.
 This reorders the class list to align with the reordered
 require paths."
   (interactive)
@@ -49,7 +49,7 @@ require paths."
 (defun require-dependency-at-point ()
   "Inject the dependency at point.
 This function will take the word under point and look for it in the
-dependncy list. If it exists, it will add a require path as the variable argument"
+dependncy list.  If it exists, it will add a require path as the variable argument"
   (interactive)
   (save-excursion
     (let* ((popup-point (point))
@@ -77,12 +77,12 @@ dependncy list. If it exists, it will add a require path as the variable argumen
 (defun inject-dependency-at-point ()
 	"Inject the dependency at point.
 This function will take the word under point and look for it in the
-dependncy list. If it exists, it will append it to the function list
+dependncy list.  If it exists, it will append it to the function list
 and add the require path, if it is already used it will update the
-current dependency. If it does not exist, do nothing and print to the
+current dependency.  If it does not exist, do nothing and print to the
 minibuffer."
   (interactive)
-	(save-excursion 
+	(save-excursion
 		(let* ((popup-point (point))
 					 (class-symbol (or (thing-at-point 'word) (save-excursion (backward-word) (thing-at-point 'word))))
 					 (class-name (concat (downcase class-symbol) ".js"))
@@ -96,7 +96,7 @@ minibuffer."
 (defun update-dependencies ()
 	"Update all of the classes in the function block.
 This function constructs a list of require paths based on the class
-names present in the function block. These are delegated to the
+names present in the function block.  These are delegated to the
 inject-dependency function which will replace the view with the new
 arguments."
   (interactive)
@@ -106,7 +106,7 @@ arguments."
 					 (require-path-list (list))
 					 (dependency-alist (get-dependency-alist)))
 
-			(mapcar
+			(mapc
 			 #'(lambda (class-symbol)
 					 (let* ((class-name (concat (downcase class-symbol) ".js"))
 									(result (assoc class-name dependency-alist))
@@ -121,8 +121,8 @@ arguments."
 			(sort-dependencies))))
 
 (defun inject-dependency (require-paths class-names &optional replace)
-	"Inject or replace a list of REQUIRE-PATHS and CLASS-NAMES into a
-JavaScript file. It uses the CLASS-NAMES as the keys of the REQUIRE-PATHS.
+	"Inject or replace a list of REQUIRE-PATHS & CLASS-NAMES into a JS file.
+It uses the CLASS-NAMES as the keys of the REQUIRE-PATHS.
 The REPLACE flag will replace all require paths and class names with these."
 		(let ((require-path-list nil)
 					(class-name-list nil)
@@ -156,16 +156,16 @@ The REPLACE flag will replace all require paths and class names with these."
 	"Construct the dependency alist from the external-lib-alist.
 It assossciates each file name to a list of locations of that file."
 		(let ((dependency-alist (list)))
-			(mapcar
+			(mapc
 			 #'(lambda (project-assoc)
-					 (mapcar
+					 (mapc
 						#'(lambda (elt)
 								;; Filter results by /script/ regexp
 								(let* ((filtered-results (filter-list (lambda (x) (string-match "/script/" x)) (cdr elt))))
 									;; If we have filtered results, append them
 									(when filtered-results
 										(let ((modified-results
-													 (mapcar #'(lambda (x)
+													 (mapc #'(lambda (x)
 																			 (concat (replace-regexp-in-string ".*script" (car project-assoc) x)
 																							 (replace-regexp-in-string ".js" "" (car elt)))) filtered-results)))
 											
@@ -186,13 +186,13 @@ It assossciates each file name to a list of locations of that file."
   "Constructs the dependency alist from external-lib-alist.
 It assosciates each file name to a list of relative file paths"
   (let ((dependency-alist (list)))
-    (mapcar
+    (mapc
      #'(lambda (project-assoc)
-         (mapcar
+         (mapc
           #'(lambda (elt)
               (let* ((cwd (file-name-directory (buffer-file-name)))
                      (modified-results
-                      (mapcar #'(lambda (x)
+                      (mapc #'(lambda (x)
                                   (let ((relative-name (file-relative-name (concat x (car elt)) cwd)))
                                     (if (string-match "^[a-zA-Z]" relative-name)
                                         (concat "./" relative-name)
@@ -210,11 +210,13 @@ It assosciates each file name to a list of relative file paths"
          ) external-lib-alist) dependency-alist))
 
 (defun get-require-path-list ()
+	"Get the list of current require paths."
 	(let ((a (car (get-require-path-region)))
 				(b (cadr (get-require-path-region))))
 		(mapcar #'chomp (split-string (buffer-substring a b) ",\\s-*\n\\s-*"))))
 
 (defun get-class-name-list  ()
+	"Get the list of the mapped class names."
 	(let ((a (car (get-class-name-region)))
 				(b (cadr (get-class-name-region))))
 		(if (not (eq a b))
@@ -222,45 +224,54 @@ It assosciates each file name to a list of relative file paths"
 			nil)))
 
 (defun get-require-path-region ()
+	"Get the region containing the require block."
   (get-region "\\s-*\\[\n\\s-*" "\\s-*\\]"))
 
 (defun get-class-name-region ()
+	"Get the region containing the list of class names."
   (get-region "function\s-*\(" "\)"))
 
 (defun get-region (regex-a regex-b)
-		(beginning-of-buffer)
-		(search-forward-regexp "require\\|define")
-		(let ((start (search-forward-regexp regex-a))
-					(end (- (search-forward-regexp regex-b) 1)))
-			(list start end)))
+	"Get a region based on starting from REGEX-A to REGEX-B."
+	(go-to-pos (point-min))
+	(search-forward-regexp "require\\|define")
+	(let ((start (search-forward-regexp regex-a))
+				(end (- (search-forward-regexp regex-b) 1)))
+		(list start end)))
 
 (defun get-quote-char ()
+	"Get the majority quote character used in a file."
   (if (> (count-matches "\"" (point-min) (point-max))
 				 (count-matches "'" (point-min) (point-max)))
 			"\"" "'"))
 
 (defun filter-list (condp lst)
+	"Filter using CONDP function call mapped to LST."
   (delq nil (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
 
 (defun show-popup-with-options (options popup-point f)
+	"Show a popup with OPTIONS at POPUP-POINT with format F."
 	(format f (if (= 1 (length (cdr options)))
 								(cadr options)
 							(popup-menu* (cdr result) :point popup-point))))
 
 (defun indent-require-block ()
+	"Indent the block containing require paths."
   (interactive)
   (save-excursion
-		(beginning-of-buffer)
+		(go-to-pos (point-min))
 		(indent-region (search-forward-regexp "function\\s-*(.*\n") (cadr (get-class-name-region)))
 		(indent-region (car (get-require-path-region)) (cadr (get-require-path-region)))
 		(goto-char (cadr (get-require-path-region))) (indent-according-to-mode)))
 
 (defun replace-region (region-start region-end replacement)
+	"Replace a region from REGION-START to REGION-END with REPLACEMENT string."
 	(goto-char region-start)
 	(delete-region region-start region-end)
 	(insert replacement))
 
 (defun format-text-in-rectangle (text width)
+	"Wrap a block of TEXT with a maximum WIDTH and indent."
 	(with-temp-buffer
 		(insert text)
 		(goto-char (+ (point-min) width))
