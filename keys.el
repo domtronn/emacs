@@ -239,7 +239,6 @@
 (global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
 (global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
 (global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
-(define-key sp-keymap (kbd "s-<backspace>") 'sp-splice-sexp-killing-around)
 
 (global-set-key (kbd "C-=") 'insert-random-return)
 
@@ -251,13 +250,13 @@
 
 (global-set-key (kbd "H-M-]") 'flyspell-mode)
 (global-set-key "\M-}" 'flycheck-mode)
+(global-set-key (kbd "C-c C-n") 'flycheck-next-error)
+(global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
+
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
 
 (global-set-key (kbd "s-o") 'my-open-current-file)
-
-(define-key dgc-map (kbd "H-s") 'domtronn-sign-professional)
-(define-key dgc-map (kbd "t") 'domtronn-timestamp)
 
 (provide 'keys)
 ;;; keys.el ends here
