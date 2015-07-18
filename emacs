@@ -312,7 +312,6 @@
 
 (setq js2-enter-indents-newline t)
 
-(setq framemove-hook-into-windmove t)
 (setq truncate-lines nil)
 (setq org-agenda-include-diary t)
 
