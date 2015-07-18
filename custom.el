@@ -329,6 +329,7 @@ static char *note[] = {
  '(emms-browser-track-face ((t (:foreground "#698b22" :height 1.0 :family "DejaVu Sans Mono"))))
  '(emms-playlist-track-face ((t (:foreground "#698b22"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
+ '(mode-line-inactive ((t (:background "#504945" :foreground "#a89984" :box nil))))
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;; (require 'sublimity-attractive)
