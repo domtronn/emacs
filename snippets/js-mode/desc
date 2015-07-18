@@ -2,5 +2,5 @@
 #name : desc
 # --
 describe(`(get-quote-char)`${1:Description}`(get-quote-char)`, function () {
-	$0
+$0
 });

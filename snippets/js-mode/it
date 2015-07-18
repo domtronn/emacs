@@ -2,5 +2,5 @@
 #name : it
 # --
 it(`(get-quote-char)`${1:should...}`(get-quote-char)`, function () {
-	$2
+$2
 });$0

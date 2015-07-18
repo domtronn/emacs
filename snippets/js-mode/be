@@ -2,5 +2,5 @@
 #name : be
 # --
 beforeEach(function () {
-	$1
+$1
 });$0
