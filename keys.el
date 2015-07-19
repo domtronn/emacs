@@ -85,7 +85,7 @@
 ;; Navigate parantheses
 (global-set-key (kbd "s-.") 'forward-list)
 (global-set-key (kbd "s-,") 'backward-list)
-(global-set-key [C-tab] 'my-file-cache-ido-find-file)
+(global-set-key [C-tab] 'projectable-ido-find-file)
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
 (global-set-key (kbd "C-x f") 'ido-find-file)
@@ -194,11 +194,6 @@
 
 (global-set-key (kbd "C-x t") 'open-test)
 (global-set-key (kbd "s-t") 'open-test)
-
-(define-prefix-command 'project-map)
-(global-set-key (kbd "C-c p") 'project-map)
-(define-key 'project-map (kbd "c") 'ido-vertical-project-change)
-(define-key 'project-map (kbd "r") 'project-refresh)
 
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
