@@ -138,6 +138,9 @@
 ;; (rvm-use "ruby-2.1.2" "global")
 
 (require 'filecache)
+(add-to-list 'load-path (expand-file-name "~/.env/elisp/projectable/"))
+(require 'projectable)
+(projectable-global-mode)
 
 (require 'grunt)
 
@@ -467,7 +470,6 @@
 ;;------------------
 ;; My Load Files
 ;;------------------
-(load-file (concat USERPATH "/cacheproject.el"))
 (load-file (concat USERPATH "/keys.el"))
 (load-file (concat USERPATH "/advice.el"))
 (load-file (concat USERPATH "/elisp/powerline.el"))
