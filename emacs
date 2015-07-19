@@ -182,18 +182,6 @@
 
 ;(add-hook 'latex-mode 'flyspell-mode)
 
-(add-hook 'etags-select-mode-hook #'(lambda () (message "Enabling Button Lock Mode")))
-(add-hook 'etags-select-mode-hook #'(lambda () 
-					(button-lock-mode 1)
-					(button-lock-set-button "^\\([0-9]+\\).*"
-								#'(lambda (event)
-										(interactive "e")
-										(save-excursion
-											(mouse-set-point event)
-											(beginning-of-line)
-											(etags-select-by-tag-number-without-prompt (thing-at-point 'symbol))))
-								:face 'inherit :mouse-face 'mouse-over :face-policy 'append)))
-
 ;; (add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
 ;; (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
