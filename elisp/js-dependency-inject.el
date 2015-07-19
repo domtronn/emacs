@@ -24,6 +24,9 @@
 ;; injection for javascript files
 
 ;;; Code:
+
+(require 'projectable)
+
 (defun sort-dependencies ()
 	"Sort the dependency require paths alphabetically.
 This reorders the class list to align with the reordered
@@ -153,7 +156,7 @@ The REPLACE flag will replace all require paths and class names with these."
 			(indent-require-block)))
 
 (defun get-dependency-alist ()
-	"Construct the dependency alist from the external-lib-alist.
+	"Construct the dependency alist from the projectable-project-alist.
 It assossciates each file name to a list of locations of that file."
 		(let ((dependency-alist (list)))
 			(mapc
@@ -180,10 +183,10 @@ It assossciates each file name to a list of locations of that file."
 												(push appended-results dependency-alist))))
 									))
 						(cdr project-assoc)))
-			 external-lib-alist) dependency-alist))
+			 projectable-project-alist) dependency-alist))
 
 (defun get-dependency-relative-alist ()
-  "Constructs the dependency alist from external-lib-alist.
+  "Constructs the dependency alist from projectable-project-alist.
 It assosciates each file name to a list of relative file paths"
   (let ((dependency-alist (list)))
     (mapc
@@ -192,12 +195,12 @@ It assosciates each file name to a list of relative file paths"
           #'(lambda (elt)
               (let* ((cwd (file-name-directory (buffer-file-name)))
                      (modified-results
-                      (mapc #'(lambda (x)
-                                  (let ((relative-name (file-relative-name (concat x (car elt)) cwd)))
-                                    (if (string-match "^[a-zA-Z]" relative-name)
-                                        (concat "./" relative-name)
-                                      relative-name)))
-                              (cdr elt))))
+                      (mapcar #'(lambda (x)
+																(let ((relative-name (file-relative-name (concat x (car elt)) cwd)))
+																	(if (string-match "^[a-zA-Z]" relative-name)
+																			(concat "./" relative-name)
+																		relative-name)))
+														(cdr elt))))
                 (let ((appended-results (append (list (car elt)) modified-results)))
 
                   ;; If entry already exists - remove and redefine appended-results
@@ -205,9 +208,11 @@ It assosciates each file name to a list of relative file paths"
                     (setq appended-results (append (assoc (car elt) dependency-alist) modified-results))
                     (setq dependency-alist (delq (assoc (car elt) dependency-alist) dependency-alist)))
                   
-                  (push appended-results dependency-alist)))
+                  (push appended-results dependency-alist))
+								)
               ) (cdr project-assoc))
-         ) external-lib-alist) dependency-alist))
+         ) projectable-project-alist) dependency-alist)
+	)
 
 (defun get-require-path-list ()
 	"Get the list of current require paths."
