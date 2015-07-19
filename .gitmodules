@@ -1,0 +1,3 @@
+[submodule "elisp/projectable"]
+	path = elisp/projectable
+	url = git@github.com:domtronn/projectable.el.git
