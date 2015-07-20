@@ -424,7 +424,7 @@
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)		              ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
-(setq visible-bell nil)                       ; Disbales beep and use visible bell
+(setq visible-bell nil)                     ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
 (delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
