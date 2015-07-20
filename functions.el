@@ -903,7 +903,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
   t)
 
-(defun find-file-upwards (file-to-find)
+(defun find-file-upwards (file-to-find &optional starting-path)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
 or nil if not found."
@@ -918,7 +918,9 @@ or nil if not found."
                        ;; accounts for both.
                        ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
                        (t (find-file-r (directory-file-name parent))))))) ; Continue
-    (find-file-r default-directory)))
+    (find-file-r (if starting-path
+										 starting-path
+									 default-directory))))
 
 (defun clear-tags-table ()
   "Resets lists of tags files and deletes associated tags buffers"
