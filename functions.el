@@ -1081,8 +1081,6 @@ otherwise raises an error."
 		(while (search-forward arg1 nil t)
 			(replace-match arg2))))
 
-(defun create-project (type)
-  
 (defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
 	(let ((project-dir "~/Documents/Projects/")
 				(template-file "~/Documents/Projects/.projectTemplate")
