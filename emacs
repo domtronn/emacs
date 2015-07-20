@@ -1,4 +1,4 @@
-;;; emacs --- My Emacs file
+ ;;; emacs --- My Emacs initialisation file.
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
@@ -21,19 +21,21 @@
 ;;; Commentary:
 
 ;;; Code:
-(load-file (concat USERPATH "/functions.el"))
-(add-to-list 'load-path (concat USERPATH "/elisp"))
+(defconst base-path (file-name-directory load-file-name))
+
+(load-file (concat base-path "/functions.el"))
+(add-to-list 'load-path (concat base-path "/elisp"))
 
 ;;------------------
 ;; Load Files
 ;;------------------
-(load-file (concat USERPATH "/elisp/lorem-ipsum.el"))
-(load-file (concat USERPATH "/elisp/drag-stuff.el"))      ;;; Leave this package for key binding overrides
-(load-file (concat USERPATH "/elisp/linum-off.el"))
-(load-file (concat USERPATH "/elisp/mon-css-color.el"))
+(load-file (concat base-path "/elisp/lorem-ipsum.el"))
+(load-file (concat base-path "/elisp/drag-stuff.el"))      ;;; Leave this package for key binding overrides
+(load-file (concat base-path "/elisp/linum-off.el"))
+(load-file (concat base-path "/elisp/mon-css-color.el"))
 
 ;; Cool but needs some work
-;; (load-file (concat USERPATH "/elisp/minimap.el"))
+;; (load-file (concat base-path "/elisp/minimap.el"))
 
 ;;------------------
 ;; Requires
@@ -203,7 +205,7 @@
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
 (require 'yasnippet)
-(setq yas-snippet-dirs (concat USERPATH "/snippets"))
+(setq yas-snippet-dirs (concat base-path "/snippets"))
 (yas-global-mode)
 
 (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
@@ -227,7 +229,7 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(add-to-list 'custom-theme-load-path (concat USERPATH "/emacs.packages/themes"))
+(add-to-list 'custom-theme-load-path (concat base-path "/emacs.packages/themes"))
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
 			'(
@@ -260,7 +262,7 @@
 (require 'ac-math)
 
 
-;; (add-to-list 'ac-dictionary-directories (concat USERPATH "/elisp/ac-dict"))
+;; (add-to-list 'ac-dictionary-directories (concat base-path "/elisp/ac-dict"))
 
 (define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
 (define-key ac-complete-mode-map [tab] 'ac-expand-common)
@@ -368,8 +370,8 @@
 	(require 'semantic)
 	(semantic-mode 1)
 	(require 'cedet)
-	(add-to-list 'load-path (concat USERPATH "/elisp/malabar-mode/src/main/lisp"))
-	(setq malabar-groovy-lib-dir (concat USERPATH "/elisp/malabar-mode/target"))
+	(add-to-list 'load-path (concat base-path "/elisp/malabar-mode/src/main/lisp"))
+	(setq malabar-groovy-lib-dir (concat base-path "/elisp/malabar-mode/target"))
 	(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
 	(eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
 	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
@@ -470,9 +472,9 @@
 ;;------------------
 ;; My Load Files
 ;;------------------
-(load-file (concat USERPATH "/keys.el"))
-(load-file (concat USERPATH "/advice.el"))
-(load-file (concat USERPATH "/elisp/powerline.el"))
+(load-file (concat base-path "/keys.el"))
+(load-file (concat base-path "/advice.el"))
+(load-file (concat base-path "/elisp/powerline.el"))
 
 (server-start)
 
