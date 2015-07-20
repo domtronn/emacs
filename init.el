@@ -1,4 +1,4 @@
- ;;; emacs --- My Emacs initialisation file.
+;;; init.el --- My Emacs initialisation file.
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
@@ -23,28 +23,27 @@
 ;;; Code:
 (defconst base-path (file-name-directory load-file-name))
 
-(load-file (concat base-path "/functions.el"))
-(add-to-list 'load-path (concat base-path "/elisp"))
+(load-file (concat base-path "functions.el"))
+(add-to-list 'load-path (concat base-path "elisp"))
 
 ;;------------------
 ;; Load Files
 ;;------------------
+
 (load-file (concat base-path "/elisp/lorem-ipsum.el"))
 (load-file (concat base-path "/elisp/drag-stuff.el"))      ;;; Leave this package for key binding overrides
 (load-file (concat base-path "/elisp/linum-off.el"))
 (load-file (concat base-path "/elisp/mon-css-color.el"))
 
-;; Cool but needs some work
-;; (load-file (concat base-path "/elisp/minimap.el"))
-
 ;;------------------
 ;; Requires
 ;;------------------
 (if (require 'package)
-		(progn (require 'package)
-					 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-					 (package-initialize))
-	(message "Package is not installed - Are you using Emacs v24 or later?"))
+    (progn (require 'package)
+	   (setq-default package-user-dir (concat base-path "emacs.packages/elpa"))
+	   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	   (package-initialize))
+  (message "Package is not installed - Are you using Emacs v24 or later?"))
 
 (require 'rainbow-delimiters)
 (require 'paren)
@@ -93,8 +92,6 @@
 
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-(require 'highlight)
 
 (drag-stuff-global-mode 1)
 
@@ -472,11 +469,16 @@
 ;;------------------
 ;; My Load Files
 ;;------------------
-(load-file (concat base-path "/keys.el"))
-(load-file (concat base-path "/advice.el"))
 (load-file (concat base-path "/elisp/powerline.el"))
+
+(load-file (concat base-path "keys.el"))
+(load-file (concat base-path "advice.el"))
+(load-file (concat base-path "custom.el"))
+
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 (server-start)
 
-(provide 'emacs)
-;;; emacs ends here
+(provide 'init)
+;;; init.el ends here
