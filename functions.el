@@ -1072,16 +1072,18 @@ otherwise raises an error."
   (load-file arg))
 
 (defun replace-regexp-in-buffer (arg1 arg2)
-  "Goes to beginning of buffer for each replace-regexp"
+  "Go to beginning of buffer and replace ARG1 with ARG2."
   (save-excursion
-    (beginning-of-buffer)
-    (replace-regexp arg1 arg2)))
+    (goto-char (point-min))
+		(while (re-search-forward arg1 nil t)
+			(replace-match arg2))))
 
 (defun replace-string-in-buffer (arg1 arg2)
-  "Goes to beginning of buffer for each replace-regexp"
+  "Go to beginning of buffer and replace ARG1 with ARG2."
   (save-excursion
-    (beginning-of-buffer)
-    (replace-regexp arg1 arg2)))
+    (goto-char (point-min))
+		(while (search-forward arg1 nil t)
+			(replace-match arg2))))
 
 (defun create-project (type)
   (interactive (list (ido-completing-read "Project Type : " '("Java" "JavaScript" "Ruby"))))
