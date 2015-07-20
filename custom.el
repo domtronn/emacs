@@ -225,6 +225,7 @@ static char *note[] = {
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
  '(org-agenda-files nil)
  '(org-calendar-insert-diary-entry-key (quote i))
+ '(package-user-dir "~/.emacs.d/emacs.packages/elpa")
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
    (quote
@@ -343,3 +344,6 @@ static char *note[] = {
 (defun set-font-courier-new ()
   (interactive)
   (set-face-attribute 'default nil :family "Courier New" :height 130))
+
+(provide 'custom)
+;;; custom.el ends here
