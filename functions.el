@@ -1067,10 +1067,6 @@ otherwise raises an error."
   (execute-kbd-macro [return])
   nil)
 
-(defun load-custom-theme (arg)
-  (interactive (list (ido-read-file-name "Enter path to Project file: " (concat USERPATH "/emacs.packages/themes/"))))
-  (load-file arg))
-
 (defun replace-regexp-in-buffer (arg1 arg2)
   "Go to beginning of buffer and replace ARG1 with ARG2."
   (save-excursion
@@ -1086,58 +1082,7 @@ otherwise raises an error."
 			(replace-match arg2))))
 
 (defun create-project (type)
-  (interactive (list (ido-completing-read "Project Type : " '("Java" "JavaScript" "Ruby"))))
-	(let ((project-path (read-directory-name "Project Location : " "~/code/"))
-				(project-name (read-string "Project Name : " (concat "my-"(downcase type)"-app")))
-				(temp-buffer-name (concat (downcase type) "-project-setup"))
-				(create t))
-		(message "%s %s" project-path project-name)
-		(if (file-exists-p (concat project-path project-name))
-				(if (yes-or-no-p (concat "Project " project-path project-name " already exists. Would you like to replace it?"))
-						(shell-command (concat "rm -rf " project-path project-name))
-					(setq create nil)))
-		(cond ((string-equal type "Java")
-					 (if create
-							 (progn
-								 (message "Building project...")
-								 (set-up-term-and-run
-									temp-buffer-name 15
-									(concat
-									 "ps aux | grep spring | grep -v grep | awk '{print $2'} | xargs kill -9; "
-									 "ps aux | grep rails | grep -v grep | awk '{print $2'} | xargs kill -9; "
-									 "cd " project-path "; clear; mvnc archetype:generate -DgroupId=com."
-									 (replace-regexp-in-string "-" "" (downcase project-name)) " -DartifactId="
-									 project-name " -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false | "
-									 "grep -v ^Downloading; sed -i '' -e 's/3\.8\.1/4\.8\.1/g' " project-path project-name "/pom.xml"
-									 "; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
-								 (generate-project-file project-name project-path "src/main/java" "src/test/java" "Test" "mvnc test --quiet")
-								 )))
-					((string-equal type "Ruby")
-					 (if create
-							 (progn
-								 (message "Building project...")
-								 (set-up-term-and-run
-									temp-buffer-name 15
-									(concat "cd " project-path"; rails new " project-name
-													"; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
-								 (generate-project-file project-name project-path "app" "test" "_test" "rake test")
-								 )))
-					((string-equal type "JavaScript")
-					 (if create
-							 (progn
-								 (message "Building project...")
-								 (set-up-term-and-run
-									temp-buffer-name 15
-									(concat "cd " project-path
-													"; mkdir " project-name "; cd " project-name
-													"; yo requirejs-jasmine-karma:" project-name
-													"; emacsclient -e \"(progn (kill-buffer \\\"*" temp-buffer-name "*\\\") (message \\\""project-name" has been created successfully\\\"))\""))
-								 (other-window 1)
-								 (auto-type-string "")
-								 (auto-type-string "")
-								 (other-window 1)
-								 (generate-project-file project-name project-path "app" "test" "Spec" "grunt test")))))))
-
+  
 (defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
 	(let ((project-dir "~/Documents/Projects/")
 				(template-file "~/Documents/Projects/.projectTemplate")
@@ -1154,12 +1099,6 @@ otherwise raises an error."
 			(setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t t)))
 		(with-temp-file (concat project-dir project-name ".json")
 			(insert result)) t))
-
-(defun set-buffer-width (buffer n)
-  "Sets the width of a window buffer"
-	(let ((w (get-buffer-window buffer)))
-		(when w (adjust-window-trailing-edge w (- n (window-width w)) t)))
-	)
 
 (defun semi-colon-end ()
 	"Function to insert a semi colon at the end of the line from anywhere"
