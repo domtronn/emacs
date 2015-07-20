@@ -221,7 +221,7 @@
 (push "*osx-dictionary*" popwin:special-display-config)
 
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names 
+(setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names
 (setq uniquify-separator "/")              ; including parts of the path
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
@@ -272,7 +272,7 @@
 									ac-source-yasnippet
 									ac-source-etags
 									ac-source-semantic
-									ac-source-dabbrev									 
+									ac-source-dabbrev
 									ac-source-files-in-current-dir
 									))
 
@@ -353,11 +353,11 @@
 			(when (> (buffer-size) 0)
 				(let ((btext (replace-regexp-in-string
 					": *true" " "
-					(replace-regexp-in-string "[\n\t ]+" " " 
+					(replace-regexp-in-string "[\n\t ]+" " "
 									(buffer-substring-no-properties 1 (buffer-size)) t t))))
 					(mapc (apply-partially 'add-to-list 'js2-additional-externs)
 								(split-string
-								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) 
+								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext)
 										 (match-string-no-properties 1 btext) "")
 								 " *, *" t))
 					))))
@@ -424,7 +424,7 @@
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)		              ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
-(setq visible-bell nil)                       ; Disbales beep and use visible bell 
+(setq visible-bell nil)                       ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
 (delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
@@ -436,7 +436,7 @@
 (setq js-indent-level 2)
 ;; (setq dired-listing-switches "-alk")        ; dired less info
 
-;; Get rid of stupid menu bar and Tool Bar.. 
+;; Get rid of stupid menu bar and Tool Bar..
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 ;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
