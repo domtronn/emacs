@@ -49,12 +49,6 @@
 	(enable-vertical)
 	(call-interactively 'load-custom-theme))
 
-(defun my-file-cache-ido-find-file ()
-	"Wrapper to enable `ido-vertical-mode` before calling `file-cache-ido-find-file`."
-  (interactive)
-	(enable-vertical)
-  (call-interactively 'file-cache-ido-find-file))
-
 (defun enable-vertical ()
 	(setq flx-ido-use-faces t)
 	(setq ido-use-faces nil)
