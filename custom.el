@@ -15,7 +15,7 @@
  '(ac-auto-show-menu t)
  '(ac-auto-start t)
  '(ac-candidate-limit 30)
- '(ac-comphist-file (format "%s/%s/ac-comphist.dat" load-dir package-dir))
+ '(ac-comphist-file (format "%s/%s/ac-comphist.dat" common-load-dir common-package-dir))
  '(ac-etags-requires 1)
  '(ac-expand-on-auto-complete t)
  '(ack-and-a-half-arguments (quote (nil)))
@@ -24,7 +24,7 @@
 	 [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
 	 ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(auto-save-list-file-prefix (format "%s/%s/auto-save-list/.saves-" load-dir package-dir))
+ '(auto-save-list-file-prefix (format "%s/%s/auto-save-list/.saves-" common-load-dir common-package-dir))
  '(backup-by-copying-when-mismatch nil)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-setup (quote one-frame))
@@ -44,7 +44,7 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(eimp-mogrify-program "mogrify")
- '(emms-cache-file (format "%s/%s/emms/cache" load-dir package-dir))
+ '(emms-cache-file (format "%s/%s/emms/cache" common-load-dir common-package-dir))
  '(emms-mode-line-format " %s ")
  '(emms-mode-line-icon-color "#657b83")
  '(emms-mode-line-icon-image-cache
@@ -231,7 +231,7 @@ static char *note[] = {
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
  '(org-agenda-files nil)
  '(org-calendar-insert-diary-entry-key (quote i))
- '(package-user-dir (format "%s/%s/elpa" load-dir package-dir))
+ '(package-user-dir (format "%s/%s/elpa" common-load-dir common-package-dir))
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
 	 (quote
@@ -258,7 +258,7 @@ static char *note[] = {
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
  '(semantic-mode t)
- '(semanticdb-default-save-directory (format "%s/%s/semanticdb" load-dir package-dir))
+ '(semanticdb-default-save-directory (format "%s/%s/semanticdb" common-load-dir common-package-dir))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
 	 (quote
