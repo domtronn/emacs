@@ -32,10 +32,10 @@
 
 (global-set-key (kbd "SPC") 'wrap-space-or-space)
 
-(global-set-key (kbd "<end>") 'smart-forward)
 (global-set-key (kbd "s->") 'smart-forward)
-(global-set-key (kbd "<home>") 'smart-backward)
+(global-set-key (kbd "C-S-f") 'smart-forward)
 (global-set-key (kbd "s-<") 'smart-backward)
+(global-set-key (kbd "C-S-b") 'smart-backward)
 
 (global-set-key (kbd "RET") 'smart-newline)
 ;; (global-set-key (kbd "M-\"") 'add-quotation)
