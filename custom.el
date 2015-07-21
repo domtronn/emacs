@@ -7,7 +7,7 @@
 (make-local-variable 'package-dir)
 
 (setq load-dir (file-name-directory load-file-name))
-(setq package-dir "emacs.packages")
+(setq package-dir "packages")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -233,7 +233,7 @@ static char *note[] = {
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
  '(org-agenda-files nil)
  '(org-calendar-insert-diary-entry-key (quote i))
- '(package-user-dir (format "%s/%s/semanticdb" load-dir package-dir))
+ '(package-user-dir (format "%s/%s/elpa" load-dir package-dir))
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
 	 (quote

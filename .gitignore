@@ -7,9 +7,9 @@
 *.mc-lists.el*
 *.emmscache*
 *archive*
-emacs.packages/emms
-emacs.packages/games
-emacs.packages/.cask
+*packages/emms
+*packages/games
+*packages/.cask
 xkcd
 .tern-port
 *readme.txt

@@ -41,7 +41,7 @@
 ;;------------------
 (if (require 'package)
     (progn (require 'package)
-	   (setq-default package-user-dir (concat base-path "emacs.packages/elpa"))
+	   (setq-default package-user-dir (concat base-path "packages/elpa"))
 	   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 	   (package-initialize))
   (message "Package is not installed - Are you using Emacs v24 or later?"))
@@ -227,7 +227,7 @@
 (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*")   ; don't muck with special buffers
 
-(add-to-list 'custom-theme-load-path (concat base-path "/emacs.packages/themes"))
+(add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path
 			'(
