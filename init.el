@@ -191,6 +191,7 @@
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
 (add-hook 'js2-mode-hook '(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
+(add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
 
 ;(add-hook 'latex-mode 'flyspell-mode)
 
@@ -210,8 +211,6 @@
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
 	"Set the coding system of ansi terminals."
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
-
-(add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
 
 (eval-after-load 'tern
    '(progn
