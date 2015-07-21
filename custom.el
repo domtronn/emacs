@@ -3,11 +3,9 @@
 ;;------------------
 
 ;;; Code:
-(make-local-variable 'load-dir)
-(make-local-variable 'package-dir)
 
-(setq load-dir (file-name-directory load-file-name))
-(setq package-dir "packages")
+(defvar common-load-dir (file-name-directory load-file-name))
+(defvar common-package-dir "packages")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
