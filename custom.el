@@ -252,6 +252,7 @@ static char *note[] = {
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
  '(semantic-mode t)
+ '(semanticdb-default-save-directory "~/.env/emacs.packages/semanticdb")
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
