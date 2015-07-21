@@ -168,7 +168,7 @@ It assossciates each file name to a list of locations of that file."
 									;; If we have filtered results, append them
 									(when filtered-results
 										(let ((modified-results
-													 (mapc #'(lambda (x)
+													 (mapcar #'(lambda (x)
 																			 (concat (replace-regexp-in-string ".*script" (car project-assoc) x)
 																							 (replace-regexp-in-string ".js" "" (car elt)))) filtered-results)))
 											
