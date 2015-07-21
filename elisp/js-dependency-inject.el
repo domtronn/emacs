@@ -238,7 +238,7 @@ It assosciates each file name to a list of relative file paths"
 
 (defun get-region (regex-a regex-b)
 	"Get a region based on starting from REGEX-A to REGEX-B."
-	(go-to-pos (point-min))
+	(goto-char (point-min))
 	(search-forward-regexp "require\\|define")
 	(let ((start (search-forward-regexp regex-a))
 				(end (- (search-forward-regexp regex-b) 1)))
@@ -264,7 +264,7 @@ It assosciates each file name to a list of relative file paths"
 	"Indent the block containing require paths."
   (interactive)
   (save-excursion
-		(go-to-pos (point-min))
+		(goto-char (point-min))
 		(indent-region (search-forward-regexp "function\\s-*(.*\n") (cadr (get-class-name-region)))
 		(indent-region (car (get-require-path-region)) (cadr (get-require-path-region)))
 		(goto-char (cadr (get-require-path-region))) (indent-according-to-mode)))
