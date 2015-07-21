@@ -307,6 +307,8 @@
 (add-to-list 'auto-mode-alist '("\\.spv?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss?\\'" . scss-mode))
 
+(add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
+
 ;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
 ;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
 
@@ -329,7 +331,6 @@
 (key-combo-load-default)
 (key-combo-define emacs-lisp-mode-map "="  '("= " "eq " "equal "))
 
-(add-hook 'js-mode-hook 'js2-mode)
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 ;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
