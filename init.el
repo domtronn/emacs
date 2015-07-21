@@ -334,17 +334,6 @@
 (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
 ;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
 
-;; Allow cmd clicking on functions deprecated by button locks
-;; (eval-after-load 'js
-;; 	'(define-key js-mode-map (kbd "<s-mouse-1>")
-;; 		 (lambda (event)
-;;     (interactive "e")
-;;     (let ((posn (elt event 1)))
-;;       (with-selected-window (posn-window posn)
-;;         (goto-char (posn-point posn))
-;; 				(etags-select-find-tag-at-point))))))
-
-
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
 
