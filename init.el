@@ -22,9 +22,10 @@
 
 ;;; Code:
 (defconst base-path (file-name-directory load-file-name))
+(add-to-list 'load-path (concat base-path "elisp"))
 
 (load-file (concat base-path "functions.el"))
-(add-to-list 'load-path (concat base-path "elisp"))
+(setq custom-file (concat base-path "custom.el"))
 
 ;;------------------
 ;; Load Files
@@ -469,7 +470,6 @@
 ;;------------------
 ;; My Load Files
 ;;------------------
-(load-file (concat base-path "/elisp/powerline.el"))
 
 (load-file (concat base-path "keys.el"))
 (load-file (concat base-path "advice.el"))
