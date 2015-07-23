@@ -196,7 +196,7 @@
                                  (message "Found %s" found-file)
                                  (find-file found-file))
                              (message "Couldn't find a cached file for %s..." class-name))))
-                     external-lib-alist)
+                     projectable-project-alist)
           nil)))))
 
 
@@ -219,7 +219,7 @@
                                 (message "Found %s" found-file)
                                 (find-file found-file))
                             (message "Couldn't find a cached file for %s..." file))))
-                    external-lib-alist)
+                    projectable-project-alist)
           nil)))))
   
 (defun go-to-thing-at-point ()
