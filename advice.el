@@ -37,18 +37,6 @@
 	"Enable `ido-vertical-mode` when calling `ido-find-file`."
 	(enable-vertical))
 
-(defun ido-vertical-project-change ()
-	"Enable `ido-vertical-mode` when calling `project-change`."
-	(interactive)
-	(enable-vertical)
-	(call-interactively 'project-change))
-
-(defun ido-vertical-load-custom-theme ()
-	"Enable `ido-vertical-mode` when calling `load-custom-theme`"
-	(interactive)
-	(enable-vertical)
-	(call-interactively 'load-custom-theme))
-
 (defun enable-vertical ()
 	(setq flx-ido-use-faces t)
 	(setq ido-use-faces nil)
@@ -64,6 +52,7 @@
 ;; Disable all themese before loading a new one
 
 (defadvice load-theme (before disable-themes-first activate)
+	"Disable all currently loaded themes."
   (disable-all-themes))
 
 (provide 'advice)
