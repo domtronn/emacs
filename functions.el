@@ -303,7 +303,7 @@
   (interactive)
 	(let ((repo-root (repository-root)))
 		(if (repository-root-match repository-root-matcher/git repo-root repo-root)
-				(magit-status repo-root)
+				(magit-status)
         (vc-dir repo-root))))
 
 (defun alt-run-current-file ()
