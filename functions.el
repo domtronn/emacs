@@ -887,17 +887,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
     (insert (if UNDERSCORES (concat "_" var-name ) var-name))
     (format "%s" (buffer-substring (point-min) (point-max)))))
 
-(defun add-file-to-project-cache ()
-  (interactive)
-  (if (and (not (assoc-string (file-name-nondirectory (buffer-file-name)) file-cache-alist))
-           (find-file-upwards ".tags")
-					 (string-match project-id (buffer-file-name))
-           (not (string-match "Spec" (buffer-name))))
-      (progn
-        (message "[filecache] Adding %s to the file cache..." (buffer-file-name))
-        (push (list (file-name-nondirectory (buffer-name)) (file-name-directory (buffer-file-name))) file-cache-alist)))
-  t)
-
 (defun find-file-upwards (file-to-find &optional starting-path)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
