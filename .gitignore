@@ -57,6 +57,9 @@ xkcd
 *.log
 *.sql
 *.sqlite
+*.tags
+*TAGS
+
 
 # OS generated files #
 ######################
