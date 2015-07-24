@@ -223,7 +223,7 @@
           nil)))))
   
 (defun go-to-thing-at-point ()
-  "Go to the thing at point assuming if it's not a class or function it's a variable"
+  "Go to the thing at point assuming if it's not a class or function it's a variable."
   (interactive)
   (let ((thing (thing-at-point 'symbol))
         (thing-point (point)))
@@ -237,12 +237,7 @@
                       (search-backward ".")
                       (let ((thing-clazz (thing-at-point 'symbol)))
                         (goto-char thing-point)
-                        (etags-select-find-tag-at-point)
-                        (if (string-equal "*etags-select*" (buffer-name))
-                            (progn
-                              (search-forward-regexp (format  "%s.js" (downcase thing-clazz)))
-                              (next-line)
-                              (etags-select-goto-tag)))))
+                        (etags-select-find-tag-at-point)))
                   (progn
                     (search-forward thing)
                     (backward-word))))))))
