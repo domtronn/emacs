@@ -86,8 +86,7 @@
 (setq popwin:close-popup-window-timer-interval 0.1)
 (setq popwin:close-popup-window-timer nil)
 
-(autoload 'dash-at-point "dash-at-point"
-					"Search the word at point with Dash." t nil)
+(autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
 
 (global-prettify-symbols-mode)
 
