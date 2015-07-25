@@ -263,15 +263,17 @@
   (shell-command
    (format "subl %s" (buffer-file-name))))
 
-(defun my-open-current-file ()
-  "calls vc-dir on the appropriate project"
+(defun open-current-file ()
+  "Open the current file in different things."
   (interactive)
   (let ((type (ido-completing-read
                "Run which VC status manager: " '("IntelliJ IDEA" "Sublime Text") nil nil)))
-    (cond ((string-equal type "IntelliJ IDEA")
+    (cond ((string-equal type "Sublime Text")
+           (open-in-and-activate-sublime))
+          ((string-equal type "IntelliJ IDEA")
            (open-in-and-activate-intellj))
-          ((string-equal type "Sublime Text")
-           (open-in-and-activate-sublime)))))
+          ((string-equal type "Finder")
+           (open-in-finder)))))
 
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a buffer."
