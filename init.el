@@ -116,19 +116,19 @@
 (require 'ack-and-a-half)
 
 (require 'window-layout)
-(setq wm
-			(wlf:layout
-			 '(| (:left-size-ratio 0.6)
-					 file
-					 (- (:upper-size-ration 0.4)
-							runner
-							compilation))
-			 '((:name file
-								:buffer "file buffer")
-				 (:name runner
-								:buffer "*cpp-runner*")
-				 (:name compilation
-								:buffer "*compilation*"))))
+(defvar cpp-layout
+	(wlf:no-layout
+	 '(| (:left-size-ratio 0.6)
+			 file
+			 (- (:upper-size-ration 0.4)
+					runner
+					compilation))
+	 '((:name file
+						:buffer "file buffer")
+		 (:name runner
+						:buffer "*cpp-runner*")
+		 (:name compilation
+						:buffer "*compilation*"))))
 
 (require 'flycheck)
 (require 'flycheck-rust)
