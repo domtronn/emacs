@@ -25,6 +25,11 @@
 
 ;;; Code:
 
+(defvar js-inject-use-projectile nil
+  "Whether or not to use the projectile project files when searching for dependency.")
+(when (require 'projectile)
+  (setq js-inject-use-projectile t))
+
 (defun sort-dependencies ()
 	"Sort the dependency require paths alphabetically.
 This reorders the class list to align with the reordered
