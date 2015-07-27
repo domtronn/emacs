@@ -157,7 +157,7 @@
 
 (require 'js2-refactor)
 (require 'js2-mode)
-(require 'js-dependency-inject)
+(require 'js-dependency-injector)
 
 (defun js-mode-bindings ()
 	"Set a hotkey for using the json-snatcher plugin."
