@@ -47,6 +47,32 @@ require paths."
 			
 			(inject-dependency require-path-list class-name-list t))))
 
+(defun require-node-module-at-point ()
+  "Inject a node modules defined in package.json at point.
+This will search up from the current directory to find the package.json and
+pull out the dependencies - by default this will just use DEPENDENCIES, but can
+also use DEVDEPENDENCIES - and then prompt the user for the module they want
+to include."
+  (interactive)
+  (save-excursion
+    (let* ((popup-point (point))
+           (node-modules (get-node-modules)))
+      (if node-modules
+          (let ((result (popup-menu* node-modules :point popup-point))
+								(quote-char (get-quote-char)))
+						(insert (format "var %s = require(%s%s%s);"
+														(sanitise result) quote-char result quote-char)))
+        (message "No node modules found in current project")))))
+
+(defun sanitise (s)
+  "Return a sanitised string S."
+  (with-temp-buffer
+    (insert s)
+    (goto-char (point-min))
+    (while (re-search-forward "-\\(.\\)" nil t)
+      (replace-match (capitalize (match-string 1))))
+    (buffer-string)))
+
 (defun require-dependency-at-point ()
   "Inject the dependency at point.
 This function will take the word under point and look for it in the
@@ -71,9 +97,7 @@ dependncy list.  If it exists, it will add a require path as the variable argume
               (setq bound-start (- bound-start 1))
               (setq bound-end (+ bound-end 1)))
             (replace-region bound-start bound-end (format "%s%s%s" qc (file-name-sans-extension require-path) qc)))
-        (message "%s does not exist in any dependencies" class-symbol)
-          )
-      )))
+        (message "%s does not exist in any dependencies" class-symbol)))))
 
 (defun inject-dependency-at-point ()
 	"Inject the dependency at point.
@@ -247,6 +271,26 @@ It assosciates each file name to a list of relative file paths"
   (if (> (count-matches "\"" (point-min) (point-max))
 				 (count-matches "'" (point-min) (point-max)))
 			"\"" "'"))
+
+(defvar use-node-dev-dependencies nil)
+(defun get-node-modules ()
+  "Get a list of node packages defined in package.json."
+  (let((package-json (find-file-upwards "package.json")))
+    (when package-json
+      (let* ((json-object-type 'hash-table)
+             (json-contents (shell-command-to-string (format "cat %s" package-json)))
+             (json-hash (json-read-from-string json-contents))
+             (result (list)))
+        (mapc
+         (lambda (arg)
+           (maphash
+            (lambda (key value) (setq result (-distinct (append result (list key)))))
+            (gethash arg json-hash)))
+         (-non-nil (list
+                    "dependencies"
+                    (when use-node-dev-dependencies "devDependencies"))))
+        result))))
+
 
 (defun filter-list (condp lst)
 	"Filter using CONDP function call mapped to LST."
