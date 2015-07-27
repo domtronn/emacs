@@ -300,7 +300,7 @@ It assosciates each file name to a list of relative file paths"
 	"Show a popup with OPTIONS at POPUP-POINT with format F."
 	(format f (if (= 1 (length (cdr options)))
 								(cadr options)
-							(popup-menu* (cdr result) :point popup-point))))
+							(popup-menu* (cdr options) :point popup-point))))
 
 (defun indent-require-block ()
 	"Indent the block containing require paths."
