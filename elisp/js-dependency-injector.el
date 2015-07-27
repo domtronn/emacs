@@ -25,9 +25,7 @@
 
 ;;; Code:
 
-;; (require 'projectable)
-
-(defun js-sort-dependencies ()
+(defun sort-dependencies ()
 	"Sort the dependency require paths alphabetically.
 This reorders the class list to align with the reordered
 require paths."
@@ -49,7 +47,7 @@ require paths."
 			
 			(inject-dependency require-path-list class-name-list t))))
 
-(defun js-require-dependency-at-point ()
+(defun require-dependency-at-point ()
   "Inject the dependency at point.
 This function will take the word under point and look for it in the
 dependncy list.  If it exists, it will add a require path as the variable argument"
@@ -77,7 +75,7 @@ dependncy list.  If it exists, it will add a require path as the variable argume
           )
       )))
 
-(defun js-inject-dependency-at-point ()
+(defun inject-dependency-at-point ()
 	"Inject the dependency at point.
 This function will take the word under point and look for it in the
 dependncy list.  If it exists, it will append it to the function list
@@ -96,7 +94,7 @@ minibuffer."
 						(inject-dependency (list require-path) (list class-symbol)))
 				(message "%s does not exist in any dependencies" class-symbol)))))
 
-(defun js-update-dependencies ()
+(defun update-dependencies ()
 	"Update all of the classes in the function block.
 This function constructs a list of require paths based on the class
 names present in the function block.  These are delegated to the
@@ -123,7 +121,7 @@ arguments."
 			(inject-dependency require-path-list class-name-list t)
 			(sort-dependencies))))
 
-(defun js-inject-dependency (require-paths class-names &optional replace)
+(defun inject-dependency (require-paths class-names &optional replace)
 	"Inject or replace a list of REQUIRE-PATHS & CLASS-NAMES into a JS file.
 It uses the CLASS-NAMES as the keys of the REQUIRE-PATHS.
 The REPLACE flag will replace all require paths and class names with these."
@@ -155,7 +153,7 @@ The REPLACE flag will replace all require paths and class names with these."
 											(format "%s\n" (mapconcat 'identity require-path-list ",\n")))
 			(indent-require-block)))
 
-(defun js-get-dependency-alist ()
+(defun get-dependency-alist ()
 	"Construct the dependency alist from the projectable-project-alist.
 It assossciates each file name to a list of locations of that file."
 		(let ((dependency-alist (list)))
@@ -185,7 +183,7 @@ It assossciates each file name to a list of locations of that file."
 						(cdr project-assoc)))
 			 projectable-project-alist) dependency-alist))
 
-(defun js-get-dependency-relative-alist ()
+(defun get-dependency-relative-alist ()
   "Constructs the dependency alist from projectable-project-alist.
 It assosciates each file name to a list of relative file paths"
   (let ((dependency-alist (list)))
@@ -214,13 +212,13 @@ It assosciates each file name to a list of relative file paths"
          ) projectable-project-alist) dependency-alist)
 	)
 
-(defun js-get-require-path-list ()
+(defun get-require-path-list ()
 	"Get the list of current require paths."
 	(let ((a (car (get-require-path-region)))
 				(b (cadr (get-require-path-region))))
 		(mapcar #'chomp (split-string (buffer-substring a b) ",\\s-*\n\\s-*"))))
 
-(defun js-get-class-name-list  ()
+(defun get-class-name-list  ()
 	"Get the list of the mapped class names."
 	(let ((a (car (get-class-name-region)))
 				(b (cadr (get-class-name-region))))
@@ -228,15 +226,15 @@ It assosciates each file name to a list of relative file paths"
 				(mapcar #'chomp (split-string (buffer-substring a b) ",\\s-*"))
 			nil)))
 
-(defun js-get-require-path-region ()
+(defun get-require-path-region ()
 	"Get the region containing the require block."
   (get-region "\\s-*\\[\n\\s-*" "\\s-*\\]"))
 
-(defun js-get-class-name-region ()
+(defun get-class-name-region ()
 	"Get the region containing the list of class names."
   (get-region "function\s-*\(" "\)"))
 
-(defun js-get-region (regex-a regex-b)
+(defun get-region (regex-a regex-b)
 	"Get a region based on starting from REGEX-A to REGEX-B."
 	(goto-char (point-min))
 	(search-forward-regexp "require\\|define")
@@ -258,9 +256,9 @@ It assosciates each file name to a list of relative file paths"
 	"Show a popup with OPTIONS at POPUP-POINT with format F."
 	(format f (if (= 1 (length (cdr options)))
 								(cadr options)
-							(popup-menu* (cdr options) :point popup-point))))
+							(popup-menu* (cdr result) :point popup-point))))
 
-(defun js-indent-require-block ()
+(defun indent-require-block ()
 	"Indent the block containing require paths."
   (interactive)
   (save-excursion
@@ -274,14 +272,6 @@ It assosciates each file name to a list of relative file paths"
 	(goto-char region-start)
 	(delete-region region-start region-end)
 	(insert replacement))
-
-(defun chomp (str)
-	"Chomp leading and tailing whitespace from STR."
-	(replace-regexp-in-string
-	 (rx (or (: bos (* (any " \t\n")))
-					 (: (* (any " \t\n")) eos)))
-	 ""
-	 str))
 
 (defun format-text-in-rectangle (text width)
 	"Wrap a block of TEXT with a maximum WIDTH and indent."
