@@ -1,3 +1,6 @@
 [submodule "elisp/projectable"]
 	path = elisp/projectable
 	url = git@github.com:domtronn/projectable.el.git
+[submodule "elisp/js-dependency-injector"]
+	path = elisp/js-dependency-injector
+	url = git@github.com:domtronn/js-dependency-injector.el.git
