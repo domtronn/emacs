@@ -32,10 +32,11 @@
 
 (global-set-key (kbd "SPC") 'wrap-space-or-space)
 
-(global-set-key (kbd "s->") 'smart-forward)
-(global-set-key (kbd "C-S-f") 'smart-forward)
-(global-set-key (kbd "s-<") 'smart-backward)
-(global-set-key (kbd "C-S-b") 'smart-backward)
+(global-set-key (kbd "s-.") 'smart-forward)
+(global-set-key (kbd "C-.") 'smart-forward)
+
+(global-set-key (kbd "s-,") 'smart-backward)
+(global-set-key (kbd "C-,") 'smart-backward)
 
 (global-set-key (kbd "RET") 'smart-newline)
 ;; (global-set-key (kbd "M-\"") 'add-quotation)
@@ -82,9 +83,6 @@
 (global-set-key [M-right] 'forward-word)
 (global-set-key [M-left] 'backward-word)
 
-;; Navigate parantheses
-(global-set-key (kbd "s-.") 'forward-list)
-(global-set-key (kbd "s-,") 'backward-list)
 (global-set-key [C-tab] 'projectable-ido-find-file)
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
@@ -201,7 +199,6 @@
 (global-set-key (kbd "C-x C-x") 'sticky-window-delete-other-windows)
 (global-set-key (kbd "C-S-x C-x") 'delete-other-windows)
 
-(global-set-key (kbd "C-,") 'rotate-windows)
 (global-set-key (kbd "H-l") (kbd "C-l"))
 
 ;; Duplicate line
