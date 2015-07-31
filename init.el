@@ -157,6 +157,7 @@
 
 (require 'js2-refactor)
 (require 'js2-mode)
+(add-to-list 'load-path (expand-file-name "~/.env/elisp/js-dependency-injector/"))
 (require 'js-dependency-injector)
 
 (defun js-mode-bindings ()
@@ -166,6 +167,8 @@
 
 (add-hook 'js-mode-hook 'js-mode-bindings)
 (add-hook 'js2-mode-hook 'js-mode-bindings)
+
+(add-hook 'js2-mode-hook 'js-injector-minor-mode)
 
 (add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
