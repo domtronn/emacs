@@ -1157,9 +1157,16 @@ or a marker."
 	(interactive)
 	(if (use-region-p)
 			(insert-pair 1 " " " " )
-			(insert " ")
-		)
-	)
+		(insert " ")))
+
+(defun setup-cpp-mode ()
+  (interactive)
+	(let ((cb (get-buffer (buffer-name))))
+		(get-buffer-create "*compilation*")
+		(unless (buffer-exists "*cpp-runner*")
+          (quick-term "cpp-runner"))
+		(switch-to-buffer cb)
+		(wlf:show cpp-layout)))
 
 (defun kill-whitespace ()
 	"Kill the whitespace between two non-whitespace characters"
