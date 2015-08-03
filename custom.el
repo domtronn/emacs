@@ -259,9 +259,6 @@ static char *note[] = {
  '(powerline-color2 "#2e3436" t)
  '(powerline-color-alist '((powerline-color1 0.78) (powerline-color2 0.78)))
  '(powerline-foreground "#eeeeec")
- '(projectable-filter-regexps
-	 (quote
-		("~$" "\\.o$" "\\.exe$" "\\.a$" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\/test.*\\.js$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "Spec\\.js$" "\\/script-tests\\/specs" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "report" "\\.gcov\\.html$" "\\.func.*\\.html$")))
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
  '(scroll-bar-mode nil)
