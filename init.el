@@ -141,8 +141,6 @@
 (require 'projectable)
 (projectable-global-mode)
 
-(require 'grunt)
-
 (require 'visual-regexp)
 (define-key global-map (kbd "C-c r") 'vr/replace)
 (define-key global-map (kbd "C-c q") 'vr/query-replace)
@@ -370,6 +368,8 @@
 	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
 	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
 	(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache))))
+
+(require 'grunt)
 
 (require 'repository-root)
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
