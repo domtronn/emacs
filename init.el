@@ -173,6 +173,8 @@
 (add-hook 'web-mode-hook 'skewer-html-mode)
 
 (define-key c++-mode-map (kbd "M-q") 'er/expand-region)
+(define-key c++-mode-map (kbd "C-c C-p") 'flycheck-previous-error)
+(define-key c++-mode-map (kbd "C-c C-n") 'flycheck-next-error)
 (add-hook 'c++-mode-hook
 					(lambda () (unless (file-exists-p "makefile")
 									(set (make-local-variable 'compile-command)
