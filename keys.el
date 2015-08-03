@@ -218,6 +218,7 @@
 
 (global-set-key (kbd "H-t") 'grunt)
 (global-set-key (kbd "S-s-t") 'grunt)
+(global-set-key (kbd "C-M-g") 'grunt-exec)
 
 ;; Use C-i as my personal prefix command
 (define-prefix-command 'dgc-map)
