@@ -23,12 +23,23 @@
 
 ;;; Code:
 
-(defvar powerline-color1)
-(defvar powerline-color2)
+(defvar powerline-color1 "#383838")
+(defvar powerline-color2 "#666666")
+(defvar powerline-color-alist '(("#383838 0.78") ("#666666" 0.78)))
 
+(defun powerline-light-mode ()
+	"Set the powerline to light mode."
+	(interactive)
+  (setq powerline-color2 "#d7d7d7"
+				powerline-color1 "#bbbbbb"
+				powerline-color-alist '(("#d7d7d7" 0.95) ("#bbbbbb" 0.93))))
 
-(setq powerline-color1 "#383838")
-(setq powerline-color2 "#666666")
+(defun powerline-dark-mode ()
+	"Set the powerline to dark mode."
+  (interactive)
+  (setq powerline-color1 "#383838"
+				powerline-color2 "#666666"
+				powerline-color-alist '(("#383838" 0.78) ("#666666" 0.81))))
 
 (set-face-attribute 'mode-line nil
                     :background "OliveDrab3"
@@ -281,16 +292,13 @@ install the memoized function over the original function."
         cface)
     nil))
 
-(defun darken-by-6 (col)
+(defun darken-by (col &optional m-percent)
 	(unless (eq nil col)
-		(let ((rgb-list (mapcar (lambda (x) (* x 0.78)) (css-color:hex-to-rgb (format "%s" col)))))
+		(let* ((percent (or m-percent (cadr (assoc col powerline-color-alist))))
+					 (color (css-color:hex-to-rgb col))
+					 (rgb-list (mapcar (lambda (x) (* x (or percent 0.78))) color)))
 			(format "#%s"
-							(css-color:rgb-to-hex
-							 (car rgb-list)
-							 (cadr rgb-list)
-							 (caddr rgb-list)
-							 )
-							))))
+							(css-color:rgb-to-hex (car rgb-list) (cadr rgb-list) (caddr rgb-list))))))
 
 (defun powerline-make-left
   (string color1 &optional color2 localmap)
@@ -309,25 +317,12 @@ install the memoized function over the original function."
          (propertize " " 'face plface)
        "")
      (if arrow
-				 ;; (message "%s & %s" color1 color2)
          (propertize " " 'display
-                     (cond ((eq powerline-arrow-shape 'arrow)
-                            (arrow-left-xpm (darken-by-6 color1) (darken-by-6 color2)))
-                           ((eq powerline-arrow-shape 'curve)
-                            (curve-left-xpm (darken-by-6 color1) (darken-by-6 color2)))
-                           ((eq powerline-arrow-shape 'half)
-                            (half-xpm (darken-by-6 color2) (darken-by-6 color1)))
-                           (t
-                            (arrow-left-xpm (darken-by-6 color1) (darken-by-6 color2))))
+										 (arrow-left-xpm (darken-by color1) (darken-by color2))
                      'local-map (make-mode-line-mouse-map
                                  'mouse-1 (lambda () (interactive)
-                                            (setq powerline-arrow-shape
-                                                  (cond ((eq powerline-arrow-shape 'arrow) 'curve)
-                                                        ((eq powerline-arrow-shape 'curve) 'half)
-                                                        ((eq powerline-arrow-shape 'half)  'arrow)
-                                                        (t                                 'arrow)))
-                                            (redraw-modeline))))
-       ""))))
+                                            (setq powerline-arrow-shape 'arrow)
+                                            (force-mode-line-update)))) ""))))
 
 (defun powerline-make-right
   (string color2 &optional color1 localmap)
@@ -335,23 +330,12 @@ install the memoized function over the original function."
         (arrow  (and color1 (not (string= color1 color2)))))
     (concat
      (if arrow
-       (propertize " " 'display
-                   (cond ((eq powerline-arrow-shape 'arrow)
-                          (arrow-right-xpm (darken-by-6 color1) (darken-by-6 color2)))
-                         ((eq powerline-arrow-shape 'curve)
-                          (curve-right-xpm (darken-by-6 color1) (darken-by-6 color2)))
-                         ((eq powerline-arrow-shape 'half)
-                          (half-xpm (darken-by-6 color2) (darken-by-6 color1)))
-                         (t
-                          (arrow-right-xpm color1 color2)))
+				 (propertize " " 'display
+										 (arrow-right-xpm (darken-by color1) (darken-by color2))
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive)
-                                          (setq powerline-arrow-shape
-                                                (cond ((eq powerline-arrow-shape 'arrow) 'curve)
-                                                      ((eq powerline-arrow-shape 'curve) 'half)
-                                                      ((eq powerline-arrow-shape 'half)  'arrow)
-                                                      (t                                 'arrow)))
-                                          (redraw-modeline))))
+                                          (setq powerline-arrow-shape 'arrow)
+                                          (force-mode-line-update))))
        "")
      (if arrow
          (propertize " " 'face plface)
