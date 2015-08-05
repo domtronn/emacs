@@ -137,8 +137,7 @@
 ;; (rvm-use "ruby-2.1.2" "global")
 
 (require 'filecache)
-(add-to-list 'load-path (expand-file-name "~/.env/elisp/projectable/"))
-(require 'projectable)
+(require 'projectable (expand-file-name (concat base-path "elisp/projectable/projectable.el")))
 (projectable-global-mode)
 
 (require 'visual-regexp)
@@ -155,8 +154,8 @@
 
 (require 'js2-refactor)
 (require 'js2-mode)
-(add-to-list 'load-path (expand-file-name "~/.env/elisp/js-dependency-injector/"))
-(require 'js-dependency-injector)
+(require 'js-dependency-injector
+ (expand-file-name (concat base-path "elisp/js-dependency-injector/js-dependency-injector.el")))
 
 (defun js-mode-bindings ()
 	"Set a hotkey for using the json-snatcher plugin."
