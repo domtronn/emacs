@@ -229,12 +229,7 @@
 
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
-(setq exec-path
-			'(
-				"/usr/local/bin"
-				"/usr/bin"
-				"/bin"
-				))
+(setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml" . web-mode))
@@ -370,7 +365,7 @@
 	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
 	(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache))))
 
-(require 'grunt)
+(require 'grunt "~/code/grunt.el/grunt.el")
 
 (require 'repository-root)
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
