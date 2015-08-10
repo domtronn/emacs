@@ -55,5 +55,9 @@
 	"Disable all currently loaded themes."
   (disable-all-themes))
 
+(defadvice load-theme (after update-powerline-after activate)
+	"Update powerline colours after changing theme."
+	(update-powerline))
+
 (provide 'advice)
 ;;; advice.el ends here
