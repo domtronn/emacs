@@ -25,21 +25,23 @@
 
 (defvar powerline-color1 "#383838")
 (defvar powerline-color2 "#666666")
+(defvar powerline-fg "#bababa")
 (defvar powerline-color-alist '(("#383838 0.78") ("#666666" 0.78)))
 
-(defun powerline-light-mode ()
-	"Set the powerline to light mode."
-	(interactive)
-  (setq powerline-color2 "#d7d7d7"
-				powerline-color1 "#bbbbbb"
-				powerline-color-alist '(("#d7d7d7" 0.95) ("#bbbbbb" 0.93))))
+(defvar theme-powerline-color-alist
+	'((whiteboard (("#bbbbbb" 0.93) ("#d7d7d7" 0.95) "#2a2a2a"))
+		(gotham (("#10272D" 0.78) ("#081E26" 0.78) "#357C91"))))
 
-(defun powerline-dark-mode ()
-	"Set the powerline to dark mode."
-  (interactive)
-  (setq powerline-color1 "#383838"
-				powerline-color2 "#666666"
-				powerline-color-alist '(("#383838" 0.78) ("#666666" 0.81))))
+(defun update-powerline ()
+	"Update the extra powerline colours based on a mapping to theme."
+  (let* ((theme (car custom-enabled-themes))
+				 (alist (cadr (assoc theme theme-powerline-color-alist))))
+		(when alist
+			(message "Updating powerline colours")
+			(setq powerline-color1 (caar alist)
+						powerline-color2 (caadr alist)
+						powerline-fg (caddr alist)
+						powerline-color-alist alist))))
 
 (set-face-attribute 'mode-line nil
                     :background "OliveDrab3"
@@ -286,7 +288,7 @@ install the memoized function over the original function."
                                   :background bg
                                   :box nil))
           (set-face-attribute cface nil
-                            :foreground "white"
+                            :foreground powerline-fg
                             :background bg
                             :box nil))
         cface)
@@ -509,8 +511,7 @@ install the memoized function over the original function."
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
                              (powerline-time		       'right  nil  powerline-color1  )
-                             (eyebrowse-mode-line-indicator)
-                             (powerline-make-text      "  "    nil  )))))
+                            ))))
 
 
 
