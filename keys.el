@@ -126,7 +126,7 @@
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
-(global-set-key [f1] 'neotree)
+(global-set-key [f1] 'neotree-toggle)
 (global-set-key (kbd "<S-f1>") '(lambda () (interactive) (call-interactively 'neotree-find)))
 (global-set-key [f2] 'ag-project-at-point)
 (global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
