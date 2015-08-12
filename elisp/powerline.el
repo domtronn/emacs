@@ -486,6 +486,12 @@ install the memoized function over the original function."
 
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
+(defpowerline battery 
+	(propertize  (format "%s"
+											 (with-temp-buffer
+												 (insert battery-mode-line-string)
+												 (replace-regexp-in-buffer "%" "%%")
+												 (buffer-string))) 'face (powerline-make-face color1)))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -514,7 +520,7 @@ install the memoized function over the original function."
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
                              (powerline-time		       'right  nil  powerline-color1  )
-                            ))))
+														 (powerline-battery	       'center  powerline-color2  )))))
 
 
 
