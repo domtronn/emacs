@@ -443,7 +443,6 @@
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)
 (setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
-(display-battery-mode)
 
 ;; sort ido filelist by mtime instead of alphabetically
 (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)

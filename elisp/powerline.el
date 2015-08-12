@@ -486,8 +486,6 @@ install the memoized function over the original function."
 
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
-(defpowerline battery (propertize (format "[%s%%%%]" (cdadr (funcall battery-status-function)))
-																	'face (powerline-make-face color1)))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -515,8 +513,7 @@ install the memoized function over the original function."
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
-                             (powerline-time		       'right  nil  powerline-color1  )
-														 (powerline-battery	       'right  nil  )))))
+                             (powerline-time		       'right  nil  powerline-color1  )))))
 
 
 
