@@ -30,18 +30,21 @@
 
 (defvar theme-powerline-color-alist
 	'((whiteboard (("#bbbbbb" 0.93) ("#d7d7d7" 0.95) "#2a2a2a"))
-		(gotham (("#10272D" 0.78) ("#081E26" 0.78) "#357C91"))))
+		(gotham (("#10272D" 0.78) ("#081E26" 0.78) "#357C91"))
+    (ujelly (("#000000" 0.78) ("#000000" 0.78) "#ffffff"))
+		(moe-light (("#CCCCB7" 0.95) ("#EDEDD3" 0.98) "#3F3F38"))
+		(aurora (("#455a64" 0.78) ("#2B3B40" 0.77) "#FFEB95"))))
 
 (defun update-powerline ()
 	"Update the extra powerline colours based on a mapping to theme."
   (let* ((theme (car custom-enabled-themes))
 				 (alist (cadr (assoc theme theme-powerline-color-alist))))
-		(when alist
-			(message "Updating powerline colours")
-			(setq powerline-color1 (caar alist)
-						powerline-color2 (caadr alist)
-						powerline-fg (caddr alist)
-						powerline-color-alist alist))))
+		(if alist
+        (setq powerline-color1 (caar alist)
+              powerline-color2 (caadr alist)
+              powerline-fg (caddr alist)
+              powerline-color-alist alist)
+      (setq powerline-fg "white"))))
 
 (set-face-attribute 'mode-line nil
                     :background "OliveDrab3"
