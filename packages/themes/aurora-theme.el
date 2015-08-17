@@ -107,7 +107,7 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(menu ((t (:foreground ,aurora-fg :background ,aurora-bg))))
    `(minibuffer-prompt ((t (:foreground ,aurora-yellow))))
    `(mode-line
-     ((,class (:foreground ,aurora-cyan
+     ((,class (:foreground ,aurora-yellow
                            :background ,aurora-bg-1))
       (t :inverse-video t)))
    `(mode-line-buffer-id ((t (:foreground ,aurora-yellow :weight bold))))
