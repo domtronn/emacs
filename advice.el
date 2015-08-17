@@ -59,5 +59,13 @@
 	"Update powerline colours after changing theme."
 	(update-powerline))
 
+(defadvice pop-tag-mark (after recenter activate)
+  "Recenters after moving to a tag."
+  (recenter))
+
+(defadvice etags-select-find-tag-at-point (after recenter activate)
+  "Recenters after moving to a tag."
+  (recenter))
+
 (provide 'advice)
 ;;; advice.el ends here
