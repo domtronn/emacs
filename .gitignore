@@ -30,6 +30,7 @@ xkcd
 *url*
 *.yas-compiled-*el
 *tutorial*
+*flycheck_init.el*
 
 # Compiled source #
 ###################

@@ -366,7 +366,7 @@
 	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
 	(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache))))
 
-(require 'grunt "~/code/grunt.el/grunt.el")
+(require 'grunt "~/code/grunt-el/grunt.el")
 
 (require 'repository-root)
 (add-to-list 'repository-root-matchers repository-root-matcher/svn)
