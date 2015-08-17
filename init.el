@@ -381,6 +381,8 @@
 (setq ediff-keep-variants nil)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
 (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
