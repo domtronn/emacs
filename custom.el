@@ -46,6 +46,8 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(eimp-mogrify-program "mogrify")
+ '(eshell-directory-name
+   (format "%s/%s/eshell" common-load-dir common-package-dir))
  '(emms-cache-file
    (format "%s/%s/emms/cache" common-load-dir common-package-dir))
  '(emms-mode-line-format " %s ")
