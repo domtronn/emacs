@@ -60,24 +60,6 @@
                 (delete-other-windows)))))
     nil))
 
-(defun grunt-spec ()
-  "Run grunt"
-  (interactive)
-  (if (buffer-exists "*grunt*")
-      (kill-buffer "*grunt*"))
-  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-         (result (call-process-shell-command
-                  (concat "grunt spec --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t)))))
-
-(defun post-declare-var ()
-  (interactive)
-  (let ((var-name (thing-at-point 'word)))
-    (save-excursion
-      (search-backward "var")
-      (search-forward ";")
-      (goto-char (- (point) 1))
-      (insert (concat ", " var-name)))))
-
 (defun get-last-spy ()
   (interactive)
   (save-excursion
@@ -95,17 +77,13 @@
                 "hooey" "mumbo" "jumbo" "borogrove" "bandersnatch"
                 "snicker" "snack" "zorp" "fam" "tootle" "toot" "root"
                 "muggle" "hokey" "cokey" "jiggery-pokery" "gazoo"
-							  "fiddlededee" "fiddle" "dedee" "blether" "doo" "ga"
-								"claptrap" "fadoodle" "fa" "ranny" "zoo" "fa" "foo"
-								"slip" "slop" "skittles" "tara" "taradiddle" "foodadoo"
-								"thinga" "majiga" "thingamajiga" "ma" "jiga" "twaddle"
-								)) 
+                "fiddlededee" "fiddle" "dedee" "blether" "doo" "ga"
+                "claptrap" "fadoodle" "fa" "ranny" "zoo" "fa" "foo"
+                "slip" "slop" "skittles" "tara" "taradiddle" "foodadoo"
+                "thinga" "majiga" "thingamajiga" "ma" "jiga" "twaddle"
+                ))
   (random t)
   (nth (random (length words)) words))
-
-(defun browse-sandbox ()
-  (interactive)
-  (browse-url "http://pal.sandbox.dev.bbc.co.uk/sprtiptvjs/?brand=chrome&model=20_0&config=beta"))
 
 (defun js-hlt-nonused-dependencies ()
   "Will highlght the parts of the function include that are not used in the class"
@@ -144,43 +122,43 @@
 
 (defun my-malabar-jump-to-thing ()
   (interactive)
-	(ring-insert find-tag-marker-ring (point-marker))
+  (ring-insert find-tag-marker-ring (point-marker))
   (malabar-jump-to-thing (point)))
 
 (defun malabar-start-find-parent ()
-	"Tries to find the most appropriate parents of a java class"
-	(interactive)
-	(malabar-find-parent '("implements" "extends")))
+  "Tries to find the most appropriate parents of a java class"
+  (interactive)
+  (malabar-find-parent '("implements" "extends")))
 
 (defun malabar-find-parent (types)
-	"Takes a list of types and recurses through finding the classes"
-	(if types
-			(save-excursion
-				(beginning-of-buffer)
-				(search-forward-regexp (concat (car types) "\\s-*\\([a-z]+\\)") nil t)
-				(if (match-string 1)
-						(malabar-jump-to-thing (- (point) 1))
-					(malabar-find-parent (cdr types))))
-	(message "Could not find parent to go to" )))
+  "Takes a list of types and recurses through finding the classes"
+  (if types
+      (save-excursion
+        (beginning-of-buffer)
+        (search-forward-regexp (concat (car types) "\\s-*\\([a-z]+\\)") nil t)
+        (if (match-string 1)
+            (malabar-jump-to-thing (- (point) 1))
+          (malabar-find-parent (cdr types))))
+  (message "Could not find parent to go to" )))
 
 (defun malabar-find-implementations ()
   "Finds implementations of a java interface"
   (interactive )
   (save-excursion
-		(beginning-of-buffer)
-		(search-forward-regexp "interface\\s-*\\([a-z]+\\)" nil t)
-		(let ((match-string (match-string 1))
-					(match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
-			(if match-string
-					(progn (ring-insert find-tag-marker-ring (point-marker))
-								 (pop-ack-and-a-half (concat "implements " match-string) match-type (repository-root) (current-buffer) t "--output=\" \""))
-				(message "Class is not an interface")))))
+    (beginning-of-buffer)
+    (search-forward-regexp "interface\\s-*\\([a-z]+\\)" nil t)
+    (let ((match-string (match-string 1))
+          (match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
+      (if match-string
+          (progn (ring-insert find-tag-marker-ring (point-marker))
+                 (pop-ack-and-a-half (concat "implements " match-string) match-type (repository-root) (current-buffer) t "--output=\" \""))
+        (message "Class is not an interface")))))
 
 (defun go-to-class ()
   "Find and go to the class at point"
   (interactive)
   (let ((class-name (thing-at-point 'symbol)))
-		(ring-insert find-tag-marker-ring (point-marker))
+    (ring-insert find-tag-marker-ring (point-marker))
     (save-excursion
       (beginning-of-buffer)
       (let ((start (search-forward-regexp "function\\s-*("))
@@ -189,8 +167,8 @@
         (if (search-forward class-name end t)
             (mapcar #'(lambda (lib-alist)
                          (let* ((id (car lib-alist))
-																(file-alist (cdr lib-alist))
-																(record (assoc (concat (downcase class-name) ".js") file-alist)))
+                                (file-alist (cdr lib-alist))
+                                (record (assoc (concat (downcase class-name) ".js") file-alist)))
                            (if (and record (= (length record) 2))
                                (let ((found-file (concat (car (cdr record)) (car record))))
                                  (message "Found %s" found-file)
@@ -221,7 +199,7 @@
                             (message "Couldn't find a cached file for %s..." file))))
                     projectable-project-alist)
           nil)))))
-  
+
 (defun go-to-thing-at-point ()
   "Go to the thing at point assuming if it's not a class or function it's a variable."
   (interactive)
@@ -242,14 +220,9 @@
                     (search-forward thing)
                     (backward-word))))))))
 
-(defun close-and-pop-buffer (oldbuffer buffer)
-  (switch-to-buffer oldbuffer)
-  (popwin:popup-buffer buffer))
-
-(defun occur-at-point ()
-  "Run occur on a thing."
-  (interactive)
-  (occur (thing-at-point 'symbol)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Opening Files in other applications ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun open-in-and-activate-intellj ()
   "Opens the current file in intellij for n00b5!"
@@ -275,13 +248,13 @@
           ((string-equal type "Finder")
            (open-in-finder)))))
 
-(defun buffer-mode (buffer-or-string)
-  "Return the major mode associated with a buffer."
-  (with-current-buffer buffer-or-string
+(defun buffer-mode (buf)
+  "Return the major mode associated with BUF."
+  (with-current-buffer buf
     major-mode))
 
-(defun my-isearch-yank-word-or-char-from-beginning ()
-  "Move to beginning of word before yanking word in isearch-mode."
+(defun isearch-yank-from-start ()
+  "Move to beginning of word before yanking word in `isearch-mode`."
   (interactive)
   ;; Making this work after a search string is entered by user
   ;; is too hard to do, so work only when search string is empty.
@@ -289,23 +262,22 @@
       (beginning-of-thing 'word))
   (isearch-yank-word-or-char)
   ;; Revert to 'isearch-yank-word-or-char for subsequent calls
-  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning
+  (substitute-key-definition 'isearch-yank-from-start
                              'isearch-yank-word-or-char
                              isearch-mode-map))
 
-(add-hook 'isearch-mode-hook
-          (lambda ()
-            "Activate my customized Isearch word yank command."
-            (substitute-key-definition 'isearch-yank-word-or-char
-                                       'my-isearch-yank-word-or-char-from-beginning
-                                       isearch-mode-map)))
+(add-hook 'isearch-mode-hook (lambda ()
+  "Activate my customized Isearch word yank command."
+  (substitute-key-definition 'isearch-yank-word-or-char
+                             'isearch-yank-from-start
+                             isearch-mode-map)))
 
 (defun my-vc-dir ()
-  "calls vc-dir on the appropriate project"
+  "Call `vc-dir` on the appropriate project."
   (interactive)
-	(let ((repo-root (repository-root)))
-		(if (repository-root-match repository-root-matcher/git repo-root repo-root)
-				(magit-status)
+  (let ((repo-root (repository-root)))
+    (if (repository-root-match repository-root-matcher/git repo-root repo-root)
+        (magit-status)
         (vc-dir repo-root))))
 
 (defun alt-run-current-file ()
@@ -313,9 +285,9 @@
   (let* ((fSuffix (file-name-extension (buffer-file-name))))
     (cond ((string-equal fSuffix "js")
            (grunt-spec))
-					((string-equal fSuffix "java")
+          ((string-equal fSuffix "java")
            (set-up-test-watch 30 (format " -Dtest=%s"
-																				 (file-name-sans-extension (file-name-base (buffer-file-name))))))
+                                         (file-name-sans-extension (file-name-base (buffer-file-name))))))
           ((string-equal (buffer-mode (buffer-name)) "latex-mode")
            (xelatex-make)))))
 
@@ -352,13 +324,13 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
          (progName (cdr (assoc fSuffix suffixMap)))
          (cmdStr (cond ((string-equal (buffer-mode (buffer-name)) "c++-mode")
                         (concat progName " \""  (file-name-sans-extension fName) "\"; " (file-name-sans-extension fName)))
-											 ((string-equal (buffer-mode (buffer-name)) "rust-mode")
+                       ((string-equal (buffer-mode (buffer-name)) "rust-mode")
                         (concat progName " "  fName "; " (file-name-sans-extension fName) "; rm " (file-name-sans-extension fName)))
                        (t (concat progName " \"" fName "\""))
                        )))
 
-		(message cmdStr)
-		
+    (message cmdStr)
+
     (when (buffer-modified-p)
       (when (y-or-n-p "Buffer modified. Do you want to save first?")
         (save-buffer) ) )
@@ -369,7 +341,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
            (find-file (concat (file-name-sans-extension fName) ".pdf")))
           ((string-equal fSuffix "js")
            (grunt-exec))
-					((string-equal fSuffix "java")
+          ((string-equal fSuffix "java")
            (malabar-run-junit-test))
           (t (if progName
                  (progn
@@ -379,166 +351,22 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
                (message "No recognized program file suffix for this file.")
                )))))
 
-(defun set-up-ack-results ()
-  "Opens a pop up for rgrep results"
-  (interactive )
-	(let ((match-string (thing-at-point 'symbol))
-				(match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
-		(pop-ack-and-a-half match-string (repository-root) (current-buffer) t)))
-
-(defun set-up-ack-results-with-prompt (search-string)
-  "Opens a pop up for rgrep results with a search string"
-  (interactive "sEnter search string : ")
-	(pop-ack-and-a-half search-string (repository-root) (current-buffer) t))
-
 (defun pop-ack-and-a-half (search-string match-dir current-buf &optional pop args)
-	(save-excursion
-		(message search-string)
-		(ack-and-a-half search-string t match-dir)
-		(if pop
-				(progn (sticky-window-delete-other-windows)
-							 (switch-to-buffer current-buf)
-							 (popwin:popup-buffer "*Ack-and-a-half*")
-							 (if (not (print truncate-lines))
-									 (toggle-truncate-lines)))
-			(progn (rotate-windows))
-		)))
-
-(defun create-tags (dir-name)
-  "Create tags file."
-  (let* ((cmd (format "find %s -type f | grep -E \"\\\.groovy$|\\\.rb$|\\\.scala$|\\\.js$|\\\.java$\" | grep -vE \"\\\.min\\\.js$|\\\\/node_modules\\\\/|\\\\/build\\\\/|\\\\/bdd-api\\\\/|\\\\/test\\\\/|\\\\/script-tests\\\\/|\\\\/docs\\\\/\" | xargs ctags -f %s/.tags -e" dir-name dir-name))
-				 (name (format "Creating tags for \"%s\"" dir-name))
-				 (buffer-name "*create-tags*"))
-    (start-process-shell-command name buffer-name cmd)))
-
-(defun create-tags-for-project ()
-  "Creates tags files in the base of each project module in PROJECTPATH"
-  (interactive)
-  (mapc 'create-tags (split-string (shell-command-to-string (concat "cat " PROJECTPATH)) "\n" t)))
-
-(defun go-to-emms-playlist ()
-  (interactive)
-	(if (not (eq nil (buffer-exists " *EMMS Playlist*")))
-			(progn 
-				(if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
-						(delete-window))
-				(if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
-						(delete-window)
-					(if (buffer-exists " *EMMS Playlist*")
-							(progn
-								(delete-other-windows)
-								(split-window-horizontally)
-								(enlarge-window-horizontally 50)
-								(switch-to-buffer " *EMMS Playlist*")
-								(rotate-windows)
-								(other-window 1)
-								(set-window-dedicated-p (get-buffer-window) t)
-								(setq window-size-fixed t)))))))
-
-(defun get-lyrics-and-display ()
-  (interactive)
-  (let ((prev-buffer-name (buffer-name (current-buffer))))
-    (if (or (string-match "Browsing by:" (buffer-name (current-buffer)))
-            (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*"))
-        (progn
-          (delete-window)
-          (setq prev-buffer-name (buffer-name (current-buffer)))))
-    (other-window 1)
-    (if (not (eq nil (string-match "Lyrics:" (buffer-name (current-buffer)))))
-        (progn
-          (other-window 1)
-          (delete-other-windows))
-			(if emms-player-playing-p
-					(progn
-						(delete-other-windows)
-						(emms-get-lyrics-current-song)
-            (if (string-match "Lyrics" (buffer-name (current-buffer)))
-              (progn
-                (switch-to-buffer prev-buffer-name)
-                (split-window-horizontally)
-                (enlarge-window-horizontally 50)
-                (other-window 1)
-                (emms-get-lyrics-current-song)
-                (set-window-dedicated-p (get-buffer-window) t)
-                (setq window-size-fixed t)
-                (other-window 1))
-              (progn
-                (message "EMMS could not find lyrics")
-                (switch-to-buffer prev-buffer-name))))
-        (message "EMMS is currently not playing.")))))
-
-(defun go-to-emms-browser ()
-  (interactive)
-  (let ((prev-buffer-name (buffer-name (current-buffer))))
-    (if (not (eq nil (buffer-exists " *EMMS Playlist*")))
-        (progn
-          (if (string-equal (buffer-name (current-buffer)) " *EMMS Playlist*")
-              (delete-window))
-          (if (not (eq nil (string-match "Browsing by:" (buffer-name (current-buffer)))))
-              (delete-window)
-            (progn
-              (if (buffer-exists "Browsing by: artist")
-                  (switch-to-buffer "Browsing by: artist"))
-              (if (buffer-exists "Browsing by: album")
-                  (switch-to-buffer "Browsing by: album"))
-              (if (buffer-exists "Browsing by: genre")
-                  (switch-to-buffer "Browsing by: genre"))
-              (if (or (string-equal prev-buffer-name (buffer-name (current-buffer)))
-                      (string-equal "*Messages*" (buffer-name (current-buffer))))
-                  (message "EMMS is currently not configured")
-                (progn (switch-to-buffer prev-buffer-name)
-                       (delete-other-windows)
-                       (split-window-horizontally)
-                       (enlarge-window-horizontally 50)
-                       (other-window 1)
-                       (if (buffer-exists "Browsing by: artist")
-                           (switch-to-buffer "Browsing by: artist"))
-                       (if (buffer-exists "Browsing by: album")
-                           (switch-to-buffer "Browsing by: album"))
-                       (if (buffer-exists "Browsing by: genre")
-                           (switch-to-buffer "Browsing by: genre"))
-                       (set-window-dedicated-p (get-buffer-window) t)
-                       (setq window-size-fixed t)))))))))
-
-(defun set-up-test-watch (&optional user-size extra-cmd)
-  "Sets the display ready for grunt watching"
-  (interactive)
   (save-excursion
-    (let ((size 50))
-      (progn
-				(if user-size (setq size (- size user-size)))
-        (delete-other-windows)
-        (split-window-horizontally)
-        (enlarge-window-horizontally size)
-        (other-window 1)
-        (visit-ansi-term "ansi-term")
-        (if project-test-cmd
-						(if extra-cmd
-								(auto-type-string (concat project-test-cmd extra-cmd))
-							(auto-type-string project-test-cmd)))
-        (set-window-dedicated-p (get-buffer-window) t)
-        (setq window-size-fixed t)
-        (other-window 1)))))
+    (message search-string)
+    (ack-and-a-half search-string t match-dir)
+    (if pop
+        (progn (sticky-window-delete-other-windows)
+               (switch-to-buffer current-buf)
+               (popwin:popup-buffer "*Ack-and-a-half*")
+               (if (not (print truncate-lines))
+                   (toggle-truncate-lines)))
+      (progn (rotate-windows))
+    )))
 
 (defun quick-term (name)
   (interactive "sEnter terminal name : ")
   (ansi-term "/bin/bash" name))
-
-(defun set-up-term-and-run (name size cmd)
-	"Sets up an ansi terminal named name and then runs cmd"
-	  (save-excursion
-    (let (running (buffer-exists name))
-      (progn
-        (delete-other-windows)
-        (split-window-horizontally)
-        (enlarge-window-horizontally (- 50 size))
-        (other-window 1)
-        (visit-ansi-term name)
-				(auto-type-string cmd)
-        (set-window-dedicated-p (get-buffer-window) t)
-        (setq window-size-fixed t)
-        (other-window 1)))))
-  
 
 (defun visit-ansi-term (name)
   "If the current buffer is:
@@ -547,148 +375,77 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
      3) a non ansi-term, go to an already running ansi-term
         or start a new one while killing a defunt one"
   (interactive)
-	(let ((proc-buffer-name (concat "*" name "*")))
-		(let ((is-term (string= "term-mode" major-mode))
-					(is-running (term-check-proc proc-buffer-name))
-					(term-cmd "/bin/bash")
-					(anon-term (get-buffer proc-buffer-name)))
-			(if is-term
-					(if is-running
-							(if (string= name (buffer-name))
-									(call-interactively 'rename-buffer)
-								(if anon-term
-										(switch-to-buffer name)
-									(ansi-term term-cmd name)))
-						(kill-buffer (buffer-name))
-						(ansi-term term-cmd name))
-				(if anon-term
-						(if (term-check-proc proc-buffer-name)
-								(switch-to-buffer proc-buffer-name)
-							(kill-buffer proc-buffer-name)
-							(ansi-term term-cmd name))
-					(ansi-term term-cmd name))))))
+  (let ((proc-buffer-name (concat "*" name "*")))
+    (let ((is-term (string= "term-mode" major-mode))
+          (is-running (term-check-proc proc-buffer-name))
+          (term-cmd "/bin/bash")
+          (anon-term (get-buffer proc-buffer-name)))
+      (if is-term
+          (if is-running
+              (if (string= name (buffer-name))
+                  (call-interactively 'rename-buffer)
+                (if anon-term
+                    (switch-to-buffer name)
+                  (ansi-term term-cmd name)))
+            (kill-buffer (buffer-name))
+            (ansi-term term-cmd name))
+        (if anon-term
+            (if (term-check-proc proc-buffer-name)
+                (switch-to-buffer proc-buffer-name)
+              (kill-buffer proc-buffer-name)
+              (ansi-term term-cmd name))
+          (ansi-term term-cmd name))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom utilities for using multiple cursors ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun mark-word-at-point ()
-  "Marks the current word at point"
+  "Mark the current word at point."
   (interactive)
   (progn
     (mark-word)
     (backward-word)))
 
 (defun mc/malt ()
+  "Shortcut for `mc/mark-all-symbols-like-this`."
   (interactive)
   (mc/mark-all-symbols-like-this))
 
 (defun malt ()
-  "Uses mc/mark-all-like-this at point"
+  "Call `mc/mark-all-like-this` on word at point."
   (interactive)
   (progn
     (mark-word-at-point)
     (mc/mark-all-symbols-like-this)))
 
 (defun mc/dalt ()
+  "Shortcut for `mc/mark-all-symbols-like-this-in-defun`."
   (interactive)
   (mc/mark-all-symbols-like-this-in-defun))
 
 (defun dalt ()
-  "Uses mc/mark-all-like-this-in-defun at point"
+  "Call `mc/mark-all-like-this-in-defun` on word at point."
   (interactive)
   (progn
     (mark-word-at-point)
     (mc/mark-all-symbols-like-this-in-defun)))
 
-;; ============================================================================
-(defun domtronn-timestamp ()
-  "Insert history entry"
-  (interactive)
-  (insert (format-time-string "%d-%b-%Y")))
-
-;; ============================================================================
-(defun domtronn-sign ()
-  "Insert my name and data"
-  (interactive)
-  (insert "-- Dom Charlesworth (dgc336@gmail.com)\n   ")
-  (domtronn-timestamp))
-
 (defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
-
-(defun go-to-calendar ()
-  "Goes to the *grep* buffer and runs the rgrep command"
-  (interactive)
-  (progn
-    (if (not (eq (buffer-name (current-buffer)) (buffer-name (get-buffer "*Calendar*"))))
-        (switch-to-buffer-other-frame (get-buffer "*Calendar*")))
-    (calendar)))
-
-(defun go-to-agenda ()
-  "Goes to the *grep* buffer and runs the rgrep command"
-  (interactive)
-  (if (buffer-exists "*Org Agenda*")
-      (switch-to-buffer (get-buffer "*Org Agenda*"))
-    (org-agenda-list)))
-
-;; ============================================================================
-(defun domtronn-sign-professional ()
-  "Insert my name and data"
-  (interactive)
-  (insert "-- Dominic Charlesworth (Dominic.Charlesworth@bbc.co.uk)\n   ")
-  (domtronn-timestamp))
 
 ;; ============================================================================
 (defun dgc-scroll-up-in-place (x)
-  "Scroll (up) one line in the file maintaining cursor position in window"
+  "Scroll (up) X lines in the file maintaining cursor position in window."
   (interactive)
   (scroll-up x)
   (next-line x))
 
 ;; ============================================================================
 (defun dgc-scroll-down-in-place (x)
-  "Scroll down one line in the file maintaining cursor position in window"
+  "Scroll down X lines in the file maintaining cursor position in window."
   (interactive)
   (scroll-down x)
   (previous-line x))
-
-;; ============================================================================
-(defun dgc-forward-word ()
-  "Move one word forward. Leave the pointer at start of word"
-  (interactive)
-  (forward-char 1)
-  (backward-word 1)
-  (forward-word 2)
-  (backward-word 1)
-  (backward-char 1)
-  (cond ((looking-at "_") (forward-char 1) (dgc-forward-word))
-        (t (forward-char 1))))
-
-;; ============================================================================
-(defun dgc-forward-word-2 ()
-  "Move one word forward. Leave the pointer at end of word"
-  (interactive)
-  (forward-word 1))
-
-;; ============================================================================
-(defun dgc-backward-word ()
-  "Move one word backward. Leave the pointer at start of word"
-  (interactive)
-  (backward-word 1)
-  (backward-char 1)
-  (cond ((looking-at "_") (dgc-backward-word))
-        (t (forward-char 1))))
-
-;; ============================================================================
-(defun dgc-backward-word-2 ()
-  "Move one word backward. Leave the pointer at end of word"
-  (interactive)
-  (backward-word 2)
-  (forward-word 1))
-
-;; ============================================================================
-(defun dgc-indent-buffer ()
-  "indents whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
 
 ;; ============================================================================
 (defun dgc-comment ()
@@ -780,8 +537,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   ;; process ID
   (interactive)
   (random t)
-  (message "%s" (format "#%06x" (random #xffffff)))
-  )
+  (message "%s" (format "#%06x" (random #xffffff))))
 
 ;; ============================================================================
 (defun ahahah ()
@@ -790,8 +546,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
   (random t)
   (setq clr (nth (random (length (defined-colors))) (defined-colors)))
   (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
-                            'face
-                            `(:foreground ,clr))))
+                            'face `(:foreground ,clr))))
 
 (defun ido-sort-mtime ()
   (setq ido-temp-list
@@ -842,9 +597,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
         (progn
           (setq ret nil)
           (find-top-level-dir parent find-dir))
-      (setq ret dir))
-    )
-  ret)
+      (setq ret dir))) ret)
 
 (defun format-member-vars (var-list &optional UNDERSCORES)
   (interactive)
@@ -905,8 +658,8 @@ or nil if not found."
                        ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
                        (t (find-file-r (directory-file-name parent))))))) ; Continue
     (find-file-r (if starting-path
-										 starting-path
-									 default-directory))))
+                     starting-path
+                   default-directory))))
 
 (defun clear-tags-table ()
   "Resets lists of tags files and deletes associated tags buffers"
@@ -963,134 +716,49 @@ otherwise raises an error."
   (interactive)
   (setq tags-table-list (cons (jds-find-tags-file) tags-table-list)))
 
-(defun open-test ()
-  "replace name "
-  (interactive)
-  (let ((file-ext (file-name-extension (buffer-file-name)))
-				(src-path (concat "/" project-src-path "/"))
-				(test-path (concat "/" project-test-path "/")))
-    (if (string-match project-test-path (file-truename ( buffer-file-name )))
-        (find-file (replace-regexp-in-string test-path src-path
-                                             (replace-regexp-in-string (concat project-test-ext "\\\." file-ext) (concat "\." file-ext) (buffer-file-name))))
-      (find-file
-       (replace-regexp-in-string src-path test-path
-                                 (replace-regexp-in-string (concat "\\\." file-ext) (concat project-test-ext "\." file-ext) (buffer-file-name)))))))
-
-(defun grunt ()
-  "Run grunt"
-  (if (buffer-exists "*grunt*")
-      (kill-buffer "*grunt*"))
-  (interactive)
-  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-         (result (call-process-shell-command (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (buffer-name)) nil grunt-buffer t))
-         (output (with-current-buffer grunt-buffer (buffer-string))))
-    (cond ((zerop result)
-           (message "Grunt completed without errors"))
-          (t
-           (message nil)
-           (delete-windows-on "*grunt*")
-           (popwin:popup-buffer "*grunt*")))))
-
-(defun grunt-this-test-file ()
-  "Run grunt"
-  (interactive)
-  (if (buffer-exists "*grunt*")
-      (kill-buffer "*grunt*"))
-  (let* ((grunt-buffer (get-buffer-create "*grunt*"))
-         (result (call-process-shell-command
-                  (concat "grunt test --no-color --config=" (find-file-upwards "gruntfile.js") " --filter=" (file-name-sans-extension (buffer-name)))
-                  nil grunt-buffer t))
-         (output (with-current-buffer grunt-buffer (buffer-string))))
-    (cond ((zerop result)
-           (message "Grunt completed without errors"))
-          (t
-           (message nil)
-           (delete-windows-on "*grunt*")
-           (popwin:popup-buffer "*grunt*")))))
-
-(defun json-format ()
-  (interactive)
-  (save-excursion
-    (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
-
-(defun format-code ()
-  "Prints cool message if in javascript mode"
-  (interactive)
-  (if (eq (buffer-mode (buffer-name)) 'js-mode)
-      (jshint-code))
-  nil)
-
-(defun jshint-code ()
-  "Reformats the code to go with jshint."
-  (interactive)
-  (save-excursion
-    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+(" "\\1(") ; Add space between function and parantheses
-    (replace-regexp-in-buffer "function(" "function (") ; Add space between function and parantheses
-    (replace-regexp-in-buffer "switch(" "switch (") ; Add space between switch and parantheses
-    (replace-regexp-in-buffer "if(" "if (") ; Add space between if and parantheses
-    (replace-regexp-in-buffer "for(" "for (") ; Add space between for and parantheses
-    (replace-regexp-in-buffer "){" ") {") ; Add space between close paren and open brace
-    (replace-regexp-in-buffer "{}" "{ }") ; Add space between open-close braces
-    (replace-regexp-in-buffer "'\\(.*?\\)'" "\"\\1\"") ; Replace single quotes with double quotes
-    (replace-regexp-in-buffer "\\(\\\w+\\) : function" "\\1: function") ; Remove space before colon of function
-    (replace-regexp-in-buffer "\(\\\s+\\(.*\\)\)" "\(\\1\)") ; Remove whitespace around arguments
-    (replace-regexp-in-buffer "\\(\\\w+\\)\\\s+\)" "\\1\)")
-    ;; (replace-regexp-in-buffer "\(\\(\\\w.*\\)\)" "\( \\1 \)") ; Add space around method arguments
-    (replace-regexp-in-buffer "\\(\\\w+\\),\\\s+\\(\\\w+\\)" "\\1, \\2") ; Remove whitespace between csv
-    (replace-regexp-in-buffer "\\(\\\w+\\),\\(\\\w+\\)" "\\1, \\2") ; Replace word,word with word, word
-    (replace-regexp-in-buffer "[ \t]*$" "") ; Remove trailing whitespace
-    (replace-regexp-in-buffer "\\(^[ \t]*\n[ \t]*$\\)+" "") ; Remove double whitespace
-    (replace-regexp-in-buffer "{.*\n\\(\n\\)+\\(.*return.*\n\\)\\(\n\\)+\\(.*}\\)" "{\n\\2\\4") ; Have get methods in single lines
-    (replace-regexp-in-buffer "\\\s+;" ";") ; Replace whitespace before semi-colon
-    (replace-regexp-in-buffer "}\\\s+," "},") ; Replace whitespace between end brace and comma
-    (replace-regexp-in-buffer "\\\s+$" "") ; Remove trailing whitespace
-    (replace-regexp-in-buffer "    " "  ") ; Reformat for the use of tabs over spaces
-    ))
-
 (defun auto-type-string (string)
   (interactive)
   (mapc #'(lambda (letter) (execute-kbd-macro letter)) (split-string string ""))
-  (execute-kbd-macro [return])
-  nil)
+  (execute-kbd-macro [return]))
 
 (defun replace-regexp-in-buffer (arg1 arg2)
   "Go to beginning of buffer and replace ARG1 with ARG2."
   (save-excursion
     (goto-char (point-min))
-		(while (re-search-forward arg1 nil t)
-			(replace-match arg2))))
+    (while (re-search-forward arg1 nil t)
+      (replace-match arg2))))
 
 (defun replace-string-in-buffer (arg1 arg2)
   "Go to beginning of buffer and replace ARG1 with ARG2."
   (save-excursion
     (goto-char (point-min))
-		(while (search-forward arg1 nil t)
-			(replace-match arg2))))
+    (while (search-forward arg1 nil t)
+      (replace-match arg2))))
 
 (defun generate-project-file (project-name &optional project-path src-path test-path test-ext test-cmd)
-	(let ((project-dir "~/Documents/Projects/")
-				(template-file "~/Documents/Projects/.projectTemplate")
-				(result ""))
-		(if (file-exists-p (concat project-dir project-name ".json"))
-				(delete-file (concat project-dir project-name ".json")))
-		(with-temp-buffer
-			(insert-file-contents template-file)
-			(setq result (replace-regexp-in-string "%PROJECT_NAME%" project-name (buffer-string) t t))
-			(setq result (replace-regexp-in-string "%PROJECT_PATH%" project-path result t t))
-			(setq result (replace-regexp-in-string "%SRC%" src-path result t t))
-			(setq result (replace-regexp-in-string "%TEST%" test-path result t t))
-			(setq result (replace-regexp-in-string "%EXT%" test-ext result t t))
-			(setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t t)))
-		(with-temp-file (concat project-dir project-name ".json")
-			(insert result)) t))
+  (let ((project-dir "~/Documents/Projects/")
+        (template-file "~/Documents/Projects/.projectTemplate")
+        (result ""))
+    (if (file-exists-p (concat project-dir project-name ".json"))
+        (delete-file (concat project-dir project-name ".json")))
+    (with-temp-buffer
+      (insert-file-contents template-file)
+      (setq result (replace-regexp-in-string "%PROJECT_NAME%" project-name (buffer-string) t t))
+      (setq result (replace-regexp-in-string "%PROJECT_PATH%" project-path result t t))
+      (setq result (replace-regexp-in-string "%SRC%" src-path result t t))
+      (setq result (replace-regexp-in-string "%TEST%" test-path result t t))
+      (setq result (replace-regexp-in-string "%EXT%" test-ext result t t))
+      (setq result (replace-regexp-in-string "%TEST_CMD%" test-cmd result t t)))
+    (with-temp-file (concat project-dir project-name ".json")
+      (insert result)) t))
 
 (defun semi-colon-end ()
-	"Function to insert a semi colon at the end of the line from anywhere"
+  "Function to insert a semi colon at the end of the line from anywhere."
   (interactive)
-	(save-excursion
-		(delete-trailing-whitespace)
-		(end-of-line)
-		(insert (format "%s" ";"))))
+  (save-excursion
+    (delete-trailing-whitespace)
+    (end-of-line)
+    (insert (format "%s" ";"))))
 
 (defun swap-regions (beg1 end1 beg2 end2)
   "Swap region between BEG1 and END1 with region BEG2 and END2.
@@ -1110,76 +778,50 @@ or a marker."
    (if (< (length mark-ring) 2)
        (error "Not enough in mark-ring to swap a region")
      (let ((region (list (region-beginning) (region-end)))
-	   (marks (sort (list (marker-position (car mark-ring))
-			      (marker-position (cadr mark-ring)))
-			'<)))
+     (marks (sort (list (marker-position (car mark-ring))
+            (marker-position (cadr mark-ring)))
+      '<)))
        (if (< (car region) (car marks))
-	   (append region marks)
-	 (append marks region)))))
+     (append region marks)
+   (append marks region)))))
   (if (or (and (< beg2 beg1) (< beg1 end2))
-	  (and (< beg1 beg2) (< beg2 end1)))
+    (and (< beg1 beg2) (< beg2 end1)))
       (error "Unable to swap overlapping regions")
       (save-excursion
-	(insert 
-	 (prog1 (delete-and-extract-region beg2 end2)
-	   (goto-char beg2)
-	   (insert 
-	    (delete-and-extract-region beg1 end1))
-	   (goto-char beg1))))))
-
-(defun convert-css (from to)
-  (interactive "nConvert from resolution : \nnTo resolution : ")
-	(let ((factor (/ (float to) (float from))))
-		(save-excursion
-			(beginning-of-buffer)
-			(while (and (< (point) (point-max))
-									(search-forward-regexp "\\([0-9]+\\)px" nil t))
-				(replace-match (concat (number-to-string (round (* (string-to-number (match-string 1)) factor))) "px") t nil)
-				))))
-
-(defun for-each-marked-file-run-convert-css (from to)
-  (interactive)
-  (mapc
-	 #'(lambda (file) (progn
-								 (find-file file)
-								 (convert-css from to)
-								 (save-buffer)
-								 (kill-this-buffer))) (dired-get-marked-files)))
-
-(defun chomp (str)
-	"Chomp leading and tailing whitespace from STR."
-	(replace-regexp-in-string (rx (or (: bos (* (any " \t\n")))
-																		(: (* (any " \t\n")) eos)))
-														""
-														str))
+  (insert
+   (prog1 (delete-and-extract-region beg2 end2)
+     (goto-char beg2)
+     (insert
+      (delete-and-extract-region beg1 end1))
+     (goto-char beg1))))))
 
 (defun wrap-space-or-space ()
-	(interactive)
-	(if (use-region-p)
-			(insert-pair 1 " " " " )
-		(insert " ")))
+  (interactive)
+  (if (use-region-p)
+      (insert-pair 1 " " " " )
+    (insert " ")))
 
 (defun setup-cpp-mode ()
   (interactive)
-	(let ((cb (get-buffer (buffer-name))))
-		(get-buffer-create "*compilation*")
-		(unless (buffer-exists "*cpp-runner*")
+  (let ((cb (get-buffer (buffer-name))))
+    (get-buffer-create "*compilation*")
+    (unless (buffer-exists "*cpp-runner*")
           (quick-term "cpp-runner"))
-		(switch-to-buffer cb)
-		(wlf:show cpp-layout)))
+    (switch-to-buffer cb)
+    (wlf:show cpp-layout)))
 
 (defun kill-whitespace ()
-	"Kill the whitespace between two non-whitespace characters"
-	(interactive)
-	(save-excursion
-		(progn
-			(re-search-forward "[ \t\r\n]+" nil t)
-			(replace-match "" nil nil))))
+  "Kill the whitespace between two non-whitespace characters."
+  (interactive)
+  (save-excursion
+    (progn
+      (re-search-forward "[ \t\r\n]+" nil t)
+      (replace-match "" nil nil))))
 
 (global-set-key "\M-u" 'upcase-case-next-letter)
 
 (defun upcase-case-next-letter ()
-  "Toggles the case of the next letter, then moves the point forward one character"
+  "Toggle the case of the next letter, then move forward one character."
   (interactive)
   (upcase-region (point) (+ 1 (point)))
   (forward-char))
@@ -1192,11 +834,11 @@ or a marker."
 (defun duplicate-line ()
   (interactive)
   (move-beginning-of-line 1)
-	(kill-line)
-	(yank)
-	(open-line 1)
-	(next-line 1)
-	(yank))
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank))
 
 (provide 'functions)
 ;;; functions.el ends here

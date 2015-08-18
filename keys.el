@@ -128,8 +128,7 @@
 
 (global-set-key [f1] 'neotree-toggle)
 (global-set-key (kbd "<S-f1>") '(lambda () (interactive) (call-interactively 'neotree-find)))
-(global-set-key [f2] 'ag-project-at-point)
-(global-set-key (kbd "<M-f2>") 'set-up-ack-results-with-prompt)
+(global-set-key [f2] 'ag-regexp-project-at-point)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (if (buffer-file-name) (file-name-directory (buffer-file-name)) USERPATH))))
 (global-set-key [f4] 'run-current-file)
@@ -226,8 +225,6 @@
 
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
-
-(global-set-key (kbd "H-/") 'set-up-ack-results-with-prompt)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
