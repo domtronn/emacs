@@ -820,6 +820,11 @@ or a marker."
 
 (global-set-key "\M-u" 'upcase-case-next-letter)
 
+(defun json-format ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
+
 (defun upcase-case-next-letter ()
   "Toggle the case of the next letter, then move forward one character."
   (interactive)
