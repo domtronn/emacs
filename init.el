@@ -40,11 +40,11 @@
 ;; Requires
 ;;------------------
 (if (require 'package)
-    (progn (require 'package)
-	   (setq-default package-user-dir (concat base-path "packages/elpa"))
-	   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-	   (package-initialize))
-  (message "Package is not installed - Are you using Emacs v24 or later?"))
+		(progn (require 'package)
+			(setq-default package-user-dir (concat base-path "packages/elpa"))
+			(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+			(package-initialize))
+	(message "Package is not installed - Are you using Emacs v24 or later?"))
 
 (require 'rainbow-delimiters)
 (require 'paren)
@@ -214,9 +214,9 @@
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 
 (eval-after-load 'tern
-   '(progn
-      (require 'tern-auto-complete)
-      (tern-ac-setup)))
+	 '(progn
+			(require 'tern-auto-complete)
+			(tern-ac-setup)))
 
 (require 'osx-dictionary)
 (push "*osx-dictionary*" popwin:special-display-config)
@@ -275,9 +275,9 @@
 
 (add-hook 'web-mode-hook 'ac-html-enable)
 (add-to-list 'web-mode-ac-sources-alist
-             '("html" . (ac-source-html-attribute-value
-                         ac-source-html-tag
-                         ac-source-html-attribute)))
+						 '("html" . (ac-source-html-attribute-value
+												 ac-source-html-tag
+												 ac-source-html-attribute)))
 
 (add-to-list 'ac-modes 'latex-mode)
 (add-hook 'LaTeX-mode-hook
@@ -413,7 +413,7 @@
 (setq inhibit-startup-echo-area-message t)
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
-(setq create-lockfiles nil)		              ; don't make lock files
+(setq create-lockfiles nil)									; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
