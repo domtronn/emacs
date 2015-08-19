@@ -46,8 +46,6 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(eimp-mogrify-program "mogrify")
- '(eshell-directory-name
-   (format "%s/%s/eshell" common-load-dir common-package-dir))
  '(emms-cache-file
    (format "%s/%s/emms/cache" common-load-dir common-package-dir))
  '(emms-mode-line-format " %s ")
@@ -121,6 +119,7 @@ static char *note[] = {
 \"#...##########\",
 \"#.############\",
 \"##############\"};")))))
+ '(eshell-directory-name (format "%s/%s/eshell" common-load-dir common-package-dir))
  '(evil-emacs-state-cursor (quote ("#E57373" bar)))
  '(evil-insert-state-cursor (quote ("#E57373" hbar)))
  '(evil-normal-state-cursor (quote ("#FFEE58" box)))
