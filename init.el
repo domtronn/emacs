@@ -382,8 +382,6 @@
 (setq ediff-keep-variants nil)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-(add-hook 'before-save-hook 'whitespace-cleanup)
-
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
 (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
@@ -440,6 +438,7 @@
 (require 'ido-vertical-mode)
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
+(ido-ubiquitous-mode 1)
 (ido-vertical-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
