@@ -845,5 +845,14 @@ or a marker."
   (next-line 1)
   (yank))
 
+(defun leet-mode ()
+  "Turn off auto complete and major mode."
+  (interactive)
+  (auto-complete-mode 0)
+  (smartparens-mode 0)
+  (key-combo-mode 0)
+  (flycheck-mode 0)
+  (font-lock-mode 0))
+
 (provide 'functions)
 ;;; functions.el ends here
