@@ -31,7 +31,6 @@
  '(calendar-mark-diary-entries-flag t)
  '(calendar-setup (quote one-frame))
  '(calendar-view-diary-initially-flag t)
- '(col-highlight-face hl-line-face t)
  '(compilation-message-face (quote (quote default)))
  '(completion-ignored-extensions
    (quote
