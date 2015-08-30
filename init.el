@@ -24,28 +24,25 @@
 (defconst base-path (file-name-directory load-file-name))
 (add-to-list 'load-path (concat base-path "elisp"))
 
-(load-file (concat base-path "functions.el"))
 (setq custom-file (concat base-path "custom.el"))
+(load-file (concat base-path "functions.el"))
 
 ;;------------------
 ;; Load Files
 ;;------------------
 
-(load-file (concat base-path "/elisp/lorem-ipsum.el"))
-(load-file (concat base-path "/elisp/drag-stuff.el"))      ;;; Leave this package for key binding overrides
-(load-file (concat base-path "/elisp/linum-off.el"))
-(load-file (concat base-path "/elisp/mon-css-color.el"))
+(require 'drag-stuff "drag-stuff.elc")
+(require 'linum-off  "linum-off.elc")
+(require 'mon-css-color "mon-css-color.elc")
 
 ;;------------------
 ;; Requires
 ;;------------------
-(if (require 'package)
-		(progn (require 'package)
-			(setq-default package-user-dir (concat base-path "packages/elpa"))
-			(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-			(package-initialize))
-	(message "Package is not installed - Are you using Emacs v24 or later?"))
-
+(require 'package)
+(setq-default package-user-dir (concat base-path "packages/elpa"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+	
 (require 'rainbow-delimiters)
 (require 'paren)
 
@@ -54,8 +51,7 @@
 ;(require 'tex)
 ;(TeX-global-PDF-mode t)
 
-(require 'ibuffer-git)
-(autoload 'ibuffer "ibuffer" "List buffers." t)
+(require 'ibuffer)
 (add-hook 'ibuffer-mode-hook (lambda () (local-set-key (kbd "G") #'ibuffer-vc-set-filter-groups-by-vc-root)))
 (define-key ibuffer-mode-map (kbd "M-u") 'ibuffer-unmark-all)
 
@@ -152,10 +148,9 @@
 (require 'json)
 (require 'json-snatcher)
 
-(require 'js2-refactor)
 (require 'js2-mode)
 (require 'js-dependency-injector
- (expand-file-name (concat base-path "elisp/js-dependency-injector/js-dependency-injector.el")))
+	 "js-dependency-injector/js-dependency-injector.el")
 
 (defun js-mode-bindings ()
 	"Set a hotkey for using the json-snatcher plugin."
@@ -250,7 +245,7 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-(require 'auto-complete-etags)
+(require 'ac-etags)
 ;; (require 'auto-complete-auctex)
 (require 'ac-dabbrev)
 (require 'ac-math)
@@ -407,8 +402,6 @@
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
-(setq inhibit-startup_message t)            ; disable start up message
-(setq inhibit-startup-echo-area-message t)
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)									; don't make lock files
@@ -468,6 +461,9 @@
 (put 'upcase-region 'disabled nil)
 
 (server-start)
+;; Local Variables:
+;; eval: (flycheck-mode 0)
+;; End;
 
 (provide 'init)
 ;;; init.el ends here
