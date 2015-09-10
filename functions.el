@@ -854,16 +854,6 @@ or a marker."
   (flycheck-mode 0)
   (font-lock-mode 0))
 
-(defun font-scale-increase ()
-  "Increase the font height globablly."
-  (interactive)
-  (font-scale '+ 10))
-
-(defun font-scale-decrease ()
-  "Increase the font height globablly."
-  (interactive)
-  (font-scale '- 10))
-
 (defun font-scale (op &optional amount)
   "Apply function operator OP (+/-) to scale face attribute height by AMOUNT."
   (let ((height (face-attribute 'default :height)))

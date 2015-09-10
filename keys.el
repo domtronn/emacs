@@ -120,8 +120,8 @@
 (global-set-key [M-s-up] 'windmove-up)
 (global-set-key [M-s-down] 'windmove-down)
 
-(global-set-key (kbd "H--") 'font-scale-decrease)
-(global-set-key (kbd "H-=") 'font-scale-increase)
+(global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
+(global-set-key (kbd "H-=") '(lambda () (interactive) (font-scale '+ 10)))
 
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
