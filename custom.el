@@ -353,15 +353,22 @@ static char *note[] = {
 ;; (setq sublimity-attractive-centering-width nil)
 ;; (sublimity-attractive-hide-vertical-border)
 
-(defvar font-list '(("Menlo" normal) ("BPmono" normal) ("Courier New" normal)
-                    ("Ubuntu Mono" normal) ("Source Code Pro" light)))
+(defvar font-list '(("Menlo" normal)
+                    ("BPmono" normal)
+                    ("Courier New" normal)
+                    ("Ubuntu Mono" normal)
+                    ("Source Code Pro" extralight)
+                    ("Anonymous Pro" normal)))
 
 (defun set-font ()
   (interactive)
   (let* ((font (assoc (completing-read "Font: " font-list nil nil) font-list))
          (family (car  font))
          (weight (cadr  font)))
-    (set-face-attribute 'default nil :family family :weight weight)))
+    (set-face-attribute 'default nil :family family :weight weight)
+    (run-at-time "0.5 sec" nil
+                 `(lambda () (when (not (eq (face-attribute 'default :family ) ,family))
+                          (set-face-attribute 'default nil :family ,family :weight (quote ,weight)))))))
 
 (provide 'custom)
 ;;; custom.el ends here
