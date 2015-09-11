@@ -349,26 +349,31 @@ static char *note[] = {
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
-;; (require 'sublimity-attractive)
-;; (setq sublimity-attractive-centering-width nil)
-;; (sublimity-attractive-hide-vertical-border)
-
 (defvar font-list '(("Menlo" normal)
                     ("BPmono" normal)
                     ("Courier New" normal)
                     ("Ubuntu Mono" normal)
                     ("Source Code Pro" extralight)
+                    ("Inconsolata" medium)
                     ("Anonymous Pro" normal)))
 
-(defun set-font ()
+(defun set-font (&optional f)
   (interactive)
-  (let* ((font (assoc (completing-read "Font: " font-list nil nil) font-list))
+  (let* ((font (or f (assoc (completing-read "Font: " font-list nil nil) font-list)))
          (family (car  font))
          (weight (cadr  font)))
     (set-face-attribute 'default nil :family family :weight weight)
-    (run-at-time "0.5 sec" nil
+    (run-at-time "0.2 sec" nil
                  `(lambda () (when (not (eq (face-attribute 'default :family ) ,family))
                           (set-face-attribute 'default nil :family ,family :weight (quote ,weight)))))))
+
+(defun cycle-font ()
+  (interactive)
+  (let* ((next-font-index
+					(% (+ 1 (-find-index (lambda (it) (equal (face-attribute 'default :family) (car it))) font-list)) (length font-list)))
+				 (next-font (nth next-font-index font-list)))
+		(set-font next-font)
+		(message (format "Setting Font to: %s" (car next-font)))))
 
 (provide 'custom)
 ;;; custom.el ends here
