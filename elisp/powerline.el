@@ -30,6 +30,7 @@
 
 (defvar theme-powerline-color-alist
 	'((whiteboard (("#bbbbbb" 0.93) ("#d7d7d7" 0.95) "#2a2a2a"))
+		(atom-one-dark (("#3E4451" 0.78) ("#5C6370" 0.8) "#ABB2BF"))
 		(gotham (("#10272D" 0.78) ("#081E26" 0.78) "#357C91"))
     (ujelly (("#000000" 0.78) ("#000000" 0.78) "#ffffff"))
 		(moe-light (("#CCCCB7" 0.95) ("#EDEDD3" 0.98) "#3F3F38"))
