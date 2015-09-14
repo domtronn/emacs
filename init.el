@@ -447,7 +447,7 @@
 (global-linum-mode 1) ; enable line numbers
 (set-fringe-mode '(2 . 0))
 
-(require 'moe-theme)
+(require 'powerline "powerline.el")
 
 ;;------------------
 ;; My Load Files
