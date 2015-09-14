@@ -230,19 +230,20 @@
   (shell-command
    (format "/Applications/IntelliJ\\ IDEA\\ 14\\ CE.app/Contents/MacOS/idea %s; osascript -e \"tell application \\\"IntelliJ Idea 14 CE\\\" to activate\"" (buffer-file-name))))
 
-(defun open-in-and-activate-sublime ()
-  "Opens the current file in Sublime!"
-  (interactive)
-  (shell-command
-   (format "subl %s" (buffer-file-name))))
+(defun open-in (ed)
+  "Opens the current file in ED."
+  (shell-command (format "%s %s" ed (buffer-file-name))))
 
 (defun open-current-file ()
   "Open the current file in different things."
   (interactive)
-  (let ((type (ido-completing-read
-               "Run which VC status manager: " '("IntelliJ IDEA" "Sublime Text") nil nil)))
+  (let ((type (completing-read
+               "Open current file in
+editor: " '("IntelliJ IDEA" "Sublime Text" "Atom") nil nil)))
     (cond ((string-equal type "Sublime Text")
-           (open-in-and-activate-sublime))
+           (open-in "subl"))
+          ((string-equal type "Atom")
+           (open-in "atom"))
           ((string-equal type "IntelliJ IDEA")
            (open-in-and-activate-intellj))
           ((string-equal type "Finder")
