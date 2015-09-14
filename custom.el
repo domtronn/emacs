@@ -239,6 +239,7 @@ static char *note[] = {
  '(org-agenda-entry-text-exclude-regexps (quote ("^.*<.*>.*" ".*When.*")))
  '(org-agenda-files nil)
  '(org-calendar-insert-diary-entry-key (quote i))
+ '(org-support-shift-select t)
  '(package-user-dir (format "%s/%s/elpa" common-load-dir common-package-dir))
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
@@ -354,7 +355,9 @@ static char *note[] = {
                     ("Courier New" normal)
                     ("Ubuntu Mono" normal)
                     ("Source Code Pro" extralight)
+                    ("NK57 Monospace" light)
                     ("Inconsolata" medium)
+                    ("Cutive Mono" normal)
                     ("Anonymous Pro" normal)))
 
 (defun set-font (&optional f)
