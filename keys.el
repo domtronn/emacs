@@ -32,6 +32,8 @@
 
 (global-set-key (kbd "SPC") 'wrap-space-or-space)
 
+(global-set-key (kbd "s-V") 'helm-show-kill-ring)
+
 (global-set-key (kbd "s-.") 'smart-forward)
 (global-set-key (kbd "C-.") 'smart-forward)
 
@@ -248,7 +250,7 @@
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
 
-(global-set-key (kbd "s-o") 'my-open-current-file)
+(global-set-key (kbd "s-o") 'open-current-file)
 
 (provide 'keys)
 ;;; keys.el ends here
