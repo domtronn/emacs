@@ -234,9 +234,13 @@
   "Opens the current file in ED."
   (shell-command (format "%s %s" ed (buffer-file-name))))
 
+(defun panic ()
+  "Alias to run `open-current-file`."
+  (interactive)
+  (open-current-file))
+
 (defun open-current-file ()
   "Open the current file in different things."
-  (interactive)
   (let ((type (completing-read
                "Open current file in
 editor: " '("IntelliJ IDEA" "Sublime Text" "Atom") nil nil)))
@@ -544,7 +548,7 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun ahahah ()
   "You know what it displays..."
   (interactive)
-  (random t)
+  (random)
   (setq clr (nth (random (length (defined-colors))) (defined-colors)))
   (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
                             'face `(:foreground ,clr))))
