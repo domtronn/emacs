@@ -461,9 +461,10 @@
 (put 'upcase-region 'disabled nil)
 
 (server-start)
+
 ;; Local Variables:
 ;; eval: (flycheck-mode 0)
-;; End;
+;; End:
 
 (provide 'init)
 ;;; init.el ends here
