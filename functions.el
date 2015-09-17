@@ -241,6 +241,7 @@
 
 (defun open-current-file ()
   "Open the current file in different things."
+	(interactive)
   (let ((type (completing-read
                "Open current file in
 editor: " '("IntelliJ IDEA" "Sublime Text" "Atom") nil nil)))
