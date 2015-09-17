@@ -406,13 +406,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 ;; Custom utilities for using multiple cursors ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun mark-word-at-point ()
-  "Mark the current word at point."
-  (interactive)
-  (progn
-    (mark-word)
-    (backward-word)))
-
 (defun mc/malt ()
   "Shortcut for `mc/mark-all-symbols-like-this`."
   (interactive)
@@ -421,9 +414,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun malt ()
   "Call `mc/mark-all-like-this` on word at point."
   (interactive)
-  (progn
-    (mark-word-at-point)
-    (mc/mark-all-symbols-like-this)))
+  (er/mark-symbol)
+  (mc/mark-all-symbols-like-this))
 
 (defun mc/dalt ()
   "Shortcut for `mc/mark-all-symbols-like-this-in-defun`."
@@ -433,9 +425,8 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
 (defun dalt ()
   "Call `mc/mark-all-like-this-in-defun` on word at point."
   (interactive)
-  (progn
-    (mark-word-at-point)
-    (mc/mark-all-symbols-like-this-in-defun)))
+  (er/mark-symbol)
+  (mc/mark-all-symbols-like-this-in-defun))
 
 (defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
 
