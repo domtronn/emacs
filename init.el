@@ -379,6 +379,7 @@
 
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "d") #'vc-ediff)))
+(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "U") #'(lambda () (interactive) (vc-dir-hide-state 'unregistered)))))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "q") #'kill-this-buffer)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "r") #'vc-revert)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "P") #'magit-push)))
