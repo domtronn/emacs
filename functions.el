@@ -230,9 +230,9 @@
   (shell-command
    (format "/Applications/IntelliJ\\ IDEA\\ 14\\ CE.app/Contents/MacOS/idea %s; osascript -e \"tell application \\\"IntelliJ Idea 14 CE\\\" to activate\"" (buffer-file-name))))
 
-(defun open-in (ed)
-  "Opens the current file in ED."
-  (shell-command (format "%s %s" ed (buffer-file-name))))
+(defun open-in (ed &optional file)
+  "Opens the current file in ED or specified FILE."
+  (shell-command (format "%s %s" ed (or file buffer-file-name))))
 
 (defun panic ()
   "Alias to run `open-current-file`."
