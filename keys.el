@@ -164,8 +164,6 @@
 (global-set-key (kbd "s-@") 'operate-on-number-at-point)
 
 ;; Buffer Movemenet
-(global-set-key [S-wheel-down] '(lambda () (interactive) (dgc-scroll-up-in-place 1)))
-(global-set-key [S-wheel-up] '(lambda () (interactive) (dgc-scroll-down-in-place 1)))
 
 (global-set-key (kbd "s-[") 'backward-paragraph)
 (global-set-key (kbd "M-p") 'backward-paragraph)
@@ -222,9 +220,6 @@
 (global-set-key (kbd "C-M-g") 'grunt-exec)
 
 ;; Use C-i as my personal prefix command
-(define-prefix-command 'dgc-map)
-(global-set-key (kbd "H-x") 'dgc-map)
-
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
 
