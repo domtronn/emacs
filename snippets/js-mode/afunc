@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#afunc : anonymous inline function
+# --
+function ($2) { $0; }
