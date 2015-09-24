@@ -120,6 +120,12 @@
 		 (:name runner :buffer "*cpp-runner*")
 		 (:name compilation :buffer "*compilation*"))))
 
+(defvar beacon-layout
+	(wlf:no-layout
+	 '(| (:left-size-ratio 0.7) file runner)
+	 '((:name file :buffer "file buffer")
+     (:name runner :buffer "*gulp-watch*"))))
+
 (require 'flycheck)
 (require 'flycheck-rust)
 (global-flycheck-mode)
