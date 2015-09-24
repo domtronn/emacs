@@ -63,6 +63,14 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c M-x") 'execute-extended-command)
 
+;; Alignment
+(global-set-key (kbd "C-x a :")
+                '(lambda (b e) (interactive "r") (align-regexp b e (rx ":" (group (zero-or-more (syntax whitespace)))) 1 1)))
+(global-set-key (kbd "C-x a =")
+                '(lambda (b e) (interactive "r") (align-regexp b e (rx (group (zero-or-more (syntax whitespace))) "=") 1 1)))
+(global-set-key (kbd "C-x a .")
+                '(lambda (b e) (interactive "r") (align-regexp b e (rx (group (zero-or-more (syntax whitespace))) ".") -1 0 nil)))
+
 ;; Undo and Redo
 (global-set-key (kbd "s-z") 'undo-tree-undo)
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
@@ -131,6 +139,7 @@
 (global-set-key [f1] 'neotree-toggle)
 (global-set-key (kbd "<S-f1>") '(lambda () (interactive) (call-interactively 'neotree-find)))
 (global-set-key [f2] 'ag-regexp-project-at-point)
+(global-set-key (kbd "<M-f2>") 'ag-regexp)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (if (buffer-file-name) (file-name-directory (buffer-file-name)) USERPATH))))
 (global-set-key [f4] 'run-current-file)
