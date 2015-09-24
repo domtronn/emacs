@@ -802,6 +802,14 @@ or a marker."
     (switch-to-buffer cb)
     (wlf:show cpp-layout)))
 
+(defun setup-beacon-mode ()
+  (interactive)
+  (let ((cb (get-buffer (buffer-name))))
+    (unless (buffer-exists "*gulp-watch*")
+          (quick-term "gulp-watch"))
+    (switch-to-buffer cb)
+    (wlf:show beacon-layout)))
+
 (defun kill-whitespace ()
   "Kill the whitespace between two non-whitespace characters."
   (interactive)
