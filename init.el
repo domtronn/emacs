@@ -312,10 +312,8 @@
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
-(require 'origami)
-(add-to-list 'origami-parser-alist '(php-mode . origami-c-style-parser))
-(add-to-list 'origami-parser-alist '(malabar-mode . origami-c-style-parser))
-(add-hook 'prog-mode-hook 'origami-mode)
+(require 'hideshowvis)
+(add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
 (require 'key-combo)
 (key-combo-mode 1)
