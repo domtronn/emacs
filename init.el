@@ -189,7 +189,10 @@
 (add-hook 'js2-mode-hook '(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
 
-;(add-hook 'latex-mode 'flyspell-mode)
+(add-hook 'latex-mode 'flyspell-mode)
+(add-hook 'text-mode 'flyspell-mode)
+(add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
+(define-key flyspell-mode-map (kbd "M-/") 'flyspell-popup-correct)
 
 ;; (add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
 ;; (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))

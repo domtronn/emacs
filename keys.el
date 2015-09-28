@@ -42,8 +42,6 @@
 
 (global-set-key (kbd "RET") 'smart-newline)
 ;; (global-set-key (kbd "M-\"") 'add-quotation)
-(global-set-key (kbd "M-{") 'add-brace)
-(global-set-key (kbd "M-H-{") 'add-bracket)
 
 ;; Ace jump keys
 (global-set-key (kbd "C-c SPC") 'ace-jump-char-mode)
@@ -245,8 +243,8 @@
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
 
-(global-set-key (kbd "H-M-]") 'flyspell-mode)
 (global-set-key "\M-}" 'flycheck-mode)
+(global-set-key "\M-{" 'flyspell-mode)
 (global-set-key (kbd "C-c C-n") 'flycheck-next-error)
 (global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 
