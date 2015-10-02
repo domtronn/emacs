@@ -90,7 +90,8 @@
 (global-set-key [M-right] 'forward-word)
 (global-set-key [M-left] 'backward-word)
 
-(global-set-key [C-tab] 'projectable-ido-find-file)
+(global-set-key [C-tab] 'projectable-find-file)
+(global-set-key (kbd "C-S-<tab>") 'projectable-find-file-other-window)
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
 (global-set-key (kbd "C-x f") 'ido-find-file)
@@ -229,7 +230,7 @@
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'projectable-switch-buffer)
 
 (global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
 (global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
