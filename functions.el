@@ -859,5 +859,9 @@ or a marker."
   (let ((height (face-attribute 'default :height)))
     (set-face-attribute 'default nil :height (funcall op height (or amount 10)))))
 
+(defun elisp-debug (var)
+  (interactive "sDebug variable: ")
+	(insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
+
 (provide 'functions)
 ;;; functions.el ends here
