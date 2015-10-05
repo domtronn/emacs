@@ -48,6 +48,7 @@
 (global-set-key (kbd "C-c C-x SPC") 'ace-jump-zap-to-char)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-word-mode)
 
+(global-unset-key (kbd "C-x C-c"))
 (global-set-key (kbd "C-x c") 'compile)
 (global-set-key (kbd "C-c w") 'esw/select-window)
 
@@ -231,6 +232,7 @@
 (global-set-key (kbd "H-e") 'end-of-line)
 
 (global-set-key (kbd "C-x C-b") 'projectable-switch-buffer)
+(global-set-key (kbd "C-S-x C-b") 'ido-switch-buffer-other-window)
 
 (global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
 (global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
