@@ -96,6 +96,7 @@
 (global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
 (global-set-key (kbd "C-x f") 'ido-find-file)
+(global-set-key (kbd "C-x F") 'ido-find-file-other-window)
 
 ;; change to use regexp searching rather than normal isearch
 (global-set-key (kbd "H-s") 'isearch-forward-symbol-at-point)
