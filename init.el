@@ -191,6 +191,8 @@
 
 (add-hook 'latex-mode 'flyspell-mode)
 (add-hook 'text-mode 'flyspell-mode)
+
+(require 'flyspell)
 (add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
 (define-key flyspell-mode-map (kbd "M-/") 'flyspell-popup-correct)
 
