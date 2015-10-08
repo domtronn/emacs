@@ -233,6 +233,7 @@
 (global-set-key (kbd "H-e") 'end-of-line)
 
 (global-set-key (kbd "C-x C-b") 'projectable-switch-buffer)
+(global-set-key (kbd "C-x B") 'ido-switch-buffer-other-window)
 (global-set-key (kbd "C-S-x C-b") 'ido-switch-buffer-other-window)
 
 (global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
