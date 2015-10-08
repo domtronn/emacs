@@ -248,7 +248,7 @@
 (global-set-key (kbd "<s-return>") 'eval-defun)
 
 (global-set-key "\M-}" 'flycheck-mode)
-(global-set-key "\M-{" 'flyspell-prog-mode)
+(global-set-key "\M-{" 'flyspell-mode)
 (global-set-key (kbd "C-c C-n") 'flycheck-next-error)
 (global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 
