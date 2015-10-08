@@ -2,7 +2,7 @@
 #name : require def
 # expand-env: ((yas/indent-line 'fixed))
 # --
-`(setq use-underscores nil)``(setq available-exts nil)`require.def("`(replace-regexp-in-string ".*script/" (concat project-id "/") (file-name-sans-extension (buffer-file-name)))`",
+`(setq use-underscores nil)``(setq available-exts nil)`require.def("`(replace-regexp-in-string ".*script/" (concat projectable-id "/") (file-name-sans-extension (buffer-file-name)))`",
 	[
 
 	],
