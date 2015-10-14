@@ -403,6 +403,9 @@
 (setq-default magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+(load-file "~/.env/elisp/magit-gh-issues/magit-gh-issues.el")
+(add-hook 'magit-mode-hook 'magit-gh-issues-mode)
+
 (eval-after-load 'magit '(define-key magit-mode-map (kbd "C-<tab>") 'projectable-find-file))
 
 ;; Startup variables
