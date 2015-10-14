@@ -437,6 +437,7 @@
 (require 'flx-ido)
 (require 'ido-ubiquitous)
 (require 'ido-vertical-mode)
+(require 'ido-other-window (expand-file-name (concat base-path "elisp/ido-other-window.elc")))
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
 (ido-ubiquitous-mode 1)
