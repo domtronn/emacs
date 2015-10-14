@@ -447,10 +447,17 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
-(defun close-all-buffers ()
-  "Kills all open buffers"
+(defun kill-all-buffers ()
+  "Kill all open buffers."
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
+
+(defun kill-buffer-regexps (r)
+	"Kill all buffers matching regexp R."
+  (interactive "sEnter Regexp: ")
+	(let ((killable-buffers (-filter '(lambda (b) (string-match r (buffer-name b))) (buffer-list))))
+		(when (yes-or-no-p (format "Kill %d buffers matching \"%s\"? " (length killable-buffers) r))
+			(mapc #'kill-buffer killable-buffers))))
 
 ;; ============================================================================
 
