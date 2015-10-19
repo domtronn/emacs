@@ -270,7 +270,6 @@
 
 (set-default 'ac-sources '(
 									ac-source-yasnippet
-									ac-source-etags
 									ac-source-semantic
 									ac-source-dabbrev
 									ac-source-files-in-current-dir
@@ -293,6 +292,9 @@
 (setq ac-math-unicode-in-math-p t)
 
 (global-auto-complete-mode t)
+
+
+(set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
 
 ;;---------------
 ;; Mode Hooks
