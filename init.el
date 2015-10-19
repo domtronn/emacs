@@ -104,12 +104,15 @@
 (require 'dired-k)
 (define-key dired-mode-map (kbd "K") 'dired-k)
 
-(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") '(lambda () (interactive) (kill-all-dired-buffers)))))
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") 'kill-all-dired-buffers)))
 
 (require 'git-timemachine)
 (require 'git-messenger)
 
 (require 'ack-and-a-half)
+
+(require 'nameless)
+(add-hook 'nameless-mode-hook (lambda () (local-set-key (kbd "C-c c") 'nameless-insert-name)))
 
 (require 'window-layout)
 (defvar cpp-layout
