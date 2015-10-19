@@ -4,3 +4,6 @@
 [submodule "elisp/js-dependency-injector"]
 	path = elisp/js-dependency-injector
 	url = git@github.com:domtronn/js-dependency-injector.el.git
+[submodule "elisp/magit-gh-issues"]
+	path = elisp/magit-gh-issues
+	url = git@github.com:domtronn/magit-gh-issues.el.git
