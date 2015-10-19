@@ -293,6 +293,13 @@
 
 (global-auto-complete-mode t)
 
+(add-hook 'markdown-mode-hook 'ac-emoji-setup)
+(add-hook 'git-commit-mode-hook
+					'(lambda () (interactive)
+						 (auto-complete-mode) (setq-local ac-sources '(ac-source-gh-issues))))
+(add-hook 'ghi-comment-mode-hook
+					'(lambda () (interactive)
+						 (auto-complete-mode) (setq-local ac-sources '(ac-source-emoji ac-source-gh-issues))))
 
 (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
 
@@ -408,7 +415,9 @@
 (setq-default magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
-(load-file "~/.env/elisp/magit-gh-issues/magit-gh-issues.el")
+(require 'magit-gh-issues (expand-file-name (concat base-path "elisp/magit-gh-issues/magit-gh-issues.el")))
+(require 'magit-gh-issues-emoji (expand-file-name (concat base-path "elisp/magit-gh-issues-emoji/magit-gh-issues-emoji.el")))
+
 (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
 
 (eval-after-load 'magit '(define-key magit-mode-map (kbd "C-<tab>") 'projectable-find-file))
