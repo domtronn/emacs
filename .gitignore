@@ -32,6 +32,10 @@ xkcd
 *tutorial*
 *flycheck_init.el*
 
+# Emacs Directories form Packages #
+###################################
+/var/
+
 # Compiled source #
 ###################
 *.com
