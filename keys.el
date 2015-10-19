@@ -150,7 +150,7 @@
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
-(global-set-key [f7] 'occur-at-point)
+(global-set-key [f7] 'helm-swoop)
 
 (global-set-key [f8] 'emms-smart-browse)
 (global-set-key (kbd "<S-f8>") 'go-to-emms-browser)
