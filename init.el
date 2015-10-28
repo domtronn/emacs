@@ -419,6 +419,7 @@
 (require 'magit-gh-issues-emoji (expand-file-name (concat base-path "elisp/magit-gh-issues-emoji/magit-gh-issues-emoji.el")))
 
 (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
+(add-hook 'magit-mode-hook 'image-minor-mode)
 
 (eval-after-load 'magit '(define-key magit-mode-map (kbd "C-<tab>") 'projectable-find-file))
 
@@ -451,7 +452,7 @@
 (require 'flx-ido)
 (require 'ido-ubiquitous)
 (require 'ido-vertical-mode)
-(require 'ido-other-window (expand-file-name (concat base-path "elisp/ido-other-window.elc")))
+;; (require 'ido-other-window (expand-file-name (concat base-path "elisp/ido-other-window.elc")))
 (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 (ido-mode 1)
 (ido-ubiquitous-mode 1)
