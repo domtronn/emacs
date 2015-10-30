@@ -26,9 +26,9 @@
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key [C-return] 'dabbrev-expand)
+(global-set-key [M-tab] 'dabbrev-expand)
 (global-set-key [S-tab] 'auto-complete)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
-(global-set-key [M-tab] 'dabbrev-expand)
 
 (global-set-key (kbd "SPC") 'wrap-space-or-space)
 
@@ -93,7 +93,6 @@
 
 (global-set-key [C-tab] 'projectable-find-file)
 (global-set-key (kbd "C-S-<tab>") 'projectable-find-file-other-window)
-(global-set-key (kbd "C-S-x C-S-f") 'file-cache-ido-find-file)
 
 (global-set-key (kbd "C-x f") 'ido-find-file)
 (global-set-key (kbd "C-x F") 'ido-find-file-other-window)
@@ -152,23 +151,8 @@
 
 (global-set-key [f7] 'helm-swoop)
 
-(global-set-key [f8] 'emms-smart-browse)
-(global-set-key (kbd "<S-f8>") 'go-to-emms-browser)
-(global-set-key (kbd "<s-f8>") 'go-to-emms-playlist)
-(global-set-key (kbd "<S-s-f8>") 'get-lyrics-and-display)
-(global-set-key (kbd "<M-f9>") 'emms-next)
-(global-set-key (kbd "<M-f8>") 'emms-pause)
-(global-set-key (kbd "<M-f7>") 'emms-previous)
-
-(global-set-key (kbd "<M-S-f1>") 'toggle-frame-fullscreen)
-
-(global-set-key [f11] 'browse-sandbox)
-(global-set-key [f10] 'xkcd)
-
 (global-set-key [M-d] 'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
-
-(global-set-key (kbd "C-c P") 'emms-pause)
 
 (global-set-key (kbd "s-@") 'operate-on-number-at-point)
 
@@ -198,9 +182,6 @@
 
 (global-set-key (kbd "C-z") 'ahahah)
 
-(global-set-key (kbd "C-x t") 'open-test)
-(global-set-key (kbd "s-t") 'open-test)
-
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
 
@@ -213,10 +194,7 @@
 (global-set-key (kbd "s-d") 'duplicate-line)
 (global-set-key (kbd "M-W") "\C-a\C- \C-n\M-w\C-p\C-e")
 
-(global-set-key (kbd "C-S-w") 'mark-word)
-
 ;; Amazing mode to mark all instances in a definition
-(global-set-key (kbd "H-s-r") 'mark-word-at-point)
 (global-set-key (kbd "M-q") 'er/expand-region)
 (global-set-key (kbd "H-q") 'er/expand-region)
 
@@ -224,8 +202,6 @@
 (global-set-key (kbd "s-n") 'mc/mark-next-symbol-like-this)
 (global-set-key (kbd "s-p") 'mc/mark-previous-symbol-like-this)
 
-(global-set-key (kbd "H-t") 'grunt)
-(global-set-key (kbd "S-s-t") 'grunt)
 (global-set-key (kbd "C-M-g") 'grunt-exec)
 
 ;; Use C-i as my personal prefix command
@@ -243,8 +219,6 @@
 (global-set-key (kbd "C-=") 'insert-random-return)
 
 (global-set-key "\C-c\C-d" 'osx-dictionary-search-pointer)
-(global-set-key "\C-cd" 'dash-at-point)
-(global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
 
