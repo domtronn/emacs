@@ -141,19 +141,6 @@
           (malabar-find-parent (cdr types))))
   (message "Could not find parent to go to" )))
 
-(defun malabar-find-implementations ()
-  "Finds implementations of a java interface"
-  (interactive )
-  (save-excursion
-    (beginning-of-buffer)
-    (search-forward-regexp "interface\\s-*\\([a-z]+\\)" nil t)
-    (let ((match-string (match-string 1))
-          (match-type (replace-regexp-in-string ".*\\\.\\(\\\w+\\)$" "\\1" (buffer-name))))
-      (if match-string
-          (progn (ring-insert find-tag-marker-ring (point-marker))
-                 (pop-ack-and-a-half (concat "implements " match-string) match-type (repository-root) (current-buffer) t "--output=\" \""))
-        (message "Class is not an interface")))))
-
 (defun go-to-class ()
   "Find and go to the class at point"
   (interactive)
@@ -351,19 +338,6 @@ If the file is Emacs Lisp, run the byte compiled version if exist."
                    )
                (message "No recognized program file suffix for this file.")
                )))))
-
-(defun pop-ack-and-a-half (search-string match-dir current-buf &optional pop args)
-  (save-excursion
-    (message search-string)
-    (ack-and-a-half search-string t match-dir)
-    (if pop
-        (progn (sticky-window-delete-other-windows)
-               (switch-to-buffer current-buf)
-               (popwin:popup-buffer "*Ack-and-a-half*")
-               (if (not (print truncate-lines))
-                   (toggle-truncate-lines)))
-      (progn (rotate-windows))
-    )))
 
 (defun quick-term (name)
   (interactive "sEnter terminal name : ")
@@ -872,3 +846,7 @@ or a marker."
 
 (provide 'functions)
 ;;; functions.el ends here
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (flycheck-mode 0)
+;; End:

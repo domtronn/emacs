@@ -142,6 +142,9 @@
 (define-key esc-map (kbd "C-r") 'vr/isearch-backward)
 (define-key esc-map (kbd "C-s") 'vr/isearch-forward)
 
+(require 'helm-flx)
+(helm-flx-mode)
+
 (require 'json)
 (require 'json-snatcher)
 
@@ -250,7 +253,6 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-(require 'ac-etags)
 ;; (require 'auto-complete-auctex)
 (require 'ac-dabbrev)
 (require 'ac-math)
@@ -408,10 +410,9 @@
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "c") #'vc-resolve-conflicts)))
 (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
-(add-hook 'vc-annotate-mode-hook (lambda () (sticky-window-delete-other-windows)))
+(add-hook 'magit-status-mode-hook (lambda () (delete-other-windows)))
+(add-hook 'magit-branch-manager-mode-hook (lambda () (delete-other-windows)))
 
-(add-hook 'magit-status-mode-hook (lambda () (sticky-window-delete-other-windows)))
-(add-hook 'magit-branch-manager-mode-hook (lambda () (sticky-window-delete-other-windows)))
 (setq-default magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
