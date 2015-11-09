@@ -99,11 +99,6 @@
 
 (require 'image+)
 (require 'dired+)
-;; (require 'dired-rainbow)
-(require 'dired-filter)
-(require 'dired-k)
-(define-key dired-mode-map (kbd "K") 'dired-k)
-
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") 'kill-all-dired-buffers)))
 
 (require 'git-timemachine)
