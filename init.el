@@ -125,7 +125,6 @@
      (:name runner :buffer "*gulp-watch*"))))
 
 (require 'flycheck)
-(require 'flycheck-rust)
 (global-flycheck-mode)
 ;; (require 'rvm)
 ;; (rvm-use "ruby-2.1.2" "global")
