@@ -254,6 +254,7 @@
 (ac-config-default)
 
 ;; (require 'auto-complete-auctex)
+(require 'ac-etags)
 (require 'ac-dabbrev)
 (require 'ac-math)
 
