@@ -178,6 +178,11 @@
 											 (let ((file (file-name-sans-extension buffer-file-name)))
 												 (format "g++ %s -o %s" buffer-file-name file))))))
 
+(add-hook 'scss-mode-hook
+					(lambda () (set (make-local-variable 'compile-command)
+										 (let ((file (file-name-sans-extension buffer-file-name)))
+											 (format "sass '%s':%s.css" buffer-file-name file)))))
+
 ;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
@@ -246,8 +251,6 @@
 (add-to-list 'auto-mode-alist '("\\.partial" . web-mode))
 
 (define-key web-mode-map (kbd "s-/") 'web-mode-comment-or-uncomment)
-
-(setq scss-compile-at-save t)
 
 (require 'auto-complete)
 (require 'auto-complete-config)
