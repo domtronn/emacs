@@ -465,6 +465,9 @@
 (setq ido-create-new-buffer 'always)
 (setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
 
+(setq split-height-threshold nil) 
+(setq split-width-threshold 0)
+
 ;; sort ido filelist by mtime instead of alphabetically
 (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
 (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
