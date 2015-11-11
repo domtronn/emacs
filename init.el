@@ -411,8 +411,10 @@
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "c") #'vc-resolve-conflicts)))
 (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
 
-(add-hook 'magit-status-mode-hook (lambda () (delete-other-windows)))
-(add-hook 'magit-branch-manager-mode-hook (lambda () (delete-other-windows)))
+(add-hook 'vc-annotate-mode-hook 'sticky-window-delete-other-windows)
+
+(add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
+(add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
 
 (setq-default magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
@@ -464,9 +466,6 @@
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)
 (setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
-
-(setq split-height-threshold nil) 
-(setq split-width-threshold 0)
 
 ;; sort ido filelist by mtime instead of alphabetically
 (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
