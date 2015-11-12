@@ -152,6 +152,7 @@
 (global-set-key [f7] 'helm-swoop)
 
 (global-set-key [M-d] 'kill-word)
+(global-set-key (kbd "H-d") 'delete-pair)
 (global-set-key [(control backspace)] 'backward-kill-word)
 
 (global-set-key (kbd "s-@") 'operate-on-number-at-point)
