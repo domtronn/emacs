@@ -22,50 +22,41 @@
 ;;; common functions used in Emacs
 
 ;;; Code:
+(defvar vertical-mode-on t)
+(defun set-vertical (on-or-off)
+  (setq vertical-mode-on (eq 1 on-or-off))
+  (setq flx-ido-use-faces (eq 1 on-or-off))
+  (setq ido-use-faces (eq 0 on-or-off))
+  (flx-ido-mode on-or-off)
+  (ido-vertical-mode on-or-off))
 
-(defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
-	"Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
-	(disable-vertical)
-	(flx-ido-mode 1))
+(defun enable-vertical-temp (orig-f &rest args)
+  (let ((vertical-mode-temp vertical-mode-on))
+    (set-vertical 1)
+    (apply orig-f args)
+    (set-vertical vertical-mode-temp)))
 
-(defadvice smex (before activate-ido-vertical nil activate)
-	"Disable `ido-vertical-mode` when calling `smex`."
-	(disable-vertical)
-	(flx-ido-mode 1))
+(defun disable-vertical-temp (orig-f &rest args)
+  (let ((vertical-mode-temp vertical-mode-on))
+    (set-vertical 0)
+    (apply orig-f args)
+    (set-vertical vertical-mode-temp)))
 
-(defadvice ido-find-file (before activate-ido-vertical nil activate)
-	"Enable `ido-vertical-mode` when calling `ido-find-file`."
-	(enable-vertical))
+(advice-add 'ido-find-file :around 'enable-vertical-temp)
+(advice-add 'ido-switch-buffer :around 'disable-vertical-temp)
+(advice-add 'smex :around 'disable-vertical-temp)
 
-(defun enable-vertical ()
-	(setq flx-ido-use-faces t)
-	(setq ido-use-faces nil)
-	(flx-ido-mode 1)
-  (ido-vertical-mode 1))
-
-(defun disable-vertical ()
-	(setq flx-ido-use-faces nil)
-	(setq ido-use-faces t)
-	(flx-ido-mode 0)
-  (ido-vertical-mode 0))
-
-;; Disable all themese before loading a new one
-
-(defadvice load-theme (before disable-themes-first activate)
-	"Disable all currently loaded themes."
-  (disable-all-themes))
-
-(defadvice load-theme (after update-powerline-after activate)
-	"Update powerline colours after changing theme."
+;; Disable all themes before loading a new one
+(defun disable-themes-and-update-powerline (orig-f &rest args)
+	(disable-all-themes)
+	(apply orig-f args)
 	(update-powerline))
 
-(defadvice pop-tag-mark (after recenter activate)
-  "Recenters after moving to a tag."
-  (recenter))
-
-(defadvice etags-select-find-tag-at-point (after recenter activate)
-  "Recenters after moving to a tag."
-  (recenter))
+(advice-add 'load-theme :around 'disable-themes-and-update-powerline)
 
 (provide 'advice)
 ;;; advice.el ends here
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (flycheck-mode 0)
+;; End:
