@@ -258,9 +258,6 @@
 (require 'ac-dabbrev)
 (require 'ac-math)
 
-
-;; (add-to-list 'ac-dictionary-directories (concat base-path "/elisp/ac-dict"))
-
 (define-key ac-completing-map "\e" 'ac-stop) ; use esc key to exit completion
 (define-key ac-complete-mode-map [tab] 'ac-expand-common)
 (define-key ac-complete-mode-map [return] 'ac-complete)
@@ -314,16 +311,9 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.spv?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss?\\'" . scss-mode))
-
 (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
 
-;; (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
-;; (add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
-
-(setq js2-enter-indents-newline t)
-
 (setq truncate-lines nil)
-(setq org-agenda-include-diary t)
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
@@ -340,7 +330,8 @@
 
 (add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
-;; (add-hook 'js-mode-hook '(lambda () (add-hook 'write-contents-hooks 'format-code))) ; Run code formatting before save
+
+(setq js2-enter-indents-newline t)
 
 (add-to-list 'js2-global-externs "require")
 (add-to-list 'js2-global-externs "log")
@@ -357,25 +348,7 @@
 								(split-string
 								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext)
 										 (match-string-no-properties 1 btext) "")
-								 " *, *" t))
-					))))
-
-;; Java Mode - Malabar Mode
-(when (require 'malabar-mode nil 'no-error)
-	(require 'semantic)
-	(semantic-mode 1)
-	(require 'cedet)
-	(add-to-list 'load-path (concat base-path "/elisp/malabar-mode/src/main/lisp"))
-	(setq malabar-groovy-lib-dir (concat base-path "/elisp/malabar-mode/target"))
-	(add-to-list 'auto-mode-alist '("\\.java\\'" . malabar-mode))
-	(eval-after-load 'malabar-mode '(setq malabar-groovy-java-options nil))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-.") 'my-malabar-jump-to-thing))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H->") 'malabar-find-implementations))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "H-<") 'malabar-start-find-parent))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-b") 'malabar-import-one-class))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "s-B") 'malabar-import-sort-imports))
-	(eval-after-load 'malabar-mode '(define-key malabar-mode-map (kbd "M-q") 'er/expand-region))
-	(add-hook 'malabar-mode-hook #'(lambda () (add-hook 'after-save-hook 'add-file-to-project-cache))))
+								 " *, *" t))))))
 
 (require 'grunt "~/code/grunt-el/grunt.el")
 
