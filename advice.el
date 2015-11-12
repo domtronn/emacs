@@ -24,6 +24,7 @@
 ;;; Code:
 (defun set-vertical (on-or-off)
   (setq ido-use-faces (eq 0 on-or-off))
+  (setq flx-ido-use-faces (eq 0 on-or-off))
   (ido-vertical-mode on-or-off))
 
 (defun disable-vertical-temp (orig-f &rest args)
@@ -31,8 +32,10 @@
   (apply orig-f args)
   (set-vertical 1))
 
-(advice-add 'ido-switch-buffer :around 'disable-vertical-temp)
-(advice-add 'smex :around 'disable-vertical-temp)
+(defvar disable-vertical-temp-funcs '(ido-switch-buffer smex)
+  "A list of functions to wrap with the disable vertical mode temporarily.")
+
+(mapc (lambda (f) (advice-add f :around 'disable-vertical-temp)) disable-vertical-temp-funcs)
 
 ;; Disable all themes before loading a new one
 (defun disable-themes-and-update-powerline (orig-f &rest args)
