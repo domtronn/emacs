@@ -329,9 +329,6 @@
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
-(require 'highlight-current-line)
-(highlight-current-line-on)
-
 (require 'hideshowvis)
 (hideshowvis-symbols)
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)

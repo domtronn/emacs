@@ -1,1 +1,0 @@
-(define-package "highlight-current-line" "20051013.1056" "highlight line where the cursor is." 'nil :keywords '("faces"))
