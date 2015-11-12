@@ -461,15 +461,12 @@
 (ido-mode 1)
 (ido-ubiquitous-mode 1)
 (ido-vertical-mode 1)
+(flx-ido-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)
 (setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
-
-;; sort ido filelist by mtime instead of alphabetically
-(add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
-(add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers

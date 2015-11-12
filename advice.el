@@ -22,27 +22,15 @@
 ;;; common functions used in Emacs
 
 ;;; Code:
-(defvar vertical-mode-on t)
 (defun set-vertical (on-or-off)
-  (setq vertical-mode-on (eq 1 on-or-off))
-  (setq flx-ido-use-faces (eq 1 on-or-off))
   (setq ido-use-faces (eq 0 on-or-off))
-  (flx-ido-mode on-or-off)
   (ido-vertical-mode on-or-off))
 
-(defun enable-vertical-temp (orig-f &rest args)
-  (let ((vertical-mode-temp vertical-mode-on))
-    (set-vertical 1)
-    (apply orig-f args)
-    (set-vertical vertical-mode-temp)))
-
 (defun disable-vertical-temp (orig-f &rest args)
-  (let ((vertical-mode-temp vertical-mode-on))
-    (set-vertical 0)
-    (apply orig-f args)
-    (set-vertical vertical-mode-temp)))
+  (set-vertical 0)
+  (apply orig-f args)
+  (set-vertical 1))
 
-(advice-add 'ido-find-file :around 'enable-vertical-temp)
 (advice-add 'ido-switch-buffer :around 'disable-vertical-temp)
 (advice-add 'smex :around 'disable-vertical-temp)
 
