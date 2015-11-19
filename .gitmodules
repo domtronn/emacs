@@ -7,3 +7,6 @@
 [submodule "elisp/magit-gh-issues"]
 	path = elisp/magit-gh-issues
 	url = git@github.com:domtronn/magit-gh-issues.el.git
+[submodule "elisp/emacs-livedown"]
+	path = elisp/emacs-livedown
+	url = https://github.com/shime/emacs-livedown.git

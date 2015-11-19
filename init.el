@@ -319,6 +319,8 @@
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
+(require 'livedown (expand-file-name (concat base-path "elisp/emacs-livedown/livedown.el")))
+
 (require 'hideshowvis)
 (hideshowvis-symbols)
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
