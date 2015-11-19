@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : node module
+# expand-env: ((yas/indent-line 'fixed))
+# --
+'use strict';
+
+module.exports = function ($1) {
+    $0
+};

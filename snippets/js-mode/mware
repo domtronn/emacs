@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : express middleware
+# expand-env: ((yas/indent-line 'fixed))
+# --
+'use strict';
+
+module.exports = function (req, res, next) {
+    $0
+};
