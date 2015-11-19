@@ -52,6 +52,8 @@
 (global-set-key (kbd "C-x c") 'compile)
 (global-set-key (kbd "C-c w") 'esw/select-window)
 
+(global-set-key (kbd "C-x |") 'toggle-window-split)
+
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
 (global-set-key (kbd "s-W")
