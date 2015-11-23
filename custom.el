@@ -210,7 +210,7 @@ static char *note[] = {
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
 	 (quote
-		("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "afterEach" "clearTimeout" "sinon" "describe" "it" "define" "setInterval" "setTimeout" "bbc")))
+		("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "afterEach" "clearTimeout" "sinon" "describe" "it" "define" "setInterval" "setTimeout" "bbc" "beforeAll")))
  '(jshint-configuration-path "~/.jshintrc")
  '(jshint-mode-jshintrc "~/.jshintrc")
  '(jshint-mode-mode "jslint")
