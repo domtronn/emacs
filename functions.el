@@ -870,6 +870,18 @@ or a marker."
   (interactive "sDebug variable: ")
 	(insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
 
+(defun magit-whitespace-cleanup ()
+  (interactive)
+  (let ((current-section (magit-current-section)))
+    (when (eq 'file (magit-section-type current-section))
+      (let* ((file-name (expand-file-name (magit-section-value current-section)))
+             (file-buffer (or (get-file-buffer file-name) (create-file-buffer file-name))))
+        (with-current-buffer file-buffer
+          (goto-char (point-min))
+          (whitespace-cleanup)
+          (save-buffer file-buffer)))
+      (magit-refresh))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
