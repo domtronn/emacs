@@ -162,6 +162,15 @@
 
 (add-hook 'js2-mode-hook 'js-injector-minor-mode)
 
+(add-hook 'js2-mode-hook
+					'(lambda ()
+						 (push '("function" . ?ƒ) prettify-symbols-alist)
+						 (push '("_" . ?λ) prettify-symbols-alist)
+						 (push '("_.map" . ?↦) prettify-symbols-alist)
+						 (push '("<=" . ?≤) prettify-symbols-alist)
+						 (push '(">=" . ?≥) prettify-symbols-alist)
+						 (prettify-symbols-mode)))
+
 (add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'web-mode-hook 'skewer-html-mode)
