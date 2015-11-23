@@ -658,11 +658,11 @@ or nil if not found."
       (let ((my-tags-file (file-truename (find-file-upwards ".tags"))))
         (when my-tags-file
           (clear-tags-table)
-          (ac-etags-clear-cache)
           (message "Loading tags file: %s" my-tags-file)
           (visit-tags-table my-tags-file)))
-    (progn (ac-etags-setup)
-           (ac-etags-ac-setup))))
+    ;; (progn (ac-etags-setup)
+    ;;        (ac-etags-ac-setup))
+    ))
 
 (defun jds-find-tags-file ()
   "recursively searches each parent directory for a file named 'TAGS' and returns the

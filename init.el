@@ -263,7 +263,6 @@
 (ac-config-default)
 
 ;; (require 'auto-complete-auctex)
-(require 'ac-etags)
 (require 'ac-dabbrev)
 (require 'ac-math)
 
@@ -278,8 +277,7 @@
 									ac-source-yasnippet
 									ac-source-semantic
 									ac-source-dabbrev
-									ac-source-files-in-current-dir
-									))
+									ac-source-files-in-current-dir))
 
 (add-hook 'web-mode-hook 'ac-html-enable)
 (add-to-list 'web-mode-ac-sources-alist
