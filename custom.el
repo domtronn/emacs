@@ -21,6 +21,7 @@
  '(ac-expand-on-auto-complete t)
  '(ack-and-a-half-arguments (quote (nil)))
  '(ack-and-a-half-executable "/usr/local/bin/ack")
+ '(abbrev-file-name "~/.emacs.d/snippets/abbrev_defs")
  '(ansi-color-faces-vector
 	 [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector

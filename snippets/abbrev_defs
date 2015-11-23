@@ -1,0 +1,20 @@
+(define-abbrev-table 'global-abbrev-table
+	'(
+		("afaict" "as far as I can tell" nil 1)
+		("wrt" "with respect to" nil 1)
+		("atm" "at the moment" nil 1)
+		("bc" "because" nil 1)
+		("k" "the" nil 1)
+		("dvt" "development" nil 1)
+		("imo" "in my opinion" nil 1)
+		("prj" "project" nil 1)
+		("fe" "for example" nil 1)
+		("eg" "example" nil 1)
+		("btw" "by the way" nil 3)
+		("wether" "whether" nil 5)
+		("pov" "point of view" nil 1)))
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (emacs-lisp-mode)
+;; eval: (flycheck-mode 0)
+;; End:
