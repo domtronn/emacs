@@ -32,6 +32,8 @@ xkcd
 *tutorial*
 *flycheck_init.el*
 
+*.wav
+
 # Emacs Directories form Packages #
 ###################################
 /var/
