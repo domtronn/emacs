@@ -23,9 +23,12 @@
 ;;; Code:
 
 ;; My Keys
+
+(global-set-key (kbd "s-q") 'you-can-never-leave) ;; Welcome to the Hotel Califronia
+
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
-(global-set-key [M-tab] 'abbrev-expand)
+(global-set-key [M-tab] 'dabbrev-expand)
 (global-set-key [S-tab] 'auto-complete)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 

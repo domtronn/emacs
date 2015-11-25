@@ -882,6 +882,11 @@ or a marker."
           (save-buffer file-buffer)))
       (magit-refresh))))
 
+(defun you-can-never-leave ()
+  (interactive)
+  (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav\\\"\"")
+  (restart-emacs))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
