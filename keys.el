@@ -24,7 +24,9 @@
 
 ;; My Keys
 
-(global-set-key (kbd "s-q") 'you-can-never-leave) ;; Welcome to the Hotel Califronia
+;; Welcome to the Hotel Califronia
+(global-set-key (kbd "s-q") 'you-can-never-leave)
+(global-set-key (kbd "C-x C-c") 'you-can-never-leave)
 
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
@@ -43,16 +45,13 @@
 (global-set-key (kbd "C-,") 'smart-backward)
 
 (global-set-key (kbd "RET") 'smart-newline)
-;; (global-set-key (kbd "M-\"") 'add-quotation)
 
 ;; Ace jump keys
 (global-set-key (kbd "C-c SPC") 'ace-jump-char-mode)
 (global-set-key (kbd "C-c C-x SPC") 'ace-jump-zap-to-char)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-word-mode)
 
-(global-unset-key (kbd "C-x C-c"))
 (global-set-key (kbd "C-x c") 'compile)
-(global-set-key (kbd "C-c w") 'esw/select-window)
 
 (global-set-key (kbd "C-x |") 'toggle-window-split)
 
@@ -63,7 +62,6 @@
 
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
 (global-set-key (kbd "C-c M-x") 'execute-extended-command)
 
 ;; Alignment
@@ -110,7 +108,6 @@
 
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
-(global-set-key (kbd "M-s-¬") 'jshint-code)
 
 (global-set-key (kbd "s-m") 'mark-paragraph)
 (global-set-key (kbd "s-:") 'eval-region)
@@ -145,15 +142,12 @@
 (global-set-key (kbd "<M-f2>") 'ag-regexp)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
-(global-set-key [f4] 'run-current-file)
-(global-set-key (kbd "<S-f4>") 'alt-run-current-file)
 
 (global-set-key [f5] 'vc-ediff)
-(global-set-key (kbd "<M-f5>") 'vc-next-action)
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
-(global-set-key [f7] 'helm-swoop)
+(global-set-key (kbd "M-o") 'helm-swoop)
 
 (global-set-key [M-d] 'kill-word)
 (global-set-key (kbd "H-d") 'delete-pair)
@@ -169,21 +163,10 @@
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
 (global-set-key (kbd "s-N") 'drag-stuff-down)
-(global-set-key [s-down] 'drag-stuff-down)
 (global-set-key (kbd "s-P") 'drag-stuff-up)
-(global-set-key [s-up] 'drag-stuff-up)
 
-(global-set-key [M-up] '(lambda () (interactive) (previous-line 5)))
-(global-set-key [M-down] '(lambda () (interactive) (next-line 5)))
-(global-set-key [C-up] '(lambda () (interactive) (previous-line 5)))
-(global-set-key [C-down] '(lambda () (interactive) (next-line 5)))
-
-(global-set-key [S-M-up] '(lambda () (interactive) (previous-line 15)))
-(global-set-key [S-M-down] '(lambda () (interactive) (next-line 15)))
-(global-set-key (kbd "M-P") '(lambda () (interactive) (previous-line 15)))
-(global-set-key (kbd "M-N") '(lambda () (interactive) (next-line 15)))
-(global-set-key [C-S-M-up] '(lambda () (interactive) (progn(previous-line 15) (recenter))))
-(global-set-key [C-S-M-down] '(lambda () (interactive) (progn (next-line 15) (recenter))))
+(global-set-key (kbd "M-P") '(lambda () (interactive) (previous-line 5)))
+(global-set-key (kbd "M-N") '(lambda () (interactive) (next-line 5)))
 
 (global-set-key (kbd "C-z") 'ahahah)
 
@@ -202,7 +185,6 @@
 (global-set-key (kbd "M-q") 'er/expand-region)
 (global-set-key (kbd "H-q") 'er/expand-region)
 
-(global-set-key (kbd "s-R") 'mc/mark-all-like-this)
 (global-set-key (kbd "s-n") 'mc/mark-next-symbol-like-this)
 (global-set-key (kbd "s-p") 'mc/mark-previous-symbol-like-this)
 
@@ -221,8 +203,6 @@
 (global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
 
 (global-set-key (kbd "C-=") 'insert-random-return)
-
-(global-set-key "\C-c\C-d" 'osx-dictionary-search-pointer)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
 

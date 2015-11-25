@@ -31,13 +31,15 @@
 ;; Load Files
 ;;------------------
 
-(require 'drag-stuff "drag-stuff.elc")
 (require 'linum-off  "linum-off.elc")
-(require 'mon-css-color "mon-css-color.elc")
 
-;;------------------
-;; Requires
-;;------------------
+(require 'drag-stuff "drag-stuff.elc")
+(drag-stuff-global-mode 1)
+
+(require 'mon-css-color "mon-css-color.elc")
+(autoload 'css-color-mode "mon-css-color" "" t)
+(css-color-global-mode)
+
 (require 'package)
 (setq-default package-user-dir (concat base-path "packages/elpa"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -46,17 +48,11 @@
 (require 'rainbow-delimiters)
 (require 'paren)
 
-(require 'multiple-cursors)   ; Amazing package to allow simultaneous multiline editiing
-
-;(require 'tex)
-;(TeX-global-PDF-mode t)
+(require 'multiple-cursors)
 
 (require 'ibuffer)
 (add-hook 'ibuffer-mode-hook (lambda () (local-set-key (kbd "G") #'ibuffer-vc-set-filter-groups-by-vc-root)))
 (define-key ibuffer-mode-map (kbd "M-u") 'ibuffer-unmark-all)
-
-(autoload 'css-color-mode "mon-css-color" "" t)
-(css-color-global-mode)
 
 (require 'smart-forward)
 (require 'smart-newline)
@@ -69,12 +65,8 @@
 
 (require 'operate-on-number)
 
-;; ;; Extra Packages
-;; (require 'scala-mode2)  ;; https://github.com/hvesalai/scala-mode2
-;; (require 'feature-mode) ;; https://github.com/michaelklishin/cucumber.el
-;; (require 'groovy-mode)  ;; http://groovy.codehaus.org/Emacs+Groovy+Mode
-
 (require 'smex)
+(smex-initialize)
 
 (require 'popup)
 (require 'popwin)
@@ -82,14 +74,8 @@
 (setq popwin:close-popup-window-timer-interval 0.1)
 (setq popwin:close-popup-window-timer nil)
 
-(autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
-
-(global-prettify-symbols-mode)
-
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-(drag-stuff-global-mode 1)
 
 (require 'etags-select)
 
@@ -126,10 +112,7 @@
 
 (require 'flycheck)
 (global-flycheck-mode)
-;; (require 'rvm)
-;; (rvm-use "ruby-2.1.2" "global")
 
-(require 'filecache)
 (require 'projectable (expand-file-name (concat base-path "elisp/projectable/projectable.el")))
 (projectable-global-mode)
 
@@ -139,9 +122,6 @@
 (define-key global-map (kbd "C-c m") 'vr/mc-mark)
 (define-key global-map (kbd "s-r") 'vr/query-replace)
 
-(define-key esc-map (kbd "C-r") 'vr/isearch-backward)
-(define-key esc-map (kbd "C-s") 'vr/isearch-forward)
-
 (require 'helm-flx)
 (helm-flx-mode)
 
@@ -150,19 +130,11 @@
 
 (require 'js2-mode)
 (require 'js2-refactor)
-(require 'js-dependency-injector
-	 "js-dependency-injector/js-dependency-injector.el")
-
-(defun js-mode-bindings ()
-	"Set a hotkey for using the json-snatcher plugin."
-	(when (string-match  "\\.json$" (buffer-name))
-		(local-set-key (kbd "C-c C-c") 'jsons-print-path)))
-
-(add-hook 'js-mode-hook 'js-mode-bindings)
-(add-hook 'js2-mode-hook 'js-mode-bindings)
+(require 'js-dependency-injector "js-dependency-injector/js-dependency-injector.el")
 
 (add-hook 'js2-mode-hook 'js-injector-minor-mode)
 
+(global-prettify-symbols-mode)
 (add-hook 'js2-mode-hook
 					'(lambda ()
 						 (push '("function" . ?ƒ) prettify-symbols-alist)
@@ -173,8 +145,7 @@
 						 (push '("_.map" . ?↦) prettify-symbols-alist)
 						 (push '("R.map" . ?↦) prettify-symbols-alist)
 						 (push '("<=" . ?≤) prettify-symbols-alist)
-						 (push '(">=" . ?≥) prettify-symbols-alist)
-						 (prettify-symbols-mode)))
+						 (push '(">=" . ?≥) prettify-symbols-alist)))
 
 (add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
@@ -194,12 +165,12 @@
 										 (let ((file (file-name-sans-extension buffer-file-name)))
 											 (format "sass '%s':%s.css" buffer-file-name file)))))
 
-;; (eval-after-load 'skewer-mode '(define-key js2-mode-map (kbd "<s-return>") 'skewer-eval-defun))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-B") 'update-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "M-s-∫") 'require-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "M-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-x c") 'grunt-exec))
 
@@ -211,20 +182,21 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-l") 'js2r-log-this))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-k") 'js2r-kill))
 
-(add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
-(add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-(add-hook 'js2-mode-hook '(lambda () (add-hook 'after-save-hook 'js-hlt-nonused-dependencies)))
 (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
+(add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
+(eval-after-load 'tern
+	'(progn
+		 (require 'tern-auto-complete)
+		 (tern-ac-setup)))
+
+(require 'flyspell)
+(add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
 
 (add-hook 'latex-mode 'flyspell-mode)
 (add-hook 'text-mode 'flyspell-mode)
 
-(require 'flyspell)
-(add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
 (define-key flyspell-mode-map (kbd "M-/") 'flyspell-popup-correct)
 
-;; (add-hook 'scala-mode-hook '(lambda () (find-tags-file-upwards)))
-;; (add-hook 'groovy-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
@@ -235,18 +207,9 @@
 (setq yas-snippet-dirs (concat base-path "/snippets"))
 (yas-global-mode)
 
-(add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
 	"Set the coding system of ansi terminals."
 	(set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
-
-(eval-after-load 'tern
-	 '(progn
-			(require 'tern-auto-complete)
-			(tern-ac-setup)))
-
-(require 'osx-dictionary)
-(push "*osx-dictionary*" popwin:special-display-config)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names
@@ -345,33 +308,6 @@
 (hideshowvis-symbols)
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
-(require 'key-combo)
-(key-combo-mode 1)
-(key-combo-load-default)
-(key-combo-define emacs-lisp-mode-map "="  '("= " "eq " "equal "))
-
-(add-hook 'js2-mode-hook '(lambda () (find-tags-file-upwards)))
-(add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) ; Add Underscore as part of word syntax
-
-(setq js2-enter-indents-newline t)
-
-(add-to-list 'js2-global-externs "require")
-(add-to-list 'js2-global-externs "log")
-
-;; Java Script 2 mode to load accepted variables to stop warnings for known globals
-(add-hook 'js2-post-parse-callbacks
-		(lambda ()
-			(when (> (buffer-size) 0)
-				(let ((btext (replace-regexp-in-string
-					": *true" " "
-					(replace-regexp-in-string "[\n\t ]+" " "
-									(buffer-substring-no-properties 1 (buffer-size)) t t))))
-					(mapc (apply-partially 'add-to-list 'js2-additional-externs)
-								(split-string
-								 (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext)
-										 (match-string-no-properties 1 btext) "")
-								 " *, *" t))))))
-
 (require 'grunt "~/code/grunt-el/grunt.el")
 
 (require 'repository-root)
@@ -396,7 +332,6 @@
 
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "K") #'vc-dir-kill-all-lines-at-mark)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "d") #'vc-ediff)))
-(add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "U") #'(lambda () (interactive) (vc-dir-hide-state 'unregistered)))))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "q") #'kill-this-buffer)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "r") #'vc-revert)))
 (add-hook 'vc-dir-mode-hook (lambda () (local-set-key (kbd "P") #'magit-push)))
@@ -407,9 +342,6 @@
 
 (add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
 (add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
-
-(setq-default magit-auto-revert-mode nil)
-(setq magit-last-seen-setup-instructions "1.4.0")
 
 (require 'magit-gh-issues (expand-file-name (concat base-path "elisp/magit-gh-issues/magit-gh-issues.el")))
 (require 'magit-gh-issues-emoji (expand-file-name (concat base-path "elisp/magit-gh-issues-emoji/magit-gh-issues-emoji.el")))
@@ -458,7 +390,6 @@
 (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
 (setq ido-enable-regexp t)
 (setq ido-create-new-buffer 'always)
-(setq-default ido-file-extensions-order '(".js" ".java" ".json" ".css" ".as" ".php" ".xml" ".emacs" ".ini" ".el" ".ini" ".cfg" ".cnf"))
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
