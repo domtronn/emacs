@@ -149,6 +149,7 @@
 (require 'json-snatcher)
 
 (require 'js2-mode)
+(require 'js2-refactor)
 (require 'js-dependency-injector
 	 "js-dependency-injector/js-dependency-injector.el")
 
@@ -197,6 +198,14 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-x c") 'grunt-exec))
+
+;; JS2 Refactor things
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-e") 'js2r-extract-var))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-i") 'js2r-inline-var))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-f") 'js2r-extract-function))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-r") 'js2r-rename-var))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-l") 'js2r-log-this))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-k") 'js2r-kill))
 
 (add-hook 'js2-mode-hook 'js-hlt-nonused-dependencies)
 (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
