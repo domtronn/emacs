@@ -60,7 +60,7 @@
 (smartparens-global-mode)
 
 (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+(sp-local-pair '(lisp-mode emacs-lisp-mode) "'" nil :actions nil)
 (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
 
 (require 'operate-on-number)
