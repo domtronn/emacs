@@ -169,7 +169,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c s-B") 'sort-dependencies))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "s-b") 'inject-dependency-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "M-s-∫") 'require-dependency-at-point))
-(eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'go-to-thing-at-point))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "H-.") 'jump-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "M-.") 'go-to-thing-at-point))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-n") 'js2-next-error))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-x c") 'grunt-exec))
@@ -181,7 +181,13 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-f") 'js2r-extract-function))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-r") 'js2r-rename-var))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-l") 'js2r-log-this))
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c .") 'js2-jump-to-definition))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-k") 'js2r-kill))
+
+(add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
+
+(define-key emacs-lisp-mode-map (kbd "C-c C-l") 'elisp-debug)
+(define-key emacs-lisp-mode-map (kbd "H-. ") 'jump-to-find-function)
 
 (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
 (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
@@ -203,6 +209,10 @@
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+
+(require 'key-combo)
+(key-combo-mode 1)
+(key-combo-load-default)
 
 (require 'yasnippet)
 (setq yas-snippet-dirs (concat base-path "/snippets"))

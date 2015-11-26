@@ -68,34 +68,35 @@
       (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
           (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
 
-(defun go-to-class ()
+(defun jump-to-class ()
   "Find and go to the class at point"
   (interactive)
   (let ((class-name (thing-at-point 'symbol)))
     (ring-insert find-tag-marker-ring (point-marker))
     (save-excursion
       (beginning-of-buffer)
-      (let ((start (search-forward-regexp "function\\s-*("))
+      (let ((start (search-forward-regexp "function\\s-*(" (point-max) t))
             (end (- (search-forward ")") 1)))
         (goto-char start)
         (if (search-forward class-name end t)
             (mapcar #'(lambda (lib-alist)
-                         (let* ((id (car lib-alist))
-                                (file-alist (cdr lib-alist))
-                                (record (assoc (concat (downcase class-name) ".js") file-alist)))
-                           (if (and record (= (length record) 2))
-                               (let ((found-file (cadr record)))
-                                 (message "Found %s" found-file)
-                                 (find-file found-file))
-                             (message "Couldn't find a cached file for %s..." class-name))))
-                     projectable-project-alist)
+                        (let* ((id (car lib-alist))
+                               (file-alist (cdr lib-alist))
+                               (record (assoc (concat (downcase class-name) ".js") file-alist)))
+                          (if (and record (= (length record) 2))
+                            (let ((found-file (cadr record)))
+                              (message "Found %s" found-file)
+                              (find-file found-file))
+                            nil)))
+                    projectable-project-alist)
           nil)))))
 
-(defun go-to-require ()
+(defun jump-to-require ()
   "Tries to load the require path assoscaited with a variable for node includes"
   (interactive)
   (save-excursion
     (ring-insert find-tag-marker-ring (point-marker))
+    (goto-char (line-beginning-position))
     (let ((require-pos (search-forward "require" (line-end-position) t)))
       (when require-pos
         (if (search-forward-regexp "(['\"]\\(.*?\\)['\"])" (line-end-position) t)
@@ -108,35 +109,26 @@
                               (let ((found-file (cadr record)))
                                 (message "Found %s" found-file)
                                 (find-file found-file))
-                            (message "Couldn't find a cached file for %s..." file))))
+                            nil)))
                     projectable-project-alist)
           nil)))))
 
-(defun etags-select-find-tag-at-point-fallback ()
-  "If there is a thing at point call find thing at point, else find thing"
-  (if (thing-at-point 'symbol)
-      (etags-select-find-tag-at-point)
-    (etags-select-find-tag)))
+(defun jump-to-find-function ()
+  "Go to the function definition for elisp"
+  (interactive)
+  (ring-insert find-tag-marker-ring (point-marker))
+  (find-function (intern (thing-at-point 'symbol))))
 
-(defun go-to-thing-at-point ()
+(defun jump-to-thing-at-point ()
   "Go to the thing at point assuming if it's not a class or function it's a variable."
   (interactive)
   (let ((thing (thing-at-point 'symbol))
-        (thing-point (point)))
-    (if (eq nil (go-to-require))
-        (if (eq nil (go-to-class))
-            (if (eq nil (search-backward-regexp
-                         (format "var\\s-*%s" thing) (point-min) t))
-                (if (eq nil (search-backward-regexp
-                             (format "function\\s-*(.*%s" thing) (point-min) t))
-                    (progn
-                      (search-backward ".")
-                      (let ((thing-clazz (thing-at-point 'symbol)))
-                        (goto-char thing-point)
-                        (etags-select-find-tag-at-point)))
-                  (progn
-                    (search-forward thing)
-                    (backward-word))))))))
+        (p (point)))
+    (when (and (eq nil (jump-to-require))
+               (eq nil (jump-to-class)))
+      (ignore-errors (js2-jump-to-definition))
+      (when (eq p (point))
+        (etags-select-find-tag-at-point)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
@@ -596,9 +588,11 @@ or a marker."
           (save-buffer file-buffer)))
       (magit-refresh))))
 
-(defun you-can-never-leave ()
+(defun you-can-never-leave (&optional full)
   (interactive)
-  (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\"")
+  (if full
+      (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
+      (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\""))
   (restart-emacs))
 
 (provide 'functions)

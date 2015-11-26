@@ -52,9 +52,19 @@
 (defun disable-themes-and-update-powerline (orig-f &rest args)
 	(disable-all-themes)
 	(apply orig-f args)
-	(update-powerline))
+	(update-powerline)
+  (context-coloring-mode 0))
 
 (advice-add 'load-theme :around 'disable-themes-and-update-powerline)
+
+(defun enable-and-disable-vertical (orig-f &rest args)
+  (enable-vertical)
+  (call-interactively orig-f)
+  (disable-vertical))
+
+(mapc '(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
+      '(projectable-find-file projectable-find-test
+        projectable-find-file-other-window projectable-find-test-other-window))
 
 (provide 'advice)
 ;;; advice.el ends here
