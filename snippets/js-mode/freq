@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#name : var x = require('x');
+# --
+var ${1:$$(setq yas--temp-file (ido-completing-read "Require: " (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist)))} = require('${1:$(when yas-modified-p (let ((relative-name (file-relative-name (cadr (assoc yas--temp-file (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist))) (file-name-directory (buffer-file-name))))) (insert (if (string-match "^[a-zA-Z]" relative-name) (concat "./" relative-name) relative-name))) (yas-exit-all-snippets))}');$0

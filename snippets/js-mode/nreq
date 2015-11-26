@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#name : var x = require('x');
+# --
+`(call-interactively 'require-node-module-at-point)`
