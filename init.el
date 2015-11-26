@@ -361,6 +361,7 @@
 (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
 (add-hook 'magit-mode-hook 'image-minor-mode)
 
+(eval-after-load 'magit '(define-key magit-mode-map (kbd "C-c c") 'magit-whitespace-cleanup))
 (eval-after-load 'magit '(define-key magit-mode-map (kbd "C-<tab>") 'projectable-find-file))
 
 ;; Startup variables
