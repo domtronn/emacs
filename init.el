@@ -378,7 +378,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
 (setq-default cursor-type 'bar)             ; Change cursor to bar
-(setq-default indent-tabs-mode t)           ; always replace tabs with spaces
+(setq-default indent-tabs-mode nil)         ; always replace tabs with spaces
 (setq-default tab-width 2)
 (setq js-indent-level 2)
 ;; (setq dired-listing-switches "-alk")        ; dired less info
