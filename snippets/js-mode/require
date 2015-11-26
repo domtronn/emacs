@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
-#name : require
+#name : var x = require('x');
 # --
-var $1 = `(if (string-match "require.*rewire" (buffer-string)) (yas-choose-value "require" "rewire") (format "require"))`(`(get-quote-char)`$0${$1}`(get-quote-char)`);
+require('`(let ((relative-name (file-name-sans-extension (file-relative-name (cadr (assoc (ido-completing-read "Require: " (--filter (string-match "\.js$" (cadr it)) (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist))) (--filter (string-match "\.js$" (cadr it)) (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist)))) (file-name-directory (buffer-file-name)))))) (let ((result (if (string-match "^[a-zA-Z]" relative-name) (concat "./" relative-name) relative-name)))  result))`')
