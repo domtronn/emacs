@@ -152,7 +152,7 @@
 
 (defun open-current-file ()
   "Open the current file in different things."
-	(interactive)
+  (interactive)
   (let ((type (completing-read
                "Open current file in editor: " '("IntelliJ IDEA" "Sublime Text" "Atom" "Chrome" "Finder") nil nil)))
     (cond ((string-equal type "Sublime Text") (open-in "subl"))
@@ -239,11 +239,11 @@
   (mapc 'kill-buffer (buffer-list)))
 
 (defun kill-buffer-regexps (r)
-	"Kill all buffers matching regexp R."
+  "Kill all buffers matching regexp R."
   (interactive "sEnter Regexp: ")
-	(let ((killable-buffers (-filter '(lambda (b) (string-match r (buffer-name b))) (buffer-list))))
-		(when (yes-or-no-p (format "Kill %d buffers matching \"%s\"? " (length killable-buffers) r))
-			(mapc #'kill-buffer killable-buffers))))
+  (let ((killable-buffers (-filter '(lambda (b) (string-match r (buffer-name b))) (buffer-list))))
+    (when (yes-or-no-p (format "Kill %d buffers matching \"%s\"? " (length killable-buffers) r))
+      (mapc #'kill-buffer killable-buffers))))
 
 ;; ============================================================================
 
@@ -574,7 +574,15 @@ or a marker."
 
 (defun elisp-debug (var)
   (interactive "sDebug variable: ")
-	(insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
+  (insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
+
+(defun smart-delete-char (&rest args)
+  "Smartly delete character or pair based on the next character."
+  (interactive)
+    (let ((next-char (buffer-substring (point) (+ (point) 1))))
+     (if (string-match "[\{\(\[\"']" next-char)
+         (delete-pair)
+       (delete-char args))))
 
 (defun magit-whitespace-cleanup ()
   (interactive)
