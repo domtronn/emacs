@@ -33,6 +33,7 @@ xkcd
 *flycheck_init.el*
 
 *.wav
+*.m4a
 
 # Emacs Directories form Packages #
 ###################################
