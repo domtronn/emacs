@@ -115,6 +115,7 @@
 
 (require 'projectable (expand-file-name (concat base-path "elisp/projectable/projectable.el")))
 (projectable-global-mode)
+(add-hook 'projectable-toggle-test-fallback-hook 'projectable-find-test)
 
 (require 'visual-regexp)
 (define-key global-map (kbd "C-c r") 'vr/replace)
