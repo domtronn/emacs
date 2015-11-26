@@ -175,6 +175,7 @@
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-x c") 'grunt-exec))
 
 ;; JS2 Refactor things
+(eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-m") 'context-coloring-mode))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-e") 'js2r-extract-var))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-i") 'js2r-inline-var))
 (eval-after-load 'js '(define-key js2-mode-map (kbd "C-c C-f") 'js2r-extract-function))
