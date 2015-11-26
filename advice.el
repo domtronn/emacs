@@ -23,36 +23,36 @@
 
 ;;; Code:
 (defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
-	"Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
-	(disable-vertical)
-	(flx-ido-mode 1))
+  "Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
+  (disable-vertical)
+  (flx-ido-mode 1))
 
 (defadvice smex (before activate-ido-vertical nil activate)
-	"Disable `ido-vertical-mode` when calling `smex`."
-	(disable-vertical)
-	(flx-ido-mode 1))
+  "Disable `ido-vertical-mode` when calling `smex`."
+  (disable-vertical)
+  (flx-ido-mode 1))
 
 (defadvice ido-find-file (before activate-ido-vertical nil activate)
-	"Enable `ido-vertical-mode` when calling `ido-find-file`."
-	(enable-vertical))
+  "Enable `ido-vertical-mode` when calling `ido-find-file`."
+  (enable-vertical))
 
 (defun enable-vertical ()
-	(setq flx-ido-use-faces t)
-	(setq ido-use-faces nil)
-	(flx-ido-mode 1)
+  (setq flx-ido-use-faces t)
+  (setq ido-use-faces nil)
+  (flx-ido-mode 1)
   (ido-vertical-mode 1))
 
 (defun disable-vertical ()
-	(setq flx-ido-use-faces nil)
-	(setq ido-use-faces t)
-	(flx-ido-mode 0)
+  (setq flx-ido-use-faces nil)
+  (setq ido-use-faces t)
+  (flx-ido-mode 0)
   (ido-vertical-mode 0))
 
 ;; Disable all themes before loading a new one
 (defun disable-themes-and-update-powerline (orig-f &rest args)
-	(disable-all-themes)
-	(apply orig-f args)
-	(update-powerline)
+  (disable-all-themes)
+  (apply orig-f args)
+  (update-powerline)
   (context-coloring-mode 0))
 
 (advice-add 'load-theme :around 'disable-themes-and-update-powerline)
