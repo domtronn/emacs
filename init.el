@@ -134,14 +134,15 @@
 (require 'js-dependency-injector "js-dependency-injector/js-dependency-injector.el")
 
 (add-hook 'js2-mode-hook 'js-injector-minor-mode)
+(add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w"))) 
 
 (global-prettify-symbols-mode)
 (add-hook 'js2-mode-hook
 					'(lambda ()
 						 (push '("function" . ?ƒ) prettify-symbols-alist)
-						 (push '("_" . ?λ) prettify-symbols-alist)
 						 (push '("R" . ?Λ) prettify-symbols-alist)
 						 (push '("R.__" . ?ρ) prettify-symbols-alist)
+						 (push '("_" . ?λ) prettify-symbols-alist)
 						 (push '("err" . ?ε) prettify-symbols-alist)
 						 (push '("_.map" . ?↦) prettify-symbols-alist)
 						 (push '("R.map" . ?↦) prettify-symbols-alist)
