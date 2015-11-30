@@ -50,10 +50,12 @@
 
 ;; Disable all themes before loading a new one
 (defun disable-themes-and-update-powerline (orig-f &rest args)
-  (disable-all-themes)
-  (apply orig-f args)
-  (update-powerline)
-  (context-coloring-mode 0))
+  (let ((current-font (assoc (face-attribute 'default :family) font-list)))
+    (disable-all-themes)
+    (apply orig-f args)
+    (update-powerline)
+    (set-font current-font)
+    (context-coloring-mode 0)))
 
 (advice-add 'load-theme :around 'disable-themes-and-update-powerline)
 
