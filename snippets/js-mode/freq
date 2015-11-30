@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 #name : var x = require('x');
 # --
-var ${1:$$(progn (setq yas--temp-file (ido-completing-read "Require: " (--filter (string-match "\.js$" (cadr it)) (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist)))) (sanitise yas--temp-file))} = require('${1:$(when yas-modified-p (let ((relative-name (file-name-sans-extension (file-relative-name (cadr (assoc yas--temp-file (--filter (string-match "\.js$" (cadr it)) (--map (cons (file-name-sans-extension (car it)) (cdr it)) projectable-file-alist)))) (file-name-directory (buffer-file-name)))))) (let ((result (if (string-match "^[a-zA-Z]" relative-name) (concat "./" relative-name) relative-name))) (and (yas-abort-snippet) result)) ))}');$0
+`(call-interactively 'require-relative-module-at-point)`
