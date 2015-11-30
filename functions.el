@@ -603,6 +603,16 @@ or a marker."
       (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\""))
   (restart-emacs))
 
+(defun dired-mark-duplicate-dirs ()
+  "Mark all directories which have a common part."
+  (interactive)
+  (when (not (eq 'dired-mode (with-current-buffer (buffer-name) major-mode)))
+    (error "Not in dired-mode"))
+  (let* ((cwd (dired-current-directory))
+         (cmd (format "ls %s | grep -Eo [a-z0-9\-]+[a-z] | sort | uniq -d | xargs echo -n" cwd))
+         (dirs (split-string (shell-command-to-string cmd) " ")))
+    (mapc (lambda (dir) (dired-mark-files-regexp dir)) dirs))) 
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
