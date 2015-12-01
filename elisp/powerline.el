@@ -35,6 +35,7 @@
     (ujelly (("#000000" 0.78) ("#000000" 0.78) "#ffffff"))
 		(moe-light (("#CCCCB7" 0.95) ("#EDEDD3" 0.98) "#3F3F38"))
 		(aurora (("#455a64" 0.78) ("#2B3B40" 0.77) "#CDD3D3"))
+    (misterioso (("#455a64" 0.78) ("#2B3B40" 0.77) "#CDD3D3"))
 		(jazz (("#151515" 0.78) ("#101010" 0.77) "#7F6A4F"))))
 
 (defun update-powerline ()
