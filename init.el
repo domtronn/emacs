@@ -83,6 +83,9 @@
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
 
+(require 'erc)
+(require 'tls)
+
 (require 'image+)
 (require 'dired+)
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "q") 'kill-all-dired-buffers)))
