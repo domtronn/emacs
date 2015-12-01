@@ -364,15 +364,6 @@
         (set-window-start w2 s1)
         (setq i (1+ i)))))))
 
-(defun find-top-level-dir (dir find-dir)
-  (interactive)
-  (let* ((parent (mapconcat 'identity (butlast (split-string dir "\\/")) "/")))
-    (if (file-exists-p (concat parent "/" find-dir))
-        (progn
-          (setq ret nil)
-          (find-top-level-dir parent find-dir))
-      (setq ret dir))) ret)
-
 (defun find-file-upwards (file-to-find &optional starting-path)
   "Recursively searches each parent directory starting from the default-directory.
 looking for a file with name file-to-find.  Returns the path to it
@@ -418,62 +409,13 @@ or nil if not found."
           (message "Loading tags file: %s" my-tags-file)
           (visit-tags-table my-tags-file)))))
 
-(defun replace-regexp-in-buffer (arg1 arg2)
-  "Go to beginning of buffer and replace ARG1 with ARG2."
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward arg1 nil t)
-      (replace-match arg2))))
-
-(defun replace-string-in-buffer (arg1 arg2)
-  "Go to beginning of buffer and replace ARG1 with ARG2."
-  (save-excursion
-    (goto-char (point-min))
-    (while (search-forward arg1 nil t)
-      (replace-match arg2))))
-
 (defun semi-colon-end ()
   "Function to insert a semi colon at the end of the line from anywhere."
   (interactive)
   (save-excursion
     (delete-trailing-whitespace)
     (end-of-line)
-    (insert (format "%s" ";"))))
-
-(defun swap-regions (beg1 end1 beg2 end2)
-  "Swap region between BEG1 and END1 with region BEG2 and END2.
-
-For the first region, mark the first region and set mark at
-point.  The second region only needs to be marked normally.
-Again, set the mark at the beginning and end of the first region,
-then mark the second region with mark and point.
-
-The order of the two regions in the buffer doesn't matter.
-Either one can precede the other.  However, the regions can not
-be swapped if they overlap.
-
-All arguments can either be a number for a position in the buffer
-or a marker."
-  (interactive
-   (if (< (length mark-ring) 2)
-       (error "Not enough in mark-ring to swap a region")
-     (let ((region (list (region-beginning) (region-end)))
-     (marks (sort (list (marker-position (car mark-ring))
-            (marker-position (cadr mark-ring)))
-      '<)))
-       (if (< (car region) (car marks))
-     (append region marks)
-   (append marks region)))))
-  (if (or (and (< beg2 beg1) (< beg1 end2))
-    (and (< beg1 beg2) (< beg2 end1)))
-      (error "Unable to swap overlapping regions")
-      (save-excursion
-  (insert
-   (prog1 (delete-and-extract-region beg2 end2)
-     (goto-char beg2)
-     (insert
-      (delete-and-extract-region beg1 end1))
-     (goto-char beg1))))))
+    (insert ";")))
 
 (defun wrap-space-or-space ()
   (interactive)
