@@ -448,10 +448,10 @@ or nil if not found."
       (re-search-forward "[ \t\r\n]+" nil t)
       (replace-match "" nil nil))))
 
-
 (defun json-format ()
   (interactive)
   (save-excursion
+    (mark-whole-buffer)
     (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
 
 (global-set-key "\M-u" 'upcase-case-next-letter)
