@@ -199,7 +199,7 @@
 (global-set-key (kbd "C-S-x C-b") 'ido-switch-buffer-other-window)
 
 (global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
-(global-set-key (kbd "s-f") 'sp-forward-slurp-sexp)
+(global-set-key (kbd "s-f") 'sp-slurp-hybrid-sexp)
 (global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
 
 (global-set-key (kbd "C-=") 'insert-random-return)
