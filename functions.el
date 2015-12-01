@@ -518,13 +518,16 @@ or nil if not found."
   (interactive "sDebug variable: ")
   (insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
 
-(defun smart-delete-char (&rest args)
+(defun smart-delete-pair (&rest args)
   "Smartly delete character or pair based on the next character."
   (interactive)
-    (let ((next-char (buffer-substring (point) (+ (point) 1))))
-     (if (string-match "[\{\(\[\"']" next-char)
-         (delete-pair)
-       (delete-char args))))
+  (save-excursion
+    (let ((next-char (buffer-substring (point) (+ (point) 1)))
+          (prev-char (buffer-substring (point) (- (point) 1))))
+     (cond ((string-match "[\{\(\[\"']" next-char) (delete-pair))
+           ((string-match "[\{\(\[\"']" prev-char) (backward-char 1) (delete-pair))
+           ((string-match "[\]\}\)]" next-char) (smart-backward) (delete-pair))
+           ((string-match "[\]\}\)]" prev-char) (smart-backward) (delete-pair))))))
 
 (defun magit-whitespace-cleanup ()
   (interactive)
