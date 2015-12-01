@@ -290,12 +290,10 @@
 (global-auto-complete-mode t)
 
 (add-hook 'markdown-mode-hook 'ac-emoji-setup)
-(add-hook 'git-commit-mode-hook
-					'(lambda () (interactive)
-						 (auto-complete-mode) (setq-local ac-sources '(ac-source-gh-issues))))
-(add-hook 'ghi-comment-mode-hook
-					'(lambda () (interactive)
-						 (auto-complete-mode) (setq-local ac-sources '(ac-source-emoji ac-source-gh-issues))))
+
+(add-hook 'erc-mode-hook '(lambda () (ac-lambda 'ac-source-emoji)))
+(add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
+(add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
 
 (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
 

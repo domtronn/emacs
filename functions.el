@@ -567,6 +567,13 @@ or nil if not found."
      :nick "domtronn"
      :password password
      :full-name "Dom Charlesworth")))
+
+(defun ac-lambda (&rest sources)
+  "Sets up autocomplete mode and local SOURCES"
+  (interactive)
+  (auto-complete-mode)
+  (setq-local ac-sources sources))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
