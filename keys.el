@@ -149,7 +149,9 @@
 
 (global-set-key (kbd "M-o") 'helm-swoop)
 
-(global-set-key [M-d] 'kill-word)
+(global-set-key (kbd "M-d") 'kill-word)
+(global-set-key (kbd "M-S-d") 'backward-kill-word)
+(global-set-key (kbd "C-S-d") 'backward-delete-char)
 (global-set-key (kbd "H-d") 'smart-delete-pair)
 (global-set-key [(control backspace)] 'backward-kill-word)
 
