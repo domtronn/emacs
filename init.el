@@ -180,6 +180,11 @@
 (use-package helm-flx :after (list helm helm-swoop) :config (helm-flx-mode))
 
 (global-prettify-symbols-mode)
+(push '("->" . ?→) prettify-symbols-alist)
+(push '("<-" . ?←) prettify-symbols-alist)
+(push '("<=" . ?≤) prettify-symbols-alist)
+(push '(">=" . ?≥) prettify-symbols-alist)
+
 (use-package tern
   :after 'js2-mode
   :config
@@ -205,9 +210,7 @@
                (push '("_" . ?λ) prettify-symbols-alist)
                (push '("err" . ?ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
-               (push '("R.map" . ?↦) prettify-symbols-alist)
-               (push '("<=" . ?≤) prettify-symbols-alist)
-               (push '(">=" . ?≥) prettify-symbols-alist)))
+               (push '("R.map" . ?↦) prettify-symbols-alist)))
 
   (bind-keys :map js2-mode-map
              ("H-." . jump-to-thing-at-point)
@@ -292,7 +295,6 @@
           (key-combo-load-default))
 
 (use-package yasnippet
-  :defer t
   :config
   (setq yas-snippet-dirs (concat base-path "/snippets"))
   (add-hook 'after-init-hook 'yas-global-mode))
@@ -348,15 +350,15 @@
 (use-package auto-complete-config :after auto-complete)
 (use-package ac-dabbrev :after auto-complete)
 (use-package auto-complete
-  :init
-
+  :demand
+  :config
+  (ac-config-default)
   (set-default 'ac-sources
                '(ac-source-yasnippet
                  ac-source-semantic
                  ac-source-dabbrev
                  ac-source-files-in-current-dir))
-  :config
-  (ac-config-default)
+  
   (global-auto-complete-mode t)
   (add-to-list 'ac-modes 'latex-mode)
   (bind-keys :map ac-completing-map ("\e" . ac-stop))
@@ -510,7 +512,7 @@
 (setq custom-file (concat base-path "init/custom.el"))
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 
-(require 'keys (concat base-path "init/keys.el"))
+(require 'keys (concat base-path "init/keys.elc"))
 (load-file (concat base-path "init/custom.elc"))
 (load-file (concat base-path "init/advice.elc"))
 
