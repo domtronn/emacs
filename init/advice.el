@@ -64,9 +64,11 @@
   (call-interactively orig-f)
   (disable-vertical))
 
-(mapc '(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
+(mapc #'(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
       '(projectable-find-file projectable-find-test
         projectable-find-file-other-window projectable-find-test-other-window))
+
+(advice-add 'ansi-term :after '(lambda (&rest r) (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
 (provide 'advice)
 ;;; advice.el ends here
