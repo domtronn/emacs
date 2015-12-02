@@ -143,4 +143,8 @@
 (global-set-key (kbd "s-o") 'open-current-file)
 
 (provide 'keys)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (add-hook 'after-save-hook '(lambda () (byte-compile-file (buffer-file-name))) nil t)
+;; End:
 ;;; keys.el ends here

@@ -110,7 +110,7 @@
 		(".json" ".css" ".pl" ".sh" ".as" ".php" ".emacs" ".ini" ".js" ".el" ".ini" ".cfg" ".cnf" "")))
  '(ido-separator nil)
  '(ido-use-filename-at-point (quote guess))
- '(js-indent-level 2)
+ '(js-indent-level 2 t)
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
@@ -204,6 +204,15 @@
 		("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "report" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
+ '(safe-local-variable-values
+	 (quote
+		((eval add-hook
+					 (quote after-save-hook)
+					 (quote
+						(lambda nil
+							(byte-compile-file
+							 (buffer-file-name))))
+					 nil t))))
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
  '(smex-prompt-string "Why won't you just fucking ")
@@ -328,4 +337,8 @@
 					 (set-context-coloring "#fdf4c1" "#fb4934" "#fe8019" "#fabd2f" "#b8bb26" "#8ec07c" "#83a598" "#458588" "#b16286")))))
 
 (provide 'custom)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (add-hook 'after-save-hook '(lambda () (byte-compile-file (buffer-file-name))) nil t)
+;; End:
 ;;; custom.el ends here
