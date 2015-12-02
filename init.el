@@ -97,8 +97,9 @@
         ("M-X" . smex-major-mode-commands)
         ("C-c M-x" . execute-extended-command))
 
-(use-package popup)
+(use-package popup :defer t)
 (use-package popwin
+  :defer t
   :config (popwin-mode 1)
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil))
@@ -130,9 +131,8 @@
   (bind-keys :map dired-mode-map
              ("q" . kill-all-dired-buffers)))
 
-(use-package git-timemachine)
-(use-package git-messenger
-  :bind ("C-x v p" . git-messenger:popup-message))
+(use-package git-timemachine :defer t)
+(use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
 
 (use-package nameless
   :defer t
@@ -148,7 +148,7 @@
      '((:name file :buffer "file buffer")
        (:name runner :buffer "*runner*")
        (:name compilation :buffer "*compilation*")))))
-  
+
   :bind ("C-c C-w" . wlf:trip-split-layout))
 
 (use-package flycheck
@@ -345,11 +345,11 @@
                            ac-source-html-tag
                            ac-source-html-attribute))))
 
-
+(use-package auto-complete-config :after auto-complete)
+(use-package ac-dabbrev :after auto-complete)
 (use-package auto-complete
   :init
-  (use-package auto-complete-config)
-  (use-package ac-dabbrev)
+
   (set-default 'ac-sources
                '(ac-source-yasnippet
                  ac-source-semantic
@@ -416,7 +416,7 @@
   :bind ("C-M-g" . grunt-exec))
 
 (use-package repository-root
-  :defer 
+  :defer t
   :config
   (add-to-list 'repository-root-matchers repository-root-matcher/svn)
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
@@ -478,10 +478,11 @@
 
 (use-package flx-ido :after ido :config (flx-ido-mode 1))
 (use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
-(use-package ido-vertical-mode :after ido :config (ido-vertical-mode 1))
+(use-package ido-vertical-mode  :after ido :config (ido-vertical-mode 1))
 
 ;; Ido Support
 (use-package ido
+  :demand
   :config
   (ido-mode 1)
   (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
@@ -509,9 +510,9 @@
 (setq custom-file (concat base-path "init/custom.el"))
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 
-(load-file (concat base-path "init/keys.el"))
-(load-file (concat base-path "init/custom.el"))
-(load-file (concat base-path "init/advice.el"))
+(require 'keys (concat base-path "init/keys.el"))
+(load-file (concat base-path "init/custom.elc"))
+(load-file (concat base-path "init/advice.elc"))
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
