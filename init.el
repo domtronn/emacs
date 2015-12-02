@@ -30,7 +30,7 @@
 (require 'package)
 (setq-default package-user-dir (concat base-path "packages/elpa"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(package-initialize)
+(package-initialize nil)
 
 (require 'benchmark-init)
 
@@ -42,11 +42,11 @@
 
 (use-package drag-stuff
   :config (drag-stuff-global-mode 1)
-	:bind ("s-N" . drag-stuff-down)
-				("s-P" . drag-stuff-up))
+  :bind ("s-N" . drag-stuff-down)
+        ("s-P" . drag-stuff-up))
 
 (use-package mon-css-color
-	:load-path "elisp"
+  :load-path "elisp"
   :init (autoload 'css-color-mode "mon-css-color" "" t)
   :config (css-color-global-mode))
 
@@ -54,14 +54,15 @@
 (use-package paren)
 
 (use-package multiple-cursors
-	:bind ("s-n" . mc/mark-next-symbol-like-this)
-				("s-p" . mc/mark-previous-symbol-like-this)
-				("M-<mouse-1>" . mc/add-cursor-on-click))
+  :bind ("s-n" . mc/mark-next-symbol-like-this)
+        ("s-p" . mc/mark-previous-symbol-like-this)
+        ("M-<mouse-1>" . mc/add-cursor-on-click))
 
 (use-package expand-region
-	:bind ("M-q" . er/expand-region))
+  :bind ("M-q" . er/expand-region))
 
 (use-package ibuffer
+  :defer t
   :config
   (bind-keys :map ibuffer-mode-map
              ("G" . ibuffer-vc-set-filter-groups-by-vc-root)
@@ -77,18 +78,24 @@
   :bind ("RET" . smart-newline))
 
 (use-package smartparens
+  :demand
   :config (smartparens-global-mode)
-          (sp-local-pair '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode text-mode) "'" nil :actions nil)
-          (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-(")))
+          (sp-local-pair
+           '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode text-mode)
+           "'" nil :actions nil)
+          (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
+  :bind ("C-)" . sp-slurp-hybrid-sexp)
+        ("s-f" . sp-slurp-hybrid-sexp)
+        ("s-b" . sp-forward-barf-sexp))
 
 (use-package operate-on-number
   :bind ("s-@" . operate-on-number-at-point))
 
 (use-package smex
   :config (smex-initialize)
-	:bind ("M-x" . smex)
-				("M-X" . smex-major-mode-commands)
-				("C-c M-x" . execute-extended-command))
+  :bind ("M-x" . smex)
+        ("M-X" . smex-major-mode-commands)
+        ("C-c M-x" . execute-extended-command))
 
 (use-package popup)
 (use-package popwin
@@ -98,12 +105,14 @@
 
 (use-package undo-tree
   :config (global-undo-tree-mode)
-	:bind ("s-z" . undo-tree-undo)
-				("s-Z" . undo-tree-redo)
-				("s-y" . undo-tree-redo)
-				("C-+" . undo-tree-redo))
+  :bind ("s-z" . undo-tree-undo)
+        ("s-Z" . undo-tree-redo)
+        ("s-y" . undo-tree-redo)
+        ("C-+" . undo-tree-redo))
 
-(use-package etags-select)
+(use-package etags-select
+  :bind ("H-." . etags-select-find-tag-at-point)
+        ("H-?" . etags-select-find-tag))
 
 (use-package git-gutter-fringe
   :init (use-package rfringe
@@ -111,11 +120,12 @@
   :config (global-git-gutter-mode))
 
 (use-package erc
-  :config
-  (use-package tls))
+  :defer t
+  :config (use-package tls))
 
 (use-package image+)
 (use-package dired+
+  :after 'dired
   :config
   (bind-keys :map dired-mode-map
              ("q" . kill-all-dired-buffers)))
@@ -124,35 +134,40 @@
 (use-package git-messenger
   :bind ("C-x v p" . git-messenger:popup-message))
 
-(use-package ack-and-a-half)
-
 (use-package nameless
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
 
 (use-package window-layout
   :config
-  (defvar trip-split-layout
-    (wlf:no-layout
+  (defun wlf:trip-split-layout ()
+    (interactive)
+    (wlf:show (wlf:no-layout
      '(| (:left-size-ratio 0.6) file
          (- (:upper-size-ration 0.4) runner compilation))
      '((:name file :buffer "file buffer")
-       (:name runner :buffer "**")
+       (:name runner :buffer "*runner*")
        (:name compilation :buffer "*compilation*")))))
+  
+  :bind ("C-c C-w" . wlf:trip-split-layout))
 
 (use-package flycheck
-  :config (global-flycheck-mode))
+  :config (global-flycheck-mode)
+  (bind-keys :map flycheck-mode-map
+             ("C-c C-n" . flycheck-next-error)
+             ("C-c C-p" . flycheck-previous-error))
+  :bind ("M-}" . flycheck-mode))
 
 (use-package projectable
   :load-path "elisp/projectable"
   :config
-	(projectable-global-mode)
-	(add-hook 'projectable-toggle-test-fallback-hook 'projectable-find-test)
-	:bind
-	([C-tab] . projectable-find-file)
-	("C-S-<tab>" . projectable-find-file-other-window)
-	("C-x p c" . projectable-change)
-	("C-x C-b" . projectable-switch-buffer))
+  (projectable-global-mode)
+  (add-hook 'projectable-toggle-test-fallback-hook 'projectable-find-test)
+  :bind
+  ([C-tab] . projectable-find-file)
+  ("C-S-<tab>" . projectable-find-file-other-window)
+  ("C-x p c" . projectable-change)
+  ("C-x C-b" . projectable-switch-buffer))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
@@ -161,17 +176,23 @@
         ("s-r" . vr/query-replace))
 
 (use-package helm
-   :bind ("s-V" . helm-show-kill-ring))
-(use-package helm-swoop
-                  :bind ("M-o" . helm-swoop)
-     :init (use-package helm-flx
-             :config (helm-flx-mode)))
+  :bind ("s-V" . helm-show-kill-ring))
 
-(use-package json)
-(use-package json-snatcher)
+(use-package helm-swoop
+  :bind ("M-o" . helm-swoop)
+  :init (use-package helm-flx
+          :config (helm-flx-mode)))
 
 (global-prettify-symbols-mode)
+(use-package tern
+  :after 'js2-mode
+  :config
+  (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
+  (use-package tern-auto-complete
+    :config (tern-ac-setup)))
+
 (use-package js2-mode
+  :mode ("\\.js" . js2-mode)
   :config
   (use-package js2-refactor)
   (use-package js-dependency-injector
@@ -214,47 +235,50 @@
 (use-package cpp
   :mode ("\\.cpp" . c++-mode)
         ("\\.h" . c++-mode)
-  :init
+  :config
   (bind-keys :map c++-mode-map
              ("M-q" . er/expand-region)
              ("C-c C-p" . flycheck-previous-error)
              ("C-c C-n" . flycheck-next-error)))
 
 (add-hook 'c++-mode-hook
-					(lambda () (unless (file-exists-p "makefile")
-									(set (make-local-variable 'compile-command)
-											 (let ((file (file-name-sans-extension buffer-file-name)))
-												 (format "g++ %s -o %s" buffer-file-name file))))))
+          (lambda () (unless (file-exists-p "makefile")
+                  (set (make-local-variable 'compile-command)
+                       (let ((file (file-name-sans-extension buffer-file-name)))
+                         (format "g++ %s -o %s" buffer-file-name file))))))
 
 (add-hook 'scss-mode-hook
-					(lambda () (set (make-local-variable 'compile-command)
-										 (let ((file (file-name-sans-extension buffer-file-name)))
-											 (format "sass '%s':%s.css" buffer-file-name file)))))
+          (lambda () (set (make-local-variable 'compile-command)
+                     (let ((file (file-name-sans-extension buffer-file-name)))
+                       (format "sass '%s':%s.css" buffer-file-name file)))))
+
+(use-package json-snatcher :after json)
+(use-package json :mode ("\\.json" . json-mode))
+
+(use-package markdown-mode :mode ("\\.md" . markdown-mode))
+(use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
+(use-package scss-mode :mode ("\\.scss" . scss-mode))
+(use-package css-mode :mode ("\\.css" . scss-mode))
 
 (use-package lisp-mode
-	:mode ("\\.el" . emacs-lisp-mode)
-	:config
-	(bind-keys :map emacs-lisp-mode-map
-						 ("C-c C-l" . elisp-debug)
-						 ("H-." . jump-to-find-function)))
+  :mode ("\\.el" . emacs-lisp-mode)
+  :config
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-c C-l" . elisp-debug)
+             ("H-." . jump-to-find-function)))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
 (use-package context-coloring-mode :defer t)
 
 (use-package ace-jump-mode
-	:bind
-	("C-c SPC" . ace-jump-char-mode)
-	("C-c C-x SPC" . ace-jump-zap-to-char)
-	("C-c C-SPC" . ace-jump-word-mode))
-
-(use-package tern
-  :config
-  (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
-  (use-package tern-auto-complete
-    :config (tern-ac-setup)))
+  :bind
+  ("C-c SPC" . ace-jump-char-mode)
+  ("C-c C-x SPC" . ace-jump-zap-to-char)
+  ("C-c C-SPC" . ace-jump-word-mode))
 
 (use-package flyspell
+  :bind ("M-{" . flyspell-mode)
   :config (bind-keys :map flyspell-mode-map
                      ("M-/" . flyspell-popup-correct)))
 (add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
@@ -266,8 +290,6 @@
 (add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
 (add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
-
-
 (use-package key-combo
   :config (key-combo-mode 1)
           (key-combo-load-default))
@@ -275,20 +297,21 @@
 (use-package yasnippet
   :defer t
   :config
-	(setq yas-snippet-dirs (concat base-path "/snippets"))
-	(add-hook 'after-init-hook 'yas-global-mode))
+  (setq yas-snippet-dirs (concat base-path "/snippets"))
+  (add-hook 'after-init-hook 'yas-global-mode))
 
 (use-package neotree
-	:bind ([f1] . neotree-toggle)
-	("<S-f1>" . neotree-find))
+  :bind ([f1] . neotree-toggle)
+  ("<S-f1>" . neotree-find))
 
 (use-package shell-pop
-	:bind ("C-`" . shell-pop)
-	:config
-	(setq shell-pop-window-position "bottom")
-	(setq shell-pop-window-size 40)
-	(setq shell-pop-shell-type
-				'("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+  :bind ("C-`" . shell-pop)
+  :config
+  (setq shell-pop-term-shell "/bin/bash")
+  (setq shell-pop-window-position "bottom")
+  (setq shell-pop-window-size 40)
+  (setq shell-pop-shell-type
+        '("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
 
 (use-package uniquify
   :config
@@ -332,7 +355,7 @@
                  ac-source-files-in-current-dir))
   :config
   (ac-config-default)
-	(global-auto-complete-mode t)
+  (global-auto-complete-mode t)
   (add-to-list 'ac-modes 'latex-mode)
   (bind-keys :map ac-completing-map ("\e" . ac-stop))
   (bind-keys :map ac-complete-mode-map
@@ -341,17 +364,17 @@
              ("C-f" . ac-isearch)
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
-	:bind
-	([S-tab] . auto-complete))
+  :bind
+  ([S-tab] . auto-complete))
 
 (add-hook 'web-mode-hook 'ac-html-enable)
 
 (add-hook 'LaTeX-mode-hook
-					'(lambda () (setq ac-sources
-											 (append '(ac-source-math-unicode
-																 ac-source-math-latex
-																 ac-source-latex-commands)
-															 ac-sources))))
+          '(lambda () (setq ac-sources
+                       (append '(ac-source-math-unicode
+                                 ac-source-math-latex
+                                 ac-source-latex-commands)
+                               ac-sources))))
 
 (add-hook 'markdown-mode-hook 'ac-emoji-setup)
 
@@ -364,13 +387,8 @@
 ;;---------------
 ;; Mode Hooks
 ;;---------------
-(add-to-list 'auto-mode-alist '("\\.[s]json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.scss?\\'" . scss-mode))
-(add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
 
 (setq truncate-lines nil)
 
@@ -382,12 +400,12 @@
   :load-path "elisp/emacs-livedown")
 
 (use-package hideshowvis
-	:init (autoload 'hideshowvis-enable "hideshowvis" nil t)
+  :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
   :config (hideshowvis-symbols)
-	:bind ("s-_" . hs-show-all)
-				("s--" . hs-show-block)
-				("s-=" . hs-toggle-hiding)
-				("s-+" . hs-hide-level))
+  :bind ("s-_" . hs-show-all)
+        ("s--" . hs-show-block)
+        ("s-=" . hs-toggle-hiding)
+        ("s-+" . hs-hide-level))
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
 (use-package grunt
@@ -400,12 +418,14 @@
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
 
 (use-package magit-gh-issues
-	:load-path "elisp/magit-gh-issues"
-	:init (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
-	:config (use-package magit-gh-issues-emoji
-						:load-path "elisp/magit-gh-issues-emoji"))
+  :load-path "elisp/magit-gh-issues"
+  :after 'magit
+  :config (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
+          (use-package magit-gh-issues-emoji
+            :load-path "elisp/magit-gh-issues-emoji"))
 
 (use-package magit
+  :defer t
   :config (bind-keys :map magit-mode-map
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-<tab>" . projectable-find-file)))
@@ -434,12 +454,12 @@
 (setq shift-select-mode t)                  ; Allow for shift selection mode
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
-(setq create-lockfiles nil)									; don't make lock files
+(setq create-lockfiles nil)                  ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
-(delete-selection-mode 1)										; Allows for deletion when typing over highlighted text
+(delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
 (setq-default cursor-type 'bar)             ; Change cursor to bar
@@ -452,19 +472,26 @@
 
 (show-paren-mode t)   ; Show paranthesis matching
 
+(use-package flx-ido :after ido :config (flx-ido-mode 1))
+(use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
+(use-package ido-vertical-mode :after ido :config (ido-vertical-mode 1))
+
 ;; Ido Support
 (use-package ido
-  :init
-  (use-package flx-ido :config (flx-ido-mode 1))
-  (use-package ido-ubiquitous :config (ido-ubiquitous-mode 1))
-  (use-package ido-vertical-mode :config (ido-vertical-mode 1))
   :config
   (ido-mode 1)
   (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
   (setq ido-enable-flex-matching t)
   (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
   (setq ido-enable-regexp t)
-  (setq ido-create-new-buffer 'always))
+  (setq ido-create-new-buffer 'always)
+
+  :bind
+  ("C-x C-f" . ido-find-file)
+  ("C-x f" . ido-find-file)
+  ("C-x F" . ido-find-file-other-window)
+  ("C-x B" . ido-switch-buffer-other-window)
+  ("C-x b" . ido-switch-buffer))
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
@@ -479,10 +506,10 @@
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 
 (add-hook 'after-init-hook
-					'(lambda ()
-						 (load-file (concat base-path "init/keys.el"))
-						 (load-file (concat base-path "init/custom.el"))
-						 (load-file (concat base-path "init/advice.el"))))
+          '(lambda ()
+             (load-file (concat base-path "init/keys.el"))
+             (load-file (concat base-path "init/custom.el"))
+             (load-file (concat base-path "init/advice.el"))))
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -490,7 +517,10 @@
 
 (server-start)
 
+(benchmark-init/show-durations-tree)
+
 ;; Local Variables:
+;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
 ;; End:
 

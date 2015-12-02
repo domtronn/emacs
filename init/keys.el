@@ -60,9 +60,6 @@
 (global-set-key [M-right] 'forward-word)
 (global-set-key [M-left] 'backward-word)
 
-(global-set-key (kbd "C-x f") 'ido-find-file)
-(global-set-key (kbd "C-x F") 'ido-find-file-other-window)
-
 ;; change to use regexp searching rather than normal isearch
 (global-set-key (kbd "H-s") 'isearch-forward-symbol-at-point)
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -79,8 +76,6 @@
 (global-unset-key (kbd "M-<down-mouse-1>"))
 
 ;; Tag searching
-(global-set-key (kbd "H-.") 'etags-select-find-tag-at-point);;etags-select-find-tag-at-point)
-(global-set-key (kbd "H-?") 'etags-select-find-tag)
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 (global-set-key (kbd "H-<") 'pop-to-mark-command)
 
@@ -138,21 +133,9 @@
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
 
-(global-set-key (kbd "C-x B") 'ido-switch-buffer-other-window)
-(global-set-key (kbd "C-S-x C-b") 'ido-switch-buffer-other-window)
-
-(global-set-key (kbd "C-)") 'sp-slurp-hybrid-sexp)
-(global-set-key (kbd "s-f") 'sp-slurp-hybrid-sexp)
-(global-set-key (kbd "s-b") 'sp-forward-barf-sexp)
-
 (global-set-key (kbd "C-=") 'insert-random-return)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
-
-(global-set-key "\M-}" 'flycheck-mode)
-(global-set-key "\M-{" 'flyspell-mode)
-(global-set-key (kbd "C-c C-n") 'flycheck-next-error)
-(global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
