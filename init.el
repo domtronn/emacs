@@ -26,7 +26,6 @@
 (defconst base-path (file-name-directory load-file-name))
 
 (setq custom-file (concat base-path "init/custom.el"))
-(load-file (concat base-path "init/functions.el"))
 
 (require 'package)
 (setq-default package-user-dir (concat base-path "packages/elpa"))
@@ -152,6 +151,7 @@
 	:bind
 	([C-tab] . projectable-find-file)
 	("C-S-<tab>" . projectable-find-file-other-window)
+	("C-x p c" . projectable-change)
 	("C-x C-b" . projectable-switch-buffer))
 
 (use-package visual-regexp
