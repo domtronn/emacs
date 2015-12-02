@@ -261,6 +261,7 @@
   :config
   (bind-keys :map emacs-lisp-mode-map
              ("C-c C-l" . elisp-debug)
+             ("C-c RET" . context-coloring-mode)
              ("H-." . jump-to-find-function)))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)

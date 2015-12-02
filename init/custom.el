@@ -298,7 +298,7 @@
 (add-hook 'context-coloring-mode-hook '(lambda () (prettify-symbols-mode 1) (context-coloring-colorize)))
 (defun set-context-coloring (&optional _0 _1 _2 _3 _4 _5 _6 _7 _8)
 	(let ((theme (car custom-enabled-themes)))
-n		(mapc (lambda (n)
+		(mapc (lambda (n)
 						(custom-theme-set-faces
 						 theme
 						 `(,(intern (format "context-coloring-level-%s-face" n)) ((t :foreground ,(symbol-value (intern (format "_%s" n))))))))
