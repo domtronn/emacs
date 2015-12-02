@@ -253,8 +253,8 @@
 
 (use-package markdown-mode :mode ("\\.md" . markdown-mode))
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
-(use-package scss-mode :mode ("\\.scss" . scss-mode))
-(use-package css-mode :mode ("\\.css" . scss-mode))
+(use-package scss-mode :mode ("\\.scss$" . scss-mode))
+(use-package css-mode :mode ("\\.css$" . css-mode))
 
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
