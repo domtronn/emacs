@@ -36,18 +36,16 @@
  '(custom-enabled-themes (quote (gruvbox)))
  '(custom-safe-themes
 	 (quote
-		("0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+		("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
  '(display-time-mode t)
  '(doc-view-continuous t)
- '(eimp-mogrify-program "mogrify")
  '(eshell-directory-name (format "%s/%s/eshell" common-load-dir common-package-dir))
  '(eyebrowse-mode t)
  '(file-cache-find-command "find -L")
  '(flycheck-highlighting-mode (quote lines))
- '(flycheck-jshintrc "/Users/charld13/.jshintrc")
  '(flymake-gui-warnings-enabled t)
  '(flymake-jslint-args
 	 (quote
@@ -217,12 +215,7 @@
 		 ("*Completions*" :position bottom :noselect t)
 		 ("*vc-log*" :position bottom)
 		 ("*Occur*" :position bottom))) nil nil "op")
- '(pos-tip-background-color "#36473A")
- '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-color-alist (quote ((powerline-color1 0.78) (powerline-color2 0.78))) t)
- '(powerline-color0 "#282828")
- '(powerline-color1 "#3C3C3C" t)
- '(powerline-color2 "#515151" t)
  '(powerline-foreground "#eeeeec")
  '(projectable-completion-func (quote car))
  '(projectable-filter-regexps
@@ -232,16 +225,6 @@
  '(rainbow-delimiters-highlight-brackets-p t)
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
- '(shell-pop-autocd-to-working-dir nil)
- '(shell-pop-shell-type
-	 (quote
-		("ansi-term" "*ansi-term*"
-		 (lambda nil
-			 (ansi-term shell-pop-term-shell)))))
- '(shell-pop-term-shell "/bin/bash")
- '(shell-pop-universal-key "C-t")
- '(shell-pop-window-position "bottom")
- '(shell-pop-window-size 40)
  '(smex-prompt-string "Why won't you just fucking ")
  '(sp-hybrid-kill-excessive-whitespace t)
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))
@@ -304,17 +287,11 @@
  '(ac-etags-candidate-face ((t (:background "#99cc99" :foreground "grey20"))))
  '(ac-etags-selection-face ((t (:background "#698b22" :foreground "grey20"))))
  '(ac-selection-face ((t (:background "goldenrod2" :foreground "grey20" :weight normal))))
- '(anzu-mode-line ((t (:foreground "#223311" :weight normal))))
- '(emms-browser-album-face ((t (:foreground "#f0c674" :weight extra-light :height 1.1 :family "DejaVu Sans Mono"))))
- '(emms-browser-artist-face ((t (:foreground "#cc6666" :height 1.3 :family "DejaVu Sans Mono Extralight"))))
- '(emms-browser-track-face ((t (:foreground "#698b22" :height 1.0 :family "DejaVu Sans Mono"))))
- '(emms-playlist-track-face ((t (:foreground "#698b22"))))
  '(hs-face ((t (:distant-foreground "black"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;;; Font Manipulation:
-
 (defvar font-list '(("Menlo" normal)
                     ("BPmono" normal)
                     ("Courier New" normal)
@@ -342,17 +319,12 @@
 (add-hook 'context-coloring-mode-hook '(lambda () (prettify-symbols-mode 1) (context-coloring-colorize)))
 (defun set-context-coloring (&optional _0 _1 _2 _3 _4 _5 _6 _7 _8)
 	(let ((theme (car custom-enabled-themes)))
-		(custom-theme-set-faces
-		 theme
-		 `(context-coloring-level-0-face ((t :foreground ,_0)))
-		 `(context-coloring-level-1-face ((t :foreground ,_1)))
-		 `(context-coloring-level-2-face ((t :foreground ,_2)))
-		 `(context-coloring-level-3-face ((t :foreground ,_3)))
-		 `(context-coloring-level-4-face ((t :foreground ,_4)))
-		 `(context-coloring-level-5-face ((t :foreground ,_5)))
-		 `(context-coloring-level-6-face ((t :foreground ,_6)))
-		 `(context-coloring-level-7-face ((t :foreground ,_7)))
-		 `(context-coloring-level-8-face ((t :foreground ,_8))))))
+		(mapc (lambda (n)
+						(custom-theme-set-faces
+						 theme
+						 `(,(intern (format "context-coloring-level-%s-face" n)) ((t :foreground ,(symbol-value (intern (format "_%s" n))))))))
+					(number-sequence 0 8)) t))
+
 (defun context-coloring (&optional override)
 	"Load context colouring for different themes."
 	(interactive)

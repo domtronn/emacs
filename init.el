@@ -283,7 +283,12 @@
 	("<S-f1>" . neotree-find))
 
 (use-package shell-pop
-	:bind ("C-`" . shell-pop))
+	:bind ("C-`" . shell-pop)
+	:config
+	(setq shell-pop-window-position "bottom")
+	(setq shell-pop-window-size 40)
+	(setq shell-pop-shell-type
+				'("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
 
 (use-package uniquify
   :config
@@ -395,18 +400,17 @@
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
 
 (use-package magit-gh-issues
-  :load-path "elisp/magit-gh-issues"
-  :config (use-package magit-gh-issues-emoji
-            :load-path "elisp/magit-gh-issues-emoji"))
+	:load-path "elisp/magit-gh-issues"
+	:init (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
+	:config (use-package magit-gh-issues-emoji
+						:load-path "elisp/magit-gh-issues-emoji"))
 
 (use-package magit
   :config (bind-keys :map magit-mode-map
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-<tab>" . projectable-find-file)))
 
-(add-hook 'magit-mode-hook 'magit-gh-issues-mode)
 (add-hook 'magit-mode-hook 'image-minor-mode)
-
 
 ;; Load stuff to do with grep initially
 (eval-after-load "grep" '(grep-compute-defaults))
