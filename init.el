@@ -123,7 +123,7 @@
   :defer t
   :config (use-package tls))
 
-(use-package image+)
+(use-package image+ :after 'image-mode)
 (use-package dired+
   :after 'dired
   :config
@@ -175,13 +175,9 @@
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace))
 
-(use-package helm
-  :bind ("s-V" . helm-show-kill-ring))
-
-(use-package helm-swoop
-  :bind ("M-o" . helm-swoop)
-  :init (use-package helm-flx
-          :config (helm-flx-mode)))
+(use-package helm :bind ("s-V" . helm-show-kill-ring))
+(use-package helm-swoop :bind ("M-o" . helm-swoop))
+(use-package helm-flx :after (list helm helm-swoop) :config (helm-flx-mode))
 
 (global-prettify-symbols-mode)
 (use-package tern
@@ -307,11 +303,16 @@
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
   :config
-  (setq shell-pop-term-shell "/bin/bash")
-  (setq shell-pop-window-position "bottom")
-  (setq shell-pop-window-size 40)
-  (setq shell-pop-shell-type
-        '("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+  (custom-set-variables
+   '(shell-pop-autocd-to-working-dir nil)
+   '(shell-pop-shell-type
+     (quote
+      ("ansi-term" "*ansi-term*"
+       (lambda nil
+         (ansi-term shell-pop-term-shell)))))
+   '(shell-pop-term-shell "/bin/bash")
+   '(shell-pop-window-position "bottom")
+   '(shell-pop-window-size 40)))
 
 (use-package uniquify
   :config
@@ -397,6 +398,7 @@
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
 (use-package livedown
+  :after markdown-mode
   :load-path "elisp/emacs-livedown")
 
 (use-package hideshowvis
@@ -413,6 +415,7 @@
   :bind ("C-M-g" . grunt-exec))
 
 (use-package repository-root
+  :defer 
   :config
   (add-to-list 'repository-root-matchers repository-root-matcher/svn)
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
@@ -505,11 +508,9 @@
 (setq custom-file (concat base-path "init/custom.el"))
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 
-(add-hook 'after-init-hook
-          '(lambda ()
-             (load-file (concat base-path "init/keys.el"))
-             (load-file (concat base-path "init/custom.el"))
-             (load-file (concat base-path "init/advice.el"))))
+(load-file (concat base-path "init/keys.el"))
+(load-file (concat base-path "init/custom.el"))
+(load-file (concat base-path "init/advice.el"))
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

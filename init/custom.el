@@ -20,8 +20,6 @@
 	 (format "%s/%s/ac-comphist.dat" common-load-dir common-package-dir))
  '(ac-etags-requires 1)
  '(ac-expand-on-auto-complete t)
- '(ack-and-a-half-arguments (quote (nil)))
- '(ack-and-a-half-executable "/usr/local/bin/ack")
  '(ansi-color-faces-vector
 	 [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
@@ -29,28 +27,15 @@
  '(auto-save-list-file-prefix
 	 (format "%s/%s/auto-save-list/.saves-" common-load-dir common-package-dir))
  '(backup-by-copying-when-mismatch nil)
- '(calendar-mark-diary-entries-flag t)
- '(calendar-setup (quote one-frame))
- '(calendar-view-diary-initially-flag t)
  '(compilation-message-face (quote (quote default)))
  '(custom-enabled-themes (quote (gruvbox)))
  '(custom-safe-themes
 	 (quote
-		("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+		("0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
- '(display-time-mode t)
- '(doc-view-continuous t)
- '(eshell-directory-name (format "%s/%s/eshell" common-load-dir common-package-dir))
- '(eyebrowse-mode t)
- '(file-cache-find-command "find -L")
  '(flycheck-highlighting-mode (quote lines))
- '(flymake-gui-warnings-enabled t)
- '(flymake-jslint-args
-	 (quote
-		("--bitwise" "--curly" "--indent" "--nomen" "--plusplus" "--vars" "--white")))
- '(flymake-log-level 3)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
  '(helm-reuse-last-window-split-state nil)
@@ -190,10 +175,6 @@
  '(magit-revert-buffers t)
  '(magit-visit-ref-create t)
  '(make-backup-files nil)
- '(malabar-groovy-java-options
-	 (quote
-		("\"-Xms256m -Xmx512m -Djavax.net.ssl.keyStore=/Users/charld13/.subversion/dev.bbc.co.uk.p12 -Djavax.net.ssl.keyStorePassword=336MartIn!69 -Djavax.net.ssl.keyStoreType=PKCS12 -Djavax.net.ssl.trustStore=/Users/charld13/.m2/jssecacerts\"")))
- '(markdown-css-path mkdown-css-file-name)
  '(neo-auto-indent-point nil)
  '(neo-persist-show nil)
  '(neo-smart-open t)
@@ -231,8 +212,6 @@
  '(tab-stop-list (quote (2 4 6 8 10 12 14 16 18 20 22 24 26 28 30)))
  '(tabbar-background-color "#353535")
  '(tags-revert-without-query t)
- '(term-default-bg-color "#fdf6e3")
- '(term-default-fg-color "#657b83")
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
 	 (quote
@@ -319,7 +298,7 @@
 (add-hook 'context-coloring-mode-hook '(lambda () (prettify-symbols-mode 1) (context-coloring-colorize)))
 (defun set-context-coloring (&optional _0 _1 _2 _3 _4 _5 _6 _7 _8)
 	(let ((theme (car custom-enabled-themes)))
-		(mapc (lambda (n)
+n		(mapc (lambda (n)
 						(custom-theme-set-faces
 						 theme
 						 `(,(intern (format "context-coloring-level-%s-face" n)) ((t :foreground ,(symbol-value (intern (format "_%s" n))))))))
