@@ -131,7 +131,7 @@
   (bind-keys :map dired-mode-map
              ("q" . kill-all-dired-buffers)))
 
-(use-package git-timemachine :defer t)
+(use-package git-timemachine :bind ("C-x v t" . git-timemachine))
 (use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
 
 (use-package nameless
@@ -209,8 +209,15 @@
                (push '("R.__" . ?ρ) prettify-symbols-alist)
                (push '("_" . ?λ) prettify-symbols-alist)
                (push '("err" . ?ε) prettify-symbols-alist)
+               (push '("error" . ?Ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
-               (push '("R.map" . ?↦) prettify-symbols-alist)))
+               (push '("R.map" . ?↦) prettify-symbols-alist)
+               ;; Maths symbols
+               (push '("<=" . ?≤) prettify-symbols-alist)
+               (push '(">=" . ?≥) prettify-symbols-alist)
+               (push '("!=" . ?≠) prettify-symbols-alist)
+               (push '("!==" . ?≢) prettify-symbols-alist)
+               (push '("===" . ?≡) prettify-symbols-alist)))
 
   (bind-keys :map js2-mode-map
              ("H-." . jump-to-thing-at-point)
