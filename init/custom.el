@@ -5,7 +5,7 @@
 ;;; Code:
 
 (defvar common-load-dir (file-name-directory load-file-name))
-(defvar common-package-dir "packages")
+(defvar common-package-dir "../packages")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -17,21 +17,21 @@
  '(ac-auto-start t)
  '(ac-candidate-limit 30)
  '(ac-comphist-file
-	 (format "%s/%s/ac-comphist.dat" common-load-dir common-package-dir))
+   (format "%s/%s/ac-comphist.dat" common-load-dir common-package-dir))
  '(ac-etags-requires 1)
  '(ac-expand-on-auto-complete t)
  '(ansi-color-faces-vector
-	 [default bold shadow italic underline bold bold-italic bold])
+   [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-	 ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+   ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(auto-save-list-file-prefix
-	 (format "%s/%s/auto-save-list/.saves-" common-load-dir common-package-dir))
+   (format "%s/%s/auto-save-list/.saves-" common-load-dir common-package-dir))
  '(backup-by-copying-when-mismatch nil)
  '(compilation-message-face (quote (quote default)))
  '(custom-enabled-themes (quote (gruvbox)))
  '(custom-safe-themes
-	 (quote
-		("0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+   (quote
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
@@ -42,132 +42,132 @@
  '(helm-split-window-default-side (quote right))
  '(highlight-current-line-globally t)
  '(highlight-symbol-colors
-	 (quote
-		("#FFEE58" "#C5E1A5" "#80DEEA" "#64B5F6" "#E1BEE7" "#FFCC80")))
+   (quote
+    ("#FFEE58" "#C5E1A5" "#80DEEA" "#64B5F6" "#E1BEE7" "#FFCC80")))
  '(highlight-symbol-foreground-color "#E0E0E0")
  '(highlight-tail-colors
-	 (if
-			 (eq
-				(quote dark)
-				(quote light))
-			 (quote
-				(("#FFA726" . 0)
-				 ("#FFEE58" . 10)
-				 ("#FFF59D" . 30)
-				 ("#494949" . 60)
-				 ("#424242" . 80)))
-		 (quote
-			(("#F8BBD0" . 0)
-			 ("#FF80AB" . 10)
-			 ("#9575CD" . 30)
-			 ("#494949" . 60)
-			 ("#424242" . 80)))))
+   (if
+       (eq
+        (quote dark)
+        (quote light))
+       (quote
+        (("#FFA726" . 0)
+         ("#FFEE58" . 10)
+         ("#FFF59D" . 30)
+         ("#494949" . 60)
+         ("#424242" . 80)))
+     (quote
+      (("#F8BBD0" . 0)
+       ("#FF80AB" . 10)
+       ("#9575CD" . 30)
+       ("#494949" . 60)
+       ("#424242" . 80)))))
  '(hl-paren-colors
-	 (quote
-		("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
+   (quote
+    ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
  '(ibuffer-default-sorting-mode (quote major-mode))
  '(ibuffer-filter-group-name-face (quote font-lock-builtin-face))
  '(ibuffer-fontification-alist
-	 (quote
-		((10 buffer-read-only font-lock-constant-face)
-		 (15
-			(and buffer-file-name
-					 (string-match ibuffer-compressed-file-name-regexp buffer-file-name))
-			font-lock-doc-face)
-		 (20
-			(string-match "^*"
-										(buffer-name))
-			font-lock-keyword-face)
-		 (25
-			(and
-			 (string-match "^ "
-										 (buffer-name))
-			 (null buffer-file-name))
-			italic)
-		 (30
-			(memq major-mode ibuffer-help-buffer-modes)
-			font-lock-comment-face)
-		 (35
-			(eq major-mode
-					(quote dired-mode))
-			font-lock-function-name-face))))
+   (quote
+    ((10 buffer-read-only font-lock-constant-face)
+     (15
+      (and buffer-file-name
+           (string-match ibuffer-compressed-file-name-regexp buffer-file-name))
+      font-lock-doc-face)
+     (20
+      (string-match "^*"
+                    (buffer-name))
+      font-lock-keyword-face)
+     (25
+      (and
+       (string-match "^ "
+                     (buffer-name))
+       (null buffer-file-name))
+      italic)
+     (30
+      (memq major-mode ibuffer-help-buffer-modes)
+      font-lock-comment-face)
+     (35
+      (eq major-mode
+          (quote dired-mode))
+      font-lock-function-name-face))))
  '(ibuffer-formats
-	 (quote
-		((mark modified read-only " "
-					 (name 60 60 :left :elide)
-					 " "
-					 (mode 16 16 :left :elide)
-					 " " filename-and-process)
-		 (mark " "
-					 (name 16 -1)
-					 " " filename))))
+   (quote
+    ((mark modified read-only " "
+           (name 60 60 :left :elide)
+           " "
+           (mode 16 16 :left :elide)
+           " " filename-and-process)
+     (mark " "
+           (name 16 -1)
+           " " filename))))
  '(ibuffer-git-column-length 24)
  '(ibuffer-show-empty-filter-groups nil)
  '(ido-buffer-disable-smart-matches nil)
  '(ido-enable-dot-prefix t)
  '(ido-file-extensions-order
-	 (quote
-		(".json" ".css" ".pl" ".sh" ".as" ".php" ".emacs" ".ini" ".js" ".el" ".ini" ".cfg" ".cnf" "")))
+   (quote
+    (".json" ".css" ".pl" ".sh" ".as" ".php" ".emacs" ".ini" ".js" ".el" ".ini" ".cfg" ".cnf" "")))
  '(ido-separator nil)
  '(ido-use-filename-at-point (quote guess))
  '(js-indent-level 2 t)
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
-	 (quote
-		("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "afterEach" "clearTimeout" "sinon" "module" "describe" "it" "define" "setInterval" "setTimeout" "bbc" "beforeAll")))
+   (quote
+    ("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "afterEach" "clearTimeout" "sinon" "module" "describe" "it" "define" "setInterval" "setTimeout" "bbc" "beforeAll")))
  '(jshint-configuration-path "~/.jshintrc")
  '(jshint-mode-jshintrc "~/.jshintrc")
  '(jshint-mode-mode "jslint")
  '(key-combo-common-default
-	 (quote
-		(("," . ", ")
-		 ("=" " = " " == " " === ")
-		 ("=>" . " => ")
-		 ("=~" . " =~ ")
-		 ("=*" . " =* ")
-		 ("+" " + " "++")
-		 ("+=" . " += ")
-		 ("-" " - " "--")
-		 ("-=" . " -= ")
-		 ("->" . " -> ")
-		 (">" key-combo-execute-original " >> ")
-		 (">=" . " >= ")
-		 (">>=" . " >>= ")
-		 ("%" . " % ")
-		 ("%=" . " %= ")
-		 ("^" . " ^ ")
-		 ("^=" . " ^= ")
-		 ("!" . key-combo-execute-original)
-		 ("!=" . " != ")
-		 ("!==" . " !== ")
-		 ("!~" . " !~ ")
-		 ("~" . key-combo-execute-original)
-		 ("::" . " :: ")
-		 ("&" " & " " && ")
-		 ("&=" . " &= ")
-		 ("&&=" . " &&= ")
-		 ("*" . " * ")
-		 ("*=" . " *= ")
-		 ("**" . "**")
-		 ("**=" . " **=")
-		 ("<" key-combo-execute-original " << ")
-		 ("<=" . " <= ")
-		 ("<<=" . " <<= ")
-		 ("<-" . " <- ")
-		 ("<!" . "<!-- `!!' -->")
-		 ("|" " | " " || ")
-		 ("|=" . " |= ")
-		 ("||=" . " ||= ")
-		 ("/" key-combo-execute-original)
-		 ("/=" . " /= ")
-		 ("*/" . "*/")
-		 ("/*" . "/* `!!' */")
-		 ("/* RET" . "/*
+   (quote
+    (("," . ", ")
+     ("=" " = " " == " " === ")
+     ("=>" . " => ")
+     ("=~" . " =~ ")
+     ("=*" . " =* ")
+     ("+" " + " "++")
+     ("+=" . " += ")
+     ("-" " - " "--")
+     ("-=" . " -= ")
+     ("->" . " -> ")
+     (">" key-combo-execute-original " >> ")
+     (">=" . " >= ")
+     (">>=" . " >>= ")
+     ("%" . " % ")
+     ("%=" . " %= ")
+     ("^" . " ^ ")
+     ("^=" . " ^= ")
+     ("!" . key-combo-execute-original)
+     ("!=" . " != ")
+     ("!==" . " !== ")
+     ("!~" . " !~ ")
+     ("~" . key-combo-execute-original)
+     ("::" . " :: ")
+     ("&" " & " " && ")
+     ("&=" . " &= ")
+     ("&&=" . " &&= ")
+     ("*" . " * ")
+     ("*=" . " *= ")
+     ("**" . "**")
+     ("**=" . " **=")
+     ("<" key-combo-execute-original " << ")
+     ("<=" . " <= ")
+     ("<<=" . " <<= ")
+     ("<-" . " <- ")
+     ("<!" . "<!-- `!!' -->")
+     ("|" " | " " || ")
+     ("|=" . " |= ")
+     ("||=" . " ||= ")
+     ("/" key-combo-execute-original)
+     ("/=" . " /= ")
+     ("*/" . "*/")
+     ("/*" . "/* `!!' */")
+     ("/* RET" . "/*
 `!!'
 */")
-		 ("{" key-combo-execute-original)
-		 ("{ RET" . "{
+     ("{" key-combo-execute-original)
+     ("{ RET" . "{
 `!!'
 }"))))
  '(magit-popup-show-common-commands nil)
@@ -182,37 +182,40 @@
  '(neo-window-width 35)
  '(org-agenda-files nil)
  '(org-support-shift-select t)
- '(package-user-dir (format "%s/%s/elpa" common-load-dir common-package-dir))
+ '(package-user-dir (expand-file-name (format "%s/%s/elpa" common-load-dir common-package-dir)))
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
-	 (quote
-		(("*grunt" :regexp nil :position bottom :noselect t)
-		 ("*Malabar Compilation*" :width 60 :position right :noselect t)
-		 ("*RE-Builder*" :height 2 :position bottom)
-		 ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)
-		 ("*Ido Completions*" :position bottom :noselect t)
-		 ("*Help*")
-		 ("Browsing by" :regexp t :position left)
-		 ("*Completions*" :position bottom :noselect t)
-		 ("*vc-log*" :position bottom)
-		 ("*Occur*" :position bottom))) nil nil "op")
+   (quote
+    (("*grunt" :regexp nil :position bottom :noselect t)
+     ("*Malabar Compilation*" :width 60 :position right :noselect t)
+     ("*RE-Builder*" :height 2 :position bottom)
+     ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)
+     ("*Ido Completions*" :position bottom :noselect t)
+     ("*Help*")
+     ("Browsing by" :regexp t :position left)
+     ("*Completions*" :position bottom :noselect t)
+     ("*vc-log*" :position bottom)
+     ("*Occur*" :position bottom))) nil nil "op")
  '(powerline-color-alist (quote ((powerline-color1 0.78) (powerline-color2 0.78))) t)
+ '(powerline-color0 "#282828")
+ '(powerline-color1 "#3C3C3C" t)
+ '(powerline-color2 "#515151" t)
  '(powerline-foreground "#eeeeec")
  '(projectable-completion-func (quote car))
  '(projectable-filter-regexps
-	 (quote
-		("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "report" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
+   (quote
+    ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "report" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
  '(safe-local-variable-values
-	 (quote
-		((eval add-hook
-					 (quote after-save-hook)
-					 (quote
-						(lambda nil
-							(byte-compile-file
-							 (buffer-file-name))))
-					 nil t))))
+   (quote
+    ((eval add-hook
+           (quote after-save-hook)
+           (quote
+            (lambda nil
+              (byte-compile-file
+               (buffer-file-name))))
+           nil t))))
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
  '(smex-prompt-string "Why won't you just fucking ")
@@ -223,41 +226,41 @@
  '(tags-revert-without-query t)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-	 (quote
-		((20 . "#cc6666")
-		 (40 . "#de935f")
-		 (60 . "#f0c674")
-		 (80 . "#698b22")
-		 (100 . "#8abeb7")
-		 (120 . "#81a2be")
-		 (140 . "#b294bb")
-		 (160 . "#cc6666")
-		 (180 . "#de935f")
-		 (200 . "#f0c674")
-		 (220 . "#698b22")
-		 (240 . "#8abeb7")
-		 (260 . "#81a2be")
-		 (280 . "#b294bb")
-		 (300 . "#cc6666")
-		 (320 . "#de935f")
-		 (340 . "#f0c674")
-		 (360 . "#698b22"))))
+   (quote
+    ((20 . "#cc6666")
+     (40 . "#de935f")
+     (60 . "#f0c674")
+     (80 . "#698b22")
+     (100 . "#8abeb7")
+     (120 . "#81a2be")
+     (140 . "#b294bb")
+     (160 . "#cc6666")
+     (180 . "#de935f")
+     (200 . "#f0c674")
+     (220 . "#698b22")
+     (240 . "#8abeb7")
+     (260 . "#81a2be")
+     (280 . "#b294bb")
+     (300 . "#cc6666")
+     (320 . "#de935f")
+     (340 . "#f0c674")
+     (360 . "#698b22"))))
  '(vc-annotate-very-old-color nil)
  '(vc-directory-exclusion-list
-	 (quote
-		("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "tvpjslib" "biscuit" ".tags")))
+   (quote
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "tvpjslib" "biscuit" ".tags")))
  '(vc-ignore-dir-regexp
-	 "\\`\\(?:[\\/][\\/][^\\/]+[\\/]\\|/\\(?:net\\|biscuit\\|tvpjslib\\|node_modules\\|tags\\|filecache\\|afs\\|\\.\\.\\.\\)/\\)\\'|biscuit|tvpjslib|node_modules|.tags")
+   "\\`\\(?:[\\/][\\/][^\\/]+[\\/]\\|/\\(?:net\\|biscuit\\|tvpjslib\\|node_modules\\|tags\\|filecache\\|afs\\|\\.\\.\\.\\)/\\)\\'|biscuit|tvpjslib|node_modules|.tags")
  '(vc-revert-show-diff nil)
  '(vc-svn-program "/usr/local/bin/svn")
  '(when
-			(or
-			 (not
-				(boundp
-				 (quote ansi-term-color-vector)))
-			 (not
-				(facep
-				 (aref ansi-term-color-vector 0)))))
+      (or
+       (not
+        (boundp
+         (quote ansi-term-color-vector)))
+       (not
+        (facep
+         (aref ansi-term-color-vector 0)))))
  '(xkcd-cache-dir "~/.xkcd/")
  '(xkcd-cache-latest "~/.xkcd/latest")
  '(yas-fallback-behavior (quote call-other-command)))

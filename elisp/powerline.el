@@ -38,7 +38,7 @@
     (misterioso (("#455a64" 0.78) ("#2B3B40" 0.77) "#CDD3D3"))
 		(jazz (("#151515" 0.78) ("#101010" 0.77) "#7F6A4F"))))
 
-(defun update-powerline ()
+(defun update-powerline (&rest args)
 	"Update the extra powerline colours based on a mapping to theme."
   (let* ((theme (car custom-enabled-themes))
 				 (alist (cadr (assoc theme theme-powerline-color-alist))))

@@ -276,7 +276,10 @@
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
-(use-package context-coloring-mode :defer t)
+(use-package context-coloring-mode
+  :defer t
+  :config (advice-add 'load-theme :after
+                      '(lambda (&rest args) (context-coloring-mode 0))))
 
 (use-package ace-jump-mode
   :bind
@@ -510,7 +513,10 @@
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
 
-(use-package powerline :load-path "elisp")
+(use-package powerline
+  :load-path "elisp"
+  :config
+  (advice-add 'load-theme :after 'update-powerline))
 
 ;;------------------
 ;; My Load Files

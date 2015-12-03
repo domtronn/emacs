@@ -53,9 +53,7 @@
   (let ((current-font (assoc (face-attribute 'default :family) font-list)))
     (disable-all-themes)
     (apply orig-f args)
-    (update-powerline)
-    (set-font current-font)
-    (context-coloring-mode 0)))
+    (set-font current-font)))
 
 (advice-add 'load-theme :around 'disable-themes-and-update-powerline)
 
