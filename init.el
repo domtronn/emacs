@@ -135,7 +135,8 @@
 
 (use-package erc
   :defer t
-  :config (use-package tls))
+  :config (ac-emoji-setup)
+          (use-package tls))
 
 (use-package image+ :after 'image-mode)
 (use-package dired+
@@ -307,10 +308,6 @@
 
 (add-hook 'latex-mode 'flyspell-mode)
 (add-hook 'text-mode 'flyspell-mode)
-
-(add-hook 'js-mode-hook '(lambda () (find-tags-file-upwards)))
-(add-hook 'ruby-mode-hook '(lambda () (find-tags-file-upwards)))
-(add-hook 'java-mode-hook '(lambda () (find-tags-file-upwards)))
 
 (use-package key-combo
   :config (key-combo-mode 1)
@@ -546,6 +543,8 @@
 (require 'keys (concat base-path "init/keys.elc"))
 (load-file (concat base-path "init/custom.elc"))
 (load-file (concat base-path "init/advice.elc"))
+
+(add-hook 'after-init-hook 'update-powerline)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
