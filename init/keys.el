@@ -43,6 +43,8 @@
 (global-set-key (kbd "s-W")
   '(lambda () (interactive) (kill-buffer (buffer-name))))
 
+(global-set-key (kbd "s-<") 'fill-paragraph)
+
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
 (global-set-key (kbd "C-x a :")
