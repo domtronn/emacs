@@ -26,36 +26,28 @@
 (defvar powerline-color1 "#383838")
 (defvar powerline-color2 "#666666")
 (defvar powerline-fg "#bababa")
-(defvar powerline-color-alist '(("#383838 0.78") ("#666666" 0.78)))
+(defvar powerline-color-alist '(("#383838" 1) ("#666666" 1)))
 
 (defvar theme-powerline-color-alist
-	'((whiteboard (("#bbbbbb" 0.93) ("#d7d7d7" 0.95) "#2a2a2a"))
-		(atom-one-dark (("#3E4451" 0.78) ("#5C6370" 0.8) "#ABB2BF"))
-		(gotham (("#10272D" 0.78) ("#081E26" 0.78) "#357C91"))
-    (ujelly (("#000000" 0.78) ("#000000" 0.78) "#ffffff"))
-		(moe-light (("#CCCCB7" 0.95) ("#EDEDD3" 0.98) "#3F3F38"))
-		(aurora (("#455a64" 0.78) ("#2B3B40" 0.77) "#CDD3D3"))
-    (misterioso (("#455a64" 0.78) ("#2B3B40" 0.77) "#CDD3D3"))
-		(jazz (("#151515" 0.78) ("#101010" 0.77) "#7F6A4F"))))
+	'((whiteboard ("#bbbbbb" "#d7d7d7" "#2a2a2a"))
+		(atom-one-dark ("#3E4451" "#5C6370" "#ABB2BF"))
+		(gotham ("#10272D" "#081E26" "#357C91"))
+    (ujelly ("#000000" "#000000" "#ffffff"))
+		(moe-light ("#CCCCB7" "#EDEDD3" "#3F3F38"))
+		(aurora ("#455a64" "#2B3B40" "#CDD3D3"))
+    (misterioso ("#455a64" "#2B3B40" "#CDD3D3"))
+		(jazz ("#151515" "#101010" "#7F6A4F"))))
 
 (defun update-powerline (&rest args)
 	"Update the extra powerline colours based on a mapping to theme."
   (let* ((theme (car custom-enabled-themes))
 				 (alist (cadr (assoc theme theme-powerline-color-alist))))
 		(if alist
-        (setq powerline-color1 (caar alist)
-              powerline-color2 (caadr alist)
+        (setq powerline-color1 (car alist)
+              powerline-color2 (cadr alist)
               powerline-fg (caddr alist)
               powerline-color-alist alist)
       (setq powerline-fg "white"))))
-
-(set-face-attribute 'mode-line nil
-                    :background "OliveDrab3"
-                    :box nil)
-(set-face-attribute 'mode-line-inactive nil
-                    :box nil)
-
-(scroll-bar-mode -1)
 
 (defun arrow-left-xpm
   (color1 color2)
@@ -300,14 +292,6 @@ install the memoized function over the original function."
         cface)
     nil))
 
-(defun darken-by (col &optional m-percent)
-	(unless (eq nil col)
-		(let* ((percent (or m-percent (cadr (assoc col powerline-color-alist))))
-					 (color (css-color:hex-to-rgb col))
-					 (rgb-list (mapcar (lambda (x) (* x (or percent 0.78))) color)))
-			(format "#%s"
-							(css-color:rgb-to-hex (car rgb-list) (cadr rgb-list) (caddr rgb-list))))))
-
 (defun powerline-make-left
   (string color1 &optional color2 localmap)
   (let ((plface (powerline-make-face color1))
@@ -326,7 +310,7 @@ install the memoized function over the original function."
        "")
      (if arrow
          (propertize " " 'display
-										 (arrow-left-xpm (darken-by color1) (darken-by color2))
+										 (arrow-left-xpm color1 color2)
                      'local-map (make-mode-line-mouse-map
                                  'mouse-1 (lambda () (interactive)
                                             (setq powerline-arrow-shape 'arrow)
@@ -339,7 +323,7 @@ install the memoized function over the original function."
     (concat
      (if arrow
 				 (propertize " " 'display
-										 (arrow-right-xpm (darken-by color1) (darken-by color2))
+										 (arrow-right-xpm color1 color2)
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive)
                                           (setq powerline-arrow-shape 'arrow)
@@ -518,9 +502,9 @@ install the memoized function over the original function."
                              (powerline-column         'right       powerline-color1  )
                              (powerline-time		       'right  nil  powerline-color1  )))))
 
-
-
-
 (provide 'powerline)
-
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; eval: (flycheck-mode 0)
+;; End:
 ;;; powerline.el ends here
