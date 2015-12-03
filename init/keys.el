@@ -145,7 +145,11 @@
 (global-set-key (kbd "s-k") '(lambda () (interactive) (kill-buffer (buffer-name))))
 (global-set-key (kbd "s-u") 'revert-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
+
+(global-set-key (kbd "s-a") 'mark-whole-buffer)
+
 (global-set-key (kbd "s-v") 'yank)
+(global-set-key (kbd "s-c") 'kill-ring-save)
 
 (global-set-key (kbd "s-o") 'open-current-file)
 (global-set-key (kbd "s-0") '(lambda () (interactive) (text-scale-set 0.2)))
