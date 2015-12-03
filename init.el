@@ -104,6 +104,19 @@
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil))
 
+(use-package org-mode
+  :mode ("\\.org" . org-mode)
+  :init
+  (use-package darkroom
+    :config (setq darkroom-fringes-outside-margins nil)
+            (setq darkroom-margins 0.0)
+            (setq darkroom-text-scale-increase 1.0))
+  (add-hook 'org-mode-hook 'darkroom-mode)
+  (add-hook 'org-mode-hook '(lambda () (load-theme 'spacemacs-light)))
+  :config
+  (bind-keys :map org-mode-map
+             ("s-p" . fill-paragraph)))
+
 (use-package undo-tree
   :config (global-undo-tree-mode)
   :bind ("s-z" . undo-tree-undo)
