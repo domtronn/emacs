@@ -188,7 +188,6 @@
 (use-package tern
   :after 'js2-mode
   :config
-  (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
   (use-package tern-auto-complete
     :config (tern-ac-setup)))
 
@@ -316,6 +315,7 @@
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
   :config
+  (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
   (custom-set-variables
    '(shell-pop-autocd-to-working-dir nil)
    '(shell-pop-shell-type
