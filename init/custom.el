@@ -31,7 +31,7 @@
  '(custom-enabled-themes (quote (gruvbox)))
  '(custom-safe-themes
    (quote
-    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "419637b7a8c9cb43f273980f0c9879c0cbadace6b38efac0281e031772c84eb2" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "c46068478d29787a89c3930841e8de94d59cd6a573e4d479d71e78a3f41c6ae3" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
@@ -182,7 +182,9 @@
  '(neo-window-width 35)
  '(org-agenda-files nil)
  '(org-support-shift-select t)
- '(package-user-dir (expand-file-name (format "%s/%s/elpa" common-load-dir common-package-dir)))
+ '(package-user-dir
+   (expand-file-name
+    (format "%s/%s/elpa" common-load-dir common-package-dir)))
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
    (quote
@@ -196,7 +198,7 @@
      ("*Completions*" :position bottom :noselect t)
      ("*vc-log*" :position bottom)
      ("*Occur*" :position bottom))) nil nil "op")
- '(powerline-color-alist (quote ((powerline-color1 0.78) (powerline-color2 0.78))) t)
+ '(powerline-color-alist (quote ((powerline-color1 1) (powerline-color2 1))) t)
  '(powerline-color0 "#282828")
  '(powerline-color1 "#3C3C3C" t)
  '(powerline-color2 "#515151" t)
@@ -218,6 +220,15 @@
            nil t))))
  '(scroll-bar-mode nil)
  '(scss-output-directory "../")
+ '(shell-pop-autocd-to-working-dir nil)
+ '(shell-pop-shell-type
+   (quote
+    ("ansi-term" "*ansi-term*"
+     (lambda nil
+       (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-term-shell "/bin/bash")
+ '(shell-pop-window-position "bottom")
+ '(shell-pop-window-size 40)
  '(smex-prompt-string "Why won't you just fucking ")
  '(sp-hybrid-kill-excessive-whitespace t)
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))

@@ -488,6 +488,11 @@
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
+;; Set mac modifiers to what I'm used to
+(setq mac-function-modifier 'hyper)
+(setq mac-command-modifier 'super)
+(setq mac-option-modifier 'meta)
+
 (delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
