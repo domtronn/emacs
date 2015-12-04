@@ -129,6 +129,7 @@
         ("H-?" . etags-select-find-tag))
 
 (use-package git-gutter-fringe
+  :if window-system
   :init (use-package rfringe
           :config (set-fringe-mode '(2 . 0)))
   :config (global-git-gutter-mode))
@@ -406,8 +407,6 @@
 (add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
 (add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
 
-(set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
-
 ;;---------------
 ;; Mode Hooks
 ;;---------------
@@ -493,6 +492,7 @@
 (delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
+(setq frame-title-format "Who's hacking %b?")
 (setq-default cursor-type 'bar)             ; Change cursor to bar
 (setq-default tab-width 2)
 (setq js-indent-level 2)
@@ -529,6 +529,7 @@
 (global-linum-mode 1) ; enable line numbers
 
 (use-package powerline
+  :if window-system
   :load-path "elisp"
   :config
   (advice-add 'load-theme :after 'update-powerline))
@@ -550,7 +551,10 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(server-start)
+(when window-system
+  (load-theme 'aurora)
+  (server-start)
+  (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
 
 (benchmark-init/show-durations-tree)
 
