@@ -104,18 +104,24 @@
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil))
 
+(use-package darkroom
+  :config (setq darkroom-fringes-outside-margins nil)
+          (setq darkroom-margins 0.0)
+          (setq darkroom-text-scale-increase 1.0))
+
 (use-package org-mode
   :mode ("\\.org" . org-mode)
   :init
-  (use-package darkroom
-    :config (setq darkroom-fringes-outside-margins nil)
-            (setq darkroom-margins 0.0)
-            (setq darkroom-text-scale-increase 1.0))
   (add-hook 'org-mode-hook 'darkroom-mode)
   (add-hook 'org-mode-hook '(lambda () (load-theme 'spacemacs-light)))
   :config
+  (org-beamer-mode)
   (bind-keys :map org-mode-map
              ("s-p" . fill-paragraph)))
+
+(use-package doc-view
+  :mode ("\\.pdf" . doc-view-mode)
+  :init (add-hook 'doc-view-mode-hook 'darkroom-mode))
 
 (use-package undo-tree
   :config (global-undo-tree-mode)
@@ -307,7 +313,6 @@
                      ("M-/" . flyspell-popup-correct)))
 (add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
 
-(add-hook 'latex-mode 'flyspell-mode)
 (add-hook 'text-mode 'flyspell-mode)
 
 (use-package key-combo
@@ -379,7 +384,6 @@
                  ac-source-semantic
                  ac-source-dabbrev
                  ac-source-files-in-current-dir))
-  
   (global-auto-complete-mode t)
   (add-to-list 'ac-modes 'latex-mode)
   (bind-keys :map ac-completing-map ("\e" . ac-stop))
@@ -395,11 +399,15 @@
 (add-hook 'web-mode-hook 'ac-html-enable)
 
 (add-hook 'LaTeX-mode-hook
-          '(lambda () (setq ac-sources
-                       (append '(ac-source-math-unicode
-                                 ac-source-math-latex
-                                 ac-source-latex-commands)
-                               ac-sources))))
+            '(lambda () (setq ac-lambda
+                         'ac-source-math-unicode
+                         'ac-source-math-latex
+                         'ac-source-latex-commands)))
+
+(add-hook 'LaTeX-mode-hook
+          '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'darkroom-mode)
 
 (add-hook 'markdown-mode-hook 'ac-emoji-setup)
 
