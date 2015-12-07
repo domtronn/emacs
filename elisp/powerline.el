@@ -461,7 +461,7 @@ install the memoized function over the original function."
 (defpowerline emacsclient mode-line-client)
 (defpowerline project-id (if (and (boundp 'projectable-id)
 																	(not (eql nil projectable-id)))
-														 (concat "∘ " (upcase projectable-id) " ∘")
+														 (concat (upcase projectable-id) " ∘")
 													 (format "×")))
 
 ;; (defpowerline vc          (when (and (buffer-file-name (current-buffer))
@@ -493,6 +493,7 @@ install the memoized function over the original function."
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
+														 (powerline-rmw	   'left  nil  )
 														 (powerline-project-id	   'left  nil  )
 														 (powerline-window-number	 'left  nil  )
                              (powerline-buffer-id      'left  nil   powerline-color1  )
