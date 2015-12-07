@@ -158,7 +158,7 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;; Third-party
 ;;;;; ace-jump
    `(ace-jump-face-background
-     ((t (:foreground ,aurora-fg-1 :background ,aurora-bg :inverse-video nil))))
+     ((t (:foreground ,aurora-bg+3 :background ,aurora-bg :inverse-video nil))))
    `(ace-jump-face-foreground
      ((t (:foreground ,aurora-green+2 :background ,aurora-bg :inverse-video nil))))
 ;;;;; android mode
