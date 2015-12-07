@@ -49,13 +49,13 @@
   (ido-vertical-mode 0))
 
 ;; Disable all themes before loading a new one
-(defun disable-themes-and-update-powerline (orig-f &rest args)
+(defun disable-themes (orig-f &rest args)
   (let ((current-font (assoc (face-attribute 'default :family) font-list)))
     (disable-all-themes)
     (apply orig-f args)
     (set-font current-font)))
 
-(advice-add 'load-theme :around 'disable-themes-and-update-powerline)
+(advice-add 'load-theme :around 'disable-themes)
 
 (defun enable-and-disable-vertical (orig-f &rest args)
   (enable-vertical)
