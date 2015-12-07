@@ -303,6 +303,8 @@
 
 (use-package ace-jump-mode
   :bind
+  ("C-c a" . ace-jump-char-mode)
+  ("C-c d" . ace-jump-zap-to-char)
   ("C-c SPC" . ace-jump-char-mode)
   ("C-c C-x SPC" . ace-jump-zap-to-char)
   ("C-c C-SPC" . ace-jump-word-mode))
