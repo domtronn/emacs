@@ -18,8 +18,8 @@
 ;;        powerline tries to output something unexpected, it won't
 ;;        just fail and flail-barf.  (JonathanArkell)
 ;; v1.2 - Fixed the Guard Clause to not just sit there and message like mad
-;;        When a list is encountered, it is interpreted as a mode line. Fixes 
-;;        problems with shell mode and nXhtml mode. 
+;;        When a list is encountered, it is interpreted as a mode line. Fixes
+;;        problems with shell mode and nXhtml mode.
 
 ;;; Code:
 
@@ -374,7 +374,7 @@ install the memoized function over the original function."
      (powerline-make side
                      (let ((result ,string))
                        (cond ((listp result)
-                              (format-mode-line result)) 
+                              (format-mode-line result))
                              ((not (or (stringp result)
                                        (null result)))
                               (progn
@@ -461,8 +461,8 @@ install the memoized function over the original function."
 (defpowerline emacsclient mode-line-client)
 (defpowerline project-id (if (and (boundp 'projectable-id)
 																	(not (eql nil projectable-id)))
-														 (concat "[" (upcase projectable-id) "]")
-													 (format "[X]")))
+														 (concat "∘ " (upcase projectable-id) " ∘")
+													 (format "×")))
 
 ;; (defpowerline vc          (when (and (buffer-file-name (current-buffer))
 ;;                                      vc-mode)
@@ -473,6 +473,8 @@ install the memoized function over the original function."
 
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
+
+(defpowerline window-number (format "%c" (+ 10121 (window-numbering-get-number))))
 
 (defpowerline percent-xpm (propertize "  "
                                       'display
@@ -486,12 +488,14 @@ install the memoized function over the original function."
                                           (setq pmin (point-min)))
                                         (percent-xpm pmax pmin we ws 15 color1 color2))))
 
+
+
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
-                             (powerline-project-id	   'left   nil  )
-                             (powerline-rmw            'left   nil  )
-                             (powerline-buffer-id      'left   nil  powerline-color1  )
+														 (powerline-project-id	   'left  nil  )
+														 (powerline-window-number	 'left  nil  )
+                             (powerline-buffer-id      'left  nil   powerline-color1  )
                              (powerline-major-mode     'left        powerline-color1  )
                              (powerline-process        'text        powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
@@ -500,7 +504,8 @@ install the memoized function over the original function."
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
-                             (powerline-time		       'right  nil  powerline-color1  )))))
+                             (powerline-time		       'right  nil  powerline-color1  )
+                             (powerline-buffer-size    'left   nil  )))))
 
 (provide 'powerline)
 ;; Local Variables:

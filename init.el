@@ -541,6 +541,21 @@
   :load-path "elisp"
   :config
   (advice-add 'load-theme :after 'update-powerline))
+(add-hook 'after-init-hook 'update-powerline)
+
+(use-package window-numbering
+  :init
+  (add-hook
+   'window-numbering-mode-hook
+   '(lambda ()
+      (let ((map (make-sparse-keymap)))
+        (mapc
+         (lambda (n) (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
+         (number-sequence 1 9))
+        (setq window-numbering-keymap map))))
+  :config 
+  (window-numbering-mode)
+  (window-numbering-clear-mode-line))
 
 ;;------------------
 ;; My Load Files
@@ -552,8 +567,6 @@
 (require 'keys (concat base-path "init/keys.elc"))
 (load-file (concat base-path "init/custom.elc"))
 (load-file (concat base-path "init/advice.elc"))
-
-(add-hook 'after-init-hook 'update-powerline)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
