@@ -246,7 +246,7 @@
 
              ;; JS2 Refactor things
              ("C-c C-m" . context-coloring-mode)
-             ("s-P" . js2rq-drag-stuff-up)
+             ("s-P" . js2r-drag-stuff-up)
              ("s-N" . js2r-drag-stuff-down)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)
