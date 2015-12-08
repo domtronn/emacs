@@ -246,6 +246,10 @@
 
              ;; JS2 Refactor things
              ("C-c C-m" . context-coloring-mode)
+             ("s-P" . js2rq-drag-stuff-up)
+             ("s-N" . js2r-drag-stuff-down)
+             ("C-c C-o" . js2r-order-vars-by-length)
+             ("C-c C-s" . js2r-toggle-var-declaration)
              ("C-c C-e" . js2r-extract-var)
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
@@ -310,6 +314,7 @@
   ("C-c C-SPC" . ace-jump-word-mode))
 
 (use-package flyspell
+  :defer t
   :bind ("M-{" . flyspell-mode)
   :config (bind-keys :map flyspell-mode-map
                      ("M-/" . flyspell-popup-correct)))
@@ -555,7 +560,7 @@
          (lambda (n) (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
          (number-sequence 1 9))
         (setq window-numbering-keymap map))))
-  :config 
+  :config
   (window-numbering-mode)
   (window-numbering-clear-mode-line))
 

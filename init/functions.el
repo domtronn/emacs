@@ -556,7 +556,7 @@ or nil if not found."
   (let* ((cwd (dired-current-directory))
          (cmd (format "ls %s | grep -Eo [a-z0-9\-]+[a-z] | sort | uniq -d | xargs echo -n" cwd))
          (dirs (split-string (shell-command-to-string cmd) " ")))
-    (mapc (lambda (dir) (dired-mark-files-regexp dir)) dirs))) 
+    (mapc (lambda (dir) (dired-mark-files-regexp dir)) dirs)))
 
 (defun connect-to-slack ()
   (interactive)
@@ -576,6 +576,122 @@ or nil if not found."
   (interactive)
   (auto-complete-mode)
   (setq-local ac-sources sources))
+
+
+(defun js2r-join-var-declaration ()
+  "Hack to make join variable declarations work"
+  (interactive)
+  (let* ((restore-point (point))
+         (region (js2r--var-decl-region))
+         (start (car region))
+         (end (cadr region))
+         (region-string (apply 'buffer-substring region))
+         (region-replacement
+          (with-temp-buffer
+            (insert region-string)
+            (goto-char (point-min))
+            (search-forward "var" (point-max) t)
+            (while (search-forward "var" (point-max) t)
+              (replace-match "   ")
+              (search-backward ";" (point-min) t)
+              (replace-match ","))
+            (buffer-string))))
+    (replace-region start end region-replacement)))
+
+(defun js2r--var-decl-region ()
+  (let* ((declaration (js2r--closest 'js2-var-decl-node-p))
+         (upper-limit (or (save-excursion (search-backward-regexp "^\s*$" (point-min) t)) (point-min)))
+         (lower-limit (or (save-excursion (search-forward-regexp "^\s*$" (point-max) t)) (point-max)))
+         (upper (save-excursion
+                  (goto-char lower-limit)
+                  (while (search-backward "var" upper-limit t))
+                  (beginning-of-line)
+                  (point)))
+         (lower (save-excursion
+                  (goto-char upper-limit)
+                  (while (search-forward "var" lower-limit t))
+                  (end-of-line)
+                  (point))))
+    (list upper lower)))
+
+(defun js2r--goto-first-var-decl ()
+  (let* ((declaration (js2r--closest 'js2-var-decl-node-p))
+         (upper-limit (save-excursion
+                        (search-backward-regexp "^\s*$" (point-min) t)))
+         (lower-limit (save-excursion
+                        (search-forward-regexp "^\s*$" (point-max) t))))
+    (goto-char lower-limit)
+    (while (search-backward "var" upper-limit t))))
+
+(defun js2r--get-declaration-type ()
+  (let* ((declaration (js2r--closest 'js2-var-decl-node-p)))
+    (save-excursion
+      (when declaration
+        (js2r--goto-first-var-decl)
+        (cond
+         ((save-excursion (search-forward-regexp ",\s*$" (line-end-position) t)) 'join)
+         ((save-excursion (search-forward-regexp ";\s*$" (line-end-position) t)) 'split)
+         nil)))))
+
+(defun js2r-toggle-var-declaration ()
+  (interactive)
+  (save-excursion
+    (let ((declaration-type (js2r--get-declaration-type)))
+      (cond
+       ((eq declaration-type 'split) (js2r-join-var-declaration))
+       ((eq declaration-type 'join)
+        (js2r--goto-first-var-decl)
+        (js2r-split-var-declaration))
+       (t (error "Not currently in a variable block"))))))
+
+(defun js2r--drag-advice (f &rest args)
+  (let ((declaration-type (js2r--get-declaration-type))
+        (restore-point (point)))
+    (when (eq declaration-type 'join)
+      (js2r--goto-first-var-decl)
+      (js2r-split-var-declaration)
+      (goto-char restore-point))
+    (funcall f 1)
+    (when (eq declaration-type 'join)
+      (let ((restore-point (point)))
+        (js2r-join-var-declaration)
+        (goto-char restore-point)))))
+
+(defun js2r-drag-stuff-up ()
+  (interactive)
+  (js2r--drag-advice 'drag-stuff-up))
+
+(defun js2r-drag-stuff-down ()
+  (interactive)
+  (js2r--drag-advice 'drag-stuff-down))
+
+(defun js2r--get-varname (s)
+  (cadr (s-split-words s)))
+
+(defun js2r-order-by (pred)
+  (let ((declaration-type (js2r--get-declaration-type)))
+    (when (eq 'join declaration-type)
+      (js2r-split-var-declaration))
+    (save-excursion
+      (let* ((region (js2r--var-decl-region))
+             (start (car region))
+             (end (cadr region))
+             (region-string (apply 'buffer-substring region))
+             (string-list (split-string region-string "\n"))
+             (sorted (mapconcat 'identity (-sort pred string-list) "\n")))
+        (replace-region start end sorted)
+        (when (eq 'join declaration-type)
+          (js2r-join-var-declaration))))))
+
+(defun js2r-order-vars-by-name-length ()
+  (interactive)
+  (js2r-order-by (lambda (it other) (< (length (js2r--get-varname it))
+                                  (length (js2r--get-varname other))))))
+
+(defun js2r-order-vars-by-full-length ()
+  (interactive)
+  (js2r-order-by (lambda (it other) (< (length it)
+                                  (length other)))))
 
 (provide 'functions)
 ;;; functions.el ends here
