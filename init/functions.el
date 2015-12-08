@@ -592,13 +592,21 @@ or nil if not found."
             (goto-char (point-min))
             (search-forward "var" (point-max) t)
             (while (search-forward "var" (point-max) t)
-              (replace-match "   ")
-              (search-backward ";" (point-min) t)
-              (replace-match ","))
+              (let ((match (match-data)))
+                (when (string-equal "var" (thing-at-point 'symbol ))
+                  (set-match-data match)
+                  (replace-match "   ")
+                  (search-backward ";" (point-min) t)
+                  (replace-match ","))))
             (buffer-string))))
     (replace-region start end region-replacement)))
 
-(defun js2r--var-decl-region ()
+(defun js2r--var-decl-joint-region ()
+  (let* ((decl (js2r--closest 'js2-var-decl-node-p))
+         (stmt (js2-node-parent-stmt decl)))
+    (list (js2-node-abs-pos stmt) (js2-node-abs-end stmt))))
+
+(defun js2r--var-decl-split-region ()
   (let* ((declaration (js2r--closest 'js2-var-decl-node-p))
          (upper-limit (or (save-excursion (search-backward-regexp "^\s*$" (point-min) t)) (point-min)))
          (lower-limit (or (save-excursion (search-forward-regexp "^\s*$" (point-max) t)) (point-max)))
@@ -614,35 +622,48 @@ or nil if not found."
                   (point))))
     (list upper lower)))
 
+(defun js2r--var-decl-region ()
+  (cond
+   ((eq 'split (js2r--get-declaration-type)) (js2r--var-decl-split-region))
+   ((eq 'join (js2r--get-declaration-type)) (js2r--var-decl-joint-region))
+   (t nil)))
+
 (defun js2r--goto-first-var-decl ()
-  (let* ((declaration (js2r--closest 'js2-var-decl-node-p))
-         (upper-limit (save-excursion
-                        (search-backward-regexp "^\s*$" (point-min) t)))
-         (lower-limit (save-excursion
-                        (search-forward-regexp "^\s*$" (point-max) t))))
-    (goto-char lower-limit)
-    (while (search-backward "var" upper-limit t))))
+  (goto-char (car (js2r--var-decl-region))))
 
 (defun js2r--get-declaration-type ()
-  (let* ((declaration (js2r--closest 'js2-var-decl-node-p)))
-    (save-excursion
-      (when declaration
-        (js2r--goto-first-var-decl)
-        (cond
-         ((save-excursion (search-forward-regexp ",\s*$" (line-end-position) t)) 'join)
-         ((save-excursion (search-forward-regexp ";\s*$" (line-end-position) t)) 'split)
-         nil)))))
+  (let* ((decl (js2r--closest 'js2-var-decl-node-p))
+         (stmts (length (js2-var-decl-node-kids decl))))
+    (if decl
+      (if (> stmts 1) 'join 'split)
+      nil)))
 
 (defun js2r-toggle-var-declaration ()
   (interactive)
   (save-excursion
-    (let ((declaration-type (js2r--get-declaration-type)))
+    (let ((decl-type (js2r--get-declaration-type)))
       (cond
-       ((eq declaration-type 'split) (js2r-join-var-declaration))
-       ((eq declaration-type 'join)
+       ((eq decl-type 'split) (js2r-join-var-declaration))
+       ((eq decl-type 'join)
         (js2r--goto-first-var-decl)
         (js2r-split-var-declaration))
        (t (error "Not currently in a variable block"))))))
+
+(defun js2r--is-nth-joint-var-decl (f)
+  (let* ((decl (js2r--closest 'js2-var-decl-node-p))
+         (kids (js2-var-decl-node-kids decl))
+         (nth-kid (js2-node-string (funcall f kids)))
+         (line (buffer-substring
+                      (line-beginning-position)
+                      (line-end-position))))
+    (message "Nth-Kid: %s" kids)
+    (string-match nth-kid line)))
+
+(defun js2r--is-first-joint-var-decl ()
+  (js2r--is-nth-joint-var-decl (lambda (k) (car k))))
+
+(defun js2r--is-last-joint-var-decl ()
+  (js2r--is-nth-joint-var-decl (lambda (k) (car (last k)))))
 
 (defun js2r--drag-advice (f &rest args)
   (let ((declaration-type (js2r--get-declaration-type))
