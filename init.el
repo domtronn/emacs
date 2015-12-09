@@ -58,6 +58,10 @@
         ("s-p" . mc/mark-previous-symbol-like-this)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
+(use-package multi-line
+  :bind ("C-c [" . multi-line-single-line)
+        ("C-c ]" . multi-line))
+
 (use-package expand-region
   :bind ("M-q" . er/expand-region))
 
