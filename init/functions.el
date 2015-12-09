@@ -579,7 +579,7 @@ or nil if not found."
 
 
 (defun js2r-join-var-declaration ()
-  "Hack to make join variable declarations work"
+  "Join variable declarations into comma separated list."
   (interactive)
   (let* ((restore-point (point))
          (region (js2r--var-decl-region))
@@ -587,7 +587,8 @@ or nil if not found."
          (region-replacement
           (with-temp-buffer
             (insert region-string)
-            (while (search-backward-regexp "\\(;\\)\s*\n\s*\\(var\\)" (point-min) t)
+            (while (search-backward-regexp
+                    "\\(;\\)\\s-*\n\\s-*\\(var\\)" (point-min) t)
               (replace-match "," nil nil nil 1)
               (replace-match "   " nil t nil 2))
             (buffer-string))))
