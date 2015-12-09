@@ -592,7 +592,9 @@ or nil if not found."
               (replace-match "," nil nil nil 1)
               (replace-match "   " nil t nil 2))
             (buffer-string))))
-    (apply 'replace-region (append region (list region-replacement)))))
+    (goto-char (car region))
+    (apply 'delete-region region)
+    (insert region-replacement)))
 
 (defun js2r--var-decl-joint-region ()
   (let* ((decl (js2r--closest 'js2-var-decl-node-p))
@@ -697,12 +699,12 @@ or nil if not found."
       (js2r-split-var-declaration))
     (save-excursion
       (let* ((region (js2r--var-decl-region))
-             (start (car region))
-             (end (cadr region))
              (region-string (apply 'buffer-substring region))
              (string-list (split-string region-string "\n"))
              (sorted (mapconcat 'identity (-sort pred string-list) "\n")))
-        (replace-region start end sorted)
+        (goto-chart (car region))
+        (apply 'delete-region region)
+        (insert sorted)
         (when (eq 'join declaration-type)
           (js2r-join-var-declaration))))))
 
