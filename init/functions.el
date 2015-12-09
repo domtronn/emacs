@@ -702,7 +702,7 @@ or nil if not found."
              (region-string (apply 'buffer-substring region))
              (string-list (split-string region-string "\n"))
              (sorted (mapconcat 'identity (-sort pred string-list) "\n")))
-        (goto-chart (car region))
+        (goto-char (car region))
         (apply 'delete-region region)
         (insert sorted)
         (when (eq 'join declaration-type)
