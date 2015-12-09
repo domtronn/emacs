@@ -587,9 +587,7 @@ or nil if not found."
          (region-replacement
           (with-temp-buffer
             (insert region-string)
-            (goto-char (point-min))
-            (search-forward "var" (point-max) t)
-            (while (search-forward-regexp "\\(;\\)\s*\n\s*\\(var\\)" (point-max) t)
+            (while (search-backward-regexp "\\(;\\)\s*\n\s*\\(var\\)" (point-min) t)
               (replace-match "," nil nil nil 1)
               (replace-match "   " nil t nil 2))
             (buffer-string))))
