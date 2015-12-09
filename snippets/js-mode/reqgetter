@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-#name : Define Getter
-# expand-env: ((yas/indent-line 'fixed))
-# --
-			get${1:$$(upcase-initials yas-text)}: function () {
-				return $2;
-			}

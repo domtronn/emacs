@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
 #name : var x = require('x');
+# expand-env: ((req-module (call-interactively 'require-node-module)))
 # --
-`(call-interactively 'require-node-module-at-point)`
+var `(car req-module)` = require(`(cadr req-module)`);
