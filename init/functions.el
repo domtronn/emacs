@@ -583,23 +583,17 @@ or nil if not found."
   (interactive)
   (let* ((restore-point (point))
          (region (js2r--var-decl-region))
-         (start (car region))
-         (end (cadr region))
          (region-string (apply 'buffer-substring region))
          (region-replacement
           (with-temp-buffer
             (insert region-string)
             (goto-char (point-min))
             (search-forward "var" (point-max) t)
-            (while (search-forward "var" (point-max) t)
-              (let ((match (match-data)))
-                (when (string-equal "var" (thing-at-point 'symbol ))
-                  (set-match-data match)
-                  (replace-match "   ")
-                  (search-backward ";" (point-min) t)
-                  (replace-match ","))))
+            (while (search-forward-regexp "\\(;\\)\s*\n\s*\\(var\\)" (point-max) t)
+              (replace-match "," nil nil nil 1)
+              (replace-match "   " nil t nil 2))
             (buffer-string))))
-    (replace-region start end region-replacement)))
+    (apply 'replace-region (append region (list region-replacement)))))
 
 (defun js2r--var-decl-joint-region ()
   (let* ((decl (js2r--closest 'js2-var-decl-node-p))
@@ -632,11 +626,12 @@ or nil if not found."
   (goto-char (car (js2r--var-decl-region))))
 
 (defun js2r--get-declaration-type ()
-  (let* ((decl (js2r--closest 'js2-var-decl-node-p))
-         (stmts (length (js2-var-decl-node-kids decl))))
-    (if decl
-      (if (> stmts 1) 'join 'split)
-      nil)))
+  (let* ((decl (js2r--closest 'js2-var-decl-node-p)))
+    (when decl
+      (if decl
+          (if (> (length (js2-var-decl-node-kids decl)) 1)
+              'join 'split)
+        nil))))
 
 (defun js2r-toggle-var-declaration ()
   (interactive)
@@ -656,7 +651,6 @@ or nil if not found."
          (line (buffer-substring
                       (line-beginning-position)
                       (line-end-position))))
-    (message "Nth-Kid: %s" kids)
     (string-match nth-kid line)))
 
 (defun js2r--is-first-joint-var-decl ()
@@ -665,26 +659,35 @@ or nil if not found."
 (defun js2r--is-last-joint-var-decl ()
   (js2r--is-nth-joint-var-decl (lambda (k) (car (last k)))))
 
-(defun js2r--drag-advice (f &rest args)
+(defun js2r--drag-advice (f p)
   (let ((declaration-type (js2r--get-declaration-type))
-        (restore-point (point)))
-    (when (eq declaration-type 'join)
-      (js2r--goto-first-var-decl)
+        (restore-point (point))
+        (should-split (funcall p)))
+    (when should-split
       (js2r-split-var-declaration)
       (goto-char restore-point))
     (funcall f 1)
-    (when (eq declaration-type 'join)
+    (when should-split
       (let ((restore-point (point)))
         (js2r-join-var-declaration)
         (goto-char restore-point)))))
 
 (defun js2r-drag-stuff-up ()
   (interactive)
-  (js2r--drag-advice 'drag-stuff-up))
+  (js2r--drag-advice 'drag-stuff-up
+   (lambda () (and (eq (js2r--get-declaration-type) 'join)
+              (or (js2r--is-last-joint-var-decl)
+                  (save-excursion (previous-line)
+                                  (js2r--is-first-joint-var-decl)))))))
 
 (defun js2r-drag-stuff-down ()
   (interactive)
-  (js2r--drag-advice 'drag-stuff-down))
+  (js2r--drag-advice
+   'drag-stuff-down
+   (lambda () (and (eq (js2r--get-declaration-type) 'join)
+              (or (js2r--is-first-joint-var-decl)
+                  (save-excursion (next-line)
+                                  (js2r--is-last-joint-var-decl)))))))
 
 (defun js2r--get-varname (s)
   (cadr (s-split-words s)))
@@ -713,6 +716,17 @@ or nil if not found."
   (interactive)
   (js2r-order-by (lambda (it other) (< (length it)
                                   (length other)))))
+
+(defun js2r-order-vars-by-assigned-length ()
+  (interactive)
+  (js2r-order-by (lambda (it other)
+                   (let ((l-it (length (s-split-words it)))
+                         (l-other (length (s-split-words other))))
+                     (if (eq l-it l-other)
+                         (< (length it)
+                            (length other))
+                       (< l-it
+                          l-other))))))
 
 (provide 'functions)
 ;;; functions.el ends here
