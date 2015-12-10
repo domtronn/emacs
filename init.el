@@ -233,6 +233,7 @@
                (push '("R.__" . ?ρ) prettify-symbols-alist)
                (push '("_" . ?λ) prettify-symbols-alist)
                (push '("err" . ?ε) prettify-symbols-alist)
+               (push '("return" . ?⇐) prettify-symbols-alist)
                (push '("error" . ?Ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
                (push '("R.map" . ?↦) prettify-symbols-alist)
@@ -250,6 +251,7 @@
 
              ;; JS2 Refactor things
              ("C-c C-m" . context-coloring-mode)
+             ("C-c m" . prettify-symbols-mode)
              ("s-P" . js2r-drag-stuff-up)
              ("s-N" . js2r-drag-stuff-down)
              ("C-c C-o" . js2r-order-vars-by-length)
@@ -320,7 +322,9 @@
 (use-package flyspell
   :defer t
   :bind ("M-{" . flyspell-mode)
-  :config (bind-keys :map flyspell-mode-map
+  :config
+  (setq flyspell-mode-map (make-sparse-keymap))
+  (bind-keys :map flyspell-mode-map
                      ("M-/" . flyspell-popup-correct)))
 (add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
 
@@ -462,6 +466,7 @@
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
 
 (use-package magit-gh-issues
+  :disabled t
   :load-path "elisp/magit-gh-issues"
   :after 'magit
   :config (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
