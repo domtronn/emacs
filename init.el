@@ -234,6 +234,7 @@
                (push '("_" . ?λ) prettify-symbols-alist)
                (push '("err" . ?ε) prettify-symbols-alist)
                (push '("return" . ?⇐) prettify-symbols-alist)
+               (push '("undefined" . ?∅) prettify-symbols-alist)
                (push '("error" . ?Ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
                (push '("R.map" . ?↦) prettify-symbols-alist)
@@ -243,7 +244,6 @@
                (push '("!=" . ?≠) prettify-symbols-alist)
                (push '("!==" . ?≢) prettify-symbols-alist)
                (push '("===" . ?≡) prettify-symbols-alist)))
-
   (bind-keys :map js2-mode-map
              ("H-." . jump-to-thing-at-point)
              ("C-c C-n" . js2-next-error)
@@ -318,17 +318,6 @@
   ("C-c SPC" . ace-jump-char-mode)
   ("C-c C-x SPC" . ace-jump-zap-to-char)
   ("C-c C-SPC" . ace-jump-word-mode))
-
-(use-package flyspell
-  :defer t
-  :bind ("M-{" . flyspell-mode)
-  :config
-  (setq flyspell-mode-map (make-sparse-keymap))
-  (bind-keys :map flyspell-mode-map
-                     ("M-/" . flyspell-popup-correct)))
-(add-hook 'flyspell-mode 'flyspell-popup-auto-correct-mode)
-
-(add-hook 'text-mode 'flyspell-mode)
 
 (use-package key-combo
   :config (key-combo-mode 1)
