@@ -47,6 +47,8 @@
 
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
+(global-set-key (kbd "C-x a (")
+                '(lambda (b e) (interactive "r") (align-regexp b e (rx (group (zero-or-more (syntax whitespace))) "(") 1 1)))
 (global-set-key (kbd "C-x a :")
                 '(lambda (b e) (interactive "r") (align-regexp b e (rx (group (zero-or-more (syntax whitespace))) ":") 1 1)))
 (global-set-key (kbd "C-x a =")
