@@ -183,6 +183,10 @@
              ("C-c C-p" . flycheck-previous-error))
   :bind ("M-}" . flycheck-mode))
 
+(use-package flyspell
+  :config 
+  :bind ("M-{" . flyspell-mode))
+
 (use-package projectable
   :load-path "elisp/projectable"
   :config
