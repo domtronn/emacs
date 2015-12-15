@@ -100,6 +100,7 @@
 
 (global-set-key [f5] 'vc-ediff)
 (global-set-key [f6] 'my-vc-dir)
+(global-set-key [f12] '(lambda () (interactive) (find-file user-init-file)))
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
 (global-set-key (kbd "M-d") 'kill-word)
