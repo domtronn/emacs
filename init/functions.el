@@ -589,7 +589,6 @@ or nil if not found."
       (replace-match "its"))
     (goto-char (point-max))
     (while (search-backward-regexp "m[oa][m]+a" (point-min) t)
-      (message "%s" (match-string 0))
       (replace-match "%b"))
     (buffer-string)))
 
