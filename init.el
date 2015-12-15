@@ -190,7 +190,7 @@
 
 (use-package flyspell
   :init (setq flyspell-mode-map (make-sparse-keymap))
-        (use-package flyspell-popup)
+        (use-package flyspell-popup :defer t)
   :config (bind-keys :map flyspell-mode-map
                      ("s-]" . flyspell-goto-next-error)
                      ("M-/" . flyspell-popup-correct))
