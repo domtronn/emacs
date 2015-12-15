@@ -577,6 +577,21 @@ or nil if not found."
   (auto-complete-mode)
   (setq-local ac-sources sources))
 
+(defun format-for-frame-title (joke)
+  (with-temp-buffer
+    (insert (format "%s" joke))
+    (while (search-backward "she" (point-min) t)
+      (replace-match "it"))
+    (while (search-backward "her." (point-min) t)
+      (replace-match "it"))
+    (goto-char (point-max))
+    (while (search-backward "her" (point-min) t)
+      (replace-match "its"))
+    (goto-char (point-max))
+    (while (search-backward-regexp "m[oa][m]+a" (point-min) t)
+      (message "%s" (match-string 0))
+      (replace-match "%b"))
+    (buffer-string)))
 
 (defun js2r-join-var-declaration ()
   "Join variable declarations into comma separated list."
