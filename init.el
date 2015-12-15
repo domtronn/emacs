@@ -238,6 +238,7 @@
   (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
+               (push '("var" . ?ν) prettify-symbols-alist)
                (push '("R" . ?Λ) prettify-symbols-alist)
                (push '("R.__" . ?ρ) prettify-symbols-alist)
                (push '("_" . ?λ) prettify-symbols-alist)
@@ -247,6 +248,10 @@
                (push '("error" . ?Ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
                (push '("R.map" . ?↦) prettify-symbols-alist)
+               (push '("_.compose" . ?∘) prettify-symbols-alist)
+               (push '("R.compose" . ?∘) prettify-symbols-alist)
+               (push '("_.partial" . ?∮) prettify-symbols-alist)
+               (push '("R.partial" . ?∮) prettify-symbols-alist)
                ;; Maths symbols
                (push '("<=" . ?≤) prettify-symbols-alist)
                (push '(">=" . ?≥) prettify-symbols-alist)
