@@ -111,9 +111,7 @@
 
 ;; Buffer Movemenet
 
-(global-set-key (kbd "s-[") 'backward-paragraph)
 (global-set-key (kbd "M-p") 'backward-paragraph)
-(global-set-key (kbd "s-]") 'forward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
 (global-set-key (kbd "M-P") '(lambda () (interactive) (previous-line 5)))

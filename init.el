@@ -189,7 +189,12 @@
   :bind ("M-}" . flycheck-mode))
 
 (use-package flyspell
-  :config 
+  :init (setq flyspell-mode-map (make-sparse-keymap))
+        (use-package flyspell-popup)
+  :config (bind-keys :map flyspell-mode-map
+                     ("s-]" . flyspell-goto-next-error)
+                     ("M-/" . flyspell-popup-correct))
+  (add-hook 'flyspell-mode-hook 'flyspell-buffer)
   :bind ("M-{" . flyspell-mode))
 
 (use-package projectable
