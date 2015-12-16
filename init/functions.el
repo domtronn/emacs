@@ -588,7 +588,7 @@ or nil if not found."
     (while (search-backward "her" (point-min) t)
       (replace-match "its"))
     (goto-char (point-max))
-    (while (search-backward-regexp "m[oa][m]+a" (point-min) t)
+    (while (search-backward-regexp "[Yy]o m[oa][m]+a" (point-min) t)
       (replace-match "%b"))
     (buffer-string)))
 
