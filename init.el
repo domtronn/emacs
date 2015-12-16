@@ -206,7 +206,8 @@
   ([C-tab] . projectable-find-file)
   ("C-S-<tab>" . projectable-find-file-other-window)
   ("C-x p c" . projectable-change)
-  ("C-x C-b" . projectable-switch-buffer))
+  ("C-x C-b" . projectable-switch-buffer)
+  ("C-x C-p" . projectable-switch))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
