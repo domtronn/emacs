@@ -37,7 +37,7 @@
  'benchmark-init/tree-mode-hook
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
-    (local-set-key "o" 'projectable-change)))
+    (local-set-key "p" 'projectable-change)))
 
 (require 'use-package)
 
