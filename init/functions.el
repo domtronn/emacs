@@ -154,11 +154,12 @@
   "Open the current file in different things."
   (interactive)
   (let ((type (completing-read
-               "Open current file in editor: " '("IntelliJ IDEA" "Sublime Text" "Atom" "Chrome" "Finder") nil nil)))
+               "Open current file in editor: " '("IntelliJ IDEA" "Sublime Text" "Atom" "Chrome" "Finder" "URL") nil nil)))
     (cond ((string-equal type "Sublime Text") (open-in "subl"))
           ((string-equal type "Atom") (open-in "atom"))
           ((string-equal type "IntelliJ IDEA") (open-in-and-activate-intellj))
           ((string-equal type "Chrome") (browse-url (buffer-file-name)))
+          ((string-equal type "URL") (browse-url-at-point))
           ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
 
 (defun buffer-mode (buf)
