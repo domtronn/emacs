@@ -116,6 +116,8 @@
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
+(global-set-key (kbd "C-c C-,") 'whitespace-mode)
+
 (global-set-key (kbd "M-P") '(lambda () (interactive) (previous-line 5)))
 (global-set-key (kbd "M-N") '(lambda () (interactive) (next-line 5)))
 
