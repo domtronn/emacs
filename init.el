@@ -311,7 +311,21 @@
 (use-package json-snatcher :after json)
 (use-package json :mode ("\\.json" . json-mode))
 
-(use-package markdown-mode :mode ("\\.md" . markdown-mode))
+(use-package markdown-mode
+  :mode ("\\.md" . markdown-mode)
+  :config (add-hook 'markdown-mode-hook 'ac-emoji-setup))
+
+(use-package markdown-toc
+  :after markdown-mode
+  :config (bind-keys :map markdown-mode-map
+                     ("C-c C-t g" . markdown-toc-generate-toc)))
+
+(use-package livedown
+  :after markdown-mode
+  :load-path "elisp/emacs-livedown"
+  :config (bind-keys :map markdown-mode-map
+                     ("C-c p" . livedown:preview)))
+
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
 (use-package scss-mode :mode ("\\.scss$" . scss-mode))
 (use-package css-mode :mode ("\\.css$" . css-mode))
@@ -433,8 +447,6 @@
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'darkroom-mode)
 
-(add-hook 'markdown-mode-hook 'ac-emoji-setup)
-
 (add-hook 'erc-mode-hook '(lambda () (ac-lambda 'ac-source-emoji)))
 (add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
 (add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
@@ -450,10 +462,6 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
-
-(use-package livedown
-  :after markdown-mode
-  :load-path "elisp/emacs-livedown")
 
 (use-package hideshowvis
   :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
