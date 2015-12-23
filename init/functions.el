@@ -162,9 +162,18 @@
           ((string-equal type "URL") (browse-url-at-point))
           ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
 
+(defun smart-copy ()
+  "Smart copy a thing from a prompt"
+  (interactive)
+  (let ((type (completing-read
+               "Copy: " '("line" "url" "word") nil nil)))
+    (cond ((string-equal type "line") (kill-new (buffer-substring (line-beginning-position) (line-end-position))))
+          ((string-equal type "word") (kill-new (thing-at-point 'symbol)))
+          ((string-equal type "url") (kill-new (browse-url-url-at-point))))))
+
 (defun buffer-mode (buf)
   "Return the major mode associated with BUF."
-  (with-current-buffer buf
+  (With-current-buffer buf
     major-mode))
 
 (defun isearch-yank-from-start ()

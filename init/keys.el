@@ -132,7 +132,7 @@
 
 ;; Duplicate line
 (global-set-key (kbd "s-d") 'duplicate-line)
-(global-set-key (kbd "M-W") "\C-a\C- \C-n\M-w\C-p\C-e")
+(global-set-key (kbd "M-W") 'smart-copy)
 
 ;; Use C-i as my personal prefix command
 (global-set-key (kbd "H-a") 'beginning-of-line)
