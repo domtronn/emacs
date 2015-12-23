@@ -190,12 +190,15 @@
 
 (use-package flyspell
   :init (setq flyspell-mode-map (make-sparse-keymap))
-        (use-package flyspell-popup :defer t)
+  (defun flyspell-toggle ()
+    (interactive)
+    (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
+  (use-package flyspell-popup :defer t)
   :config (bind-keys :map flyspell-mode-map
                      ("s-]" . flyspell-goto-next-error)
                      ("M-/" . flyspell-popup-correct))
-  (add-hook 'flyspell-mode-hook 'flyspell-buffer)
-  :bind ("M-{" . flyspell-mode))
+          (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
+  :bind ("M-{" . flyspell-toggle))
 
 (use-package projectable
   :load-path "elisp/projectable"
