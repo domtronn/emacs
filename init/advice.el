@@ -37,6 +37,10 @@
   (call-interactively orig-f)
   (set-vertical 0))
 
+(defun disable-and-enable-vertical (orig-f &rest args)
+  (set-vertical 0)
+  (call-interactively orig-f)
+  (set-vertical 1))
 
 ;; Disable ido vertical mode and add advice around certain functions
 ;; to renenable temporarily
@@ -49,6 +53,9 @@
 (mapc #'(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
       '(ido-find-file projectable-find-file projectable-find-test
         projectable-find-file-other-window projectable-find-test-other-window))
+
+(mapc #'(lambda (sym) (advice-add sym :around 'disable-and-enable-vertical))
+      '(smex smex-major-mode-commands ido-switch-buffer ido-switch-buffer-other-window))
 
 (advice-add 'ansi-term :after '(lambda (&rest r) (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
