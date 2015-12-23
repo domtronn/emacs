@@ -22,31 +22,6 @@
 ;;; common functions used in Emacs
 
 ;;; Code:
-(defadvice ido-switch-buffer (before toggle-ido-vertical nil activate)
-  "Disable `ido-vertical-mode` when calling `ido-switch-buffer`."
-  (disable-vertical)
-  (flx-ido-mode 1))
-
-(defadvice smex (before activate-ido-vertical nil activate)
-  "Disable `ido-vertical-mode` when calling `smex`."
-  (disable-vertical)
-  (flx-ido-mode 1))
-
-(defadvice ido-find-file (before activate-ido-vertical nil activate)
-  "Enable `ido-vertical-mode` when calling `ido-find-file`."
-  (enable-vertical))
-
-(defun enable-vertical ()
-  (setq flx-ido-use-faces t)
-  (setq ido-use-faces nil)
-  (flx-ido-mode 1)
-  (ido-vertical-mode 1))
-
-(defun disable-vertical ()
-  (setq flx-ido-use-faces nil)
-  (setq ido-use-faces t)
-  (flx-ido-mode 0)
-  (ido-vertical-mode 0))
 
 ;; Disable all themes before loading a new one
 (defun disable-themes (orig-f &rest args)
@@ -58,12 +33,21 @@
 (advice-add 'load-theme :around 'disable-themes)
 
 (defun enable-and-disable-vertical (orig-f &rest args)
-  (enable-vertical)
+  (set-vertical 1)
   (call-interactively orig-f)
-  (disable-vertical))
+  (set-vertical 0))
 
+
+;; Disable ido vertical mode and add advice around certain functions
+;; to renenable temporarily
+(defun set-vertical (b)
+  (setq flx-ido-use-faces (eq 1 b))
+  (setq ido-use-faces (eq 0 b))
+  (ido-vertical-mode b))
+
+(set-vertical 0)
 (mapc #'(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
-      '(projectable-find-file projectable-find-test
+      '(ido-find-file projectable-find-file projectable-find-test
         projectable-find-file-other-window projectable-find-test-other-window))
 
 (advice-add 'ansi-term :after '(lambda (&rest r) (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
