@@ -592,7 +592,7 @@ or nil if not found."
     (insert (format "%s" joke))
     (while (search-backward "she" (point-min) t)
       (replace-match "it"))
-    (while (search-backward "her." (point-min) t)
+    (while (search-backward-regexp "her[\.]\\{0,1\\}\\s-*$" (point-min) t)
       (replace-match "it"))
     (goto-char (point-max))
     (while (search-backward "her" (point-min) t)
@@ -755,6 +755,9 @@ or nil if not found."
                             (length other))
                        (< l-it
                           l-other))))))
+
+(defun flyspell-next-error-function (&optional n reset)
+  (flyspell-goto-next-error))
 
 (provide 'functions)
 ;;; functions.el ends here
