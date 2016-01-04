@@ -162,15 +162,6 @@
           ((string-equal type "URL") (browse-url-at-point))
           ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
 
-(defun smart-copy ()
-  "Smart copy a thing from a prompt"
-  (interactive)
-  (let ((type (completing-read
-               "Copy: " '("line" "url" "word") nil nil)))
-    (cond ((string-equal type "line") (kill-new (buffer-substring (line-beginning-position) (line-end-position))))
-          ((string-equal type "word") (kill-new (thing-at-point 'symbol)))
-          ((string-equal type "url") (kill-new (browse-url-url-at-point))))))
-
 (defun buffer-mode (buf)
   "Return the major mode associated with BUF."
   (With-current-buffer buf
@@ -302,6 +293,18 @@
       (message "Killed %i dired buffer(s)." count))))
 
 ;; ============================================================================
+;; Copying Things
+;; ============================================================================
+
+(defun smart-copy ()
+  "Smart copy a thing from a prompt"
+  (interactive)
+  (let ((type (completing-read
+               "Copy: " '("line" "url" "word") nil nil)))
+    (cond ((string-equal type "line") (kill-new (buffer-substring (line-beginning-position) (line-end-position))))
+          ((string-equal type "word") (kill-new (thing-at-point 'symbol)))
+          ((string-equal type "url") (kill-new (browse-url-url-at-point))))))
+
 (defun copy-file-name ()
   "Returns a random colour"
   (interactive)
@@ -332,25 +335,6 @@
   (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
                             'face `(:foreground ,clr))))
 
-(defun ido-sort-mtime ()
-  (setq ido-temp-list
-        (sort ido-temp-list
-              (lambda (a b)
-                (let ((a-tramp-file-p (string-match-p ":\\'" a))
-                      (b-tramp-file-p (string-match-p ":\\'" b)))
-                  (cond
-                   ((and a-tramp-file-p b-tramp-file-p)
-                    (string< a b))
-                   (a-tramp-file-p nil)
-                   (b-tramp-file-p t)
-                   (t (time-less-p
-                       (sixth (file-attributes (concat ido-current-directory b)))
-                       (sixth (file-attributes (concat ido-current-directory a))))))))))
-  (ido-to-end  ;; move . files to end (again)
-   (delq nil (mapcar
-              (lambda (x) (and (char-equal (string-to-char x) ?.) x))
-              ido-temp-list))))
-
 (defun rotate-windows ()
   "Rotate your windows"
   (interactive)
@@ -373,51 +357,6 @@
         (set-window-start w1 s2)
         (set-window-start w2 s1)
         (setq i (1+ i)))))))
-
-(defun find-file-upwards (file-to-find &optional starting-path)
-  "Recursively searches each parent directory starting from the default-directory.
-looking for a file with name file-to-find.  Returns the path to it
-or nil if not found."
-  (cl-labels
-      ((find-file-r (path)
-                    (let* ((parent (file-name-directory path))
-                           (possible-file (concat parent file-to-find)))
-                      (cond
-                       ((file-exists-p possible-file) possible-file) ; Found
-                       ;; The parent of ~ is nil and the parent of / is itself.
-                       ;; Thus the terminating condition for not finding the file
-                       ;; accounts for both.
-                       ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
-                       (t (find-file-r (directory-file-name parent))))))) ; Continue
-    (find-file-r (if starting-path
-                     starting-path
-                   default-directory))))
-
-(defun clear-tags-table ()
-  "Resets lists of tags files and deletes associated tags buffers"
-  (interactive)
-  ;; clear tags-table-list and buffers
-  (dolist (f tags-table-list)
-    (let ((b (get-file-buffer f)))
-      (when b
-        (kill-buffer b))))
-  (setq tags-table-list nil)
-  ;; clear tags-file-name and buffer
-  (when tags-file-name
-    (let ((b (get-file-buffer tags-file-name)))
-      (when b
-        (kill-buffer b)))
-    (setq tags-file-name nil)))
-
-(defun find-tags-file-upwards ()
-  "Get and set the tags file"
-  (interactive)
-  (if (eq tags-table-list nil)
-      (let ((my-tags-file (file-truename (find-file-upwards ".tags"))))
-        (when my-tags-file
-          (clear-tags-table)
-          (message "Loading tags file: %s" my-tags-file)
-          (visit-tags-table my-tags-file)))))
 
 (defun semi-colon-end ()
   "Function to insert a semi colon at the end of the line from anywhere."
@@ -464,7 +403,6 @@ or nil if not found."
     (mark-whole-buffer)
     (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
 
-(global-set-key "\M-u" 'upcase-case-next-letter)
 (defun upcase-case-next-letter ()
   "Toggle the case of the next letter, then move forward one character."
   (interactive)
@@ -590,15 +528,16 @@ or nil if not found."
 (defun format-for-frame-title (joke)
   (with-temp-buffer
     (insert (format "%s" joke))
-    (while (search-backward "she" (point-min) t)
+    (while (and (search-backward "her" (point-min) t) (looking-at "her"))
       (replace-match "it"))
+    (goto-char (point-max))
     (while (search-backward-regexp "her[\.]\\{0,1\\}\\s-*$" (point-min) t)
       (replace-match "it"))
     (goto-char (point-max))
-    (while (search-backward "her" (point-min) t)
+    (while (and (search-backward "her" (point-min) t) (looking-at "her"))
       (replace-match "its"))
     (goto-char (point-max))
-    (while (search-backward "fat" (point-min) t)
+    (while (and (search-backward "fat" (point-min) t) (looking-at "fat"))
       (replace-match "big (%I)"))
     (goto-char (point-max))
     (while (search-backward-regexp "[Yy]o m[oa][m]+a" (point-min) t)

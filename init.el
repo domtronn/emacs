@@ -61,6 +61,7 @@
 (use-package multiple-cursors
   :bind ("s-n" . mc/mark-next-symbol-like-this)
         ("s-p" . mc/mark-previous-symbol-like-this)
+        ("s-l" . mc/mark-all-symbols-like-this)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
 (use-package multi-line
