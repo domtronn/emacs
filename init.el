@@ -617,7 +617,7 @@
 (setq custom-file (concat base-path "init/custom.el"))
 (add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
 
-(require 'keys (concat base-path "init/keys.elc"))
+(use-package keys :load-path "init")
 (load-file (concat base-path "init/custom.elc"))
 (load-file (concat base-path "init/advice.elc"))
 
