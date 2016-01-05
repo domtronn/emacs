@@ -96,7 +96,7 @@
 (global-set-key (kbd "s-/") 'dgc-comment)
 
 (global-set-key (kbd "<M-f2>") 'ag-regexp)
-(global-set-key [f2] 'helm-grep-do-git-grep)
+(global-set-key [f2] '(lambda () (interactive) (helm-grep-do-git-grep (or (repository-root) (default-directory)))))
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 
