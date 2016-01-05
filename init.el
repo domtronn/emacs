@@ -245,12 +245,15 @@
   (use-package tern-auto-complete
     :config (tern-ac-setup)))
 
+(use-package js2-refactor :after js2-mode)
+(use-package js2r-extensions :after js2-mode :load-path "elisp")
+(use-package js-dependency-injector
+  :after js2-mode
+  :load-path "elisp/js-dependency-injector")
 (use-package js2-mode
   :mode ("\\.js" . js2-mode)
   :config
-  (use-package js2-refactor)
-  (use-package js-dependency-injector
-    :load-path "elisp/js-dependency-injector")
+
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
