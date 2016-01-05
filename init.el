@@ -229,6 +229,16 @@
 (push '("<=" . ?≤) prettify-symbols-alist)
 (push '(">=" . ?≥) prettify-symbols-alist)
 
+(use-package key-leap
+  :config (defun key-leap ()
+            (interactive)
+            (let ((linum-state (if (symbol-value 'linum-mode) 1 0)))
+              (message "Linum-State: %s" linum-state)
+              (linum-mode 0) (key-leap-mode 1)
+              (call-interactively 'key-leap-start-matching)
+              (linum-mode linum-state) (key-leap-mode 0)))
+  :bind ("s-j" . key-leap))
+
 (use-package tern
   :after 'js2-mode
   :config
