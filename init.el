@@ -551,7 +551,7 @@
 (use-package flx-ido :after ido :config (flx-ido-mode 1))
 (use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
 (use-package ido-vertical-mode  :after ido :config (ido-vertical-mode 1))
-
+(use-package ido-describe-bindings :after ido :bind ("C-h b" . ido-describe-bindings))
 ;; Ido Support
 (use-package ido
   :demand
