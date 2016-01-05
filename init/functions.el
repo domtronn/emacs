@@ -528,7 +528,7 @@
 (defun format-for-frame-title (joke)
   (with-temp-buffer
     (insert (format "%s" joke))
-    (while (and (search-backward "her" (point-min) t) (looking-at "her"))
+    (while (and (search-backward "she" (point-min) t) (looking-at "she"))
       (replace-match "it"))
     (goto-char (point-max))
     (while (search-backward-regexp "her[\.]\\{0,1\\}\\s-*$" (point-min) t)
