@@ -1,0 +1,4 @@
+#name: use-package
+#key: up
+# --
+(use-package $0)
