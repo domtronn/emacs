@@ -273,8 +273,10 @@
                (push '("R.map" . ?↦) prettify-symbols-alist)
                (push '("_.compose" . ?∘) prettify-symbols-alist)
                (push '("R.compose" . ?∘) prettify-symbols-alist)
-               (push '("_.partial" . ?∮) prettify-symbols-alist)
-               (push '("R.partial" . ?∮) prettify-symbols-alist)
+               ;; Key words
+               (push '("for" . ?↻) prettify-symbols-alist)
+               (push '("while" . ?∞) prettify-symbols-alist)
+               (push '("module.exports" . ?⇧) prettify-symbols-alist)
                ;; Maths symbols
                (push '("<=" . ?≤) prettify-symbols-alist)
                (push '(">=" . ?≥) prettify-symbols-alist)
