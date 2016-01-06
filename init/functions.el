@@ -491,9 +491,11 @@
 
 (defun you-can-never-leave (&optional full)
   (interactive)
-  (if full
-      (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
-      (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\""))
+  (let ((playing (string-equal "playing\n" (shell-command-to-string "osascript -e \"tell app \\\"iTunes\\\" to get player state\""))))
+    (when (not playing)
+      (if full
+          (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
+        (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\""))))
   (restart-emacs))
 
 (defun dired-mark-duplicate-dirs ()
