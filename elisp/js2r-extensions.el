@@ -125,7 +125,7 @@
   (js2r--drag-advice 'drag-stuff-up
    (lambda () (and (eq (js2r--get-declaration-type) 'join)
               (or (js2r--is-last-joint-var-decl)
-                  (save-excursion (previous-line)
+                  (save-excursion (forward-line -1)
                                   (js2r--is-first-joint-var-decl)))))))
 
 (defun js2r-drag-stuff-down ()
@@ -134,7 +134,7 @@
    'drag-stuff-down
    (lambda () (and (eq (js2r--get-declaration-type) 'join)
               (or (js2r--is-first-joint-var-decl)
-                  (save-excursion (next-line)
+                  (save-excursion (forward-line 1)
                                   (js2r--is-last-joint-var-decl)))))))
 
 (defun js2r--get-varname (s)
@@ -175,6 +175,16 @@
                             (length other))
                        (< l-it
                           l-other))))))
+
+(defun js2r-order-vars-by-require-path ()
+  (interactive)
+  (js2r-order-by (lambda (it other)
+                   (let* ((regex "require\('\\(.*?\\)'\)")
+                          (path-it (if (string-match regex it)
+                                       (match-string 1 it) ""))
+                          (path-other (if (string-match regex other)
+                                          (match-string 1 other) "")))
+                     (string< path-it path-other)))))
 
 (provide 'js2r-extensions)
 ;;; js2r-extensions.el ends here
