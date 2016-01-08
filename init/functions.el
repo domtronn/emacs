@@ -546,6 +546,17 @@
       (replace-match "%b"))
     (buffer-string)))
 
+(defun -move-link (f)
+  (funcall f "http[s]\\{0,1\\}://[a-z0-9#%\./_-]+"))
+
+(defun previous-link ()
+  (interactive)
+  (-move-link 'search-backward-regexp))
+
+(defun next-link ()
+  (interactive)
+  (-move-link 'search-forward-regexp))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
