@@ -220,7 +220,21 @@
         ("s-r" . vr/query-replace))
 
 (use-package helm :bind ("s-V" . helm-show-kill-ring))
-(use-package helm-swoop :bind ("M-o" . helm-swoop))
+(use-package helm-files
+  :config (defun helm-git-grep-whole-repo () (interactive)
+                 (helm-grep-do-git-grep (or (repository-root) (default-directory))))
+  :bind ([f2] . helm-git-grep-whole-repo))
+(use-package helm-swoop
+  :bind ("M-o" . helm-swoop)
+  :init (setq helm-c-source-swoop-search-functions
+              '(helm-mm-exact-search
+                helm-mm-search
+                helm-candidates-in-buffer-search-default-fn
+                helm-fuzzy-search))
+        (defvar helm-c-source-swoop-match-functions
+          '(helm-mm-exact-match
+            helm-mm-match
+            helm-fuzzy-match)))
 (use-package helm-flx :after (list helm helm-swoop) :config (helm-flx-mode))
 
 (global-prettify-symbols-mode)
