@@ -250,7 +250,7 @@
               (linum-mode 0) (key-leap-mode 1)
               (call-interactively 'key-leap-start-matching)
               (linum-mode linum-state) (key-leap-mode 0)))
-  :bind ("s-j" . key-leap))
+  :bind ("s-g" . key-leap))
 
 (use-package tern
   :after 'js2-mode
@@ -345,7 +345,13 @@
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
-  :config (add-hook 'markdown-mode-hook 'ac-emoji-setup))
+  :config
+  (add-hook 'markdown-mode-hook 'ac-emoji-setup)
+  (bind-keys* ("M-<left>" . backward-word)
+              ("M-<right>" . forward-word))
+  (bind-keys :map markdown-mode-map
+             ("s-f" . next-link)
+             ("s-b" . previous-link)))
 
 (use-package markdown-toc
   :after markdown-mode
