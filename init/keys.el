@@ -96,7 +96,6 @@
 (global-set-key (kbd "s-/") 'dgc-comment)
 
 (global-set-key (kbd "<M-f2>") 'ag-regexp)
-(global-set-key [f2] '(lambda () (interactive) (helm-grep-do-git-grep (or (repository-root) (default-directory)))))
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 
@@ -106,7 +105,7 @@
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
 (global-set-key (kbd "M-d") 'kill-word)
-(global-set-key (kbd "M-S-d") 'backward-kill-word)
+(global-set-key (kbd "M-D") 'backward-kill-word)
 (global-set-key (kbd "C-S-d") 'backward-delete-char)
 (global-set-key (kbd "H-d") 'smart-delete-pair)
 (global-set-key [(control backspace)] 'backward-kill-word)
