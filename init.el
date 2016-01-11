@@ -353,6 +353,12 @@
              ("s-f" . next-link)
              ("s-b" . previous-link)))
 
+(use-package browse-url
+  :defer t
+  :init (autoload 'browse-url-url-at-point "browse-url"))
+
+(use-package link-hint :defer t)
+
 (use-package markdown-toc
   :after markdown-mode
   :config (bind-keys :map markdown-mode-map

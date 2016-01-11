@@ -159,7 +159,8 @@
           ((string-equal type "Atom") (open-in "atom"))
           ((string-equal type "IntelliJ IDEA") (open-in-and-activate-intellj))
           ((string-equal type "Chrome") (browse-url (buffer-file-name)))
-          ((string-equal type "URL") (browse-url-at-point))
+          ((string-equal type "URL")
+           (if (browse-url-url-at-point) (browse-url-at-point) (link-hint-open-link)))
           ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
 
 (defun buffer-mode (buf)
@@ -303,7 +304,9 @@
                "Copy: " '("line" "url" "word") nil nil)))
     (cond ((string-equal type "line") (kill-new (buffer-substring (line-beginning-position) (line-end-position))))
           ((string-equal type "word") (kill-new (thing-at-point 'symbol)))
-          ((string-equal type "url") (kill-new (browse-url-url-at-point))))))
+          ((string-equal type "url") (let ((url (browse-url-url-at-point)))
+                                       (kill-new url)
+                                       (link-hint-copy-link))))))
 
 (defun copy-file-name ()
   "Returns a random colour"
