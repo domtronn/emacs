@@ -232,14 +232,14 @@
 (push '("<=" . ?≤) prettify-symbols-alist)
 (push '(">=" . ?≥) prettify-symbols-alist)
 
-(use-package key-leap
-  :config (defun key-leap ()
-            (interactive)
-            (let ((linum-state (if (symbol-value 'linum-mode) 1 0)))
-              (linum-mode 0) (key-leap-mode 1)
-              (call-interactively 'key-leap-start-matching)
-              (linum-mode linum-state) (key-leap-mode 0)))
-  :bind ("s-g" . key-leap))
+(use-package avy
+  :bind
+  ("s-g" . avy-goto-line)
+  ("C-c a" . avy-goto-char)
+  ("C-c SPC" . avy-goto-char)
+  ("C-c C-a" . avy-goto-word-1)
+  :config
+  (avy-setup-default))
 
 (use-package tern
   :after 'js2-mode
@@ -346,7 +346,9 @@
   :defer t
   :init (autoload 'browse-url-url-at-point "browse-url"))
 
-(use-package link-hint :defer t)
+(use-package link-hint
+  :bind ("s-O" . link-hint-open-link)
+        ("H-s-o" . link-hint-open-multiple-links))
 
 (use-package markdown-toc
   :after markdown-mode
@@ -377,14 +379,6 @@
   :defer t
   :config (advice-add 'load-theme :after
                       '(lambda (&rest args) (context-coloring-mode 0))))
-
-(use-package ace-jump-mode
-  :bind
-  ("C-c a" . ace-jump-char-mode)
-  ("C-c d" . ace-jump-zap-to-char)
-  ("C-c SPC" . ace-jump-char-mode)
-  ("C-c C-x SPC" . ace-jump-zap-to-char)
-  ("C-c C-SPC" . ace-jump-word-mode))
 
 (use-package key-combo
   :config (key-combo-mode 1)
@@ -553,7 +547,7 @@
 (setq shift-select-mode t)                  ; Allow for shift selection mode
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
-(setq create-lockfiles nil)                  ; don't make lock files
+(setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
