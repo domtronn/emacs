@@ -224,7 +224,9 @@
   :config (defun helm-git-grep-whole-repo () (interactive)
                  (helm-grep-do-git-grep (or (repository-root) (default-directory))))
   :bind ([f2] . helm-git-grep-whole-repo))
-(use-package helm-swoop :bind ("M-o" . helm-swoop))
+(use-package helm-swoop
+  :bind ("M-o" . helm-swoop)
+  :config (define-key isearch-mode-map (kbd "C-;") 'helm-swoop-from-isearch))
 
 (global-prettify-symbols-mode)
 (push '("->" . ?→) prettify-symbols-alist)
