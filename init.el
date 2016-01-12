@@ -224,6 +224,8 @@
   :config (defun helm-git-grep-whole-repo () (interactive)
                  (helm-grep-do-git-grep (or (repository-root) (default-directory))))
   :bind ([f2] . helm-git-grep-whole-repo))
+(use-package helm-ls-git
+  :bind ("<H-tab>" . helm-ls-git-ls))
 (use-package helm-swoop
   :bind ("M-o" . helm-swoop)
         ("M-O" . helm-swoop-same-face-at-point)
