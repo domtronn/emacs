@@ -598,12 +598,17 @@
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
 
+(use-package yahoo-weather
+  :defer t
+  :init (setq yahoo-weather-location "Salford Quays") 
+  :config (yahoo-weather-mode))
+
+(add-hook 'after-init-hook 'update-powerline)
 (use-package powerline
   :if window-system
   :load-path "elisp"
   :config
   (advice-add 'load-theme :after 'update-powerline))
-(add-hook 'after-init-hook 'update-powerline)
 
 (use-package window-numbering
   :init

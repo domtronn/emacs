@@ -29,20 +29,20 @@
 (defvar powerline-color-alist '(("#383838" 1) ("#666666" 1)))
 
 (defvar theme-powerline-color-alist
-	'((whiteboard ("#bbbbbb" "#d7d7d7" "#2a2a2a"))
-		(atom-one-dark ("#3E4451" "#5C6370" "#ABB2BF"))
-		(gotham ("#10272D" "#081E26" "#357C91"))
+  '((whiteboard ("#bbbbbb" "#d7d7d7" "#2a2a2a"))
+    (atom-one-dark ("#3E4451" "#5C6370" "#ABB2BF"))
+    (gotham ("#10272D" "#081E26" "#357C91"))
     (ujelly ("#000000" "#000000" "#ffffff"))
-		(moe-light ("#CCCCB7" "#EDEDD3" "#3F3F38"))
-		(aurora ("#455a64" "#2B3B40" "#CDD3D3"))
+    (moe-light ("#CCCCB7" "#EDEDD3" "#3F3F38"))
+    (aurora ("#455a64" "#2B3B40" "#CDD3D3"))
     (misterioso ("#455a64" "#2B3B40" "#CDD3D3"))
-		(jazz ("#151515" "#101010" "#7F6A4F"))))
+    (jazz ("#151515" "#101010" "#7F6A4F"))))
 
 (defun update-powerline (&rest args)
-	"Update the extra powerline colours based on a mapping to theme."
+  "Update the extra powerline colours based on a mapping to theme."
   (let* ((theme (car custom-enabled-themes))
-				 (alist (cadr (assoc theme theme-powerline-color-alist))))
-		(if alist
+         (alist (cadr (assoc theme theme-powerline-color-alist))))
+    (if alist
         (setq powerline-color1 (car alist)
               powerline-color2 (cadr alist)
               powerline-fg (caddr alist)
@@ -247,15 +247,15 @@ install the memoized function over the original function."
 (defun memoize-wrap (func)
   "Return the memoized version of the given function."
   (let ((table-sym (gensym))
-	(val-sym (gensym))
-	(args-sym (gensym)))
+  (val-sym (gensym))
+  (args-sym (gensym)))
     (set table-sym (make-hash-table :test 'equal))
     `(lambda (&rest ,args-sym)
        ,(concat (documentation func) "\n(memoized function)")
        (let ((,val-sym (gethash ,args-sym ,table-sym)))
-	 (if ,val-sym
-	     ,val-sym
-	   (puthash ,args-sym (apply ,func ,args-sym) ,table-sym))))))
+   (if ,val-sym
+       ,val-sym
+     (puthash ,args-sym (apply ,func ,args-sym) ,table-sym))))))
 
 (memoize 'arrow-left-xpm)
 (memoize 'arrow-right-xpm)
@@ -310,7 +310,7 @@ install the memoized function over the original function."
        "")
      (if arrow
          (propertize " " 'display
-										 (arrow-left-xpm color1 color2)
+                     (arrow-left-xpm color1 color2)
                      'local-map (make-mode-line-mouse-map
                                  'mouse-1 (lambda () (interactive)
                                             (setq powerline-arrow-shape 'arrow)
@@ -322,8 +322,8 @@ install the memoized function over the original function."
         (arrow  (and color1 (not (string= color1 color2)))))
     (concat
      (if arrow
-				 (propertize " " 'display
-										 (arrow-right-xpm color1 color2)
+         (propertize " " 'display
+                     (arrow-right-xpm color1 color2)
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive)
                                           (setq powerline-arrow-shape 'arrow)
@@ -341,15 +341,14 @@ install the memoized function over the original function."
          ""
        (propertize " " 'face plface)))))
 
-(defun powerline-make-fill
-  (color)
+(defun powerline-make-fill (color)
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
-  (let ((plface (powerline-make-face color)))
-    (if (eq 'right (get-scroll-bar-mode))
-        (propertize " " 'display '((space :align-to (- right-fringe 35)))
-                    'face plface)
-      (propertize " " 'display '((space :align-to (- right-fringe 35)))
-                  'face plface))))
+  (let ((plface (powerline-make-face color))
+        (amount (- (window-total-width)
+                   (+ 32
+                      (length (-powerline-get-weather "Weather is %(weather) "))
+                      (length (-powerline-get-temp))))))
+    (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
 
 (defun powerline-make-text
   (string color &optional fg localmap)
@@ -460,15 +459,27 @@ install the memoized function over the original function."
 (defpowerline global      global-mode-string)
 (defpowerline emacsclient mode-line-client)
 (defpowerline project-id (if (and (boundp 'projectable-id)
-																	(not (eql nil projectable-id)))
-														 (concat (upcase projectable-id) " ∘")
-													 (format "×")))
+                                  (not (eql nil projectable-id)))
+                             (concat (upcase projectable-id) " ∘")
+                           (format "×")))
 
 ;; (defpowerline vc          (when (and (buffer-file-name (current-buffer))
 ;;                                      vc-mode)
-;; 														(symbol-name (vc-mode-line (buffer-file-name (current-buffer) )))))
+;;                            (symbol-name (vc-mode-line (buffer-file-name (current-buffer) )))))
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
+
+
+(defun -powerline-get-temp ()
+  (let ((temp (-powerline-get-weather "%(temperature)")))
+    (unless (string= "" temp) (format "%s°C" (round (string-to-number temp))))))
+(defun -powerline-get-weather (format)
+  (if (boundp 'yahoo-weather-info)
+      (downcase (yahoo-weather-info-format yahoo-weather-info format))
+    ""))
+(defpowerline weather (-powerline-get-weather "Weather is %(weather) "))
+(defpowerline temperature (-powerline-get-temp))
+
 (defpowerline eb-indicator (eyebrowse-mode-line-indicator))
 
 (defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
@@ -493,19 +504,22 @@ install the memoized function over the original function."
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
-														 (powerline-rmw	   'left  nil  )
-														 (powerline-project-id	   'left  nil  )
-														 (powerline-window-number	 'left  nil  )
+                             (powerline-rmw    'left  nil  )
+                             (powerline-project-id     'left  nil  )
+                             (powerline-window-number  'left  nil  )
                              (powerline-buffer-id      'left  nil   powerline-color1  )
                              (powerline-major-mode     'left        powerline-color1  )
                              (powerline-process        'text        powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
                              (powerline-vc             'center                        powerline-color2  )
                              (powerline-make-fill                                     powerline-color2  )
+                             (powerline-weather        'text                        powerline-color2  )
                              (powerline-row            'right       powerline-color1  powerline-color2  )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
-                             (powerline-time		       'right  nil  powerline-color1  )
+                             (powerline-time           'right  nil  powerline-color1  )
+                             (powerline-temperature    'right  nil  )
+                             (powerline-make-text      "-"   nil  )
                              (powerline-buffer-size    'left   nil  )))))
 
 (provide 'powerline)
