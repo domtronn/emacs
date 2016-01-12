@@ -223,6 +223,7 @@
 (use-package helm-files
   :config (defun helm-git-grep-whole-repo () (interactive)
                  (helm-grep-do-git-grep (or (repository-root) (default-directory))))
+          (add-hook helm-grep-mode-hook 'wgrep-setup)
   :bind ([f2] . helm-git-grep-whole-repo))
 (use-package helm-ls-git
   :bind ("<H-tab>" . helm-ls-git-ls))
@@ -245,6 +246,16 @@
   ("C-c C-a" . avy-goto-word-1)
   :config
   (avy-setup-default))
+
+(use-package wgrep
+  :after 'helm-files
+  :init (defun wgrep-end ()
+          (interactive)
+          (wgrep-finish-edit)
+          (wgrep-save-all-buffers))
+        (autoload 'wgrep-change-to-wgrep-mode "browse-url")
+  :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end)
+          (define-key helm-grep-mode-map (kbd "C-c C-p") 'wgrep-change-to-wgrep-mode))
 
 (use-package tern
   :after 'js2-mode
