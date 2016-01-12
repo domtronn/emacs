@@ -345,8 +345,8 @@ install the memoized function over the original function."
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
   (let ((plface (powerline-make-face color))
         (amount (- (window-total-width)
-                   (+ 32
-                      (length (-powerline-get-weather "Weather is %(weather) "))
+                   (+ 34
+                      (length (-powerline-get-weather "%(weather) "))
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
 
@@ -477,7 +477,7 @@ install the memoized function over the original function."
   (if (boundp 'yahoo-weather-info)
       (downcase (yahoo-weather-info-format yahoo-weather-info format))
     ""))
-(defpowerline weather (-powerline-get-weather "Weather is %(weather) "))
+(defpowerline weather (-powerline-get-weather "%(weather) "))
 (defpowerline temperature (-powerline-get-temp))
 
 (defpowerline eb-indicator (eyebrowse-mode-line-indicator))
