@@ -226,6 +226,7 @@
   :bind ([f2] . helm-git-grep-whole-repo))
 (use-package helm-swoop
   :bind ("M-o" . helm-swoop)
+        ("M-O" . helm-swoop-same-face-at-point)
   :config (define-key isearch-mode-map (kbd "C-;") 'helm-swoop-from-isearch))
 
 (global-prettify-symbols-mode)
