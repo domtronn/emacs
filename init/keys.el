@@ -64,11 +64,6 @@
 (global-set-key [M-right] 'forward-word)
 (global-set-key [M-left] 'backward-word)
 
-;; change to use regexp searching rather than normal isearch
-(global-set-key (kbd "H-s") 'isearch-forward-symbol-at-point)
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-
 (global-set-key (kbd "M-?") 'ispell-word)
 (global-set-key "\M-u" 'upcase-case-next-letter)
 ;; Allow for join lines backwards

@@ -223,18 +223,29 @@
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace))
 
+(use-package isearch
+  :bind ("H-s" . isearch-forward-symbol-at-point)
+        ("C-s" . isearch-forward-regexp)
+        ("C-r" . isearch-backward-regexp)
+
+  :init (bind-keys :map isearch-mode-map
+                   ("C-;" . helm-swoop-from-isearch)
+                   ("C-l" . helm-git-grep-from-isearch)))
+
 (use-package helm :bind ("s-V" . helm-show-kill-ring))
-(use-package helm-files
-  :config (defun helm-git-grep-whole-repo () (interactive)
-                 (helm-grep-do-git-grep (or (repository-root) (default-directory))))
-          (add-hook helm-grep-mode-hook 'wgrep-setup)
-  :bind ([f2] . helm-git-grep-whole-repo))
 (use-package helm-ls-git
   :bind ("<H-tab>" . helm-ls-git-ls))
+(use-package helm-git-grep
+  :commands helm-git-grep-from-isearch
+  :bind ([f2] . helm-git-grep)
+  :config (bind-keys :map helm-git-grep-map
+                     ("M-n" . helm-goto-next-file)
+                     ("M-p" . helm-goto-precedent-file)))
 (use-package helm-swoop
+  :commands helm-swoop-from-isearch
   :bind ("M-o" . helm-swoop)
         ("M-O" . helm-swoop-same-face-at-point)
-  :config (define-key isearch-mode-map (kbd "C-;") 'helm-swoop-from-isearch))
+  :config (define-key helm-swoop-map (kbd "C-l") 'helm-git-grep-from-helm))
 
 (global-prettify-symbols-mode)
 (push '("->" . ?→) prettify-symbols-alist)
@@ -475,11 +486,10 @@
   (bind-keys :map ac-complete-mode-map
              ([tab] . ac-expand-common)
              ([return] . ac-complete)
-             ("C-f" . ac-isearch)
+             ("C-s" . ac-isearch)
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
-  :bind
-  ([S-tab] . auto-complete))
+  :bind ([S-tab] . auto-complete))
 
 (add-hook 'web-mode-hook 'ac-html-enable)
 
@@ -618,7 +628,7 @@
 
 (use-package yahoo-weather
   :defer t
-  :init (setq yahoo-weather-location "Salford Quays") 
+  :init (setq yahoo-weather-location "Salford Quays")
   :config (yahoo-weather-mode))
 
 (add-hook 'after-init-hook 'update-powerline)
@@ -658,7 +668,7 @@
                    (setq frame-title-format f))))))
   :bind ("<s-f8>" . set-frame-title-yo-momma))
 (add-hook 'after-init-hook 'set-frame-title-yo-momma)
-  
+
 ;;------------------
 ;; My Load Files
 ;;------------------

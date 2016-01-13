@@ -38,8 +38,7 @@
  '(flycheck-highlighting-mode (quote lines))
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
- '(helm-reuse-last-window-split-state nil)
- '(helm-split-window-default-side (quote right))
+ '(helm-reuse-last-window-split-state t)
  '(highlight-current-line-globally t)
  '(highlight-symbol-colors
    (quote
