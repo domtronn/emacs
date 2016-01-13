@@ -127,8 +127,6 @@
 
 (global-set-key (kbd "C-x C-x") 'delete-other-windows)
 
-(global-set-key (kbd "H-l") (kbd "C-l"))
-
 ;; Duplicate line
 (global-set-key (kbd "s-d") 'duplicate-line)
 (global-set-key (kbd "M-W") 'smart-copy)

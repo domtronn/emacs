@@ -37,7 +37,8 @@
  'benchmark-init/tree-mode-hook
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
-    (local-set-key "p" 'projectable-change)))
+    (local-set-key "p" 'projectable-change)
+    (local-set-key "P" 'projectable-change-and-find-file)))
 
 (require 'use-package)
 
@@ -59,9 +60,11 @@
 (use-package paren)
 
 (use-package multiple-cursors
-  :bind ("s-n" . mc/mark-next-symbol-like-this)
-        ("s-p" . mc/mark-previous-symbol-like-this)
-        ("s-l" . mc/mark-all-symbols-like-this)
+  :bind ("H-n" . mc/mark-next-symbol-like-this)
+        ("s-n" . mc/skip-to-next-like-this)
+        ("H-p" . mc/mark-previous-symbol-like-this)
+        ("s-p" . mc/skip-to-previous-like-this)
+        ("H-l" . mc/mark-all-symbols-like-this)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
 (use-package multi-line
@@ -209,6 +212,7 @@
   :bind
   ([C-tab] . projectable-find-file)
   ("C-S-<tab>" . projectable-find-file-other-window)
+  ("C-x p f c" . projectable-change-and-find-file)
   ("C-x p c" . projectable-change)
   ("C-x C-b" . projectable-switch-buffer)
   ("C-x C-p" . projectable-switch))
