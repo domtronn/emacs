@@ -346,7 +346,12 @@ install the memoized function over the original function."
   (let ((plface (powerline-make-face color))
         (amount (- (window-total-width)
                    (+ 34
-                      (length (-powerline-get-weather "%(weather) "))
+                      (if (eq (get-buffer-window) powerline-current-window)
+                          (length (-powerline-get-weather " %(weather) "))
+                        0)
+                      (if (and (fboundp 'boop-format-result)
+                               (eq (get-buffer-window) powerline-current-window))
+                          (length  (boop-format-result)) 0)
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
 
@@ -473,11 +478,13 @@ install the memoized function over the original function."
 (defun -powerline-get-temp ()
   (let ((temp (-powerline-get-weather "%(temperature)")))
     (unless (string= "" temp) (format "%s°C" (round (string-to-number temp))))))
+
 (defun -powerline-get-weather (format)
   (if (boundp 'yahoo-weather-info)
       (downcase (yahoo-weather-info-format yahoo-weather-info format))
     ""))
-(defpowerline weather (-powerline-get-weather "%(weather) "))
+
+(defpowerline weather (-powerline-get-weather " %(weather) "))
 (defpowerline temperature (-powerline-get-temp))
 
 (defpowerline eb-indicator (eyebrowse-mode-line-indicator))
@@ -499,22 +506,43 @@ install the memoized function over the original function."
                                           (setq pmin (point-min)))
                                         (percent-xpm pmax pmin we ws 15 color1 color2))))
 
+(defvar powerline-current-window nil)
+(defun update-current-window (windows)
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq powerline-current-window (selected-window))))
 
+(add-function :before pre-redisplay-function 'update-current-window)
 
+(defun powerline-boop ()
+  (when (fboundp 'boop-format-result)
+    (with-temp-buffer
+      (insert (boop-format-result))
+      (add-face-text-property (point-min) (point-max) `(:background ,powerline-color2))
+      (buffer-string))))
+
+;; (format "%s" (propertize "CLICK ME" 'face '(foreground-color . "#239823") 'local-map my-mode-line-map))
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
                              (powerline-rmw    'left  nil  )
                              (powerline-project-id     'left  nil  )
                              (powerline-window-number  'left  nil  )
+
                              (powerline-buffer-id      'left  nil   powerline-color1  )
                              (powerline-major-mode     'left        powerline-color1  )
                              (powerline-process        'text        powerline-color1  )
-                             (powerline-narrow         'left        powerline-color1  powerline-color2  )
-                             (powerline-vc             'center                        powerline-color2  )
-                             (powerline-make-fill                                     powerline-color2  )
-                             (powerline-weather        'text                        powerline-color2  )
-                             (powerline-row            'right       powerline-color1  powerline-color2  )
+                             (powerline-narrow         'left        powerline-color1  powerline-color2 )
+
+
+                             (if (eq (get-buffer-window) powerline-current-window)
+                                 (concat
+                                  (powerline-vc       'center      powerline-color2  )
+                                  (powerline-make-fill                   powerline-color2  )
+                                  (powerline-weather  'text        powerline-color2  )
+                                  (powerline-boop))
+                               (powerline-make-fill                   powerline-color2  ))
+
+                             (powerline-row            'right       powerline-color1  powerline-color2 )
                              (powerline-make-text      ":"          powerline-color1  )
                              (powerline-column         'right       powerline-color1  )
                              (powerline-time           'right  nil  powerline-color1  )
