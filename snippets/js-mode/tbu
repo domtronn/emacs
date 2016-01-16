@@ -1,0 +1,4 @@
+# -*- mode: js-mode -*-
+#name : tbu
+# --
+toBeUndefined();$0
