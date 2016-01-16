@@ -629,7 +629,14 @@
 (use-package yahoo-weather
   :defer t
   :init (setq yahoo-weather-location "Salford Quays")
-  :config (yahoo-weather-mode))
+  :config
+  (defvar yahoo-run-id nil)
+  (defun yahoo-weather-async-update-info ()
+    (interactive)
+    (async-start `(lambda ()
+                    (require 'yahoo-weather (concat ,package-user-dir "/yahoo-weather-20160111.439/yahoo-weather.el"))
+                    (yahoo-weather-update-info)) 'ignore))
+  (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
 (add-hook 'after-init-hook 'update-powerline)
 (use-package powerline
