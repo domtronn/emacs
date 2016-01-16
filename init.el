@@ -635,7 +635,8 @@
     (interactive)
     (async-start `(lambda ()
                     (require 'yahoo-weather (concat ,package-user-dir "/yahoo-weather-20160111.439/yahoo-weather.el"))
-                    (yahoo-weather-update-info)) 'ignore))
+                    (yahoo-weather-update-info))
+                 '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
 (add-hook 'after-init-hook 'update-powerline)
