@@ -2,4 +2,7 @@
 #name: defcustom
 #key: defcustom
 # --
-(defcustom $0 VALUE "DOC" &optional ARGS)
+(defcustom $1 ${2:value}
+	"${3:docstring}"
+	:group '`(file-name-base (file-name-sans-extension (buffer-file-name)))`
+	:type '$4)
