@@ -1,0 +1,1 @@
+(define-package "git-commit-insert-issue" "20151204.419" "Get issues list when typing \"Fixes #\"" '((helm "0") (projectile "0") (s "0") (github-issues "0")) :url "https://gitlab.com/emacs-stuff/git-commit-insert-issue/" :keywords '("git" "commit" "issues"))
