@@ -112,10 +112,11 @@
 
 (use-package popup :defer t)
 (use-package popwin
-  :defer t
+  :demand
   :config (popwin-mode 1)
           (setq popwin:close-popup-window-timer-interval 0.1)
-          (setq popwin:close-popup-window-timer nil))
+          (setq popwin:close-popup-window-timer nil)
+  :bind ("C-x m" . popwin:messages))
 
 (use-package darkroom
   :config (setq darkroom-fringes-outside-margins nil)
