@@ -545,7 +545,7 @@
     (while (and (search-backward "fat" (point-min) t) (looking-at "fat"))
       (replace-match "big (%I)"))
     (goto-char (point-max))
-    (while (search-backward-regexp "[Yy]o m[oa][m]+a" (point-min) t)
+    (while (search-backward-regexp "[Yy]o m[oa][m]+[a]+" (point-min) t)
       (replace-match "%b"))
     (buffer-string)))
 
