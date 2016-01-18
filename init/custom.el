@@ -109,7 +109,7 @@
     (".json" ".css" ".pl" ".sh" ".as" ".php" ".emacs" ".ini" ".js" ".el" ".ini" ".cfg" ".cnf" "")))
  '(ido-separator nil)
  '(ido-use-filename-at-point (quote guess))
- '(js-indent-level 2)
+ '(js-indent-level 2 t)
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
@@ -187,7 +187,8 @@
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
    (quote
-    (("*grunt" :regexp nil :position bottom :noselect t)
+    (("*Slack" :regexp t :position bottom)
+     ("*grunt" :regexp nil :position bottom :noselect t)
      ("*Malabar Compilation*" :width 60 :position right :noselect t)
      ("*RE-Builder*" :height 2 :position bottom)
      ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)
@@ -196,7 +197,7 @@
      ("Browsing by" :regexp t :position left)
      ("*Completions*" :position bottom :noselect t)
      ("*vc-log*" :position bottom)
-     ("*Occur*" :position bottom))) nil nil "op")
+     ("*Occur*" :position bottom))))
  '(powerline-color-alist (quote ((powerline-color1 1) (powerline-color2 1))) t)
  '(powerline-color0 "#282828")
  '(powerline-color1 "#3C3C3C" t)
