@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-#name : var x = require('x');
+#name : Require a node module from Dependencies
 # expand-env: ((req-module (call-interactively 'require-node-module)))
 # --
 var `(car req-module)` = require(`(cadr req-module)`);

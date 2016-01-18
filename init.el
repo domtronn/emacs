@@ -168,7 +168,8 @@
   :bind ("C-c C-s C-s" . slack-start)
         ("C-c C-s C-x" . slack-ws-close)
         ("C-c C-s C-i" . slack-im-select)
-        ("C-c C-s C-c" . slack-channel-select))
+        ("C-c C-s C-c" . slack-channel-select)
+        ("M-@" . slack-message-embed-mention))
 
 (use-package image+ :after 'image-mode)
 (use-package dired+
@@ -484,7 +485,7 @@
 (use-package auto-complete-config :after auto-complete)
 (use-package ac-dabbrev :after auto-complete)
 (use-package auto-complete
-  :demand
+  :defer t
   :config
   (ac-config-default)
   (set-default 'ac-sources

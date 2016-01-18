@@ -167,7 +167,7 @@
     (action . yas/expand)
     (candidate-face . ac-yasnippet-candidate-face)
     (selection-face . ac-yasnippet-selection-face)
-    (symbol . "a")))
+    (symbol . "y")))
 
 ;; semantic
 
