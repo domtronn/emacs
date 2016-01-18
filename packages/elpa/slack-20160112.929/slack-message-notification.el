@@ -31,7 +31,7 @@
 (require 'slack-im)
 (require 'alert)
 
-(defconst slack-message-notification-buffer-name "*Slack - notification*")
+(defconst slack-message-notification-buffer-name "*s-n*")
 (defvar slack-message-notification-subscription '())
 (defvar slack-message-tips '())
 (defvar alert-default-style)

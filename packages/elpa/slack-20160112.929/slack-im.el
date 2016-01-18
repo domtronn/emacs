@@ -41,7 +41,7 @@
 (defvar slack-buffer-function)
 
 (defconst slack-im-history-url "https://slack.com/api/im.history")
-(defconst slack-im-buffer-name "*Slack - Direct Messages*")
+(defconst slack-im-buffer-name "*s-dm*")
 (defconst slack-user-list-url "https://slack.com/api/users.list")
 (defconst slack-im-list-url "https://slack.com/api/im.list")
 

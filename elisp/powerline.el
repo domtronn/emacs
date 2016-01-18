@@ -518,21 +518,20 @@ install the memoized function over the original function."
 
 
 (defun -count-notifications (pattern notification-char)
-  (let ((result
-         (-reduce '+ (-map 'string-to-number (-non-nil
-                                              (-map (lambda (it)
-                                                      (with-temp-buffer
-                                                        (insert (format "%s" it))
-                                                        (goto-char (point-min))
-                                                        (when (search-forward-regexp pattern (point-max) t)
-                                                          (match-string 1)))) slack-ims))))))
-    (when (> result 0) notification-char)))
+  (when (boundp 'slack-ims)
+    (let ((result
+          (-reduce '+ (-map 'string-to-number (-non-nil
+                                               (-map (lambda (it)
+                                                       (with-temp-buffer
+                                                         (insert (format "%s" it))
+                                                         (goto-char (point-min))
+                                                         (when (search-forward-regexp pattern (point-max) t)
+                                                           (match-string 1)))) slack-ims))))))
+     (when (> result 0) notification-char))))
 
 (defpowerline new-im-notifications (-count-notifications "[0-9]+ \\([0-9]+\\) (.*?)" "✩"))
 (defpowerline new-channel-notifications (-count-notifications "(.*?) \\([0-9]+\\) [0-9]+ nil" "✧"))
 
-
-;; (format  "%s" (propertize "CLICK ME" 'face '(foreground-color . "#239823") 'local-map my-mode-line-map))
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
@@ -540,7 +539,7 @@ install the memoized function over the original function."
                              (powerline-project-id     'left  nil  )
                              (powerline-window-number  'left  nil  )
 
-                             (powerline-new-im-notifications  'left  nil  )
+                             ;; (powerline-new-im-notifications  'left  nil  )
 
                              (powerline-buffer-id      'left  nil   powerline-color1  )
                              (powerline-major-mode     'left        powerline-color1  )

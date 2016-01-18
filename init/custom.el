@@ -187,7 +187,7 @@
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
    (quote
-    (("*Slack" :regexp t :position bottom)
+    (("*s-" :regexp t :position bottom)
      ("*grunt" :regexp nil :position bottom :noselect t)
      ("*RE-Builder*" :height 2 :position bottom)
      ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)

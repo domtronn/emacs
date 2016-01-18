@@ -166,6 +166,7 @@
   :config (add-hook 'slack-mode-hook (lambda () (ac-emoji-setup)
                                            (ac-lambda 'ac-source-emoji)))
   :bind ("C-c C-s C-s" . slack-start)
+        ("C-c C-s C-x" . slack-ws-close)
         ("C-c C-s C-i" . slack-im-select)
         ("C-c C-s C-c" . slack-channel-select))
 
@@ -662,7 +663,7 @@
   (add-hook 'boop-update-hook
             '(lambda () (let ((local-config))
                      (deboop-group 'projectable)
-                     (when (and (gethash "boop" projectable-project-hash) (boundp 'projectable-id))
+                     (when (and (boundp 'projectable-project-hash) (gethash "boop" projectable-project-hash) (boundp 'projectable-id))
                        (maphash
                         (lambda (key value)
                           (setq local-config (append local-config
