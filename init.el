@@ -94,7 +94,7 @@
   :demand
   :config (smartparens-global-mode)
           (sp-local-pair
-           '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode text-mode)
+           '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
           (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
@@ -153,10 +153,18 @@
           :config (set-fringe-mode '(2 . 0)))
   :config (global-git-gutter-mode))
 
-(use-package erc
-  :defer t
-  :config (ac-emoji-setup)
-          (use-package tls))
+(use-package slack
+  :commands (slack-start)
+  :init
+  (require 'slack-auth "~/.slack-auth.el")
+  (setq slack-enable-emoji t) ;; if you want to enable emoji, default nil
+  (setq slack-client-id     (plist-get slack-auth :client-id))
+  (setq slack-client-secret (plist-get slack-auth :client-secret))
+  (setq slack-token         (plist-get slack-auth :token))
+  (setq slack-user-name "domtronn")
+  :bind ("C-c C-s C-s" . slack-start)
+        ("C-c C-s C-i" . slack-im-select)
+        ("C-c C-s C-c" . slack-channel-select))
 
 (use-package image+ :after 'image-mode)
 (use-package dired+

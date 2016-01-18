@@ -511,19 +511,6 @@
          (dirs (split-string (shell-command-to-string cmd) " ")))
     (mapc (lambda (dir) (dired-mark-files-regexp dir)) dirs)))
 
-(defun connect-to-slack ()
-  (interactive)
-  (let ((password
-         (with-temp-buffer
-           (insert-file-contents-literally "~/.slack-auth.el")
-           (plist-get (read (buffer-string)) :password))))
-    (erc-tls
-     :server "dev-connected-tv.irc.slack.com"
-     :port 6667
-     :nick "domtronn"
-     :password password
-     :full-name "Dom Charlesworth")))
-
 (defun ac-lambda (&rest sources)
   "Sets up autocomplete mode and local SOURCES"
   (interactive)
