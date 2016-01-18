@@ -646,6 +646,27 @@
   :config
   (advice-add 'load-theme :after 'update-powerline))
 
+(use-package boop :load-path "elisp/boop"
+  :defer t
+  :init
+  (add-hook 'boop-update-hook
+            '(lambda () (let ((local-config))
+                     (deboop-group 'projectable)
+                     (when (and (gethash "boop" projectable-project-hash) (boundp 'projectable-id))
+                       (maphash
+                        (lambda (key value)
+                          (setq local-config (append local-config
+                                        (list (list (intern key)
+                                                    :script (intern (gethash "script" value))
+                                                    :group 'projectable
+                                                    :args (gethash "args" value)
+                                                    :onselect `(lambda () (interactive) (browse-url (gethash "onclick" ,value))))))))
+                        (gethash "boop" projectable-project-hash)))
+                     (setq boop-config-alist (append boop-config-alist local-config))
+                     (boop--sync-result-and-config))))
+
+  :commands (boop-start))
+
 (use-package window-numbering
   :init
   (add-hook

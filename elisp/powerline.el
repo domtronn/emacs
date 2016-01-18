@@ -349,9 +349,9 @@ install the memoized function over the original function."
                       (if (eq (get-buffer-window) powerline-current-window)
                           (length (-powerline-get-weather " %(weather) "))
                         0)
-                      (if (and (fboundp 'boop-format-result)
+                      (if (and (fboundp 'boop-format-results)
                                (eq (get-buffer-window) powerline-current-window))
-                          (length  (boop-format-result)) 0)
+                          (length  (boop-format-results)) 0)
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
 
@@ -369,6 +369,7 @@ install the memoized function over the original function."
         ((and (eq side 'left) color2)  (powerline-make-left   string color1 color2 localmap))
         ((eq side 'left)               (powerline-make-left   string color1 color1 localmap))
         ((eq side 'right)              (powerline-make-right  string color1 color1 localmap))
+        ((eq side 'donttouch)          (powerline-make-right  string color1 color1 localmap))
         (t                             (powerline-make-text   string color1 localmap))))
 
 (defmacro defpowerline (name string)
@@ -510,15 +511,10 @@ install the memoized function over the original function."
 (defun update-current-window (windows)
   (when (not (minibuffer-window-active-p (frame-selected-window)))
     (setq powerline-current-window (selected-window))))
-
 (add-function :before pre-redisplay-function 'update-current-window)
 
 (defun powerline-boop ()
-  (when (fboundp 'boop-format-result)
-    (with-temp-buffer
-      (insert (boop-format-result))
-      (add-face-text-property (point-min) (point-max) `(:background ,powerline-color2))
-      (buffer-string))))
+  (when (fboundp 'boop-format-results) (boop-format-results)))
 
 ;; (format "%s" (propertize "CLICK ME" 'face '(foreground-color . "#239823") 'local-map my-mode-line-map))
 (setq-default mode-line-format
@@ -537,10 +533,10 @@ install the memoized function over the original function."
                              (if (eq (get-buffer-window) powerline-current-window)
                                  (concat
                                   (powerline-vc       'center      powerline-color2  )
-                                  (powerline-make-fill                   powerline-color2  )
+                                  (powerline-make-fill             powerline-color2  )
                                   (powerline-weather  'text        powerline-color2  )
                                   (powerline-boop))
-                               (powerline-make-fill                   powerline-color2  ))
+                               (powerline-make-fill                powerline-color2  ))
 
                              (powerline-row            'right       powerline-color1  powerline-color2 )
                              (powerline-make-text      ":"          powerline-color1  )
