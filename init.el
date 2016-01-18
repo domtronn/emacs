@@ -163,6 +163,8 @@
   (setq slack-client-secret (plist-get slack-auth :client-secret))
   (setq slack-token         (plist-get slack-auth :token))
   (setq slack-user-name "domtronn")
+  :config (add-hook 'slack-mode-hook (lambda () (ac-emoji-setup)
+                                           (ac-lambda 'ac-source-emoji)))
   :bind ("C-c C-s C-s" . slack-start)
         ("C-c C-s C-i" . slack-im-select)
         ("C-c C-s C-c" . slack-channel-select))
@@ -513,7 +515,6 @@
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'darkroom-mode)
 
-(add-hook 'erc-mode-hook '(lambda () (ac-lambda 'ac-source-emoji)))
 (add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
 (add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
 
