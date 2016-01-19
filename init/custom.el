@@ -282,8 +282,7 @@
  '(ac-candidate-mouse-face ((t nil)))
  '(ac-dabbrev-menu-face ((t (:background "#2B3B40" :foreground "#81a2be"))))
  '(ac-dabbrev-selection-face ((t (:background "#2B3B40" :foreground "#6699cc"))))
- '(ac-etags-candidate-face ((t (:background "#99cc99" :foreground "grey20"))))
- '(ac-etags-selection-face ((t (:background "#698b22" :foreground "grey20"))))
+
  '(ac-selection-face ((t (:background "#2B3B40" :foreground "goldenrod2" :weight normal))))
  '(ac-yasnippet-candidate-face ((t (:inherit ac-candidate-face :background "#2B3B40" :foreground "sandybrown"))))
  '(ac-yasnippet-selection-face ((t (:background "#2B3B40" :foreground "coral3"))))
@@ -296,6 +295,9 @@
  '(helm-swoop-target-word-face ((t (:background "#C678DD" :foreground "#282C34"))))
  '(hs-face ((t (:distant-foreground "black"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
+ '(popup-face ((t (:foreground "#232A2F"))))
+ '(popup-scroll-bar-foreground-face ((t (:background "#232A2F"))))
+ '(popup-tip-face ((t (:background "#2B3B40" :foreground "#FFEB95"))))
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;;; Font Manipulation:
