@@ -305,6 +305,11 @@
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
+            (lambda () (when (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
+                    (add-to-list 'ac-sources 'ac-source-requirejs-files))
+              (when (s-contains? "module.exports" (buffer-substring (point-min) (point-max)))
+                (add-to-list 'ac-sources 'ac-source-project-files))))
+  (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
                (push '("var" . ?ν) prettify-symbols-alist)
@@ -411,13 +416,13 @@
 
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   :config
   (bind-keys :map emacs-lisp-mode-map
              ("C-c C-l" . elisp-debug)
              ("C-c RET" . context-coloring-mode)
              ("H-." . jump-to-find-function)))
-
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
 (use-package context-coloring-mode
   :defer t
@@ -484,17 +489,17 @@
 
 (use-package auto-complete-config :after auto-complete)
 (use-package ac-dabbrev :after auto-complete)
+(use-package ac-projectable :load-path "~/.env/elisp")
+(use-package ac-css :load-path "~/.env/elisp" :after scss-mode)
 (use-package auto-complete
   :defer t
   :config
   (ac-config-default)
   (set-default 'ac-sources
                '(ac-source-yasnippet
-                 ac-source-semantic
-                 ac-source-dabbrev
-                 ac-source-files-in-current-dir))
+                 ac-source-dabbrev))
   (global-auto-complete-mode t)
-  (add-to-list 'ac-modes 'latex-mode)
+
   (bind-keys :map ac-completing-map ("\e" . ac-stop))
   (bind-keys :map ac-complete-mode-map
              ([tab] . ac-expand-common)
@@ -502,15 +507,25 @@
              ("C-s" . ac-isearch)
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
+
   :bind ([S-tab] . auto-complete))
 
+(add-hook 'js2-mode-hook 'ac-etags-ac-setup)
 (add-hook 'web-mode-hook 'ac-html-enable)
 
+(add-hook 'scss-mode-hook
+          '(lambda () (ac-lambda
+                  'ac-source-yasnippet
+                  'ac-source-css-property
+                  'ac-source-css-id
+                  'ac-source-css-selector
+                  'ac-source-words-in-buffer)))
+
 (add-hook 'LaTeX-mode-hook
-            '(lambda () (setq ac-lambda
-                         'ac-source-math-unicode
-                         'ac-source-math-latex
-                         'ac-source-latex-commands)))
+            '(lambda () (ac-lambda
+                    'ac-source-math-unicode
+                    'ac-source-math-latex
+                    'ac-source-latex-commands)))
 
 (add-hook 'LaTeX-mode-hook
           '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
