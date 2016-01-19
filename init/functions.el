@@ -165,7 +165,7 @@
 
 (defun buffer-mode (buf)
   "Return the major mode associated with BUF."
-  (With-current-buffer buf
+  (with-current-buffer buf
     major-mode))
 
 (defun isearch-yank-from-start ()
