@@ -96,6 +96,7 @@
           (sp-local-pair
            '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
+          (add-hook 'emacs-lisp-mode-hook '(lambda () (ac-lambda 'ac-source-functions 'ac-source-variables)))
           (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
         ("s-f" . sp-slurp-hybrid-sexp)
@@ -489,10 +490,13 @@
 
 (use-package auto-complete-config :after auto-complete)
 (use-package ac-dabbrev :after auto-complete)
+
+;; Custom Auto Complete Sources
 (use-package ac-projectable :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after scss-mode)
+
 (use-package auto-complete
-  :defer t
+  :demand t
   :config
   (ac-config-default)
   (set-default 'ac-sources
@@ -510,7 +514,6 @@
 
   :bind ([S-tab] . auto-complete))
 
-(add-hook 'js2-mode-hook 'ac-etags-ac-setup)
 (add-hook 'web-mode-hook 'ac-html-enable)
 
 (add-hook 'scss-mode-hook

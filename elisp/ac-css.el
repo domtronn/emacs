@@ -39,7 +39,6 @@
 													 (prefix . "\\#\\(.*\\)"))
   "An `auto-complete-mode` source that is built of the issues.")
 
-
 (defface ac-css-candidate-face
   '((((class color)) :background "#2B3B40" :foreground "#FC536F"))
   "*Face to highlight projectable files before expansion"

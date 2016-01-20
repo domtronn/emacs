@@ -20,6 +20,7 @@
    (format "%s/%s/ac-comphist.dat" common-load-dir common-package-dir))
  '(ac-etags-requires 1)
  '(ac-expand-on-auto-complete t)
+ '(ac-quick-help-delay 0.5)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector

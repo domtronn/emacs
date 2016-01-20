@@ -9,13 +9,15 @@
 	'((candidates . ac-projectable-file-candidates)
 		(candidate-face . ac-projectable-candidate-face)
 		(selection-face . ac-projectable-selection-face)
-		(requires . 2)
+		(limit . 5)
 		(symbol . "P")
 		(action . require-relative-module-at-point)))
 
 (defvar ac-source-requirejs-files
 	'((candidates . ac-projectable-file-candidates)
-		(requires . 2)
+		(candidate-face . ac-projectable-candidate-face)
+		(selection-face . ac-projectable-selection-face)
+		(limit . 5)
 		(symbol . "R")
 		(action . inject-dependency-at-point)))
 
