@@ -482,6 +482,15 @@
            ((string-match "[\]\}\)]" next-char) (smart-backward) (delete-pair))
            ((string-match "[\]\}\)]" prev-char) (smart-backward) (delete-pair))))))
 
+(defun magit-open-file-other-window ()
+  (interactive)
+  (let ((current-section (magit-current-section)))
+    (when (eq 'file (magit-section-type current-section))
+      (let* ((file-name (expand-file-name (magit-section-value current-section)))
+             (file-buffer (or (find-buffer-visiting file-name) (create-file-buffer file-name))))
+        (when (not (file-directory-p file-name))
+          (display-buffer file-buffer))))))
+
 (defun magit-whitespace-cleanup ()
   (interactive)
   (let ((current-section (magit-current-section)))

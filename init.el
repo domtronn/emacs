@@ -414,19 +414,22 @@
 (use-package scss-mode :mode ("\\.scss$" . scss-mode))
 (use-package css-mode :mode ("\\.css$" . css-mode))
 
-(use-package elisp-slime-nav-mode :after lisp-mode)
-
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-  (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
-  (add-hook 'emacs-lisp-mode-hook '(lambda () (ac-lambda 'ac-source-functions 'ac-source-variables)))
+  (add-hook 'emacs-lisp-mode-hook
+            '(lambda () (ac-lambda 'ac-source-functions
+                              'ac-source-variables
+                              'ac-source-yasnippet
+                              'ac-source-dabbrev
+                              'ac-source-words-in-same-mode-buffers)))
   :config
   (bind-keys :map emacs-lisp-mode-map
              ("C-c C-l" . elisp-debug)
              ("C-c RET" . context-coloring-mode)
-             ("H-." . jump-to-find-function)))
+             ("M-." . jump-to-find-function)
+             ("M-," . pop-tag-mark)))
 
 (use-package context-coloring-mode
   :defer t
@@ -583,6 +586,7 @@
 (use-package magit
   :defer t
   :config (bind-keys :map magit-mode-map
+                     ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-<tab>" . projectable-find-file)))
 
