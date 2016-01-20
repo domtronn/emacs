@@ -96,7 +96,6 @@
           (sp-local-pair
            '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
-          (add-hook 'emacs-lisp-mode-hook '(lambda () (ac-lambda 'ac-source-functions 'ac-source-variables)))
           (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
         ("s-f" . sp-slurp-hybrid-sexp)
@@ -415,10 +414,14 @@
 (use-package scss-mode :mode ("\\.scss$" . scss-mode))
 (use-package css-mode :mode ("\\.css$" . css-mode))
 
+(use-package elisp-slime-nav-mode :after lisp-mode)
+
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
+  (add-hook 'emacs-lisp-mode-hook '(lambda () (ac-lambda 'ac-source-functions 'ac-source-variables)))
   :config
   (bind-keys :map emacs-lisp-mode-map
              ("C-c C-l" . elisp-debug)
