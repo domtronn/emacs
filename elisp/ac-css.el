@@ -19,7 +19,7 @@
 																						 (--filter (not (equal it ""))
 																								(--filter (not (s-contains? filter it))
 																													(--mapcat (split-string it find) (split-string (s-trim (buffer-substring-no-properties prev-point (point)))))))))))
-											(goto-char prev-point)))) results)))
+											(goto-char prev-point)))) (-distinct results))))
 	 (--filter (eq (buffer-mode it) 'scss-mode) (buffer-list))))
 
 (defun ac-css-selector-candidates () (ac-css-selector--candidates "[.]" "#"))
