@@ -516,7 +516,9 @@ install the memoized function over the original function."
 (add-function :before pre-redisplay-function 'update-current-window)
 
 (defun powerline-boop ()
-  (when (fboundp 'boop-format-results) (format " %s" (boop-format-results))))
+  (when (fboundp 'boop-format-results)
+    (let ((s (boop-format-results)))
+      (add-face-text-property 0 (length s) `(:background ,powerline-color2) nil s) s)))
 
 (defun -count-notifications (pattern notification-char)
   (when (boundp 'slack-ims)
