@@ -101,7 +101,7 @@ fallback."
 			   (let-alist (flycheck-count-errors flycheck-current-errors)
 			     (concat
 			      (flycheck-status-emoji--face-count "(ノ°□°)ノ " .error)
-			      (when (and .error .warning) '(?/))
+			      (when (and .error .warning) "/ ")
 						(flycheck-status-emoji--face-count "(ಠ_ಠ) " .warning)))
 			 "(◉͜◉)"))
 		      (`running     "(⇀_↼‶)")
