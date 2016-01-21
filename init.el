@@ -96,7 +96,7 @@
           (sp-local-pair
            '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
-          (sp-with-modes sp--lisp-modes (sp-local-pair "(" nil :bind "s-("))
+          (sp-with-modes sp-lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
         ("s-f" . sp-slurp-hybrid-sexp)
         ("s-b" . sp-forward-barf-sexp))
@@ -127,11 +127,9 @@
   :mode ("\\.org" . org-mode)
   :init
   (add-hook 'org-mode-hook 'darkroom-mode)
-  (add-hook 'org-mode-hook '(lambda () (load-theme 'spacemacs-light)))
   :config
   (org-beamer-mode)
-  (bind-keys :map org-mode-map
-             ("s-p" . fill-paragraph)))
+  (bind-keys :map org-mode-map ("s-p" . fill-paragraph)))
 
 (use-package doc-view
   :mode ("\\.pdf" . doc-view-mode)
