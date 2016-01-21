@@ -351,7 +351,7 @@ install the memoized function over the original function."
                         0)
                       (if (and (fboundp 'boop-format-results)
                                (eq (get-buffer-window) powerline-current-window))
-                          (length  (boop-format-results)) 0)
+                          (+ 1 (length  (boop-format-results))) 0)
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
 
@@ -515,7 +515,7 @@ install the memoized function over the original function."
 (add-function :before pre-redisplay-function 'update-current-window)
 
 (defun powerline-boop ()
-  (when (fboundp 'boop-format-results) (boop-format-results)))
+  (when (fboundp 'boop-format-results) (format " %s" (boop-format-results))))
 
 (defun -count-notifications (pattern notification-char)
   (when (boundp 'slack-ims)
