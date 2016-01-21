@@ -80,8 +80,8 @@ If the current frame cannot display the given CHARACTER, we throw
 an exception instead."
   (when count
 		(if (> count 1)
-				(format "%s" character)
-				(format "%s%s " character (number-to-string count)))))
+				(format "%s%s " character (number-to-string count))
+			(format "%s" character))))
 
 (defun flycheck-status-emoji-mode-line-text (&optional status)
   "Get a text using emoji to describe STATUS for use in the mode line.
