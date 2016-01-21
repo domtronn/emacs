@@ -295,10 +295,10 @@
   :after js2-mode
   :load-path "elisp/js-dependency-injector")
 (use-package js2-mode
-  :mode ("\\.js" . js2-mode)
+  :mode ("\\.js$" . js2-mode)
   :config
-
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
+  (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
@@ -332,9 +332,9 @@
                (push '("!=" . ?≠) prettify-symbols-alist)
                (push '("!==" . ?≢) prettify-symbols-alist)
                (push '("===" . ?≡) prettify-symbols-alist)))
+  (bind-keys* ("M-." . jump-to-thing-at-point)
+              ("M-," . pop-tag-mark))
   (bind-keys :map js2-mode-map
-             ("H-." . jump-to-thing-at-point)
-             ("C-c C-n" . js2-next-error)
              ("C-x c" . grunt-exec)
 
              ;; JS2 Refactor things
