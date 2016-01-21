@@ -79,9 +79,9 @@ might return “😟2” for a COUNT of 2, but just “😟” for a COUNT of
 If the current frame cannot display the given CHARACTER, we throw
 an exception instead."
   (when count
-    (concat (list (flycheck-status-emoji--check character))
-	    (when (> count 1)
-	      (number-to-string count)))))
+		(if (> count 1)
+				(format "%s" character)
+				(format "%s%s " character (number-to-string count)))))
 
 (defun flycheck-status-emoji-mode-line-text (&optional status)
   "Get a text using emoji to describe STATUS for use in the mode line.
@@ -100,16 +100,16 @@ fallback."
 		       (if flycheck-current-errors
 			   (let-alist (flycheck-count-errors flycheck-current-errors)
 			     (concat
-			      (flycheck-status-emoji--face-count ?😱 .error)
+			      (flycheck-status-emoji--face-count "(ノ°□°)ノ " .error)
 			      (when (and .error .warning) '(?/))
-			      (flycheck-status-emoji--face-count ?😟 .warning)))
-			 ?😌))
-		      (`running     ?😔)
-		      (`no-checker  ?😶)
-		      (`not-checked ?😐)
-		      (`errored     ?😵)
-		      (`interrupted ?😲)
-		      (`suspicious  ?😒))))
+						(flycheck-status-emoji--face-count " (ಠ_ಠ) " .warning)))
+			 "(◉͜◉)"))
+		      (`running     "(⇀_↼‶)")
+		      (`no-checker  "(o_◯⁺)")
+		      (`not-checked "(-_-ᷦ)")
+		      (`errored     "(×_×)")
+		      (`interrupted "")
+		      (`suspicious  ""))))
 	  (list " "
 		(if (characterp pick)
 		    (string (flycheck-status-emoji--check pick))
