@@ -102,7 +102,7 @@ fallback."
 			     (concat
 			      (flycheck-status-emoji--face-count "(ノ°□°)ノ " .error)
 			      (when (and .error .warning) '(?/))
-						(flycheck-status-emoji--face-count " (ಠ_ಠ) " .warning)))
+						(flycheck-status-emoji--face-count "(ಠ_ಠ) " .warning)))
 			 "(◉͜◉)"))
 		      (`running     "(⇀_↼‶)")
 		      (`no-checker  "(o_◯⁺)")

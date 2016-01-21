@@ -475,7 +475,8 @@ install the memoized function over the original function."
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
 
-(defpowerline flycheck-status (format "%s" (cadr (flycheck-status-emoji-mode-line-text))))
+(defpowerline flycheck-status (propertize (format "%s" (cadr (flycheck-status-emoji-mode-line-text)))
+                                          'display '(height 0.7)))
 
 (defun -powerline-get-temp ()
   (let ((temp (-powerline-get-weather "%(temperature)")))
@@ -491,7 +492,7 @@ install the memoized function over the original function."
 
 (defpowerline eb-indicator (eyebrowse-mode-line-indicator))
 
-(defpowerline buffer-id   (propertize (car (propertized-buffer-identification "%12b"))
+(defpowerline buffer-id (propertize (car (propertized-buffer-identification "%12b"))
                                       'face (powerline-make-face color1)))
 
 (defpowerline window-number (format "%c" (+ 10121 (window-numbering-get-number))))
