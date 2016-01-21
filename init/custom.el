@@ -188,7 +188,8 @@
  '(popwin:popup-window-height 20)
  '(popwin:special-display-config
    (quote
-    (("*s-" :regexp t :position bottom)
+    (("*Flycheck errors*" :regexp nil :position bottom :stick t)
+     ("*s-" :regexp t :position bottom)
      ("*grunt" :regexp nil :position bottom :noselect t)
      ("*RE-Builder*" :height 2 :position bottom)
      ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)
@@ -283,10 +284,12 @@
  '(ac-candidate-mouse-face ((t nil)))
  '(ac-dabbrev-menu-face ((t (:background "#2B3B40" :foreground "#81a2be"))))
  '(ac-dabbrev-selection-face ((t (:background "#2B3B40" :foreground "#6699cc"))))
-
  '(ac-selection-face ((t (:background "#2B3B40" :foreground "goldenrod2" :weight normal))))
  '(ac-yasnippet-candidate-face ((t (:inherit ac-candidate-face :background "#2B3B40" :foreground "sandybrown"))))
  '(ac-yasnippet-selection-face ((t (:background "#2B3B40" :foreground "coral3"))))
+ '(flycheck-error ((t (:underline "#74CBC4"))))
+ '(flycheck-info ((t (:underline "#FF516D"))))
+ '(flycheck-warning ((t (:underline "#FFEB95"))))
  '(helm-candidate-number ((t (:background "#fece28" :foreground "#3a3a3a"))))
  '(helm-header-line-left-margin ((t (:background "#fece28" :foreground "#3a3a3a"))))
  '(helm-selection ((t (:background "#F77669" :distant-foreground "#263038" :foreground "#263038"))))
@@ -296,7 +299,8 @@
  '(helm-swoop-target-word-face ((t (:background "#C678DD" :foreground "#282C34"))))
  '(hs-face ((t (:distant-foreground "black"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
- '(popup-face ((t (:foreground "#232A2F"))))
+ '(popup-face ((t (:background "#2B3B40" :foreground "#FFEB95"))))
+ '(popup-menu-selection-face ((t (:background "#335D7F" :foreground "#FFEB95"))))
  '(popup-scroll-bar-foreground-face ((t (:background "#232A2F"))))
  '(popup-tip-face ((t (:background "#2B3B40" :foreground "#FFEB95"))))
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
