@@ -380,7 +380,9 @@
                        (format "sass '%s':%s.css" buffer-file-name file)))))
 
 (use-package json-snatcher :after json)
-(use-package json :mode ("\\.json" . json-mode))
+(use-package json
+  :mode ("\\.json" . json-mode)
+  :config (add-hook 'json-mode-hook '(lambda () (projectable-stylise "4" t))))
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
