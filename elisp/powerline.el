@@ -475,6 +475,7 @@ install the memoized function over the original function."
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
 
+(defpowerline flycheck-status (format "%s" (cadr (flycheck-status-emoji-mode-line-text))))
 
 (defun -powerline-get-temp ()
   (let ((temp (-powerline-get-weather "%(temperature)")))
@@ -516,7 +517,6 @@ install the memoized function over the original function."
 (defun powerline-boop ()
   (when (fboundp 'boop-format-results) (boop-format-results)))
 
-
 (defun -count-notifications (pattern notification-char)
   (when (boundp 'slack-ims)
     (let ((result
@@ -538,6 +538,7 @@ install the memoized function over the original function."
                              (powerline-rmw    'left  nil  )
                              (powerline-project-id     'left  nil  )
                              (powerline-window-number  'left  nil  )
+                             (powerline-flycheck-status  'left  nil  )
 
                              ;; (powerline-new-im-notifications  'left  nil  )
 

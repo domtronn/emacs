@@ -196,9 +196,12 @@
 
   :bind ("C-c C-w" . wlf:trip-split-layout))
 
+
+(use-package flycheck-status-emoji :after flycheck)
 (use-package flycheck
   :config (global-flycheck-mode)
   (bind-keys :map flycheck-mode-map
+             ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
              ("C-c C-p" . flycheck-previous-error))
   :bind ("M-}" . flycheck-mode))
