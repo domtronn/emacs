@@ -479,6 +479,7 @@
 (setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
 
 (use-package web-mode
+  :load-path "~/.env/elisp/web-mode/"
   :mode
   ("\\.phtml" . web-mode)
   ("\\.html" . web-mode)
