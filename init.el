@@ -424,6 +424,7 @@
   (add-hook 'emacs-lisp-mode-hook
             '(lambda () (ac-lambda 'ac-source-functions
                               'ac-source-variables
+                              'ac-source-filepath
                               'ac-source-yasnippet
                               'ac-source-dabbrev
                               'ac-source-words-in-same-mode-buffers)))
@@ -502,6 +503,7 @@
 
 ;; Custom Auto Complete Sources
 (use-package ac-projectable :load-path "~/.env/elisp")
+(use-package ac-filepath :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after scss-mode)
 
 (use-package auto-complete
@@ -510,6 +512,7 @@
   (ac-config-default)
   (set-default 'ac-sources
                '(ac-source-yasnippet
+                 ac-source-filepath
                  ac-source-dabbrev))
   (global-auto-complete-mode t)
 
@@ -645,6 +648,8 @@
 (use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
 (use-package ido-vertical-mode  :after ido :config (ido-vertical-mode 1))
 (use-package ido-describe-bindings :after ido :bind ("C-h b" . ido-describe-bindings))
+(use-package ido-other-window :load-path "~/.env/elisp")
+
 ;; Ido Support
 (use-package ido
   :demand
@@ -692,7 +697,9 @@
   (add-hook 'boop-update-hook
             '(lambda () (let ((local-config))
                      (deboop-group 'projectable)
-                     (when (and (boundp 'projectable-project-hash) (gethash "boop" projectable-project-hash) (boundp 'projectable-id))
+                     (when (and (bound-and-true-p projectable-project-hash)
+                                (gethash "boop" projectable-project-hash)
+                                (boundp 'projectable-id))
                        (maphash
                         (lambda (key value)
                           (setq local-config (append local-config
