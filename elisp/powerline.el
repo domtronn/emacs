@@ -55,7 +55,7 @@
   (create-image
    (format "/* XPM */
 static char * arrow_left[] = {
-\"12 18 2 1\",
+\"12 22 2 1\",
 \". c %s\",
 \"  c %s\",
 \".           \",
@@ -67,6 +67,10 @@ static char * arrow_left[] = {
 \".......     \",
 \"........    \",
 \".........   \",
+\"..........  \",
+\"........... \",
+\"........... \",
+\"..........  \",
 \".........   \",
 \"........    \",
 \".......     \",
@@ -86,7 +90,7 @@ static char * arrow_left[] = {
   (create-image
    (format "/* XPM */
 static char * arrow_right[] = {
-\"12 18 2 1\",
+\"12 22 2 1\",
 \". c %s\",
 \"  c %s\",
 \"           .\",
@@ -98,6 +102,10 @@ static char * arrow_right[] = {
 \"     .......\",
 \"    ........\",
 \"   .........\",
+\"  ..........\",
+\" ...........\",
+\" ...........\",
+\"  ..........\",
 \"   .........\",
 \"    ........\",
 \"     .......\",
@@ -535,19 +543,26 @@ install the memoized function over the original function."
 (defpowerline new-im-notifications (-count-notifications "[0-9]+ \\([0-9]+\\) (.*?)" "✩"))
 (defpowerline new-channel-notifications (-count-notifications "(.*?) \\([0-9]+\\) [0-9]+ nil" "✧"))
 
+(defun powerline-mode-xpm ()
+  (propertize " " 'display (mode-icon-ruby-xpm powerline-fg powerline-color1)
+              'face `(:background ,powerline-color1)))
+
 (setq-default mode-line-format
               (list "%e"
                     '(:eval (concat
                              (powerline-rmw    'left  nil  )
                              (powerline-project-id     'left  nil  )
                              (powerline-window-number  'left  nil  )
-                             (powerline-flycheck-status  'left  nil  )
 
                              ;; (powerline-new-im-notifications  'left  nil  )
 
                              (powerline-buffer-id      'left  nil   powerline-color1  )
-                             (powerline-major-mode     'left        powerline-color1  )
+                             
+                             (powerline-make-text " " powerline-color1)
+                             ;; (powerline-mode-xpm)
+                             (powerline-major-mode       'left  powerline-color1  )
                              (powerline-process        'text        powerline-color1  )
+                             (powerline-flycheck-status  'left  powerline-color1  )
                              (powerline-narrow         'left        powerline-color1  powerline-color2 )
 
 
