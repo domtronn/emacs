@@ -346,11 +346,11 @@ which in most cases is shared with all other buffers in the same major mode."
 ;; (browse-url "http://bojovs.github.com/2012/04/24/ruby-coding-style/")
 (defcustom key-combo-common-default
   '((","  . ", ")
-    ("="  . (" = " " == " " === " ));;" === " for js
+    ("="  . (" = " " == " " === " "="));;" === " for js
     ("=>" . " => ")
     ("=~" . " =~ ");;for ruby regexp
     ("=*" . " =* ")                     ;for c
-    ("+"  . (" + " "++"))
+    ("+"  . (" + " "++" "+"))
     ("+=" . " += ")
     ("-"  . (" - " "--"))               ;undo when unary operator
     ("-=" . " -= ")
@@ -377,9 +377,8 @@ which in most cases is shared with all other buffers in the same major mode."
     ("&"  . (" & " " && "))             ;overwrite in c
     ("&=" . " &= ");; for c
     ("&&=" . " &&= ")                   ; for ruby
-    ("*"  . " * " )                     ;overwrite in c
+    ("*"  . (" * " "*" "**") )                     ;overwrite in c
     ("*="  . " *= " )
-    ("**"  . "**" )                     ;for power
     ("**=" . " **=" )                     ;for power
     ;; ("?" . "? `!!' :"); ternary operator should be bound in yasnippet?
     ;; ("?=");; for coffeescript?
