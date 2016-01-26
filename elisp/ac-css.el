@@ -8,7 +8,11 @@
 							(let ((css-face 'css-selector)
 										(results))
 								(goto-char (point-max))
-								(while (ignore-errors (goto-char (previous-single-property-change (point) 'face)))
+								(while (and
+												(not (eq (point) (point-min)))
+												(goto-char
+												 (or (previous-single-property-change (point) 'face)
+														 (point-min))))
 									(when (equal (get-char-property (point) 'face) '(css-selector))
 										(let ((prev-point (point)))
 											(goto-char (next-single-property-change (point) 'face))
