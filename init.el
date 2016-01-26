@@ -37,6 +37,7 @@
  'benchmark-init/tree-mode-hook
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
+    (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "p" 'projectable-change)
     (local-set-key "P" 'projectable-change-and-find-file)))
 
