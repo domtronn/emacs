@@ -290,8 +290,10 @@
 (use-package tern
   :after 'js2-mode
   :config
-  (use-package tern-auto-complete
-    :config (tern-ac-setup)))
+  (bind-keys :map tern-mode-keymap
+             ("M-." . jump-to-thing-at-point)
+             ("M-," . pop-tag-mark))
+  (use-package tern-auto-complete :config (tern-ac-setup)))
 
 (use-package js2-refactor :after js2-mode)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
