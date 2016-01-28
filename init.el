@@ -694,9 +694,8 @@
   (setq ido-enable-regexp t)
   (setq ido-create-new-buffer 'always)
 
-  (bind-keys :map ido-common-completion-map
-             ("C-f" . ido-next-match)
-             ("C-b" . ido-prev-match))
+  (defalias 'ido-magic-forward-char 'ido-next-match)
+  (defalias 'ido-magic-backward-char 'ido-prev-match)
 
   :bind
   ("C-x C-f" . ido-find-file)
