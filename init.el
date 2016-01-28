@@ -721,6 +721,10 @@
                  '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
+(use-package mode-icons
+  :if window-system
+  :load-path "elisp/mode-icons")
+
 (add-hook 'after-init-hook 'update-powerline)
 (use-package powerline
   :if window-system
