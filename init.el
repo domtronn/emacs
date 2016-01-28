@@ -83,9 +83,9 @@
              ("M-u" . ibuffer-unmark-all)))
 
 (use-package smart-forward
-  :bind ("s-." . smart-forward)
+  :bind ("s-." . forward-sexp)
+        ("s-," . backward-sexp)
         ("C-." . smart-forward)
-        ("s-," . smart-backward)
         ("C-," . smart-backward))
 
 (use-package smart-newline
@@ -205,6 +205,7 @@
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
              ("C-c C-p" . flycheck-previous-error))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
   :bind ("M-}" . flycheck-mode))
 
 (use-package flyspell
@@ -274,8 +275,13 @@
   ("C-c a" . avy-goto-char)
   ("C-c SPC" . avy-goto-char)
   ("C-c C-a" . avy-goto-word-1)
+  ("M-a" . avy-goto-char)
   :config
   (avy-setup-default))
+
+(use-package avy-zap :after avy
+  :bind
+  ("M-z" . avy-zap-up-to-char))
 
 (use-package wgrep
   :after 'helm-files
@@ -312,7 +318,8 @@
             (lambda () (when (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
                     (add-to-list 'ac-sources 'ac-source-requirejs-files))
               (when (s-contains? "module.exports" (buffer-substring (point-min) (point-max)))
-                (add-to-list 'ac-sources 'ac-source-project-files))))
+                (add-to-list 'ac-sources 'ac-source-project-files)
+                (add-to-list 'ac-sources 'ac-source-json-project-files))))
   (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
@@ -338,8 +345,7 @@
                (push '("!=" . ?≠) prettify-symbols-alist)
                (push '("!==" . ?≢) prettify-symbols-alist)
                (push '("===" . ?≡) prettify-symbols-alist)))
-  (bind-keys* ("M-." . jump-to-thing-at-point)
-              ("M-," . pop-tag-mark))
+
   (bind-keys :map js2-mode-map
              ("C-x c" . grunt-exec)
 
@@ -350,7 +356,7 @@
              ("s-N" . js2r-drag-stuff-down)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)
-             ("C-c C-e" . js2r-extract-var)
+             ("C-c C-v" . js2r-extract-var)
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
@@ -444,7 +450,8 @@
                       '(lambda (&rest args) (context-coloring-mode 0))))
 
 (use-package key-combo
-  :config (key-combo-mode 1)
+  :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
+          (key-combo-mode 1)
           (key-combo-load-default))
 
 (use-package yasnippet
@@ -483,24 +490,40 @@
 
 (use-package web-mode
   :load-path "~/.env/elisp/web-mode/"
+
   :mode
-  ("\\.phtml" . web-mode)
-  ("\\.html" . web-mode)
-  ("\\.spv" . web-mode)
-  ("\\.tpl\\.php" . web-mode)
-  ("\\.[agj]sp" . web-mode)
-  ("\\.as[cp]x" . web-mode)
-  ("\\.erb" . web-mode)
-  ("\\.mustache" . web-mode)
-  ("\\.hbs" . web-mode)
-  ("\\.djhtml" . web-mode)
-  ("\\.partial" . web-mode)
-  :config (bind-keys :map web-mode-map
-                     ("s-/" . web-mode-comment-or-uncomment))
-  (add-to-list 'web-mode-ac-sources-alist
-               '("html" . (ac-source-html-attribute-value
-                           ac-source-html-tag
-                           ac-source-html-attribute))))
+  ("\\.phtml$" . web-mode)
+  ("\\.html$" . web-mode)
+  ("\\.spv$" . web-mode)
+  ("\\.erb$" . web-mode)
+  ("\\.mustache$" . web-mode)
+  ("\\.hbs$" . web-mode)
+  ("\\.partial$" . web-mode)
+  ("\\.jsx$" . web-mode)
+
+  :config
+  (bind-keys :map web-mode-map
+             ("M-;" . semi-colon-end)
+             ("s-/" . web-mode-comment-or-uncomment))
+  (setq web-mode-ac-sources-alist
+        '(("html" . (ac-source-html-tag
+                     ac-source-html-attribute
+                     ac-source-html-attr))
+          ("css" . (ac-source-css-selector
+                    ac-source-css-id
+                    ac-source-css-property))
+          ("jsx" . (ac-source-yasnippet
+                    ac-source-filepath
+                    ac-source-dabbrev
+                    ac-source-tern-completion))))
+
+  (defadvice web-mode-highlight-part (around tweak-jsx activate)
+    (if (equal web-mode-content-type "jsx")
+        (let ((web-mode-enable-part-face nil)) ad-do-it)
+      ad-do-it))
+
+  (add-hook 'web-mode-hook
+            (lambda () (when (equal web-mode-content-type "jsx") (tern-mode)))))
 
 (use-package auto-complete-config :after auto-complete)
 (use-package ac-dabbrev :after auto-complete)
@@ -508,7 +531,9 @@
 ;; Custom Auto Complete Sources
 (use-package ac-projectable :load-path "~/.env/elisp")
 (use-package ac-filepath :load-path "~/.env/elisp")
-(use-package ac-css :load-path "~/.env/elisp" :after scss-mode)
+(use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
+
+(use-package ac-html :after web-mode)
 
 (use-package auto-complete
   :demand t
@@ -529,8 +554,6 @@
              ("C-p" . ac-previous))
 
   :bind ([S-tab] . auto-complete))
-
-(add-hook 'web-mode-hook 'ac-html-enable)
 
 (add-hook 'scss-mode-hook
           '(lambda () (ac-lambda
@@ -650,8 +673,14 @@
 
 (use-package flx-ido :after ido :config (flx-ido-mode 1))
 (use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
-(use-package ido-vertical-mode  :after ido :config (ido-vertical-mode 1))
-(use-package ido-describe-bindings :after ido :bind ("C-h b" . ido-describe-bindings))
+(use-package ido-vertical-mode  :after ido
+  :config (ido-vertical-mode 1)
+  (add-hook 'ido-vertical-mode-hook
+            '(lambda () (bind-keys :map ido-common-completion-map
+                              ("C-f" . ido-next-match)
+                              ("C-b" . ido-prev-match)))))
+(use-package ido-describe-bindings :after ido
+  :bind ("C-h b" . ido-describe-bindings))
 (use-package ido-other-window :load-path "~/.env/elisp")
 
 ;; Ido Support
@@ -664,6 +693,10 @@
   (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
   (setq ido-enable-regexp t)
   (setq ido-create-new-buffer 'always)
+
+  (bind-keys :map ido-common-completion-map
+             ("C-f" . ido-next-match)
+             ("C-b" . ido-prev-match))
 
   :bind
   ("C-x C-f" . ido-find-file)
