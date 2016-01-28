@@ -474,17 +474,15 @@ install the memoized function over the original function."
 (defpowerline emacsclient mode-line-client)
 (defpowerline project-id (if (and (boundp 'projectable-id)
                                   (not (eql nil projectable-id)))
-                             (concat (upcase projectable-id) " ∘")
+                             (propertize (format "%s" (concat (upcase projectable-id) " ∘"))
+                                         'display '(height 0.8))
                            (format "×")))
 
-;; (defpowerline vc          (when (and (buffer-file-name (current-buffer))
-;;                                      vc-mode)
-;;                            (symbol-name (vc-mode-line (buffer-file-name (current-buffer) )))))
 (defpowerline vc vc-mode)
 (defpowerline time (format-time-string "%H:%M"))
 
 (defpowerline flycheck-status (propertize (format "%s" (cadr (flycheck-status-emoji-mode-line-text)))
-                                          'display '(height 0.7)))
+                                          'display '(height 0.8)))
 
 (defun -powerline-get-temp ()
   (let ((temp (-powerline-get-weather "%(temperature)")))
