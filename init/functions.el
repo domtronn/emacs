@@ -558,6 +558,30 @@
   (interactive)
   (-move-link 'search-forward-regexp))
 
+
+(defun bemify-emmet-string (expr)
+  "Pre process an emmet string to be bemified."
+	(let* ((split (split-string (car expr) "|"))
+				 (filter (cadr split))
+				 (emmet-s (car split)))
+		(when (equal filter "bem")
+			(let ((bemified
+						 (with-temp-buffer
+							 (insert emmet-s)
+							 (goto-char (point-min))
+							 (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
+								 (let ((base-class (match-string 1))
+											 (restore-point (point)))
+									 (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
+										 (replace-match (format ".%s%s" base-class (match-string 1))))
+									 (goto-char restore-point)))
+							 (buffer-string))))
+				(when (not (equal emmet-s bemified))
+					(with-current-buffer (current-buffer)
+						(goto-char (cadr expr))
+						(delete-region (cadr expr) (caddr expr))
+						(insert bemified)))))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
