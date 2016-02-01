@@ -47,6 +47,8 @@
 
 (global-set-key (kbd "s-<") 'fill-paragraph)
 
+(global-set-key (kbd "s-h") 'goto-line)
+
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
 (global-set-key (kbd "C-x a (")
