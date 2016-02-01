@@ -26,6 +26,23 @@
 											(goto-char prev-point)))) (-distinct results))))
 	 (--filter (eq (buffer-mode it) 'scss-mode) (buffer-list))))
 
+(defun ac-scss-color-names ()
+	(let ((results))
+		(-map
+		 (lambda (buf) (with-current-buffer (buffer-name buf)
+				 (goto-char (point-min))
+				 (while (re-search-forward "\\(\$[a-z\-_0-9]+\\):.*?\\(#.*\\);" (point-max) t)
+					 (let ((var (match-string-no-properties 1))
+								 (col (match-string-no-properties 2)))
+						 (setq results
+									 (append results
+													 (list (popup-make-item var :summary (propertize (format "●") 'face `(:foreground ,col :background "#2B3B40"))))))))))
+		 (--filter (eq (buffer-mode it) 'scss-mode) (buffer-list))) results))
+
+(defvar ac-source-scss-colors '((candidates . ac-scss-color-names)
+																(prefix . "$\\S-+")
+																(requires . 0)))
+
 (defun ac-css-selector-candidates () (ac-css-selector--candidates "[.]" "#"))
 (defun ac-css-id-candidates () (ac-css-selector--candidates "[#]" "."))
 
