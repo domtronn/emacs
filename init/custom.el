@@ -37,6 +37,7 @@
  '(default-input-method "TeX")
  '(fci-rule-color "#232A2F")
  '(flycheck-highlighting-mode (quote lines))
+ '(flycheck-idle-change-delay 2)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
  '(helm-reuse-last-window-split-state t)
