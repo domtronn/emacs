@@ -1,4 +1,4 @@
 # -*- mode: js-mode -*-
 #name : ar
 # --
-and.returnValue('${3:`(random-return)`}');$0
+and.returnValue('$3');$0
