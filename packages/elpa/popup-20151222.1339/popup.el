@@ -185,7 +185,7 @@ buffer."
   :group 'popup)
 
 (defface popup-summary-face
-  '((t (:inherit popup-face :foreground "dimgray")))
+  '((t (:inherit popup-face)))
   "Face for popup summary."
   :group 'popup)
 
@@ -696,7 +696,7 @@ KEYMAP is a keymap that will be put on the popup contents."
            for face = (if (= i cursor)
                           (or (popup-item-selection-face item) selection-face)
                         (or (popup-item-face item) popup-face))
-           for summary-face = (unless (= i cursor) summary-face-0)
+           with summary-face
            for empty-char = (propertize " " 'face face)
            for scroll-bar-char = (if scroll-bar
                                      (cond
