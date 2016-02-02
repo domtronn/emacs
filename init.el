@@ -317,11 +317,10 @@
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
-            (lambda () (when (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
-                    (add-to-list 'ac-sources 'ac-source-requirejs-files))
-              (when (s-contains? "module.exports" (buffer-substring (point-min) (point-max)))
-                (add-to-list 'ac-sources 'ac-source-project-files)
-                (add-to-list 'ac-sources 'ac-source-json-project-files))))
+            (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
+                      (add-to-list 'ac-sources 'ac-source-requirejs-files)
+                    (add-to-list 'ac-sources 'ac-source-project-files)
+                    (add-to-list 'ac-sources 'ac-source-json-project-files))))
   (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
