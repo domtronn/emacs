@@ -78,6 +78,8 @@
 (use-package ibuffer
   :defer t
   :config
+  (use-package ibuf-ext
+    :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
   (bind-keys :map ibuffer-mode-map
              ("G" . ibuffer-vc-set-filter-groups-by-vc-root)
              ("M-u" . ibuffer-unmark-all)))
