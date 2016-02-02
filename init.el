@@ -437,7 +437,7 @@
                               'ac-source-variables
                               'ac-source-filepath
                               'ac-source-yasnippet
-                              'ac-source-dabbrev
+                              'ac-source-words-in-same-mode-buffers
                               'ac-source-words-in-same-mode-buffers)))
   :config
   (bind-keys :map emacs-lisp-mode-map
@@ -509,14 +509,14 @@
              ("s-/" . web-mode-comment-or-uncomment))
   (setq web-mode-ac-sources-alist
         '(("html" . (ac-source-html-tag
-                     ac-source-html-attribute
+                     ac-source-words-in-same-mode-buffers
                      ac-source-html-attr))
           ("css" . (ac-source-css-selector
                     ac-source-css-id
                     ac-source-css-property))
           ("jsx" . (ac-source-yasnippet
                     ac-source-filepath
-                    ac-source-dabbrev
+                    ac-source-words-in-same-mode-buffers
                     ac-source-tern-completion))))
 
   (defadvice web-mode-highlight-part (around tweak-jsx activate)
@@ -527,14 +527,27 @@
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "jsx") (tern-mode)))))
 
+(use-package emmet-mode :after web-mode
+  :config
+  (bind-keys :map web-mode-map
+             ("M-P" . key-combo-mode)
+             ("C-o" . emmet-expand-yas))
+  (bind-keys :map scss-mode-map
+             ("M-P" . key-combo-mode)
+             ("C-o" . emmet-expand-yas))
+  ;; (advice-add 'emmet-expand-yas :before
+  ;;             '(lambda () "Bemify the expression before expanding snippet when using the `|bem` filter"
+  ;;                (bemify-emmet-string (emmet-expr-on-line))))
+  )
+
 (use-package auto-complete-config :after auto-complete)
-(use-package ac-dabbrev :after auto-complete)
 
 ;; Custom Auto Complete Sources
 (use-package ac-projectable :load-path "~/.env/elisp")
 (use-package ac-filepath :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
+(use-package ac-emmet :after emmet-mode)
 (use-package ac-html :after web-mode)
 
 (use-package auto-complete
@@ -544,7 +557,7 @@
   (set-default 'ac-sources
                '(ac-source-yasnippet
                  ac-source-filepath
-                 ac-source-dabbrev))
+                 ac-source-words-in-same-mode-buffers))
   (global-auto-complete-mode t)
 
   (bind-keys :map ac-completing-map ("\e" . ac-stop))
@@ -563,7 +576,10 @@
                   'ac-source-css-property
                   'ac-source-css-id
                   'ac-source-css-selector
-                  'ac-source-words-in-buffer)))
+                  'ac-source-filepath
+                  'ac-source-scss-colors)
+             (emmet-mode)
+             (ac-emmet-css-setup)))
 
 (add-hook 'LaTeX-mode-hook
             '(lambda () (ac-lambda
