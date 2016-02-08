@@ -248,7 +248,8 @@
                    ("C-;" . helm-swoop-from-isearch)
                    ("C-l" . helm-git-grep-from-isearch)))
 
-(use-package helm :bind ("s-V" . helm-show-kill-ring))
+(use-package helm :bind ("s-V" . helm-show-kill-ring)
+                        ("M-y" . helm-show-kill-ring))
 (use-package helm-ls-git
   :bind ("<H-tab>" . helm-ls-git-ls))
 (use-package helm-git-grep
@@ -275,7 +276,7 @@
   ("C-c a" . avy-goto-char)
   ("C-c SPC" . avy-goto-char)
   ("C-c C-a" . avy-goto-word-1)
-  ("M-a" . avy-goto-char)
+  ("M-a" . avy-goto-word-1)
   :config
   (avy-setup-default))
 
@@ -317,8 +318,7 @@
   (add-hook 'js2-mode-hook
             (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
                       (add-to-list 'ac-sources 'ac-source-requirejs-files)
-                    (add-to-list 'ac-sources 'ac-source-project-files)
-                    (add-to-list 'ac-sources 'ac-source-json-project-files))))
+                    (add-to-list 'ac-sources 'ac-source-project-files))))
   (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
@@ -540,7 +540,7 @@
 (use-package auto-complete-config :after auto-complete)
 
 ;; Custom Auto Complete Sources
-(use-package ac-projectable :load-path "~/.env/elisp")
+(use-package ac-projectable :load-path "~/.env/elisp" :after js2-mode)
 (use-package ac-filepath :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
