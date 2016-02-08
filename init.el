@@ -151,8 +151,6 @@
 
 (use-package git-gutter-fringe
   :if window-system
-  :init (use-package rfringe
-          :config (set-fringe-mode '(2 . 0)))
   :config (global-git-gutter-mode))
 
 (use-package slack
