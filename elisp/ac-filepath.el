@@ -3,7 +3,6 @@
 		(candidates . ac-filename-candidate)
 		(candidate-face . ac-filepath-candidate-face)
 		(selection-face . ac-filepath-selection-face)
-		(prefix . valid-file)
 		(requires . 0)
 		(action . ac-start)
 		(limit))
