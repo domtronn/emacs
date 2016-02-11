@@ -38,8 +38,8 @@
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
-    (local-set-key "p" 'projectable-change)
-    (local-set-key "P" 'projectable-change-and-find-file)))
+    (local-set-key "p" 'jpop-change)
+    (local-set-key "P" 'jpop-change-and-find-file)))
 
 (require 'use-package)
 
@@ -220,18 +220,18 @@
           (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
   :bind ("M-{" . flyspell-toggle))
 
-(use-package projectable
-  :load-path "elisp/projectable"
+(use-package jpop
+  :load-path "elisp/jpop"
   :config
-  (projectable-global-mode)
-  (add-hook 'projectable-toggle-test-fallback-hook 'projectable-find-test)
+  (jpop-global-mode)
+  (add-hook 'jpop-toggle-test-fallback-hook 'jpop-find-test)
   :bind
-  ([C-tab] . projectable-find-file)
-  ("C-S-<tab>" . projectable-find-file-other-window)
-  ("C-x p f c" . projectable-change-and-find-file)
-  ("C-x p c" . projectable-change)
-  ("C-x C-b" . projectable-switch-buffer)
-  ("C-x C-p" . projectable-switch))
+  ([C-tab] . jpop-find-file)
+  ("C-S-<tab>" . jpop-git-find-file)
+  ("C-x p f c" . jpop-change-and-find-file)
+  ("C-x p c" . jpop-change)
+  ("C-x C-b" . jpop-switch-buffer)
+  ("C-x C-p" . jpop-switch-and-find-file))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
@@ -246,6 +246,7 @@
 
   :init (bind-keys :map isearch-mode-map
                    ("C-;" . helm-swoop-from-isearch)
+                   ("C-'" . avy-isearch)
                    ("C-l" . helm-git-grep-from-isearch)))
 
 (use-package helm :bind ("s-V" . helm-show-kill-ring)
@@ -361,7 +362,8 @@
              ("C-c C-r" . js2r-rename-var)
              ("C-c C-l" . js2r-log-this)
              ("C-c ." . js2-jump-to-definition)
-             ("C-k" . js2r-kill)))
+             ("C-k" . js2r-kill)
+             ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
@@ -390,14 +392,16 @@
 (use-package json-snatcher :after json)
 (use-package json
   :mode ("\\.json" . json-mode)
-  :config (add-hook 'json-mode-hook '(lambda () (projectable-stylise "4" t))))
+  :config (add-hook 'json-mode-hook '(lambda () (jpop-stylise "4" t))))
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
   :config
   (add-hook 'markdown-mode-hook 'ac-emoji-setup)
   (bind-keys* ("M-<left>" . backward-word)
-              ("M-<right>" . forward-word))
+              ("<M-S-left>" . backward-word)
+              ("M-<right>" . forward-word)
+              ("<M-S-right>" . forward-word))
   (bind-keys :map markdown-mode-map
              ("s-f" . next-link)
              ("s-b" . previous-link)))
@@ -503,7 +507,9 @@
   :config
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
-             ("s-/" . web-mode-comment-or-uncomment))
+             ("s-/" . web-mode-comment-or-uncomment)
+             ("M-P" . key-combo-mode)
+             ("C-o" . emmet-expand-yas))
   (setq web-mode-ac-sources-alist
         '(("html" . (ac-source-html-tag
                      ac-source-words-in-same-mode-buffers
@@ -526,9 +532,6 @@
 
 (use-package emmet-mode :after web-mode
   :config
-  (bind-keys :map web-mode-map
-             ("M-P" . key-combo-mode)
-             ("C-o" . emmet-expand-yas))
   (bind-keys :map scss-mode-map
              ("M-P" . key-combo-mode)
              ("C-o" . emmet-expand-yas))
@@ -540,7 +543,7 @@
 (use-package auto-complete-config :after auto-complete)
 
 ;; Custom Auto Complete Sources
-(use-package ac-projectable :load-path "~/.env/elisp" :after js2-mode)
+(use-package ac-jpop :load-path "~/.env/elisp" :after js2-mode)
 (use-package ac-filepath :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
@@ -636,7 +639,7 @@
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
-                     ("C-<tab>" . projectable-find-file)))
+                     ("C-<tab>" . jpop-find-file)))
 
 (add-hook 'magit-mode-hook 'image-minor-mode)
 
@@ -751,19 +754,19 @@
   :init
   (add-hook 'boop-update-hook
             '(lambda () (let ((local-config))
-                     (deboop-group 'projectable)
-                     (when (and (bound-and-true-p projectable-project-hash)
-                                (gethash "boop" projectable-project-hash)
-                                (boundp 'projectable-id))
+                     (deboop-group 'jpop)
+                     (when (and (bound-and-true-p jpop-project-hash)
+                                (gethash "boop" jpop-project-hash)
+                                (boundp 'jpop-id))
                        (maphash
                         (lambda (key value)
                           (setq local-config (append local-config
                                         (list (list (intern key)
                                                     :script (intern (gethash "script" value))
-                                                    :group 'projectable
+                                                    :group 'jpop
                                                     :args (gethash "args" value)
                                                     :onselect `(lambda () (interactive) (browse-url (gethash "onclick" ,value))))))))
-                        (gethash "boop" projectable-project-hash)))
+                        (gethash "boop" jpop-project-hash)))
                      (setq boop-config-alist (append boop-config-alist local-config))
                      (boop--sync-result-and-config))))
 

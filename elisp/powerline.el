@@ -472,9 +472,9 @@ install the memoized function over the original function."
 (defpowerline status      "%s")
 (defpowerline global      global-mode-string)
 (defpowerline emacsclient mode-line-client)
-(defpowerline project-id (if (and (boundp 'projectable-id)
-                                  (not (eql nil projectable-id)))
-                             (propertize (format "%s" (concat (upcase projectable-id) " ∘"))
+(defpowerline project-id (if (and (boundp 'jpop-id)
+                                  (not (eql nil jpop-id)))
+                             (propertize (format "%s" (concat (upcase jpop-id) " ∘"))
                                          'display '(height 0.8))
                            (format "×")))
 

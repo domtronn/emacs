@@ -88,7 +88,7 @@
                               (message "Found %s" found-file)
                               (find-file found-file))
                             nil)))
-                    projectable-project-alist)
+                    jpop-project-alist)
           nil)))))
 
 (defun jump-to-require ()
@@ -110,7 +110,7 @@
                                 (message "Found %s" found-file)
                                 (find-file found-file))
                             nil)))
-                    projectable-project-alist)
+                    jpop-project-alist)
           nil)))))
 
 (defun jump-to-find-function ()

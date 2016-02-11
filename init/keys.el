@@ -94,7 +94,7 @@
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
-(global-set-key (kbd "<M-f2>") 'ag-regexp)
+(global-set-key (kbd "<M-f2>") 'ag-regexp-project-at-point)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 

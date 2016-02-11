@@ -201,11 +201,11 @@
  '(powerline-color1 "#3C3C3C" t)
  '(powerline-color2 "#515151" t)
  '(powerline-foreground "#eeeeec")
- '(projectable-completion-func (quote car))
- '(projectable-filter-regexps
+ '(jpop-completion-func (quote car))
+ '(jpop-filter-regexps
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "report" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
- '(projectable-project-directory "/Users/charld13/Projects")
+ '(jpop-project-directory "/Users/charld13/Projects")
  '(rainbow-delimiters-highlight-braces-p t)
  '(rainbow-delimiters-highlight-brackets-p t)
  '(safe-local-variable-values

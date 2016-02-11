@@ -51,8 +51,8 @@
 
 (set-vertical 0)
 (mapc #'(lambda (sym) (advice-add sym :around 'enable-and-disable-vertical))
-      '(ido-find-file projectable-find-file projectable-find-test
-        projectable-find-file-other-window projectable-find-test-other-window))
+      '(ido-find-file jpop-find-file jpop-find-test
+        jpop-find-file-other-window jpop-find-test-other-window))
 
 (mapc #'(lambda (sym) (advice-add sym :around 'disable-and-enable-vertical))
       '(smex smex-major-mode-commands ido-switch-buffer ido-switch-buffer-other-window))

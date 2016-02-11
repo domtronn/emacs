@@ -95,12 +95,12 @@
 
 (defface ac-css-candidate-face
   '((((class color)) :background "#2B3B40" :foreground "#FC536F"))
-  "*Face to highlight projectable files before expansion"
+  "*Face to highlight css candidates"
        :group 'auto-complete)
 
 (defface ac-css-selection-face
   '((((class color)) :background "#2B3B40" :foreground "#B2394C"))
-  "*Face to highlight projectable files before expansion"
+  "*Face to highlight css candidates"
   :group 'auto-complete)
 
 
