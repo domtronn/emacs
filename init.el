@@ -221,7 +221,7 @@
   :bind ("M-{" . flyspell-toggle))
 
 (use-package jpop
-  :load-path "elisp/jpop"
+  :load-path "elisp/projectable"
   :config
   (jpop-global-mode)
   (add-hook 'jpop-toggle-test-fallback-hook 'jpop-find-test)
@@ -755,18 +755,18 @@
   (add-hook 'boop-update-hook
             '(lambda () (let ((local-config))
                      (deboop-group 'jpop)
-                     (when (and (bound-and-true-p jpop-project-hash)
-                                (gethash "boop" jpop-project-hash)
+                     (when (and (bound-and-true-p jpop-project-plist)
+                                (plist-get jpop-project-plist :boop)
                                 (boundp 'jpop-id))
                        (maphash
                         (lambda (key value)
                           (setq local-config (append local-config
                                         (list (list (intern key)
-                                                    :script (intern (gethash "script" value))
+                                                    :script (intern (plist-get value :script))
                                                     :group 'jpop
-                                                    :args (gethash "args" value)
-                                                    :onselect `(lambda () (interactive) (browse-url (gethash "onclick" ,value))))))))
-                        (gethash "boop" jpop-project-hash)))
+                                                    :args (plist-get value :args)
+                                                    :onselect `(lambda () (interactive) (browse-url (plist-get ,value :onclick))))))))
+                        (plist-get jpop-project-plist :boop)))
                      (setq boop-config-alist (append boop-config-alist local-config))
                      (boop--sync-result-and-config))))
 
