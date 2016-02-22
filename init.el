@@ -187,15 +187,30 @@
 (use-package window-layout
   :config
   (defun wlf:trip-split-layout ()
-    (interactive)
     (wlf:show (wlf:no-layout
-     '(| (:left-size-ratio 0.6) file
-         (- (:upper-size-ration 0.4) runner compilation))
-     '((:name file :buffer "file buffer")
-       (:name runner :buffer "*runner*")
-       (:name compilation :buffer "*compilation*")))))
+               '(| (:left-size-ratio 0.6) file
+                   (- (:upper-size-ration 0.4) runner compilation))
+               '((:name file :buffer "file buffer")
+                 (:name runner :buffer "*runner*")
+                 (:name compilation :buffer "*compilation*")))))
+  (defun wlf:codepen-layout ()
+    (let ((scss-buf (get-buffer-create "codepen.scss"))
+          (html-buf (get-buffer-create "codepen.html"))
+          (js-buf (get-buffer-create "codepen.js")))
+      (wlf:show (wlf:no-layout
+                 '(| (:left-size-ratio 0.3) html
+                     (| (:left-size-ration 0.3) scss js))
+                 '((:name html :buffer html-buf)
+                   (:name scss :buffer scss-buf)
+                   (:name js :buffer js-buf))))))
+  (defun wlf:layout (&optional pfx)
+    (interactive "P")
+    (let ((layouts '(("Codepen" wlf:codepen-layout) ("Triple Split" wlf:trip-split-layout))))
+      (if pfx
+          (funcall (cadr (assoc (completing-read "Layout: " layouts) layouts)))
+        (wlf:trip-split-layout)) t))
 
-  :bind ("C-c C-w" . wlf:trip-split-layout))
+  :bind ("C-c C-w" . wlf:layout))
 
 
 (use-package flycheck-status-emoji :after flycheck)
