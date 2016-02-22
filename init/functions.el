@@ -568,6 +568,15 @@
          (count-matches "'" (point-min) (point-max)))
       "\"" "'"))
 
+(defun json-comma? ()
+  "Whether or not to use a comma at the end of a json snippet"
+  (with-current-buffer (buffer-name)
+    (save-excursion
+      (let* ((restore (point))
+             (quote (and (goto-char restore) (search-forward "\"" nil t)))
+             (brace (and (goto-char restore) (search-forward "}" nil t))))
+        (when (and quote brace) (< quote brace))))))
+
 (defun open-urls-in-file ()
   (interactive)
   (let (result)
