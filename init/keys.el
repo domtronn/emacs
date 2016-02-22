@@ -70,6 +70,7 @@
 
 (global-set-key (kbd "M-?") 'ispell-word)
 (global-set-key "\M-u" 'upcase-case-next-letter)
+(global-set-key "\M-L" 'downcase-case-next-letter)
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
 

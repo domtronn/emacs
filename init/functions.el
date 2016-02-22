@@ -411,9 +411,15 @@
     (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
 
 (defun upcase-case-next-letter ()
-  "Toggle the case of the next letter, then move forward one character."
+  "Upcase the next letter, then move forward one character."
   (interactive)
   (upcase-region (point) (+ 1 (point)))
+  (forward-char))
+
+(defun downcase-case-next-letter ()
+  "Downcase the next letter, then move forward one character."
+  (interactive)
+  (downcase-region (point) (+ 1 (point)))
   (forward-char))
 
 (defun disable-all-themes ()
