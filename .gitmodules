@@ -10,3 +10,6 @@
 [submodule "elisp/emacs-livedown"]
 	path = elisp/emacs-livedown
 	url = https://github.com/shime/emacs-livedown.git
+[submodule "elisp/boop"]
+	path = elisp/boop
+	url = git@github.com:domtronn/boop.el.git
