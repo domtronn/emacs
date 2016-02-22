@@ -23,31 +23,52 @@
 
 ;;; Code:
 
-(defvar powerline-color1 "#383838")
-(defvar powerline-color2 "#666666")
-(defvar powerline-fg "#bababa")
-(defvar powerline-color-alist '(("#383838" 1) ("#666666" 1)))
+(defvar powerline-c1-primary "#383838")
+(defvar powerline-c2-primary "#666666")
+(defvar powerline-fg-primary "#bababa")
+(defvar powerline-c1-secondary "#383838")
+(defvar powerline-c2-secondary "#666666")
+(defvar powerline-fg-secondary "#bababa")
+
+(defun powerline-primary-window () (eq (get-buffer-window) powerline-current-window))
+(defun powerline-c1 () (if (powerline-primary-window) powerline-c1-primary powerline-c1-secondary))
+(defun powerline-c2 () (if (powerline-primary-window) powerline-c2-primary powerline-c2-secondary))
+(defun powerline-fg () (if (powerline-primary-window) powerline-fg-primary powerline-fg-secondary))
 
 (defvar theme-powerline-color-alist
-  '((whiteboard ("#bbbbbb" "#d7d7d7" "#2a2a2a"))
-    (atom-one-dark ("#3E4451" "#5C6370" "#ABB2BF"))
-    (gotham ("#10272D" "#081E26" "#357C91"))
-    (ujelly ("#000000" "#000000" "#ffffff"))
-    (moe-light ("#CCCCB7" "#EDEDD3" "#3F3F38"))
-    (aurora ("#455a64" "#2B3B40" "#CDD3D3"))
-    (misterioso ("#455a64" "#2B3B40" "#CDD3D3"))
-    (jazz ("#151515" "#101010" "#7F6A4F"))))
+  '((whiteboard    (:primary ("#bbbbbb" "#d7d7d7" "#2a2a2a")
+                    :secondary ("#bbbbbb" "#d7d7d7" "#2a2a2a")))
+    (atom-one-dark (:primary ("#3E4451" "#5C6370" "#ABB2BF")
+                    :secondary ("#3E4451" "#5C6370" "#ABB2BF")))
+    (gotham        (:primary ("#10272D" "#081E26" "#357C91")
+                    :secondary ("#10272D" "#081E26" "#357C91")))
+    (aurora        (:primary ("#455a64" "#2B3B40" "#CDD3D3")
+                    :secondary ("#232A2F" "#232A2F" "#556D79")))
+    (eink          (:primary ("#DDDDD8" "#DDDDD8" "#383838")
+                    :secondary ("#DDDDD8" "#DDDDD8" "#DDDDD8")))
+    (ujelly        (:primary ("#000000" "#000000" "#ffffff")
+                    :secondary ("#000000" "#000000" "#ffffff")))
+    (moe-light     (:primary ("#CCCCB7" "#EDEDD3" "#3F3F38")
+                    :secondary ("#CCCCB7" "#EDEDD3" "#3F3F38")))
+    (misterioso    (:promary ("#455a64" "#2B3B40" "#CDD3D3")
+                    :secondary ("#455a64" "#2B3B40" "#CDD3D3")))
+    (jazz          (:primary ("#151515" "#101010" "#7F6A4F")
+                    :secondary ("#151515" "#101010" "#7F6A4F")))))
 
 (defun update-powerline (&rest args)
   "Update the extra powerline colours based on a mapping to theme."
   (let* ((theme (car custom-enabled-themes))
-         (alist (cadr (assoc theme theme-powerline-color-alist))))
-    (if alist
-        (setq powerline-color1 (car alist)
-              powerline-color2 (cadr alist)
-              powerline-fg (caddr alist)
-              powerline-color-alist alist)
-      (setq powerline-fg "white"))))
+         (primary-alist (plist-get (cadr (assoc theme theme-powerline-color-alist)) :primary))
+         (secondary-alist (plist-get (cadr (assoc theme theme-powerline-color-alist)) :secondary)))
+    (if (and primary-alist secondary-alist)
+        (setq powerline-c1-primary (car primary-alist)
+              powerline-c2-primary (cadr primary-alist)
+              powerline-fg-primary (caddr primary-alist)
+              powerline-c1-secondary (car secondary-alist)
+              powerline-c2-secondary (cadr secondary-alist)
+              powerline-fg-secondary (caddr secondary-alist))
+      (setq powerline-fg-primary "white"
+            powerline-fg-secondary "white"))))
 
 (defun arrow-left-xpm
   (color1 color2)
@@ -294,7 +315,7 @@ install the memoized function over the original function."
                                   :background bg
                                   :box nil))
           (set-face-attribute cface nil
-                            :foreground powerline-fg
+                            :foreground (powerline-fg)
                             :background bg
                             :box nil))
         cface)
@@ -524,7 +545,7 @@ install the memoized function over the original function."
 (defun powerline-boop ()
   (when (fboundp 'boop-format-results)
     (let ((s (boop-format-results)))
-      (add-face-text-property 0 (length s) `(:background ,powerline-color2) nil s) s)))
+      (add-face-text-property 0 (length s) `(:background ,(powerline-c2)) nil s) s)))
 
 (defun -count-notifications (pattern notification-char)
   (when (boundp 'slack-ims)
@@ -542,15 +563,15 @@ install the memoized function over the original function."
 (defpowerline new-channel-notifications (-count-notifications "(.*?) \\([0-9]+\\) [0-9]+ nil" "✧"))
 
 (defun powerline-mode-xpm ()
-  (propertize " " 'display (mode-icon-ruby-xpm powerline-fg powerline-color1)
-              'face `(:background ,powerline-color1)))
+  (propertize " " 'display (mode-icon-ruby-xpm (powerline-fg) (powerline-c1))
+              'face `(:background ,(powerline-c1))))
 
 (defun powerline-mode-icon-xpm ()
   (let ((mode-s (cadr (assoc major-mode mode-icons))))
     (if mode-s
         (propertize " " 'display
-                    (funcall (intern (format "mode-icon-%s-xpm" mode-s)) powerline-fg powerline-color1)
-                    'face `(:background ,powerline-color1)
+                    (funcall (intern (format "mode-icon-%s-xpm" mode-s)) (powerline-fg) (powerline-c1))
+                    'face `(:background ,(powerline-c1))
                     'help-echo "Major mode\n\ mouse-1: Display major mode menu\n\ mouse-2: Show help for major mode\n\ mouse-3: Toggle minor modes"
                     'local-map (let ((map (make-sparse-keymap)))
                                  (define-key map [mode-line down-mouse-1]
@@ -559,7 +580,7 @@ install the memoized function over the original function."
                                  (define-key map [mode-line mouse-2] 'describe-mode)
                                  (define-key map [mode-line down-mouse-3] mode-line-mode-menu)
                                  map))
-      (powerline-major-mode 'left powerline-color1))))
+      (powerline-major-mode 'left (powerline-c1)))))
 
 (setq-default mode-line-format
               (list "%e"
@@ -570,28 +591,28 @@ install the memoized function over the original function."
 
                              ;; (powerline-new-im-notifications  'left  nil  )
 
-                             (powerline-buffer-id      'left  nil   powerline-color1  )
+                             (powerline-buffer-id      'left  nil   (powerline-c1)  )
 
-                             (powerline-make-text " " powerline-color1)
+                             (powerline-make-text " " (powerline-c1))
 
                              (powerline-mode-icon-xpm)
-                             (powerline-process          'text        powerline-color1  )
-                             (powerline-flycheck-status  'left        powerline-color1  )
-                             (powerline-narrow           'left        powerline-color1  powerline-color2 )
+                             (powerline-process          'text        (powerline-c1)  )
+                             (powerline-flycheck-status  'left        (powerline-c1)  )
+                             (powerline-narrow           'left        (powerline-c1)  (powerline-c2) )
 
 
                              (if (eq (get-buffer-window) powerline-current-window)
                                  (concat
-                                  (powerline-vc       'center      powerline-color2  )
-                                  (powerline-make-fill             powerline-color2  )
-                                  (powerline-weather  'text        powerline-color2  )
+                                  (powerline-vc       'center      (powerline-c2)  )
+                                  (powerline-make-fill             (powerline-c2)  )
+                                  (powerline-weather  'text        (powerline-c2)  )
                                   (powerline-boop))
-                               (powerline-make-fill                powerline-color2  ))
+                               (powerline-make-fill                (powerline-c2)  ))
 
-                             (powerline-row            'right       powerline-color1  powerline-color2 )
-                             (powerline-make-text      ":"          powerline-color1  )
-                             (powerline-column         'right       powerline-color1  )
-                             (powerline-time           'right  nil  powerline-color1  )
+                             (powerline-row            'right       (powerline-c1)  (powerline-c2) )
+                             (powerline-make-text      ":"          (powerline-c1)  )
+                             (powerline-column         'right       (powerline-c1)  )
+                             (powerline-time           'right  nil  (powerline-c1)  )
                              (powerline-temperature    'right  nil  )
                              (powerline-make-text      "-"   nil  )
                              (powerline-buffer-size    'left   nil  )))))
