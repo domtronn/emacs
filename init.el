@@ -412,7 +412,7 @@
 (use-package json-snatcher :after json)
 (use-package json
   :mode ("\\.json" . json-mode)
-  :config (add-hook 'json-mode-hook '(lambda () (jpop-stylise "4" t))))
+  :config (add-hook 'json-mode-hook '(lambda () (jpop-stylise "2" t))))
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
