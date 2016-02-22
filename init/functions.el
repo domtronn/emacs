@@ -130,7 +130,7 @@
       (ignore-errors (js2-jump-to-definition))
       (when (eq p (point))
         (unless (etags-select-find-tag-at-point)
-          (helm-swoop )))))
+          (helm-swoop ))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
