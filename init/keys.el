@@ -151,6 +151,7 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 
 (global-set-key (kbd "s-o") 'open-current-file)
+(global-set-key (kbd "s-O") 'open-urls-in-file)
 (global-set-key (kbd "s-0") '(lambda () (interactive) (text-scale-set 0.2)))
 
 (provide 'keys)

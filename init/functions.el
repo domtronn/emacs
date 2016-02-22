@@ -568,6 +568,17 @@
          (count-matches "'" (point-min) (point-max)))
       "\"" "'"))
 
+(defun open-urls-in-file ()
+  (interactive)
+  (let (result)
+    (save-excursion
+      (with-current-buffer (buffer-name)
+        (while (search-forward-regexp goto-address-url-regexp nil t)
+          (setq result (append (list (match-string 0)) result)))))
+    (browse-url
+     (completing-read "Open URL: "
+                      (-uniq (--map (s-chop-suffix "\)" it) result))))))
+
 (defun bemify-emmet-string (expr)
   "Pre process an emmet string to be bemified."
 	(let* ((split (split-string (car expr) "|"))
