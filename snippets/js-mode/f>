@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name				: anonymous function
+# binding			: C-c C-c f
+# expand-env	: ((prepend-space nil))
+# --
+($1) => {
+    $0
+};

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#name : let
+# --
+const ${1:a} = ${2:b};$0

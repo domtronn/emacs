@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#name : let
+# --
+let ${1:a} = ${2:b};$0
