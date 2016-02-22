@@ -145,7 +145,7 @@
         ("s-y" . undo-tree-redo)
         ("C-+" . undo-tree-redo))
 
-(use-package etags-select
+(use-package etags-select :after (lisp-mode)
   :bind ("H-." . etags-select-find-tag-at-point)
         ("H-?" . etags-select-find-tag))
 
@@ -294,7 +294,8 @@
   ("C-c C-a" . avy-goto-word-1)
   ("M-a" . avy-goto-word-1)
   :config
-  (avy-setup-default))
+  (avy-setup-default)
+  (bind-keys ("M-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
 
 (use-package avy-zap :after avy
   :bind
@@ -320,7 +321,7 @@
 
 (use-package js2-refactor :after js2-mode)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
-(use-package js-dependency-injector
+(use-package js-injector
   :after js2-mode
   :load-path "elisp/js-dependency-injector")
 (use-package js2-mode
@@ -330,6 +331,7 @@
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
+  (add-hook 'js2-mode-hook '(lambda () (setq-local indent-tabs-mode nil)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
             (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
@@ -339,6 +341,9 @@
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
                (push '("var" . ?ν) prettify-symbols-alist)
+               (push '("const" . ?ς) prettify-symbols-alist)
+               (push '("let" . ?γ) prettify-symbols-alist)
+               (push '("=>" . ?→) prettify-symbols-alist)
                (push '("R" . ?Λ) prettify-symbols-alist)
                (push '("R.__" . ?ρ) prettify-symbols-alist)
                (push '("_" . ?λ) prettify-symbols-alist)
@@ -426,8 +431,8 @@
   :init (autoload 'browse-url-url-at-point "browse-url"))
 
 (use-package link-hint
-  :bind ("s-O" . link-hint-open-link)
-        ("H-s-o" . link-hint-open-multiple-links))
+  :bind ("H-o" . link-hint-open-link)
+        ("H-O" . link-hint-open-multiple-links))
 
 (use-package markdown-toc
   :after markdown-mode
@@ -450,10 +455,10 @@
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook
             '(lambda () (ac-lambda 'ac-source-functions
+                              'ac-source-symbols
                               'ac-source-variables
                               'ac-source-filepath
                               'ac-source-yasnippet
-                              'ac-source-words-in-same-mode-buffers
                               'ac-source-words-in-same-mode-buffers)))
   :config
   (bind-keys :map emacs-lisp-mode-map
