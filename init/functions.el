@@ -562,6 +562,11 @@
   (interactive)
   (-move-link 'search-forward-regexp))
 
+(defun get-quote-char ()
+  "Get the majority quote character used in a file."
+  (if (> (count-matches "\"" (point-min) (point-max))
+         (count-matches "'" (point-min) (point-max)))
+      "\"" "'"))
 
 (defun bemify-emmet-string (expr)
   "Pre process an emmet string to be bemified."
