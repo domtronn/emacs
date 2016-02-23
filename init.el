@@ -659,6 +659,7 @@
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
+                     ("C-c e" . magit-vc-ediff)
                      ("C-<tab>" . jpop-find-file)))
 
 (add-hook 'magit-mode-hook 'image-minor-mode)
