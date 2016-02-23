@@ -34,7 +34,7 @@
 (defun powerline-c1 () (if (powerline-primary-window) powerline-c1-primary powerline-c1-secondary))
 (defun powerline-c2 () (if (powerline-primary-window) powerline-c2-primary powerline-c2-secondary))
 (defun powerline-fg () (if (powerline-primary-window) powerline-fg-primary powerline-fg-secondary))
-	
+
 (defvar theme-powerline-color-alist
   '((whiteboard    (:primary ("#bbbbbb" "#d7d7d7" "#2a2a2a")
                     :secondary ("#bbbbbb" "#d7d7d7" "#2a2a2a")))
