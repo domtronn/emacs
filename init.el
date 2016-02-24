@@ -264,8 +264,13 @@
                    ("C-'" . avy-isearch)
                    ("C-l" . helm-git-grep-from-isearch)))
 
-(use-package helm :bind ("s-V" . helm-show-kill-ring)
-                        ("M-y" . helm-show-kill-ring))
+(use-package ace-jump-helm-line :after helm)
+
+(use-package helm
+  :bind ("s-V" . helm-show-kill-ring)
+        ("M-y" . helm-show-kill-ring)
+  :config (bind-keys :map helm-map ("C-'" . ace-jump-helm-line)))
+
 (use-package helm-ls-git
   :bind ("<H-tab>" . helm-ls-git-ls))
 (use-package helm-git-grep
@@ -412,7 +417,8 @@
 (use-package json-snatcher :after json)
 (use-package json
   :mode ("\\.json" . json-mode)
-  :config (add-hook 'json-mode-hook '(lambda () (jpop-stylise "2" t))))
+  :config (add-hook 'json-mode-hook '(lambda ()
+                                       (jpop-stylise 2 nil))))
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
