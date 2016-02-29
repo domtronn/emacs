@@ -124,13 +124,15 @@
   (interactive)
   (let ((thing (thing-at-point 'symbol))
         (p (point)))
-    (when (and (eq nil (jump-to-require))
-               (or (eq nil (jump-to-class))
-                   (equal '(nil) (jump-to-class))))
-      (ignore-errors (js2-jump-to-definition))
-      (when (eq p (point))
-        (unless (etags-select-find-tag-at-point)
-          (helm-swoop ))))))
+    (if thing
+        (when (and (eq nil (jump-to-require))
+                   (or (eq nil (jump-to-class))
+                       (equal '(nil) (jump-to-class))))
+          (ignore-errors (js2-jump-to-definition))
+          (when (and (eq p (point))
+                     (not (eq nil (etags-select-find-tag-at-point))))
+            (helm-swoop)))
+      (etags-select-find-tag))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;

@@ -297,7 +297,7 @@
   ("C-c a" . avy-goto-char)
   ("C-c SPC" . avy-goto-char)
   ("C-c C-a" . avy-goto-word-1)
-  ("M-a" . avy-goto-word-1)
+  ("C-'" . avy-goto-word-1)
   :config
   (avy-setup-default)
   (bind-keys ("M-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
@@ -418,7 +418,7 @@
 (use-package json
   :mode ("\\.json" . json-mode)
   :config (add-hook 'json-mode-hook '(lambda ()
-                                       (jpop-stylise 2 nil))))
+                                       (jpop-stylise 2 t))))
 
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)

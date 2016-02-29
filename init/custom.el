@@ -36,6 +36,7 @@
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
  '(fci-rule-color "#232A2F")
+ '(flycheck-disabled-checkers (quote (javascript-jshint)))
  '(flycheck-highlighting-mode (quote lines))
  '(flycheck-idle-change-delay 2)
  '(git-gutter-fr:side (quote left-fringe))
@@ -66,7 +67,6 @@
  '(hl-paren-colors
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
- '(indent-tabs-mode nil)
  '(ibuffer-default-sorting-mode (quote major-mode))
  '(ibuffer-filter-group-name-face (quote font-lock-builtin-face))
  '(ibuffer-fontification-alist
@@ -112,12 +112,13 @@
     (".json" ".css" ".pl" ".sh" ".as" ".php" ".emacs" ".ini" ".js" ".el" ".ini" ".cfg" ".cnf" "")))
  '(ido-separator nil)
  '(ido-use-filename-at-point (quote guess))
+ '(indent-tabs-mode nil)
  '(jpop-completion-func (quote car))
  '(jpop-filter-regexps
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2 t)
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
