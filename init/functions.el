@@ -688,6 +688,18 @@ version 2016-01-28"
 						(delete-region (cadr expr) (caddr expr))
 						(insert bemified)))))))
 
+(defun dir-depth (dir)
+  "Gives depth of directory DIR"
+  (length (split-string (expand-file-name dir) "/")))
+
+(defun flycheck--guess-checker ()
+  "Guess the JS lintrc file in the current project"
+  (let* ((jshintrc-loc (locate-dominating-file (buffer-file-name) flycheck-jshintrc))
+         (jshintrc-depth (dir-depth jshintrc-loc))
+         (eslintrc-loc (locate-dominating-file (buffer-file-name) flycheck-eslintrc))
+         (eslintrc-depth (dir-depth eslintrc-loc)))
+    (if (> jshintrc-depth eslintrc-depth) 'javascript-jshint 'javascript-eslint)))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:

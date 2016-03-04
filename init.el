@@ -336,8 +336,8 @@
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-  (add-hook 'js2-mode-hook '(lambda () (setq-local indent-tabs-mode nil)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
+  (add-hook 'js2-mode-hook '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (add-hook 'js2-mode-hook
             (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
                       (add-to-list 'ac-sources 'ac-source-requirejs-files)
