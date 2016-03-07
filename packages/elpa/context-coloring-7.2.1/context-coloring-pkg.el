@@ -1,0 +1,1 @@
+(define-package "context-coloring" "7.2.1" "Highlight by scope" '((emacs "24.3") (js2-mode "20150713")) :url "https://github.com/jacksonrayhamilton/context-coloring" :keywords '("convenience" "faces" "tools"))
