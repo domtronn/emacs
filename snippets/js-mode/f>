@@ -3,6 +3,4 @@
 # binding			: C-c C-c f
 # expand-env	: ((prepend-space nil))
 # --
-($1) => {
-    $0
-};
+($1) => { $0 }
