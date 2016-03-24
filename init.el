@@ -216,6 +216,8 @@
 (use-package flycheck-status-emoji :after flycheck)
 (use-package flycheck
   :config (global-flycheck-mode)
+  (setq flycheck-javascript-standard-executable "standard")
+  (setq flycheck-javascript-eslint-executable "eslint")
   (bind-keys :map flycheck-mode-map
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
