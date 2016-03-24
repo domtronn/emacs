@@ -705,6 +705,17 @@ version 2016-01-28"
      ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
      (t 'javascript-eslint))))
 
+(defun flycheck--eslint-doc ()
+  "Open the doc for the rule violation under point"
+  (interactive)
+  (let ((e (flycheck-display-error-at-point)))
+    (when (not e) (error "No flycheck error at point"))
+    (let ((rule (with-temp-buffer
+                  (insert e)
+                  (string-match "\\[\\(.*?\\)\\]" (format " %s"(buffer-string)))
+                  (match-string-no-properties 1)))
+          (eslint-base "http://eslint.org/docs/rules/%s"))
+      (browse-url (format eslint-base rule)))))
 
 (provide 'functions)
 ;;; functions.el ends here
