@@ -690,7 +690,7 @@ version 2016-01-28"
 
 (defun dir-depth (dir)
   "Gives depth of directory DIR"
-  (length (split-string (expand-file-name dir) "/")))
+  (when dir (length (split-string (expand-file-name dir) "/"))))
 
 (defun flycheck--guess-checker ()
   "Guess the JS lintrc file in the current project"
@@ -698,7 +698,13 @@ version 2016-01-28"
          (jshintrc-depth (dir-depth jshintrc-loc))
          (eslintrc-loc (locate-dominating-file (buffer-file-name) flycheck-eslintrc))
          (eslintrc-depth (dir-depth eslintrc-loc)))
-    (if (> jshintrc-depth eslintrc-depth) 'javascript-jshint 'javascript-eslint)))
+    (cond
+     ((and (not eslintrc-loc) (not jshintrc-loc)) 'javascript-standard)
+     ((and jshintrc-loc (not eslintrc-loc)) 'javascript-jshint)
+     ((and eslintrc-loc (not jshintrc-loc)) 'javascript-eslint)
+     ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
+     (t 'javascript-eslint))))
+
 
 (provide 'functions)
 ;;; functions.el ends here
