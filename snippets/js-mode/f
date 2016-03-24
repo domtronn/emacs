@@ -3,6 +3,6 @@
 # binding			: C-c C-c f
 # expand-env	: ((prepend-space nil))
 # --
-function${1:$(when yas-modified-p " ")}$1($2) {
+function${1:$(when yas-modified-p " ")}$1 ($2) {
   $0
 }
