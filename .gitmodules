@@ -13,3 +13,6 @@
 [submodule "elisp/boop"]
 	path = elisp/boop
 	url = git@github.com:domtronn/boop.el.git
+[submodule "/Users/charld13/.emacs.d/elisp/eslint-reader/"]
+	path = elisp/eslint-reader
+	url = git@github.com:domtronn/eslint-reader.el.git

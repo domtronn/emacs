@@ -235,6 +235,10 @@
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   :bind ("M-}" . flycheck-mode))
 
+(use-package eslint-reader
+  :load-path "elisp/eslint-reader"
+  :after js2-mode)
+
 (use-package flyspell
   :init (setq flyspell-mode-map (make-sparse-keymap))
   (defun flyspell-toggle ()
