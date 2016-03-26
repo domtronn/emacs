@@ -189,23 +189,33 @@
   (defun wlf:trip-split-layout ()
     (wlf:show (wlf:no-layout
                '(| (:left-size-ratio 0.6) file
-                   (- (:upper-size-ration 0.4) runner compilation))
+                   (- (:upper-size-ratio 0.4) runner compilation))
                '((:name file :buffer "file buffer")
                  (:name runner :buffer "*runner*")
                  (:name compilation :buffer "*compilation*")))))
+  (defun wlf:ert-layout ()
+    (let* ((test-buffer (format "%s-test.el" (file-name-base (buffer-file-name)))))
+      (wlf:show (wlf:no-layout
+                '(| (:left-size-ratio 0.6)
+                    (- (:upper-size-ratio 0.5) file test)
+                    (- (:upper-size-ratio 0.7) ert messages))
+                '((:name file :buffer "file buffer")
+                  (:name test :buffer test-buffer)
+                  (:name messages :buffer "*Messages*")
+                  (:name ert :buffer "*ert*"))))))
   (defun wlf:codepen-layout ()
     (let ((scss-buf (get-buffer-create "codepen.scss"))
           (html-buf (get-buffer-create "codepen.html"))
           (js-buf (get-buffer-create "codepen.js")))
       (wlf:show (wlf:no-layout
                  '(| (:left-size-ratio 0.3) html
-                     (| (:left-size-ration 0.3) scss js))
+                     (| (:left-size-ratio 0.3) scss js))
                  '((:name html :buffer html-buf)
                    (:name scss :buffer scss-buf)
                    (:name js :buffer js-buf))))))
   (defun wlf:layout (&optional pfx)
     (interactive "P")
-    (let ((layouts '(("Codepen" wlf:codepen-layout) ("Triple Split" wlf:trip-split-layout))))
+    (let ((layouts '(("Codepen" wlf:codepen-layout) ("ERT" wlf:ert-layout) ("Triple Split" wlf:trip-split-layout))))
       (if pfx
           (funcall (cadr (assoc (completing-read "Layout: " layouts) layouts)))
         (wlf:trip-split-layout)) t))
