@@ -138,6 +138,7 @@
 (global-set-key (kbd "C-=") 'insert-random-return)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
+(global-set-key (kbd "<s-S-return>") 'eval-buffer)
 
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
