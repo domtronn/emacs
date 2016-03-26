@@ -396,6 +396,15 @@
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'web-mode-hook 'skewer-html-mode)
 
+(use-package comint-mode
+  :init
+  (add-hook
+   'comint-mode-hook
+   (lambda ()
+     (local-set-key (kbd "C-r") 'comint-history-isearch-backward)
+     (local-set-key (kbd "<up>") 'comint-previous-input)
+     (local-set-key (kbd "<down>") 'comint-next-input))))
+
 (use-package cpp
   :mode ("\\.cpp" . c++-mode)
         ("\\.h" . c++-mode)

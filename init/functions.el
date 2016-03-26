@@ -717,6 +717,17 @@ version 2016-01-28"
           (eslint-base "http://eslint.org/docs/rules/%s"))
       (browse-url (format eslint-base rule)))))
 
+(defun repl-make (name exec)
+  (ansi-color-for-comint-mode-on)
+  (add-to-list
+   'comint-preoutput-filter-functions
+   (lambda (output)
+     (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
+  (pop-to-buffer (make-comint name exec)))
+
+(defun ramda-repl () "Open a ramda repl" (interactive) (repl-make "ramda-repl" "ramda-repl"))
+(defun lodash-repl () "Open a lodash repl" (interactive) (repl-make "lodash-repl" "n_"))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
