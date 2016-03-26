@@ -3,6 +3,6 @@
 #key: cond
 # --
 (cond
-(CONDITION$0 BODY)
-(CONDITION BODY)
+(($1) ($2))
+(t $0)
 )
