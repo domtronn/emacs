@@ -42,6 +42,8 @@
                     :secondary ("#3E4451" "#5C6370" "#ABB2BF")))
     (darktooth     (:primary ("#222222" "#222222" "#FDF3C3")
                     :secondary ("#403935" "#403935" "#988975")))
+    (niflheim      (:primary ("#222222" "#2a2a2a" "#bababa")
+                    :secondary ("#222222" "#2a2a2a" "#bababa")))
     (gotham        (:primary ("#10272D" "#081E26" "#357C91")
                     :secondary ("#10272D" "#081E26" "#357C91")))
     (aurora        (:primary ("#455a64" "#2B3B40" "#CDD3D3")
@@ -55,7 +57,9 @@
     (misterioso    (:promary ("#455a64" "#2B3B40" "#CDD3D3")
                     :secondary ("#455a64" "#2B3B40" "#CDD3D3")))
     (jazz          (:primary ("#151515" "#101010" "#7F6A4F")
-                    :secondary ("#151515" "#101010" "#7F6A4F")))))
+                    :secondary ("#151515" "#101010" "#7F6A4F")))
+    (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
+                     :secondary ("#292B2E" "#292B2E" "#292B2E")))))
 
 (defun update-powerline (&rest args)
   "Update the extra powerline colours based on a mapping to theme."
