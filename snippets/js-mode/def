@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 #name : function
 # --
-${1:name}: function ($2) {
-  $0
+${1:name}: function`(er!? 'space-before-function-paren)`($2)`(er!? 'space-before-functions)`{
+`(er!? 'indent)`$0
 },

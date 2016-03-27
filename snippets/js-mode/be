@@ -1,6 +1,6 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : be
 # --
-beforeEach(function () {
-$1
-});$0
+beforeEach(function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{
+`(er!? 'indent)`$1
+})`(er!? 'semi)`$0

@@ -1,6 +1,6 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : ae
 # --
-afterEach(function () {
-	$1
-});$0
+afterEach(function`(er!? 'space-before-function-paren)`() {
+`(er!? 'indent)``(er!? 'padded-blocks-blocks)`$1`(er!? 'padded-blocks-blocks)`
+})`(er!? 'semi)`$0

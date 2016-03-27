@@ -1,6 +1,6 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : it
 # --
-it(`(get-quote-char)`${1:should...}`(get-quote-char)`, function () {
+it(`(get-quote-char)`${1:should...}`(get-quote-char)`, function`(when (eslint-reader? 'space-before-function-paren) (insert " "))`() {
 $2
 });$0

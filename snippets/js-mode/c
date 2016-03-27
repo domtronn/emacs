@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 #name : let
 # --
-const ${1:a} = ${2:b};$0
+const ${1:a} = ${2:b}`(er!? 'semi)`$0

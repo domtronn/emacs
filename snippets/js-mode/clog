@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 #name : console.log
 # --
-console.log(`(get-quote-char)``yas-selected-text`$1 = `(get-quote-char)`, `yas-selected-text`${$1});
+console.log(`(er!? 'quotes)``yas-selected-text`$1 = `(er!? 'quotes)`, `yas-selected-text`${$1})`(er!? 'semi)`

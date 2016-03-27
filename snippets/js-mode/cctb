@@ -1,4 +1,4 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : cctb
 # --
-expect(${1:obj}.${2:method}.calls.count()).toBe(${3:x});$0
+expect(${1:obj}.${2:method}.calls.count()).toBe(${3:x})`(er!? 'semi)`$0

@@ -1,6 +1,6 @@
 # -*- mode: js-mode -*-
 #name : desc
 # --
-describe(`(get-quote-char)`${1:Description}`(get-quote-char)`, function () {
+describe(`(get-quote-char)`${1:Description}`(get-quote-char)`, function`(when (and (eslint-reader?) (eslint-reader-space-before-function-paren)) (insert " "))`() {
 $0
 });

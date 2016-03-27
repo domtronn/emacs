@@ -1,4 +1,4 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : act
 # --
-and.callThrough();$0
+and.callThrough()`(er!? 'semi)`$0
