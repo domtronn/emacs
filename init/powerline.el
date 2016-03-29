@@ -59,7 +59,9 @@
     (jazz          (:primary ("#151515" "#101010" "#7F6A4F")
                     :secondary ("#151515" "#101010" "#7F6A4F")))
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
-                     :secondary ("#292B2E" "#292B2E" "#292B2E")))))
+                              :secondary ("#292B2E" "#292B2E" "#292B2E")))
+    (gruvbox       (:primary ("#3c3836" "#282828" "#f4e8ba")
+                    :secondary ("#504945" "#282828" "#a89984")))))
 
 (defun update-powerline (&rest args)
   "Update the extra powerline colours based on a mapping to theme."
@@ -152,7 +154,7 @@ static char * arrow_right[] = {
   (create-image
    (format "/* XPM */
 static char * curve_right[] = {
-\"12 18 2 1\",
+\"12 22 2 1\",
 \". c %s\",
 \"  c %s\",
 \"           .\",
@@ -164,6 +166,10 @@ static char * curve_right[] = {
 \"      ......\",
 \"      ......\",
 \"      ......\",
+\"     .......\",
+\"     .......\",
+\"     .......\",
+\"     .......\",
 \"      ......\",
 \"      ......\",
 \"      ......\",
@@ -183,7 +189,7 @@ static char * curve_right[] = {
   (create-image
    (format "/* XPM */
 static char * curve_left[] = {
-\"12 18 2 1\",
+\"12 22 2 1\",
 \". c %s\",
 \"  c %s\",
 \".           \",
@@ -195,6 +201,10 @@ static char * curve_left[] = {
 \"......      \",
 \"......      \",
 \"......      \",
+\".......     \",
+\".......     \",
+\".......     \",
+\".......     \",
 \"......      \",
 \"......      \",
 \"......      \",
@@ -204,6 +214,159 @@ static char * curve_left[] = {
 \"...         \",
 \"...         \",
 \".           \"};"
+           (if color1 color1 "None")
+           (if color2 color2 "None"))
+   'xpm t :ascent 'center))
+
+(defun gradient-color-blend (c1 c2 &optional alpha)
+  "Blend the two colors C1 and C2 with ALPHA.
+C1 and C2 are in the format of `color-values'.
+ALPHA is a number between 0.0 and 1.0 which corresponds to the
+influence of C1 on the result."
+  (setq alpha (or alpha 0.5))
+  (apply #'gradient-color-join
+         (cl-mapcar
+          (lambda (x y)
+            (round (+ (* x alpha) (* y (- 1 alpha)))))
+          c1 c2)))
+
+(defun gradient-color-join (r g b)
+  "Build a color from R G B.
+Inverse of `color-values'."
+  (format "#%02x%02x%02x"
+          (ash r -8)
+          (ash g -8)
+          (ash b -8)))
+
+(defun gradient-xpm
+  (c1 c2)
+  "Return an XPM gradient string representing."
+  (let* ((backup-color
+          (if (eq (get-buffer-window) powerline-current-window)
+            (face-attribute 'mode-line :background)
+            (face-attribute 'mode-line-inactive :background)))
+        (c1 (or c1 backup-color))
+        (c2 (or c2 backup-color)))
+    (create-image
+    (format "/* XPM */
+static char * gradient_left[] = {
+/* columns rows colours chars-per-pixel */
+\"12 22 12 1\",
+\"a c %s\",
+\"b c %s\",
+\"c c %s\",
+\"d c %s\",
+\"e c %s\",
+\"f c %s\",
+\"g c %s\",
+\"h c %s\",
+\"i c %s\",
+\"j c %s\",
+\"k c %s\",
+\"l c %s\",
+/* pixels */
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\"};"
+            c1
+            (gradient-color-blend (color-values c2) (color-values c1) 0.1)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.2)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.3)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.4)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.5)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.6)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.7)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.8)
+            (gradient-color-blend (color-values c2) (color-values c1) 0.9)
+            (gradient-color-blend (color-values c2) (color-values c1) 1.0)
+            c2)
+    'xpm t :ascent 'center)))
+
+(defun slash-left-xpm
+  (color1 color2)
+  "Return an XPM left curve string representing."
+  (create-image
+   (format "/* XPM */
+static char * curve_left[] = {
+\"12 22 2 1\",
+\". c %s\",
+\"  c %s\",
+\"........... \",
+\"........... \",
+\"..........  \",
+\"..........  \",
+\".........   \",
+\".........   \",
+\"........    \",
+\"........    \",
+\".......     \",
+\".......     \",
+\"......      \",
+\"......      \",
+\".....       \",
+\".....       \",
+\"....        \",
+\"....        \",
+\"...         \",
+\"...         \",
+\"..          \",
+\"..          \",
+\".           \",
+\".           \"};"
+           (if color1 color1 "None")
+           (if color2 color2 "None"))
+   'xpm t :ascent 'center))
+
+(defun slash-right-xpm
+  (color1 color2)
+  "Return an XPM left curve string representing."
+  (create-image
+   (format "/* XPM */
+static char * curve_left[] = {
+\"12 22 2 1\",
+\". c %s\",
+\"  c %s\",
+\".           \",
+\".           \",
+\"..          \",
+\"..          \",
+\"...         \",
+\"...         \",
+\"....        \",
+\"....        \",
+\".....       \",
+\".....       \",
+\"......      \",
+\"......      \",
+\".......     \",
+\".......     \",
+\"........    \",
+\"........    \",
+\".........   \",
+\".........   \",
+\"..........  \",
+\"..........  \",
+\"........... \",
+\"........... \"};"
            (if color1 color1 "None")
            (if color2 color2 "None"))
    'xpm t :ascent 'center))
@@ -296,8 +459,27 @@ install the memoized function over the original function."
 (memoize 'arrow-right-xpm)
 (memoize 'curve-left-xpm)
 (memoize 'curve-right-xpm)
-(memoize 'half-xpm)
-(memoize 'percent-xpm)
+(memoize 'slash-left-xpm)
+(memoize 'slash-right-xpm)
+(memoize 'gradient-xpm)
+
+(defun powerline-set-style ()
+  "Set the style of the powerline separator"
+  (interactive)
+  (let* ((styles
+          '(("arrow" arrow-left-xpm arrow-right-xpm)
+            ("curve" curve-left-xpm curve-right-xpm)
+            ("slash-/\\" slash-left-xpm slash-right-xpm)
+            ("slash-//" slash-left-xpm slash-left-xpm)
+            ("slash-\\/" slash-right-xpm slash-left-xpm)
+            ("slash-\\\\" slash-right-xpm slash-right-xpm)
+            ("gradient" gradient-xpm gradient-xpm)))
+         (result (assoc (completing-read "Style: " styles) styles)))
+    (defalias 'right-xpm (caddr result))
+    (defalias 'left-xpm (cadr result))))
+
+(defalias 'right-xpm 'slash-right-xpm)
+(defalias 'left-xpm  'slash-left-xpm)
 
 (defvar powerline-minor-modes nil)
 (defvar powerline-arrow-shape 'arrow)
@@ -345,11 +527,13 @@ install the memoized function over the original function."
        "")
      (if arrow
          (propertize " " 'display
-                     (arrow-left-xpm color1 color2)
+                     (left-xpm color1 color2)
                      'local-map (make-mode-line-mouse-map
                                  'mouse-1 (lambda () (interactive)
                                             (setq powerline-arrow-shape 'arrow)
                                             (force-mode-line-update)))) ""))))
+
+
 
 (defun powerline-make-right
   (string color2 &optional color1 localmap)
@@ -358,7 +542,7 @@ install the memoized function over the original function."
     (concat
      (if arrow
          (propertize " " 'display
-                     (arrow-right-xpm color1 color2)
+                     (right-xpm color1 color2)
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive)
                                           (setq powerline-arrow-shape 'arrow)
