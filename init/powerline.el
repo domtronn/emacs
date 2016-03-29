@@ -61,7 +61,9 @@
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
                               :secondary ("#292B2E" "#292B2E" "#292B2E")))
     (gruvbox       (:primary ("#3c3836" "#282828" "#f4e8ba")
-                    :secondary ("#504945" "#282828" "#a89984")))))
+                             :secondary ("#504945" "#282828" "#a89984")))
+    (wombat        (:primary ("#444444" "#343434" "#CCC9C0")
+                    :secondary ("#444444" "#343434" "#99968b")))))
 
 (defun update-powerline (&rest args)
   "Update the extra powerline colours based on a mapping to theme."
