@@ -63,9 +63,9 @@
 (use-package paren)
 
 (use-package multiple-cursors
-  :bind ("H-n" . mc/mark-next-symbol-like-this)
+  :bind ("H-n" . mc/mark-next-like-this)
         ("s-n" . mc/skip-to-next-like-this)
-        ("H-p" . mc/mark-previous-symbol-like-this)
+        ("H-p" . mc/mark-previous-like-this)
         ("s-p" . mc/skip-to-previous-like-this)
         ("H-l" . mc/mark-all-symbols-like-this)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
