@@ -1,4 +1,4 @@
-# -*- mode: js-mode -*-
+# -*- mode: snippet -*-
 #name : exp
 # --
 expect(${1:$$(if yas-modified-p ( ) (ignore-errors (get-last-spy)))})
