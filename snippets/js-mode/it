@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 #name : it
 # --
-it(`(get-quote-char)`${1:should...}`(get-quote-char)`, function`(when (eslint-reader? 'space-before-function-paren) (insert " "))`() {
+it(`(er!? 'quotes)`${1:should...}`(er!? 'quotes)`, function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{
 $2
-});$0
+})`(er!? 'semi)`$0
