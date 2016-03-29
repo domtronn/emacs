@@ -20,6 +20,13 @@
 
 ;;; Commentary:
 
+;; When setting up from scratch, there are a couple of external
+;; packages that you'll require, here is a list of things to install
+
+;; npm install -g livedown
+;; npm install -g n_
+;; npm install -g ramda-repl
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Code:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -99,7 +106,7 @@
   :demand
   :config (smartparens-global-mode)
           (sp-local-pair
-           '(minibuffer-inactive-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
+           '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
           (sp-with-modes sp-lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
@@ -508,7 +515,12 @@
 (use-package key-combo
   :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
           (key-combo-mode 1)
-          (key-combo-load-default))
+          (key-combo-load-default)
+          (key-combo-define-hook
+           '(lisp-mode-hook
+             emacs-lisp-mode-hook
+             snippet-mode-hook)
+           '(("." . ("." " . ")))))
 
 (use-package yasnippet
   :config
