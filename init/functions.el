@@ -726,6 +726,7 @@ version 2016-01-28"
   (pop-to-buffer (make-comint name exec)))
 
 (defun ramda-repl () "Open a ramda repl" (interactive) (repl-make "ramda-repl" "ramda-repl"))
+(defun node-repl () "Open a node repl" (interactive) (repl-make "node-repl" "node"))
 (defun lodash-repl () "Open a lodash repl" (interactive) (repl-make "lodash-repl" "n_"))
 
 (provide 'functions)
