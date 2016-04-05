@@ -454,6 +454,11 @@
   :config (add-hook 'json-mode-hook '(lambda ()
                                        (jpop-stylise 2 t))))
 
+(use-package eww
+  :defer t
+  :config (bind-keys :map eww-mode-map ("j" . json-format)))
+
+(use-package browse-url :after markdown-mode)
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
   :config
@@ -515,12 +520,7 @@
 (use-package key-combo
   :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
           (key-combo-mode 1)
-          (key-combo-load-default)
-          (key-combo-define-hook
-           '(lisp-mode-hook
-             emacs-lisp-mode-hook
-             snippet-mode-hook)
-           '(("." . ("." " . ")))))
+          (key-combo-load-default))
 
 (use-package yasnippet
   :config
