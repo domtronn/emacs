@@ -456,9 +456,13 @@
 
 (use-package eww
   :defer t
-  :config (bind-keys :map eww-mode-map ("j" . json-format)))
+  :bind ("<f10>" . eww)
+        ("<s-f10>" . eww-list-bookmarks)
+  :config (bind-keys :map eww-mode-map
+                     ("j" . json-format)
+                     ("c" . eww-copy-page-url)))
 
-(use-package browse-url :after markdown-mode)
+(use-package goto-addr :after markdown-mode)
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
   :config
