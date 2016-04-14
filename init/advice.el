@@ -30,7 +30,16 @@
     (apply orig-f args)
     (set-font current-font)))
 
+(defun markdown-style-themes (&rest args)
+  (let ((class '((class color) (min-colors 89))))
+    (custom-set-faces
+     '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
+     '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.8))))
+     '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.4))))
+     '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.2)))))))
+
 (advice-add 'load-theme :around 'disable-themes)
+(advice-add 'load-theme :after 'markdown-style-themes)
 
 (defun enable-and-disable-vertical (orig-f &rest args)
   (set-vertical 1)
