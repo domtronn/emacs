@@ -237,7 +237,9 @@
   :bind ("C-c C-w" . wlf:layout))
 
 
-(use-package flycheck-status-emoji :after flycheck)
+(use-package flycheck-status-emoji
+  :load-path "eslip"
+  :after flycheck)
 (use-package flycheck
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
