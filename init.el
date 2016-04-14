@@ -116,6 +116,11 @@
 (use-package operate-on-number
   :bind ("s-@" . operate-on-number-at-point))
 
+(use-package command-log-mode
+  :defer t
+  :config (global-command-log-mode)
+  :bind ("C-c o" . clm/toggle-command-log-buffer))
+
 (use-package smex
   :config (smex-initialize)
   :bind ("M-x" . smex)
