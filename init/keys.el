@@ -28,6 +28,8 @@
 (global-set-key (kbd "s-q") 'you-can-never-leave)
 (global-set-key (kbd "C-x C-c") 'you-can-never-leave)
 
+
+
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key [M-tab] 'dabbrev-expand)
@@ -114,6 +116,8 @@
 
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
+
+(global-set-key (kbd "C-?") 'devdocs-search)
 
 (global-set-key (kbd "C-c C-,") 'whitespace-mode)
 (global-set-key (kbd "C-c C-.") 'whitespace-cleanup)
