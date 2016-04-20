@@ -121,12 +121,6 @@
   :config (global-command-log-mode)
   :bind ("C-c o" . clm/toggle-command-log-buffer))
 
-(use-package smex
-  :config (smex-initialize)
-  :bind ("M-x" . smex)
-        ("M-X" . smex-major-mode-commands)
-        ("C-c M-x" . execute-extended-command))
-
 (use-package popup :defer t)
 (use-package popwin
   :demand
@@ -286,36 +280,41 @@
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace))
 
+(use-package counsel :after ivy
+  :config
+  (defun counsel-git-grep-from-isearch ()
+    "Invoke `counsel-git-grep' from isearch."
+    (interactive)
+    (let ((input (if isearch-regexp
+                     isearch-string
+                   (regexp-quote isearch-string))))
+        (isearch-exit)
+        (counsel-git-grep nil input)))
+  :bind
+  ([f2]      . counsel-ag)
+  ("<H-tab>" . counsel-git)
+  ("M-x"     . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  ("C-h b"   . counsel-descbinds)
+  ("s-V"     . counsel-yank-pop)
+  ("M-y"     . counsel-yank-pop))
+
+(use-package ivy
+  :init   (bind-keys :map ivy-mode-map ("C-'" . swiper-avy))
+  :config (ivy-mode)
+          (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  :bind ("C-c C-r" . ivy-resume)
+        ("M-o"     . swiper))
+
 (use-package isearch
   :bind ("H-s" . isearch-forward-symbol-at-point)
         ("C-s" . isearch-forward-regexp)
         ("C-r" . isearch-backward-regexp)
 
   :init (bind-keys :map isearch-mode-map
-                   ("C-;" . helm-swoop-from-isearch)
+                   ("C-;" . swiper-from-isearch)
                    ("C-'" . avy-isearch)
-                   ("C-l" . helm-git-grep-from-isearch)))
-
-(use-package ace-jump-helm-line :after helm)
-
-(use-package helm
-  :bind ("s-V" . helm-show-kill-ring)
-        ("M-y" . helm-show-kill-ring)
-  :config (bind-keys :map helm-map ("C-'" . ace-jump-helm-line)))
-
-(use-package helm-ls-git
-  :bind ("<H-tab>" . helm-ls-git-ls))
-(use-package helm-git-grep
-  :commands helm-git-grep-from-isearch
-  :bind ([f2] . helm-git-grep)
-  :config (bind-keys :map helm-git-grep-map
-                     ("M-n" . helm-goto-next-file)
-                     ("M-p" . helm-goto-precedent-file)))
-(use-package helm-swoop
-  :commands helm-swoop-from-isearch
-  :bind ("M-o" . helm-swoop)
-        ("M-O" . helm-swoop-same-face-at-point)
-  :config (define-key helm-swoop-map (kbd "C-l") 'helm-git-grep-from-helm))
+                   ("C-l" . counsel-git-grep-from-isearch)))
 
 (global-prettify-symbols-mode)
 (push '("->" . ?→) prettify-symbols-alist)
@@ -542,6 +541,16 @@
   :bind ([f1] . neotree-toggle)
   ("<S-f1>" . neotree-find))
 
+(with-eval-after-load "esh-opt"
+  (autoload 'epe-theme-dakrone "eshell-prompt-extras")
+  (setq eshell-highlight-prompt nil
+        eshell-prompt-function 'epe-theme-dakrone))
+
+(use-package eshell
+  :config
+  (bind-keys :map eshell-mode-map
+             ("C-r" . counsel-esh-history)))
+
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
   :config
@@ -550,9 +559,9 @@
    '(shell-pop-autocd-to-working-dir nil)
    '(shell-pop-shell-type
      (quote
-      ("ansi-term" "*ansi-term*"
+      ("eshell" "*eshell*"
        (lambda nil
-         (ansi-term shell-pop-term-shell)))))
+         (eshell shell-pop-term-shell)))))
    '(shell-pop-term-shell "/bin/bash")
    '(shell-pop-window-position "bottom")
    '(shell-pop-window-size 40)))
@@ -765,39 +774,6 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 (show-paren-mode t)   ; Show paranthesis matching
-
-(use-package flx-ido :after ido :config (flx-ido-mode 1))
-(use-package ido-ubiquitous :after ido :config (ido-ubiquitous-mode 1))
-(use-package ido-vertical-mode  :after ido
-  :config (ido-vertical-mode 1)
-  (add-hook 'ido-vertical-mode-hook
-            '(lambda () (bind-keys :map ido-common-completion-map
-                              ("C-f" . ido-next-match)
-                              ("C-b" . ido-prev-match)))))
-(use-package ido-describe-bindings :after ido
-  :bind ("C-h b" . ido-describe-bindings))
-(use-package ido-other-window :load-path "~/.env/elisp")
-
-;; Ido Support
-(use-package ido
-  :demand
-  :config
-  (ido-mode 1)
-  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)                     ; For dired use C-j to quit at that path
-  (setq ido-enable-regexp t)
-  (setq ido-create-new-buffer 'always)
-
-  (defalias 'ido-magic-forward-char 'ido-next-match)
-  (defalias 'ido-magic-backward-char 'ido-prev-match)
-
-  :bind
-  ("C-x C-f" . ido-find-file)
-  ("C-x f" . ido-find-file)
-  ("C-x F" . ido-find-file-other-window)
-  ("C-x B" . ido-switch-buffer-other-window)
-  ("C-x b" . ido-switch-buffer))
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
