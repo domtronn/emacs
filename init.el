@@ -300,7 +300,6 @@
   ("M-y"     . counsel-yank-pop))
 
 (use-package ivy
-  :init   (bind-keys :map ivy-mode-map ("C-'" . swiper-avy))
   :config (ivy-mode)
           (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
   :bind ("C-c C-r" . ivy-resume)
@@ -542,14 +541,11 @@
   ("<S-f1>" . neotree-find))
 
 (with-eval-after-load "esh-opt"
+  (bind-keys :map eshell-mode-map
+             ("C-r" . counsel-esh-history))
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
         eshell-prompt-function 'epe-theme-dakrone))
-
-(use-package eshell
-  :config
-  (bind-keys :map eshell-mode-map
-             ("C-r" . counsel-esh-history)))
 
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
