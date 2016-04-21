@@ -33,7 +33,7 @@
 (defun markdown-style-themes (&rest args)
   (let ((class '((class color) (min-colors 89))))
     (custom-set-faces
-     '(markdown-header-face ((t (:inherit default :weight bold :family "variable-pitch"))))
+     '(markdown-header-face ((t (:inherit default :weight bold))))
      '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
      '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
      '(markdown-header-face-3 ((t (:inherit default :height 1.2)))))))
