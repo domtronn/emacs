@@ -541,11 +541,14 @@
   ("<S-f1>" . neotree-find))
 
 (with-eval-after-load "esh-opt"
-  (bind-keys :map eshell-mode-map
-             ("C-r" . counsel-esh-history))
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
         eshell-prompt-function 'epe-theme-dakrone))
+
+(use-package esh-mode
+  :defer t
+  :config (bind-keys :map eshell-mode-map
+             ("C-r" . counsel-esh-history)))
 
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
