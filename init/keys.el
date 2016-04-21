@@ -28,8 +28,6 @@
 (global-set-key (kbd "s-q") 'you-can-never-leave)
 (global-set-key (kbd "C-x C-c") 'you-can-never-leave)
 
-
-
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key [M-tab] 'dabbrev-expand)
@@ -64,15 +62,14 @@
 
 ;; Undo and Redo
 (global-set-key (kbd "M-;") 'semi-colon-end)
-
-(global-set-key [C-right] 'forward-word)
-(global-set-key [C-left] 'backward-word)
-(global-set-key [M-right] 'forward-word)
-(global-set-key [M-left] 'backward-word)
-
 (global-set-key (kbd "M-?") 'ispell-word)
+
 (global-set-key "\M-u" 'upcase-case-next-letter)
-(global-set-key "\M-L" 'downcase-case-next-letter)
+(global-set-key "\M-l" 'downcase-case-next-letter)
+
+(global-set-key "\M-U" 'upcase-word)
+(global-set-key "\M-L" 'downcase-word)
+
 ;; Allow for join lines backwards
 (global-set-key (kbd "C-j") 'join-line)
 
@@ -86,18 +83,13 @@
 (global-set-key (kbd "H-<") 'pop-to-mark-command)
 
 ;; move and resize windows
-(global-set-key [M-s-left] 'windmove-left)
-(global-set-key [M-s-right] 'windmove-right)
-(global-set-key [M-s-up] 'windmove-up)
-(global-set-key [M-s-down] 'windmove-down)
-
 (global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
 (global-set-key (kbd "H-=") '(lambda () (interactive) (font-scale '+ 10)))
 
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
-(global-set-key (kbd "<M-f2>") 'ag-regexp-project-at-point)
+(global-set-key (kbd "<s-f2>") 'ag-regexp-project-at-point)
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 
@@ -139,8 +131,6 @@
 ;; Use C-i as my personal prefix command
 (global-set-key (kbd "H-a") 'beginning-of-line)
 (global-set-key (kbd "H-e") 'end-of-line)
-
-(global-set-key (kbd "C-=") 'insert-random-return)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
 (global-set-key (kbd "<s-S-return>") 'eval-buffer)

@@ -155,7 +155,7 @@
 
 (use-package etags-select :after (lisp-mode)
   :bind ("H-." . etags-select-find-tag-at-point)
-        ("H-?" . etags-select-find-tag))
+        ("H->" . etags-select-find-tag))
 
 (use-package git-gutter-fringe
   :if window-system
@@ -274,7 +274,8 @@
         (isearch-exit)
         (counsel-git-grep nil input)))
   :bind
-  ([f2]      . counsel-ag)
+  ([f2]      . counsel-git-grep)
+  ("<M-f2>"  . counsel-ag)
   ("<H-tab>" . counsel-git)
   ("M-x"     . counsel-M-x)
   ("C-x C-f" . counsel-find-file)
@@ -284,7 +285,7 @@
   ("s-V"     . counsel-yank-pop)
   ("M-y"     . counsel-yank-pop))
 
-(use-package ivy
+(use-package ivy :after avy
   :config (ivy-mode)
           (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
   :bind ("C-c C-r" . ivy-resume)
@@ -525,13 +526,12 @@
   :bind ([f1] . neotree-toggle)
   ("<S-f1>" . neotree-find))
 
-(with-eval-after-load "esh-opt"
-  (autoload 'epe-theme-dakrone "eshell-prompt-extras")
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'epe-theme-dakrone))
-
 (use-package esh-mode
   :defer t
+  :init (with-eval-after-load "esh-opt"
+          (autoload 'epe-theme-dakrone "eshell-prompt-extras")
+          (setq eshell-highlight-prompt nil
+                eshell-prompt-function 'epe-theme-dakrone))
   :config (bind-keys :map eshell-mode-map
              ("C-r" . counsel-esh-history)))
 
