@@ -296,6 +296,8 @@
   ("M-x"     . counsel-M-x)
   ("C-x C-f" . counsel-find-file)
   ("C-h b"   . counsel-descbinds)
+  ("C-h v"   . counsel-describe-variable)
+  ("C-h f"   . counsel-describe-function)
   ("s-V"     . counsel-yank-pop)
   ("M-y"     . counsel-yank-pop))
 
