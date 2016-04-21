@@ -161,23 +161,6 @@
   :if window-system
   :config (global-git-gutter-mode))
 
-(use-package slack
-  :commands (slack-start)
-  :config
-  (require 'slack-auth "~/.slack-auth.el")
-  (setq slack-enable-emoji t) ;; if you want to enable emoji, default nil
-  (setq slack-client-id     (plist-get slack-auth :client-id))
-  (setq slack-client-secret (plist-get slack-auth :client-secret))
-  (setq slack-token         (plist-get slack-auth :token))
-  (setq slack-user-name "domtronn")
-  (add-hook 'slack-mode-hook (lambda () (ac-emoji-setup)
-                                           (ac-lambda 'ac-source-emoji)))
-  :bind ("C-c C-s C-s" . slack-start)
-        ("C-c C-s C-x" . slack-ws-close)
-        ("C-c C-s C-i" . slack-im-select)
-        ("C-c C-s C-c" . slack-channel-select)
-        ("M-@" . slack-message-embed-mention))
-
 (use-package image+ :after 'image-mode)
 (use-package dired+
   :after 'dired
