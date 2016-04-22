@@ -231,9 +231,9 @@
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
-    ("ansi-term" "*ansi-term*"
+    ("eshell" "*eshell*"
      (lambda nil
-       (ansi-term shell-pop-term-shell)))))
+       (eshell shell-pop-term-shell)))))
  '(shell-pop-term-shell "/bin/bash")
  '(shell-pop-window-position "bottom")
  '(shell-pop-window-size 40)
@@ -309,6 +309,10 @@
  '(helm-swoop-target-word-face ((t (:background "#C678DD" :foreground "#282C34"))))
  '(hs-face ((t (:distant-foreground "black"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
+ '(markdown-header-face ((t (:inherit default :weight bold))))
+ '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
+ '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
+ '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
  '(popup-face ((t (:background "#2B3B40" :foreground "#FFEB95"))))
  '(popup-menu-selection-face ((t (:background "#335D7F" :foreground "#FFEB95"))))
  '(popup-scroll-bar-foreground-face ((t (:background "#232A2F"))))
