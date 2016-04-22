@@ -32,7 +32,7 @@
  '(compilation-message-face (quote (quote default)))
  '(custom-safe-themes
    (quote
-    ("99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "9baea9c4e3e3c6f38a861454fe566432e2d1c02bc1fa7cea9b9a11d7081f0819" "708df3cbb25425ccbf077a6e6f014dc3588faba968c90b74097d11177b711ad1" "b391fa6fc0967eb5980b203c27f5a98e9efc5296cddb92e232e17e592d8231e2" "98a619757483dc6614c266107ab6b19d315f93267e535ec89b7af3d62fb83cad" "dc54983ec5476b6187e592af57c093a42790f9d8071d9a0163ff4ff3fbea2189" "ff52e9e329c5a66eae3570e3f17288d0a9f96403ce1ac7cbca5a193ebc500936" "d9b0d5c7077ddad798e9749d0629e86b925c2e146641b24130edd8f82cd0cf5d" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "ac194ceaf2a741572f99274e22c96c953f27de11ca4944c05f4e3252937c12a0" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "0107651d44bfacc9ee4d725fdba9a617273ef0569bffc8f07e7212d39d1bf6ec" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "419637b7a8c9cb43f273980f0c9879c0cbadace6b38efac0281e031772c84eb2" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "c46068478d29787a89c3930841e8de94d59cd6a573e4d479d71e78a3f41c6ae3" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+    ("c806912d706db590cde0483f0ec90db69bc5ce5da1d8846462d7c20aecb3dcda" "9f3dd1d7b46e99b94bb53506c44b651c811b3552100898842bdd22ce63ab8b55" "d09467d742f713443c7699a546c0300db1a75fed347e09e3f178ab2f3aa2c617" "d79ece4768dfc4bab488475b85c2a8748dcdc3690e11a922f6be5e526a20b485" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "9baea9c4e3e3c6f38a861454fe566432e2d1c02bc1fa7cea9b9a11d7081f0819" "708df3cbb25425ccbf077a6e6f014dc3588faba968c90b74097d11177b711ad1" "b391fa6fc0967eb5980b203c27f5a98e9efc5296cddb92e232e17e592d8231e2" "98a619757483dc6614c266107ab6b19d315f93267e535ec89b7af3d62fb83cad" "dc54983ec5476b6187e592af57c093a42790f9d8071d9a0163ff4ff3fbea2189" "ff52e9e329c5a66eae3570e3f17288d0a9f96403ce1ac7cbca5a193ebc500936" "d9b0d5c7077ddad798e9749d0629e86b925c2e146641b24130edd8f82cd0cf5d" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "ac194ceaf2a741572f99274e22c96c953f27de11ca4944c05f4e3252937c12a0" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "0107651d44bfacc9ee4d725fdba9a617273ef0569bffc8f07e7212d39d1bf6ec" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "419637b7a8c9cb43f273980f0c9879c0cbadace6b38efac0281e031772c84eb2" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "c46068478d29787a89c3930841e8de94d59cd6a573e4d479d71e78a3f41c6ae3" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
@@ -123,7 +123,7 @@
  '(jpop-completion-func (quote car))
  '(jpop-filter-regexps
    (quote
-    ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "\\/node_modules\\/*" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
+    ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
  '(js-indent-level 2 t)
  '(js2-basic-offset 2)
@@ -210,6 +210,8 @@
      ("*run-current-file output*" :regexp nil :position bottom :noselect t :dedicated t :tail t)
      ("*Ido Completions*" :position bottom :noselect t)
      ("*Completions*" :position bottom :noselect t))))
+ '(pos-tip-background-color "#36473A")
+ '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-color-alist (quote ((powerline-color1 1) (powerline-color2 1))) t)
  '(powerline-color0 "#282828")
  '(powerline-color1 "#3C3C3C" t)

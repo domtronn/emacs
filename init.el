@@ -171,6 +171,10 @@
 (use-package git-timemachine :bind ("C-x v t" . git-timemachine))
 (use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
 
+(use-package zoom-window
+  :config (setq zoom-window-mode-line-color "#d35400")
+  :bind ("C-x C-z" . zoom-window-zoom))
+
 (use-package nameless
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
