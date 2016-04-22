@@ -273,21 +273,23 @@
                    (regexp-quote isearch-string))))
         (isearch-exit)
         (counsel-git-grep nil input)))
-  :bind
-  ([f2]      . counsel-git-grep)
-  ("<M-f2>"  . counsel-ag)
-  ("<H-tab>" . counsel-git)
-  ("M-x"     . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
-  ("C-h b"   . counsel-descbinds)
-  ("C-h v"   . counsel-describe-variable)
-  ("C-h f"   . counsel-describe-function)
-  ("s-V"     . counsel-yank-pop)
-  ("M-y"     . counsel-yank-pop))
+  :bind ([f2]      . counsel-git-grep)
+        ("<M-f2>"  . counsel-ag)
+        ("<H-tab>" . counsel-git)
+        ("M-x"     . counsel-M-x)
+        ("C-x C-f" . counsel-find-file)
+        ("C-h b"   . counsel-descbinds)
+        ("C-h v"   . counsel-describe-variable)
+        ("C-h f"   . counsel-describe-function)
+        ("s-V"     . counsel-yank-pop)
+        ("M-y"     . counsel-yank-pop))
 
 (use-package ivy :after avy
-  :config (ivy-mode)
-          (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  :config
+  (ivy-mode)
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (bind-keys :map ivy-mode-map
+             ("C-S-j" . ivy-immediate-done))
   :bind ("C-c C-r" . ivy-resume)
         ("M-o"     . swiper))
 
