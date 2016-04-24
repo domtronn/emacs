@@ -33,10 +33,10 @@
 (defun markdown-style-themes (&rest args)
   (let ((class '((class color) (min-colors 89))))
     (custom-set-faces
-     '(markdown-header-face ((t (:inherit default :weight bold))))
-     '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
-     '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
-     '(markdown-header-face-3 ((t (:inherit default :height 1.2)))))))
+     '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold))))
+     '(markdown-header-face-1 ((t (:inherit font-lock-function-name-face :weight bold :height 1.8))))
+     '(markdown-header-face-2 ((t (:inherit font-lock-function-name-face :weight bold :height 1.4))))
+     '(markdown-header-face-3 ((t (:inherit font-lock-function-name-face :weight bold :height 1.2)))))))
 
 (advice-add 'load-theme :around 'disable-themes)
 (advice-add 'load-theme :after 'markdown-style-themes)
