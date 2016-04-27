@@ -717,56 +717,6 @@
                      ("C-c e" . magit-vc-ediff)
                      ("C-<tab>" . jpop-find-file)))
 
-(add-hook 'magit-mode-hook 'image-minor-mode)
-
-;; Load stuff to do with grep initially
-(eval-after-load "grep" '(grep-compute-defaults))
-
-;; change vc-diff to use vc-ediff
-(setq ediff-split-window-function (quote split-window-horizontally))
-(setq ediff-keep-variants nil)
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
-(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
-(add-hook 'ediff-quit-hook 'my-ediff-qh)
-
-(add-hook 'ediff-startup-hook 'ediff-swap-buffers)
-
-(add-hook 'vc-annotate-mode-hook 'sticky-window-delete-other-windows)
-(add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
-(add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
-
-;; Startup variables
-(setq shift-select-mode t)                  ; Allow for shift selection mode
-(setq inhibit-splash-screen t)              ; disable splash screen
-(setq make-backup-files nil)                ; don't make backup files
-(setq create-lockfiles nil)                 ; don't make lock files
-(setq auto-save-default nil)                ; don't autosave
-(setq visible-bell nil)                     ; Disbales beep and use visible bell
-(setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
-
-;; Set mac modifiers to what I'm used to
-(setq mac-function-modifier 'hyper)
-(setq mac-command-modifier 'super)
-(setq mac-option-modifier 'meta)
-
-(delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
-(fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
-
-(setq frame-title-format "Who's hacking %b?")
-(setq-default cursor-type 'bar)             ; Change cursor to bar
-(setq-default tab-width 2)
-(setq js-indent-level 2)
-
-;; Get rid of stupid menu bar and Tool Bar..
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-
-(show-paren-mode t)   ; Show paranthesis matching
-
-;; Global Mode Stuff
-(global-linum-mode 1) ; enable line numbers
 
 (use-package yahoo-weather
   :defer t
@@ -846,6 +796,57 @@
   :bind ("<s-f8>" . set-frame-title-yo-momma))
 (add-hook 'after-init-hook 'set-frame-title-yo-momma)
 
+(add-hook 'magit-mode-hook 'image-minor-mode)
+
+;; Load stuff to do with grep initially
+(eval-after-load "grep" '(grep-compute-defaults))
+
+;; change vc-diff to use vc-ediff
+(setq ediff-split-window-function (quote split-window-horizontally))
+(setq ediff-keep-variants nil)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
+(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
+(add-hook 'ediff-quit-hook 'my-ediff-qh)
+
+(add-hook 'ediff-startup-hook 'ediff-swap-buffers)
+
+(add-hook 'vc-annotate-mode-hook 'sticky-window-delete-other-windows)
+(add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
+(add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
+
+;; Startup variables
+(setq shift-select-mode t)                  ; Allow for shift selection mode
+(setq inhibit-splash-screen t)              ; disable splash screen
+(setq make-backup-files nil)                ; don't make backup files
+(setq create-lockfiles nil)                 ; don't make lock files
+(setq auto-save-default nil)                ; don't autosave
+(setq visible-bell nil)                     ; Disbales beep and use visible bell
+(setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
+
+;; Set mac modifiers to what I'm used to
+(setq mac-function-modifier 'hyper)
+(setq mac-command-modifier 'super)
+(setq mac-option-modifier 'meta)
+
+(delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
+(fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
+
+(setq frame-title-format "Who's hacking %b?")
+(setq-default cursor-type 'bar)             ; Change cursor to bar
+(setq-default tab-width 2)
+(setq js-indent-level 2)
+
+;; Get rid of stupid menu bar and Tool Bar..
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+(show-paren-mode t)   ; Show paranthesis matching
+
+;; Global Mode Stuff
+(global-linum-mode 1) ; enable line numbers
+
 ;;------------------
 ;; My Load Files
 ;;------------------
@@ -866,8 +867,10 @@
   (server-start)
   (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
 
-(benchmark-init/show-durations-tree)
+(unless window-system
+  (load-theme 'spacemacs-dark))
 
+(benchmark-init/show-durations-tree)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
