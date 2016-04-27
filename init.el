@@ -50,7 +50,8 @@
     (local-set-key "p" 'jpop-change)
     (local-set-key "P" 'jpop-change-and-find-file)))
 
-(require 'use-package)
+(eval-when-compile (require 'use-package))
+(require 'bind-key)
 
 (use-package functions :load-path "init")
 
@@ -217,10 +218,10 @@
 
   :bind ("C-c C-w" . wlf:layout))
 
-
 (use-package flycheck-status-emoji
   :load-path "eslip"
   :after flycheck)
+
 (use-package flycheck
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
@@ -267,8 +268,14 @@
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace))
 
+(use-package embrace
+  :bind
+  ("S-SPC" . embrace-add)
+  ("H-SPC" . embrace-delete))
+
 (use-package counsel :after ivy
   :config
+  (defalias 'counsel-use-package 'counsel-load-library)
   (defun counsel-git-grep-from-isearch ()
     "Invoke `counsel-git-grep' from isearch."
     (interactive)
@@ -279,6 +286,7 @@
         (counsel-git-grep nil input)))
   :bind ([f2]      . counsel-git-grep)
         ("<M-f2>"  . counsel-ag)
+        ("<s-f1>"  . counsel-imenu)
         ("<H-tab>" . counsel-git)
         ("M-x"     . counsel-M-x)
         ("C-x C-f" . counsel-find-file)
@@ -292,16 +300,21 @@
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-  (bind-keys :map ivy-mode-map
+  (ivy-set-actions
+   t
+   '(("y" kill-new "yank")
+     ("p" other-window-everything "other window")))
+  (bind-keys :map ivy-minibuffer-map
+             ("C-d" . ivy-backward-delete-char)
              ("C-S-j" . ivy-immediate-done))
   :bind ("C-c C-r" . ivy-resume)
-        ("M-o"     . swiper))
+        ("C-;"     . swiper))
 
 (use-package isearch
   :bind ("H-s" . isearch-forward-symbol-at-point)
         ("C-s" . isearch-forward-regexp)
         ("C-r" . isearch-backward-regexp)
-
+  :commands swiper-from-isearch
   :init (bind-keys :map isearch-mode-map
                    ("C-;" . swiper-from-isearch)
                    ("C-'" . avy-isearch)
@@ -315,11 +328,10 @@
 
 (use-package avy
   :bind
-  ("s-g" . avy-goto-line)
-  ("C-c a" . avy-goto-char)
-  ("C-c SPC" . avy-goto-char)
-  ("C-c C-a" . avy-goto-word-1)
-  ("C-'" . avy-goto-word-1)
+  ("H-\\" . avy-goto-line)
+  ("H-\"" . avy-goto-char)
+  ("H-'" . avy-goto-word-1)
+  ("H-;" . avy-goto-word-0)
   :config
   (avy-setup-default)
   (bind-keys ("M-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
@@ -735,12 +747,11 @@
   :if window-system
   :load-path "elisp/mode-icons")
 
-(add-hook 'after-init-hook 'update-powerline)
 (use-package powerline
   :if window-system
   :load-path "elisp"
-  :config
-  (advice-add 'load-theme :after 'update-powerline))
+  :init   (add-hook 'after-init-hook 'update-powerline)
+  :config (advice-add 'load-theme :after 'update-powerline))
 
 (use-package boop :load-path "elisp/boop"
   :defer t
@@ -781,8 +792,7 @@
 
 (use-package request
   :defer t
-  :init
-  (use-package json)
+  :init (use-package json)
   :config
   (defun set-frame-title-yo-momma ()
     (interactive)
