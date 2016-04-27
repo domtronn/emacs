@@ -1,0 +1,1 @@
+(define-package "yahoo-weather" "20160426.529" "Displays weather information in mode-line" '((emacs "24")) :url "https://github.com/lujun9972/yahoo-weather-mode" :keywords '("weather" "mode-line"))
