@@ -125,7 +125,7 @@
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2 t)
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)
  '(js2-global-externs
@@ -311,6 +311,7 @@
  '(helm-swoop-target-word-face ((t (:background "#C678DD" :foreground "#282C34"))))
  '(hs-face ((t (:distant-foreground "black"))))
  '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
+ '(js2-object-property ((t (:inherit default :weight bold))))
  '(markdown-header-face ((t (:inherit default :weight bold))))
  '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
