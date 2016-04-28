@@ -753,6 +753,11 @@ When given a PFX it will ask for a search term before searching."
       (error "Could not find at symbol at point"))
     (browse-url (format "http://devdocs.io/#q=%s" query))))
 
+(defun other-window-everything (thing)
+  (cond
+   ((get-buffer thing) (switch-to-buffer-other-window thing))
+   (t (find-file-other-window thing))))
+
 (defun repl-make (name exec)
   (ansi-color-for-comint-mode-on)
   (add-to-list
