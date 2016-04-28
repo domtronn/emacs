@@ -270,8 +270,8 @@
 
 (use-package embrace
   :bind
-  ("S-SPC" . embrace-add)
-  ("H-SPC" . embrace-delete))
+  ("H-SPC" . embrace-add)
+  ("H-S-SPC" . embrace-delete))
 
 (use-package counsel :after ivy
   :config
@@ -300,6 +300,7 @@
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (setq ivy-display-style nil)
   (ivy-set-actions
    t
    '(("y" kill-new "yank")
