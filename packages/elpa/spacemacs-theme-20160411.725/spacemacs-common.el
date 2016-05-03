@@ -472,8 +472,8 @@
      `(markdown-header-face-6 ((,class (:foreground ,head2))))
 
 ;;;;; mode-line
-     `(mode-line           ((,class (:foreground ,base :background ,act1 :box (:color ,border :line-width 1)))))
-     `(mode-line-inactive  ((,class (:foreground ,base :background ,bg1  :box (:color ,border :line-width 1)))))
+     `(mode-line           ((,class (:foreground ,base :background ,act1))))
+     `(mode-line-inactive  ((,class (:foreground ,base :background ,bg1 ))))
      `(mode-line-buffer-id ((,class (:inherit bold :foreground ,func))))
 
 ;;;;; neotree
