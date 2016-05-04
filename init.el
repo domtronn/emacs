@@ -458,6 +458,10 @@
                      (let ((file (file-name-sans-extension buffer-file-name)))
                        (format "sass '%s':%s.css" buffer-file-name file)))))
 
+(add-hook 'js2-mode-hook
+          (lambda () (set (make-local-variable 'compile-command)
+                     (format "esformatter -i %s" buffer-file-name))))
+
 (use-package json-snatcher :after json)
 (use-package json
   :mode ("\\.json" . json-mode)
