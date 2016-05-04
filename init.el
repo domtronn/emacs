@@ -545,6 +545,12 @@
   :bind ([f1] . neotree-toggle)
   ("<S-f1>" . neotree-find))
 
+(use-package eshell
+  :defer t
+  :config
+  (defun eshell/e (f) (find-file f))
+  (defun eshell/ee (f) (find-file-other-window f)))
+
 (use-package esh-mode
   :defer t
   :init (with-eval-after-load "esh-opt"
