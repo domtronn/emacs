@@ -34,6 +34,7 @@
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 
 (global-set-key (kbd "SPC") 'wrap-space-or-space)
+(global-set-key (kbd "§") 'auto-complete)
 
 (global-set-key (kbd "C-x c") 'compile)
 (global-set-key (kbd "C-x |") 'toggle-window-split)
