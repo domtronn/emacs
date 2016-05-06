@@ -59,9 +59,11 @@
     (jazz          (:primary ("#151515" "#101010" "#7F6A4F")
                     :secondary ("#151515" "#101010" "#7F6A4F")))
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
-                              :secondary ("#292B2E" "#292B2E" "#292B2E")))
+                     :secondary ("#292B2E" "#292B2E" "#292B2E")))
     (gruvbox       (:primary ("#3c3836" "#282828" "#f4e8ba")
-                             :secondary ("#504945" "#282828" "#a89984")))
+                    :secondary ("#504945" "#282828" "#a89984")))
+    (monokai       (:primary ("#363731" "#272822" "#E5DDB7")
+                    :secondary ("#272822" "#272822" "#75715E")))
     (wombat        (:primary ("#444444" "#343434" "#CCC9C0")
                     :secondary ("#444444" "#343434" "#99968b")))))
 
