@@ -55,6 +55,8 @@
 
 (use-package functions :load-path "init")
 
+;; !!! - For package updating comment this region
+
 (use-package linum-off)
 
 (use-package drag-stuff
@@ -836,6 +838,8 @@
 (add-hook 'vc-annotate-mode-hook 'sticky-window-delete-other-windows)
 (add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
 (add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
+
+;; !!! - Comment up to this location for updating
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
