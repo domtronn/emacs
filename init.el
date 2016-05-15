@@ -272,8 +272,11 @@
         ("s-r" . vr/query-replace))
 
 (use-package embrace
+  :init
+  (use-package hydra-embrace
+    :load-path "elisp/hydra-embrace")
   :bind
-  ("H-SPC" . embrace-add)
+  ("H-SPC" . hydra-embrace/body)
   ("H-S-SPC" . embrace-delete))
 
 (use-package counsel :after ivy
