@@ -666,6 +666,7 @@
   (bind-keys :map ac-complete-mode-map
              ([tab] . ac-expand-common)
              ([return] . ac-complete)
+             ("C-j" . ac-complete)
              ("C-s" . ac-isearch)
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
