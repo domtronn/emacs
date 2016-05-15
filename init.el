@@ -45,7 +45,7 @@
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
-    (local-set-key "t" 'load-theme)
+    (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'set-font)
     (local-set-key "p" 'jpop-change)
     (local-set-key "P" 'jpop-change-and-find-file)))
