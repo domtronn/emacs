@@ -35,6 +35,10 @@ xkcd
 *.wav
 *.m4a
 
+# Authentication files
+.jenkins-auth.el
+.docker-auth.el
+
 # Emacs Directories form Packages #
 ###################################
 /var/
