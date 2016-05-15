@@ -277,6 +277,7 @@
   ("H-S-SPC" . embrace-delete))
 
 (use-package counsel :after ivy
+  :defer 5
   :config
   (defalias 'counsel-use-package 'counsel-load-library)
   (defun counsel-git-grep-from-isearch ()
