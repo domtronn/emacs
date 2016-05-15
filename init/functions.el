@@ -589,8 +589,8 @@ version 2016-01-28"
           (shell-command-to-string "osascript -e \"if app \\\"iTunes\\\" is running then tell app \\\"iTunes\\\" to get player state\""))))
     (when (not playing)
       (if full
-          (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
-        (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/youcanneverleave.wav && exit 0\\\"\""))))
+          (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
+        (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/youcanneverleave.wav && exit 0\\\"\""))))
   (restart-emacs))
 
 (defun dired-mark-duplicate-dirs ()
