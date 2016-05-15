@@ -274,7 +274,7 @@
 (use-package embrace
   :init
   (use-package hydra-embrace
-    :load-path "elisp/hydra-embrace")
+    :load-path "elisp/hydra/embrace")
   :bind
   ("H-SPC" . hydra-embrace/body)
   ("H-S-SPC" . embrace-delete))
