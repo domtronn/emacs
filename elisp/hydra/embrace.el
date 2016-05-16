@@ -7,8 +7,8 @@
   "
 ^Mark^                     ^Pairs^             ^Quotes^
 ^^^^^^-----------------------^-------------------^--------^---------------------------
-_w_: word    _._: sentence   _P_: Inside Pairs   _Q_: Inside Quotes 
-_s_: symbol  _h_: paragraph  _p_: Outside Pairs  _q_: Outside Quotes
+_w_: word    _._: sentence   _P_: Inside Pairs   _O_: Inside Quotes 
+_s_: symbol  _h_: paragraph  _p_: Outside Pairs  _o_: Outside Quotes
 _d_: defun
 
 "
@@ -17,10 +17,10 @@ _d_: defun
   ("d" (hydra-embrace/add 'er/mark-defun) :exit t :color teal)
   ("P" (hydra-embrace/add 'er/mark-inside-pairs) :exit t :color teal)
   ("p" (hydra-embrace/add 'er/mark-outside-pairs) :exit t :color teal)
-  ("Q" (hydra-embrace/add 'er/mark-inside-quotes) :exit t :color teal)
-  ("q" (hydra-embrace/add 'er/mark-outside-quotes) :exit t :color teal)
-  ("." (hydra-embrace/add 'er/mark-sentence) :exit t :color teal)
-  ("h" (hydra-embrace/add 'er/mark-paragraph) :exit t :color teal)
+  ("O" (hydra-embrace/add 'er/mark-inside-quotes) :exit t :color teal)
+  ("o" (hydra-embrace/add 'er/mark-outside-quotes) :exit t :color teal)
+  ("." (hydra-embrace/add 'er/mark-text-sentence) :exit t :color teal)
+  ("h" (hydra-embrace/add 'er/mark-text-paragraph) :exit t :color teal)
   ("q" nil "quit" :color blue))
 
 (provide 'hydra-embrace)

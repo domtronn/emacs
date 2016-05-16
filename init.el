@@ -291,6 +291,11 @@
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace))
 
+(use-package hydra-smart-copy
+  :bind ("M-W" . hydra-smart-copy/body)
+  :commands (hydra-smart-copy/body)
+  :load-path "elisp/hydra/smart-copy")
+
 (use-package embrace
   :init
   (use-package hydra-embrace
