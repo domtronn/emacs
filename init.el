@@ -47,6 +47,8 @@
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'set-font)
+    (local-set-key "di" 'docker-images)
+    (local-set-key "dc" 'docker-containers)
     (local-set-key "p" 'jpop-change)
     (local-set-key "P" 'jpop-change-and-find-file)))
 
@@ -184,6 +186,15 @@
   :config (setq zoom-window-mode-line-color "#d35400")
   :bind ("C-x C-z" . zoom-window-zoom))
 
+(use-package dockerfile-mode :mode ("^Dockerfile$" . dockerfile-mode))
+(use-package docker
+    :commands (docker-images docker-containers docker-volumes docker-networks docker-machines)
+  :init
+  (require 'docker-auth (concat base-path ".docker-auth.el"))
+  (setenv "DOCKER_TLS_VERIFY" (plist-get docker-auth :tlsverify))
+  (setenv "DOCKER_HOST" (plist-get docker-auth :host))
+  (setenv "DOCKER_CERT_PATH" (plist-get docker-auth :certpath))
+  (setenv "DOCKER_MACHINE_NAME" (plist-get docker-auth :machinename)))
 (use-package nameless
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
