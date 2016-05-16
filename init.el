@@ -179,6 +179,10 @@
              ("C-p" . previous-line)
              ("q" . kill-all-dired-buffers)))
 
+(use-package ranger
+  :defer t
+  :bind ("<s-f3>" . ranger))
+
 (use-package git-timemachine :bind ("C-x v t" . git-timemachine))
 (use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
 
