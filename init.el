@@ -139,11 +139,16 @@
 
 (use-package org-mode
   :mode ("\\.org" . org-mode)
+  :bind ("C-c c" . org-capture)
   :init
   (add-hook 'org-mode-hook 'darkroom-mode)
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+           "* TODO %?\n %t")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "** %U - %^{Heading}  :LOG:\n%?")))
   :config
-  (org-beamer-mode)
-  (bind-keys :map org-mode-map ("s-p" . fill-paragraph)))
+  (org-beamer-mode))
 
 (use-package doc-view
   :mode ("\\.pdf" . doc-view-mode)
