@@ -293,13 +293,11 @@
 
 (use-package hydra-smart-copy
   :bind ("M-W" . hydra-smart-copy/body)
-  :commands (hydra-smart-copy/body)
-  :load-path "elisp/hydra/smart-copy")
+  :load-path "elisp/hydra")
 
 (use-package embrace
-  :init
-  (use-package hydra-embrace
-    :load-path "elisp/hydra/embrace")
+  :init (use-package hydra-embrace
+          :load-path "elisp/hydra")
   :bind
   ("H-SPC" . hydra-embrace/body)
   ("H-S-SPC" . embrace-delete))
