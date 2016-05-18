@@ -335,6 +335,15 @@
                     ("Cutive Mono" normal)
                     ("Anonymous Pro" normal)))
 
+(defun counsel-set-font ()
+  "Forward to `set-font'.
+Usable with `ivy-resume', `ivy-next-line-and-call' and
+`ivy-previous-line-and-call'."
+  (interactive)
+  (ivy-read "Font: " (mapcar (lambda (n) (cons (car n) n)) font-list)
+            :action #'set-font
+            :caller 'set-font))
+
 (defun set-font (&optional f)
   (interactive)
   (let* ((font (or f (assoc (completing-read "Font: " font-list nil nil) font-list)))
@@ -350,35 +359,35 @@
 (add-hook 'context-coloring-mode-hook 'context-coloring)
 (add-hook 'context-coloring-mode-hook '(lambda () (prettify-symbols-mode 1) (context-coloring-colorize)))
 (defun set-context-coloring (&optional _0 _1 _2 _3 _4 _5 _6 _7 _8)
-	(let ((theme (car custom-enabled-themes)))
-		(mapc (lambda (n)
-						(custom-theme-set-faces
-						 theme
-						 `(,(intern (format "context-coloring-level-%s-face" n)) ((t :foreground ,(symbol-value (intern (format "_%s" n))))))))
-					(number-sequence 0 8)) t))
+  (let ((theme (car custom-enabled-themes)))
+    (mapc (lambda (n)
+            (custom-theme-set-faces
+             theme
+             `(,(intern (format "context-coloring-level-%s-face" n)) ((t :foreground ,(symbol-value (intern (format "_%s" n))))))))
+          (number-sequence 0 8)) t))
 
 (defun context-coloring (&optional override)
-	"Load context colouring for different themes."
-	(interactive)
-	(let* ((theme (or override (car custom-enabled-themes))))
-		(cond ((or (eq theme 'monokai) (eq theme 'wombat))
-					 (set-context-coloring "#f8f8f2" "#66d9ef" "#a1efe4" "#a6e22e" "#e6db74" "#fd971f" "#f92672" "#fd5ff0" "#ae81ff"))
-					((or (eq theme 'firecode) (eq theme 'ujelly))
-					 (set-context-coloring "#f8f8f2" "#ae81ff" "#f63249" "#fd971f" "#e6db74" "#a6e22e" "#a1efe4" "#66d9ef"))
-					((or (eq theme 'ample) (eq theme 'ample-flat) (eq theme 'arjen-grey))
-					 (set-context-coloring "#bdbdb3" "#baba36" "#6aaf50" "#5180b3" "#ab75c3" "#cd7542" "#df9522" "#454545"))
-					((or (eq theme 'atom-one-dark) (eq theme 'tsdh-dark) (eq theme 'atom-one-dark))
-					 (set-context-coloring "#bdbdb3" "#BE5046" "#df9522" "#cd7542" "#ab75c3" "#5180b3" "#6aaf50" "#baba36" "#454545"))
-					((or (eq theme 'aurora) (eq theme 'gotham) (eq theme 'misterioso))
-					 (set-context-coloring "#f8f8f2" "#268bd2" "#2aa198" "#74CBC4" "#FFEB95" "#F9D330" "#cb4b16" "#dc322f" "#d33682"))
-					((or (eq theme 'spacemacs-dark))
-					 (set-context-coloring "#ffffff" "#89aaeb" "#c189eb" "#bf616a" "#dca432" "#ebcb8b" "#b4eb89" "#89ebca"))
-					((or (eq theme 'zenburn) (eq theme 'darkmine))
-					 (set-context-coloring "#dcdccc" "#93e0e3" "#bfebbf" "#f0dfaf" "#dfaf8f" "#cc9393" "#dc8cc3" "#94bff3" "#9fc59f"))
-					((or (eq theme 'tango-dark))
-					 (set-context-coloring "#c6a57b" "#346604" "#204a87" "#5c3566" "#a40000" "#b35000" "#c4a000" "#8ae234" "#8cc4ff"))
-					((or (eq theme 'gruvbox))
-					 (set-context-coloring "#fdf4c1" "#fb4934" "#fe8019" "#fabd2f" "#b8bb26" "#8ec07c" "#83a598" "#458588" "#b16286")))))
+  "Load context colouring for different themes."
+  (interactive)
+  (let* ((theme (or override (car custom-enabled-themes))))
+    (cond ((or (eq theme 'monokai) (eq theme 'wombat))
+           (set-context-coloring "#f8f8f2" "#66d9ef" "#a1efe4" "#a6e22e" "#e6db74" "#fd971f" "#f92672" "#fd5ff0" "#ae81ff"))
+          ((or (eq theme 'firecode) (eq theme 'ujelly))
+           (set-context-coloring "#f8f8f2" "#ae81ff" "#f63249" "#fd971f" "#e6db74" "#a6e22e" "#a1efe4" "#66d9ef"))
+          ((or (eq theme 'ample) (eq theme 'ample-flat) (eq theme 'arjen-grey))
+           (set-context-coloring "#bdbdb3" "#baba36" "#6aaf50" "#5180b3" "#ab75c3" "#cd7542" "#df9522" "#454545"))
+          ((or (eq theme 'atom-one-dark) (eq theme 'tsdh-dark) (eq theme 'atom-one-dark))
+           (set-context-coloring "#bdbdb3" "#BE5046" "#df9522" "#cd7542" "#ab75c3" "#5180b3" "#6aaf50" "#baba36" "#454545"))
+          ((or (eq theme 'aurora) (eq theme 'gotham) (eq theme 'misterioso))
+           (set-context-coloring "#f8f8f2" "#268bd2" "#2aa198" "#74CBC4" "#FFEB95" "#F9D330" "#cb4b16" "#dc322f" "#d33682"))
+          ((or (eq theme 'spacemacs-dark))
+           (set-context-coloring "#ffffff" "#89aaeb" "#c189eb" "#bf616a" "#dca432" "#ebcb8b" "#b4eb89" "#89ebca"))
+          ((or (eq theme 'zenburn) (eq theme 'darkmine))
+           (set-context-coloring "#dcdccc" "#93e0e3" "#bfebbf" "#f0dfaf" "#dfaf8f" "#cc9393" "#dc8cc3" "#94bff3" "#9fc59f"))
+          ((or (eq theme 'tango-dark))
+           (set-context-coloring "#c6a57b" "#346604" "#204a87" "#5c3566" "#a40000" "#b35000" "#c4a000" "#8ae234" "#8cc4ff"))
+          ((or (eq theme 'gruvbox))
+           (set-context-coloring "#fdf4c1" "#fb4934" "#fe8019" "#fabd2f" "#b8bb26" "#8ec07c" "#83a598" "#458588" "#b16286")))))
 
 (provide 'custom)
 ;; Local Variables:
