@@ -57,7 +57,9 @@
     (misterioso    (:promary ("#455a64" "#2B3B40" "#CDD3D3")
                              :secondary ("#455a64" "#2B3B40" "#CDD3D3")))
     (tango         (:primary ("#babdb6" "#d3d7cf" "#5f615c")
-                    :secondary ("#888a85" "#888a85" "#2e3436")))
+                             :secondary ("#888a85" "#888a85" "#2e3436")))
+    (tango-dark    (:primary ("#212526" "#373C3F" "#BF984B")
+                    :secondary ("#212526" "#212526" "#ffcc66")))
     (jazz          (:primary ("#151515" "#101010" "#7F6A4F")
                     :secondary ("#151515" "#101010" "#7F6A4F")))
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
@@ -71,6 +73,7 @@
 
 (defun update-powerline (&rest args)
   "Update the extra powerline colours based on a mapping to theme."
+  (interactive)
   (let* ((theme (car custom-enabled-themes))
          (primary-alist (plist-get (cadr (assoc theme theme-powerline-color-alist)) :primary))
          (secondary-alist (plist-get (cadr (assoc theme theme-powerline-color-alist)) :secondary)))
