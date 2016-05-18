@@ -23,14 +23,6 @@
 
 ;;; Code:
 
-(defun use-tabs ()
-  (interactive)
-  (setq-default indent-tabs-mode t))
-
-(defun use-spaces ()
-  (interactive)
-  (setq-default indent-tabs-mode nil))
-
 ;; --------------------------------------------
 ;; Functions used in compiling latex & xelatex
 ;; --------------------------------------------
@@ -154,64 +146,6 @@
   (interactive)
   (open-current-file))
 
-(defun run-current-file ()
-  "Execute the current file.
-For example, if the current buffer is the file x.py, then it'll call 「python x.py」 in a shell.
-The file can be Emacs Lisp, PHP, Perl, Python, Ruby, JavaScript, Bash, Ocaml, Visual Basic, TeX, Java, Clojure.
-File suffix is used to determine what program to run.
-
-If the file is modified or not saved, save it automatically before run.
-
-URL `http://ergoemacs.org/emacs/elisp_run_current_file.html'
-version 2016-01-28"
-  (interactive)
-  (let (
-         (suffix-map
-          ;; (‹extension› . ‹shell program name›)
-          `(
-            ("php" . "php")
-            ("pl" . "perl")
-            ("py" . "python")
-            ("py3" . ,(if (string-equal system-type "windows-nt") "c:/Python32/python.exe" "python3"))
-            ("rb" . "ruby")
-            ("go" . "go run")
-            ("js" . "node") ; node.js
-            ("sh" . "bash")
-            ("rkt" . "racket")
-            ("ml" . "ocaml")
-            ("vbs" . "cscript")
-            ("tex" . "pdflatex")
-            ("latex" . "pdflatex")
-            ("java" . "javac")
-            ;; ("pov" . "/usr/local/bin/povray +R2 +A0.1 +J1.2 +Am2 +Q9 +H480 +W640")
-            ))
-
-         fname
-         fSuffix
-         prog-name
-         cmd-str)
-
-    (when (null (buffer-file-name)) (save-buffer))
-    (when (buffer-modified-p) (save-buffer))
-
-    (setq fname (buffer-file-name))
-    (setq fSuffix (file-name-extension fname))
-    (setq prog-name (cdr (assoc fSuffix suffix-map)))
-    (setq cmd-str (concat prog-name " \""   fname "\""))
-
-    (cond
-     ((string-equal fSuffix "el") (load fname))
-     ((string-equal fSuffix "java")
-      (progn
-        (shell-command cmd-str "*run-current-file output*" )
-        (shell-command
-         (format "java %s" (file-name-sans-extension (file-name-nondirectory fname))))))
-     (t (if prog-name
-            (progn
-              (message "Running…")
-              (shell-command cmd-str "*run-current-file output*" ))
-          (message "No recognized program file suffix for this file."))))))
-
 (defun open-current-file ()
   "Open the current file in different things."
   (interactive)
@@ -229,8 +163,7 @@ version 2016-01-28"
 
 (defun buffer-mode (buf)
   "Return the major mode associated with BUF."
-  (with-current-buffer buf
-    major-mode))
+  (with-current-buffer buf major-mode))
 
 (defun isearch-yank-from-start ()
   "Move to beginning of word before yanking word in `isearch-mode`."
@@ -360,17 +293,6 @@ version 2016-01-28"
 ;; ============================================================================
 ;; Copying Things
 ;; ============================================================================
-
-(defun smart-copy ()
-  "Smart copy a thing from a prompt"
-  (interactive)
-  (let ((type (completing-read
-               "Copy: " '("line" "url" "word") nil nil)))
-    (cond ((string-equal type "line") (kill-new (buffer-substring (line-beginning-position) (line-end-position))))
-          ((string-equal type "word") (kill-new (thing-at-point 'symbol)))
-          ((string-equal type "url") (let ((url (browse-url-url-at-point)))
-                                       (kill-new url)
-                                       (link-hint-copy-link))))))
 
 (defun copy-file-name ()
   "Returns a random colour"
