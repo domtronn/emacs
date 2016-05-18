@@ -196,7 +196,7 @@
  '(neo-smart-open t)
  '(neo-theme (quote ascii))
  '(neo-window-width 35)
- '(org-agenda-files nil)
+ '(org-agenda-files (quote ("~/org/tasks.org")))
  '(org-support-shift-select t)
  '(package-user-dir
    (expand-file-name
