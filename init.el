@@ -148,7 +148,7 @@
         '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
            "* TODO %?\n %t")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "** %U - %^{Heading}  :LOG:\n%?")))
+           "** %^{Heading}  :LOG:\n%?")))
   :config
   (org-beamer-mode))
 
