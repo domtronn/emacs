@@ -30,7 +30,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Code:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defconst base-path (file-name-directory load-file-name))
+(when load-file-name
+  (defconst base-path (file-name-directory load-file-name)))
 
 (setq custom-file (concat base-path "init/custom.el"))
 
