@@ -139,6 +139,7 @@
 (global-set-key "\M-[" 'previous-error)
 
 (global-set-key (kbd "s-k") '(lambda () (interactive) (kill-buffer (buffer-name))))
+(global-set-key (kbd "s-K") 'kill-buffer-regexps)
 (global-set-key (kbd "s-u") 'revert-buffer)
 (global-set-key (kbd "s-s") 'save-buffer)
 
