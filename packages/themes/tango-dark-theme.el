@@ -68,7 +68,7 @@
  '(minibuffer-prompt ((((class color) (min-colors 89)) (:foreground "#b4fa70"))))
  '(minimap-active-region-background ((t (:background "gray24"))))
  '(mode-line ((t (:background "#ffcc66" :foreground "#1F1611" :box nil))))
- '(mode-line-inactive ((t (:background "#212526" :foreground "#eeeeec" :box nil))))
+ '(mode-line-inactive ((t (:background "#212526" :foreground "#ffcc66" :box nil))))
  '(mouse-over ((t (:background "gray30"))))
  '(popup-scroll-bar-background-face ((t (:background "#cc6666"))))
  '(popup-scroll-bar-foreground-face ((t (:background "#cc3333"))))
