@@ -21,6 +21,51 @@
                  (:name node :buffer repl-node))))
     (select-window (get-buffer-window current))))
 
+(defun wlf:docker ()
+  (ignore-errors (docker-containers))
+  (ignore-errors (docker-images))
+  (let ((build-buf (get-buffer-create "*docker-build-output*"))
+        (container-buf (get-buffer-create "*docker-containers*"))
+        (image-buf (get-buffer-create "*docker-images*"))
+        (log-buf (get-buffer-create "*docker result*")))
+    (wlf:show (wlf:no-layout
+      '(- (:upper-size-ratio 0.7)
+          (| (:left-size-ratio 0.6)
+             file
+             (- (:upper-size-ration 0.5)
+                log
+                build))
+          (- (:upper-size-ratio 0.5)
+             containers
+             images))
+      '((:name file)
+        (:name log :buffer log-buf)
+        (:name build :buffer build-buf)
+        (:name containers :buffer container-buf)
+        (:name images :buffer image-buf))))))
+
+(defun wlf:ramda-url ()
+  (let ((ip (replace-regexp-in-string "\n$" ""
+             (shell-command-to-string "docker-machine ip default"))))
+    (format "http://%s/docs/ramda" ip)))
+
+(defun wlf:ramda ()
+  (let ((current (current-buffer))
+        (repl-ramda (ramda-repl))
+        (docs-ramda (with-current-buffer (get-buffer-create "*eww*")
+                      (eww (wlf:ramda-url))))
+        (term (or (get-buffer "*ramda-term*")
+                  (quick-term "ramda-term"))))
+    (wlf:show (wlf:no-layout
+               '(| (:left-size-ratio 0.56)
+                   (- (:upper-size-ratio 0.8) js term)
+                   (- (:upper-size-ratio 0.6) repl docs))
+               '((:name js :buffer current)
+                 (:name repl :buffer repl-ramda)
+                 (:name docs :buffer docs-ramda)
+                 (:name term :buffer term))))
+    (select-window (get-buffer-window docs-ramda))))
+
 (defun wlf:ert-layout ()
   (let* ((test-buffer (format "%s-test.el" (file-name-base (buffer-file-name)))))
     (wlf:show (wlf:no-layout
@@ -72,17 +117,21 @@
  ^Layouts^           ^|^ ^Sizing^  ^|^ Splitting
 -------------------^+^---------^+^----------------
  _S_: System         |  ^ ^ _k_ ^ ^  | _d_: Kill
- _T_: Triple Split   |  _h_ ^+^ _l_  | _x_: Remove
- _C_: CodePen        |  ^ ^ _j_ ^ ^  | _-_: Horizontal
- _E_: Ert Runner     |         | _|_: Vertical
- _R_: REPLs
-                         
+ _D_: Docker         |  _h_ ^+^ _l_  | _x_: Remove
+ _T_: Triple Split   |  ^ ^ _j_ ^ ^  | _-_: Horizontal
+ _C_: CodePen        |         | _|_: Vertical
+ _E_: Ert Runner
+ _W_: JavaScript
+ _R_: Ramda
+
 "
   ("S" (wlf:system-layout))
   ("T" (wlf:triple-split-layout))
   ("C" (wlf:codepen-layout))
   ("E" (wlf:ert-layout))
-  ("R" (wlf:javascript-repls))
+  ("W" (wlf:javascript-repls))
+  ("R" (wlf:ramda))
+  ("D" (wlf:docker))
   ("r" (wlf:select-window) "select")
   ("k" (enlarge-window 1))
   ("j" (shrink-window 1))
