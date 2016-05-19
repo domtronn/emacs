@@ -616,17 +616,18 @@
 
 (defun flycheck--guess-checker ()
   "Guess the JS lintrc file in the current project"
-  (unless (buffer-file-name))
-  (let* ((jshintrc-loc (locate-dominating-file (buffer-file-name) flycheck-jshintrc))
-         (jshintrc-depth (dir-depth jshintrc-loc))
-         (eslintrc-loc (locate-dominating-file (buffer-file-name) flycheck-eslintrc))
-         (eslintrc-depth (dir-depth eslintrc-loc)))
-    (cond
-     ((and (not eslintrc-loc) (not jshintrc-loc)) 'javascript-standard)
-     ((and jshintrc-loc (not eslintrc-loc)) 'javascript-jshint)
-     ((and eslintrc-loc (not jshintrc-loc)) 'javascript-eslint)
-     ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
-     (t 'javascript-eslint))))
+  (if (not (buffer-file-name))
+      'javascript-standard
+    (let* ((jshintrc-loc (locate-dominating-file (buffer-file-name) flycheck-jshintrc))
+           (jshintrc-depth (dir-depth jshintrc-loc))
+           (eslintrc-loc (locate-dominating-file (buffer-file-name) flycheck-eslintrc))
+           (eslintrc-depth (dir-depth eslintrc-loc)))
+      (cond
+       ((and (not eslintrc-loc) (not jshintrc-loc)) 'javascript-standard)
+       ((and jshintrc-loc (not eslintrc-loc)) 'javascript-jshint)
+       ((and eslintrc-loc (not jshintrc-loc)) 'javascript-eslint)
+       ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
+       (t 'javascript-eslint)))))
 
 (defun flycheck--eslint-doc ()
   "Open the doc for the rule violation under point"

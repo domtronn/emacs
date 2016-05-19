@@ -419,8 +419,7 @@
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
-            '(lambda () (when (buffer-file-name)
-                     (flycheck-select-checker (flycheck--guess-checker)))))
+            '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (add-hook 'js2-mode-hook
             (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
                       (add-to-list 'ac-sources 'ac-source-requirejs-files)
