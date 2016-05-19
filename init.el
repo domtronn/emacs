@@ -581,7 +581,7 @@
 (use-package eshell
   :defer t
   :config
-  (defun eshell/ansi () (ansi-term))
+  (defun eshell/ansi () (ansi-term "/bin/bash"))
   (defun eshell/e (f) (find-file f))
   (defun eshell/ee (f) (find-file-other-window f)))
 
