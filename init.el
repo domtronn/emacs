@@ -208,6 +208,14 @@
   :config (bind-keys :map dockerfile-mode-map
                      ("C-x c" . dockerfile-build-buffer)
                      ("C-x C-c" . dockerfile-build-no-cache-buffer)))
+(use-package docker-tramp
+  :after docker
+  :config
+  (defun docker-tramp-onto-entry () "Tramp onto a docker instance"
+         (interactive)
+         (let ((tramp-string (format "/docker:root@%s:/" (tabulated-list-get-id))))
+           (find-file tramp-string))))
+
 (use-package docker
   :commands (docker-images docker-containers docker-volumes docker-networks docker-machines)
   :init
@@ -217,14 +225,7 @@
   (setenv "DOCKER_CERT_PATH" (plist-get docker-auth :certpath))
   (setenv "DOCKER_MACHINE_NAME" (plist-get docker-auth :machinename))
   :config
-  (use-package docker-tramp)
-  (defun docker-tramp-onto-entry () "Tramp onto a docker instance"
-    (interactive)
-    (let ((tramp-string (format "/docker:root@%s:/" (tabulated-list-get-id))))
-      (find-file tramp-string)))
-  (bind-keys :map docker-containers-mode-map ("T" . docker-tramp-onto-entry))
-  (add-hook 'docker-containers-mode-hook '(lambda () (setq-local mode-line-format nil)))
-  (add-hook 'docker-images-mode-hook '(lambda () (setq-local mode-line-format nil))))
+  (bind-keys :map docker-containers-mode-map ("T" . docker-tramp-onto-entry)))
 
 (use-package jenkins
   :commands (jenkins)
