@@ -205,7 +205,9 @@
 
 (use-package dockerfile-mode
   :mode ("^Dockerfile$" . dockerfile-mode)
-  :config (bind-keys :map dockerfile-mode-map ("C-x c" . dockerfile-build-buffer)))
+  :config (bind-keys :map dockerfile-mode-map
+                     ("C-x c" . dockerfile-build-buffer)
+                     ("C-x C-c" . dockerfile-build-no-cache-buffer)))
 (use-package docker
   :commands (docker-images docker-containers docker-volumes docker-networks docker-machines)
   :init
