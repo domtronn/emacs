@@ -482,9 +482,10 @@
                          (format "g++ %s -o %s" buffer-file-name file))))))
 
 (add-hook 'scss-mode-hook
-          (lambda () (set (make-local-variable 'compile-command)
-                     (let ((file (file-name-sans-extension buffer-file-name)))
-                       (format "sass '%s':%s.css" buffer-file-name file)))))
+          (lambda () (when (buffer-file-name)
+                  (set (make-local-variable 'compile-command)
+                       (let ((file (file-name-sans-extension buffer-file-name)))
+                         (format "sass '%s':%s.css" buffer-file-name file))))))
 
 (add-hook 'js2-mode-hook
           (lambda () (set (make-local-variable 'compile-command)
