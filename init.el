@@ -197,7 +197,9 @@
   (bind-keys :map tabulated-list-mode-map
              ("<S-tab>" . tablist-backward-column)))
 
-(use-package dockerfile-mode :mode ("^Dockerfile$" . dockerfile-mode))
+(use-package dockerfile-mode
+  :mode ("^Dockerfile$" . dockerfile-mode)
+  :config (bind-keys :map dockerfile-mode-map ("C-x c" . dockerfile-build-buffer)))
 (use-package docker
   :commands (docker-images docker-containers docker-volumes docker-networks docker-machines)
   :init
