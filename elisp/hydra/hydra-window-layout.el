@@ -1,3 +1,5 @@
+(require 'dash)
+
 (defun wlf:triple-split-layout ()
   (wlf:show (wlf:no-layout
     '(| (:left-size-ratio 0.6) file
@@ -21,13 +23,30 @@
                  (:name node :buffer repl-node))))
     (select-window (get-buffer-window current))))
 
+(defun wlf:get-docker-file-buffer ()
+  "Get the first Dockerfile buffer or current buffer"
+  (or (cdr (assoc
+            "Dockerfile"
+            (--map (cons (file-name-base (buffer-file-name it)) it)
+                   (--filter (buffer-file-name it) (buffer-list)))))
+      (current-buffer)))
+
+(defun wlf:get-docker-logs-buffer ()
+  "Get the first docker logs buffer or current buffer"
+  (or (get-buffer
+       (car (--filter (string-match "*docker-logs:" it)
+                      (-map 'buffer-name (buffer-list)))))
+      (get-buffer-create "*docker-result*")))
+
 (defun wlf:docker ()
   (ignore-errors (docker-containers))
+  (ignore-errors (docker-containers-logs-follow-all))
   (ignore-errors (docker-images))
-  (let ((build-buf (get-buffer-create "*docker-build-output*"))
+  (let ((dockerfile-buf (wlf:get-docker-file-buffer))
+        (build-buf (get-buffer-create "*docker-build-output*"))
         (container-buf (get-buffer-create "*docker-containers*"))
         (image-buf (get-buffer-create "*docker-images*"))
-        (log-buf (get-buffer-create "*docker result*")))
+        (log-buf (wlf:get-docker-logs-buffer)))
     (wlf:show (wlf:no-layout
       '(- (:upper-size-ratio 0.7)
           (| (:left-size-ratio 0.6)
@@ -38,22 +57,40 @@
           (- (:upper-size-ratio 0.5)
              containers
              images))
-      '((:name file)
+      '((:name file :buffer dockerfile-buf)
         (:name log :buffer log-buf)
         (:name build :buffer build-buf)
         (:name containers :buffer container-buf)
-        (:name images :buffer image-buf))))))
+        (:name images :buffer image-buf))))
+    (select-window-1)))
 
-(defun wlf:ramda-url ()
+(defun wlf:devdocs-url (docset)
   (let ((ip (replace-regexp-in-string "\n$" ""
              (shell-command-to-string "docker-machine ip default"))))
-    (format "http://%s/docs/ramda" ip)))
+    (format "http://%s/docs/%s" ip docset)))
+
+(defun wlf:lodash ()
+  (let ((current (current-buffer))
+        (repl-lodash (lodash-repl))
+        (docs-lodash (with-current-buffer (get-buffer-create "*eww*")
+                      (eww (wlf:devdocs-url "lodash"))))
+        (term (or (get-buffer "*lodash-term*")
+                  (quick-term "lodash-term"))))
+    (wlf:show (wlf:no-layout
+               '(| (:left-size-ratio 0.56)
+                   (- (:upper-size-ratio 0.8) js term)
+                   (- (:upper-size-ratio 0.6) repl docs))
+               '((:name js :buffer current)
+                 (:name repl :buffer repl-lodash)
+                 (:name docs :buffer docs-lodash)
+                 (:name term :buffer term))))
+    (select-window (get-buffer-window docs-lodash))))
 
 (defun wlf:ramda ()
   (let ((current (current-buffer))
         (repl-ramda (ramda-repl))
         (docs-ramda (with-current-buffer (get-buffer-create "*eww*")
-                      (eww (wlf:ramda-url))))
+                      (eww (wlf:devdocs-url "ramda"))))
         (term (or (get-buffer "*ramda-term*")
                   (quick-term "ramda-term"))))
     (wlf:show (wlf:no-layout
@@ -123,6 +160,7 @@
  _E_: Ert Runner
  _W_: JavaScript
  _R_: Ramda
+ ___: Lodash
 
 "
   ("S" (wlf:system-layout))
@@ -131,6 +169,7 @@
   ("E" (wlf:ert-layout))
   ("W" (wlf:javascript-repls))
   ("R" (wlf:ramda))
+  ("_" (wlf:lodash))
   ("D" (wlf:docker))
   ("r" (wlf:select-window) "select")
   ("k" (enlarge-window 1))
