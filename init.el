@@ -211,21 +211,25 @@
 (use-package docker-tramp
   :after docker
   :config
-  (defun docker-tramp-onto-entry () "Tramp onto a docker instance"
-         (interactive)
-         (let ((tramp-string (format "/docker:root@%s:/" (tabulated-list-get-id))))
-           (find-file tramp-string))))
+  (defun docker-tramp-onto-entry ()
+    "Tramp onto a docker instance"
+    (interactive)
+    (let ((tramp-string (format "/docker:root@%s:/" (tabulated-list-get-id))))
+      (find-file tramp-string))))
 
 (use-package docker
-  :commands (docker-images docker-containers docker-volumes docker-networks docker-machines)
+  :commands
+  (docker-images docker-containers docker-volumes docker-networks docker-machines)
   :init
   (require 'docker-auth (concat base-path ".docker-auth.el"))
   (setenv "DOCKER_TLS_VERIFY" (plist-get docker-auth :tlsverify))
   (setenv "DOCKER_HOST" (plist-get docker-auth :host))
   (setenv "DOCKER_CERT_PATH" (plist-get docker-auth :certpath))
   (setenv "DOCKER_MACHINE_NAME" (plist-get docker-auth :machinename))
-  :config
-  (bind-keys :map docker-containers-mode-map ("T" . docker-tramp-onto-entry)))
+  (add-hook 'docker-containers-mode-hook
+            (lambda () (bind-keys :map docker-containers-mode-map
+                             ("T" . docker-tramp-onto-entry)
+                             ("l" . docker-containers-logs-follow-selection)))))
 
 (use-package jenkins
   :commands (jenkins)
