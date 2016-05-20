@@ -656,7 +656,7 @@
              (symbol-at-point))))
       (or (cdr (assoc caller devdocs--docset-alist))
           (if pfx caller nil)))))
-  
+
 (defun devdocs-search (&optional pfx)
   "Search the devdocs for the thing at point.
 When given a PFX it will ask for a search term before searching."
@@ -692,6 +692,44 @@ When given a PFX it will ask for a search term before searching."
 (defun ramda-repl () "Open a ramda repl" (interactive) (repl-make "ramda-repl" "ramda-repl"))
 (defun node-repl () "Open a node repl" (interactive) (repl-make "node-repl" "node"))
 (defun lodash-repl () "Open a lodash repl" (interactive) (repl-make "lodash-repl" "n_"))
+
+;; Docker helper functions
+
+(defun docker-containers--remove-trailing-whitespace (proc string)
+  "Remove trailing whitespace from PROC on STRING."
+  (when (buffer-live-p (process-buffer proc))
+    (with-current-buffer (process-buffer proc)
+      (let ((inhibit-read-only t))
+        (goto-char (process-mark proc))
+        (insert string)
+        (delete-trailing-whitespace)
+        (set-marker (process-mark proc) (point))))))
+
+(defun docker-containers-logs-follow-all ()
+  "Follow all currently running docker containers"
+  (interactive)
+  (--map (docker-containers-logs-follow (car it))
+         (docker-containers-entries)))
+
+(defun docker-containers-logs-follow (image)
+  "Create a process buffer to follow an image"
+  (let* ((cmd (format "docker logs -f --tail=50 %s" image))
+         (bufname (format "*docker-logs:%s*" image))
+         (buf (get-buffer-create bufname))
+         (proc (get-buffer-process buf)))
+
+    (with-current-buffer bufname (compilation-mode))
+    (let ((proc (start-process-shell-command bufname buf cmd)))
+      (set-process-filter proc #'docker-containers--remove-trailing-whitespace))
+    (get-buffer bufname)))
+
+(defun docker-containers-logs-follow-selection ()
+  "Log the currently selected docker container"
+  (interactive)
+  (let ((cb (current-buffer)))
+    (switch-to-buffer-other-window
+     (docker-containers-logs-follow (tabulated-list-get-id)))
+    (select-window (get-buffer-window cb))))
 
 (provide 'functions)
 ;;; functions.el ends here
