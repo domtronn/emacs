@@ -715,10 +715,17 @@ When given a PFX it will ask for a search term before searching."
   "Create a process buffer to follow an image"
   (let* ((cmd (format "docker logs -f --tail=50 %s" image))
          (bufname (format "*docker-logs:%s*" image))
-         (buf (get-buffer-create bufname))
+         (buf (get-buffer bufname))
          (proc (get-buffer-process buf)))
 
-    (with-current-buffer bufname (compilation-mode))
+    (when (and buf proc)
+      (set-process-query-on-exit-flag proc nil)
+      (kill-buffer buf))
+
+    (prog1 (setq buf (get-buffer-create bufname))
+      (with-current-buffer bufname
+        (compilation-mode)))
+
     (let ((proc (start-process-shell-command bufname buf cmd)))
       (set-process-filter proc #'docker-containers--remove-trailing-whitespace))
     (get-buffer bufname)))
