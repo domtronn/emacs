@@ -633,6 +633,8 @@
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
 
+(use-package jade-mode :mode ("\\.pug$" . jade-mode))
+
 (use-package web-mode
   :load-path "~/.env/elisp/web-mode/"
 
