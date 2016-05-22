@@ -326,6 +326,7 @@
 ;;; Font Manipulation:
 (defvar font-list '(("Menlo" normal)
                     ("BPmono" normal)
+                    ("Monaco" normal)
                     ("Courier New" normal)
                     ("Ubuntu Mono" normal)
                     ("Source Code Pro" extralight)
