@@ -177,9 +177,16 @@
 (use-package dired+
   :after 'dired
   :config
+  (setq insert-directory-program "gls")
+  (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
   (bind-keys :map dired-mode-map
              ("C-p" . previous-line)
              ("q" . kill-all-dired-buffers)))
+
+(use-package dired-quick-sort
+  :after 'dired
+  :config
+  (dired-quick-sort-setup))
 
 (use-package ranger
   :defer t
