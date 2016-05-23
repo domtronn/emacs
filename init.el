@@ -425,10 +425,6 @@
   (add-hook 'js2-mode-hook
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (add-hook 'js2-mode-hook
-            (lambda () (if (s-contains? "require.def" (buffer-substring (point-min) (point-max)))
-                      (add-to-list 'ac-sources 'ac-source-requirejs-files)
-                    (add-to-list 'ac-sources 'ac-source-project-files))))
-  (add-hook 'js2-mode-hook
             '(lambda ()
                (push '("function" . ?ƒ) prettify-symbols-alist)
                (push '("var" . ?ν) prettify-symbols-alist)
