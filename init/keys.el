@@ -127,7 +127,9 @@
 
 ;; Duplicate line
 (global-set-key (kbd "s-d") 'duplicate-line)
-(global-set-key (kbd "s-D") 'duplicate-line-and-replace-regexp)
+(global-set-key (kbd "s-D")
+                '(lambda () (interactive)
+                   (call-interactively 'duplicate-line-and-replace-regexp)))
 
 ;; Use C-i as my personal prefix command
 (global-set-key (kbd "H-a") 'beginning-of-line)
