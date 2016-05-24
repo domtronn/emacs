@@ -418,6 +418,14 @@
   (next-line 1)
   (yank))
 
+(defun duplicate-line-and-replace-regexp ()
+  (interactive)
+  (duplicate-line)
+  (move-beginning-of-line 1)
+  (set-mark-command nil)
+  (move-end-of-line 1)
+  (call-interactively 'vr/query-replace))
+
 (defun leet-mode ()
   "Turn off auto complete and major mode."
   (interactive)
