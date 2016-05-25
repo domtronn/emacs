@@ -142,6 +142,7 @@
           (setq darkroom-text-scale-increase 1.0))
 
 (use-package org
+  :defer t
   :mode ("\\.org" . org-mode)
   :bind ("C-c c" . org-capture)
         ("C-c a" . org-agenda)
@@ -176,13 +177,11 @@
              (org-agenda nil "n")
              (delete-other-windows)
              (switch-to-buffer "*Org Agenda*"))))
-  (defun org-color-tag (tag col)
-    (while (re-search-forward tag nil t)
-      (add-text-properties (match-beginning 0) (point-at-eol)
-                           `(face (:foreground ,col)))))
+
   (add-hook 'org-finalize-agenda-hook
-            (org-color-tag "Birthdays:" "#27ae60")
-            (org-color-tag "Reminders:" "#8e44ad")))
+            '(lambda () (org-color-tag "Birthdays:" "#27ae60")
+                   (org-color-tag "Holidays:" "#3498db")
+                   (org-color-tag "Reminders:" "#8e44ad"))))
 
 (use-package doc-view
   :mode ("\\.pdf" . doc-view-mode)

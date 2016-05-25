@@ -746,6 +746,11 @@ When given a PFX it will ask for a search term before searching."
      (docker-containers-logs-follow (tabulated-list-get-id)))
     (select-window (get-buffer-window cb))))
 
+(defun org-color-tag (tag col)
+    (while (re-search-forward tag nil t)
+      (add-text-properties (match-beginning 0) (point-at-eol)
+                           `(face (:foreground ,col)))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
