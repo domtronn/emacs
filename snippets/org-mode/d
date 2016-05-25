@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: d
+# key: d
+# Create reveal title page
+# --
+#+DATE: `(format-time-string "%D")`

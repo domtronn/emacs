@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: r!
+# key: r!
+# Start a reveal presentation
+# --
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_TRANS: ${1:$$(yas-choose-value '("default" "cube" "page" "concave" "zoom" "linear" "fade" "none"))}
+#+REVEAL_THEME: ${2:$$(yas-choose-value '("beige" "black" "blood" "league" "moon" "night" "serif" "simple" "sky" "solarized" "white"))}
+
+# #+REVEAL_EXTRA_CSS: `(when (buffer-file-name) (format "file://%s%s.css" (file-name-directory (buffer-file-name)) (file-name-base (buffer-file-name))))`
+
+#+REVEAL_SLIDE_HEADER: $3
+#+REVEAL_SLIDE_FOOTER: $4
+
+# #+OPTIONS: reveal_overview:nil, reveal_progress:nil, reveal_slide_number:h/v, num:nil, reveal_center:nil, reveal_control:nil
+
+$0

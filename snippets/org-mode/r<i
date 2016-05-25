@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: r<t
+# key: r<t
+# Create reveal title page
+# --
+:reveal_background_trans: ${1:$$(yas-choose-value '("default" "cube" "page" "concave" "zoom" "linear" "fade" "none"))}

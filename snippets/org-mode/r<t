@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: r<t
+# key: r<t
+# Create reveal title page
+# --
+
+#+OPTIONS: reveal_title_slide:auto

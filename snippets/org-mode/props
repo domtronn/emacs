@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: props
+# key: props
+# Create reveal title page
+# --
+   :PROPERTIES:
+   $0
+   :END:

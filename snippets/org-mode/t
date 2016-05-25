@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: t
+# key: t
+# Create reveal title page
+# --
+#+TITLE: $0

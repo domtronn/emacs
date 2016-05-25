@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: r<b
+# key: r<b
+# Create reveal title page
+# --
+:reveal_background: #$0

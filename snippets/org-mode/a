@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: a
+# key: a
+# Create reveal title page
+# --
+#+AUTHOR: `(user-full-name)`

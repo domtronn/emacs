@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: r<f
+# key: r<f
+# Create reveal title page
+# --
+#+ATTR_REVEAL: :frag ${1:$$(yas-choose-value '(grow shrink roll-in fade-out highlight-red highlight-green highlight-blue appear))}
