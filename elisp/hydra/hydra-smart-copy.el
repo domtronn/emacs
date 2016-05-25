@@ -14,7 +14,7 @@
 _w_: word    _._: sentence  | _d_: file dir  | _P_: Inside Pairs  | _O_: Inside Quotes
 _s_: symbol  _h_: paragraph | _f_: file name | _p_: Outside Pairs | _o_: Outside Quotes
 _d_: defun   _u_: url       | _F_: full path
-
+                              _b_: buffer
 "
   ("w" (hydra/smart-copy 'er/mark-word) :exit t :color teal)
   ("s" (hydra/smart-copy 'er/mark-symbol) :exit t :color teal)
@@ -25,6 +25,7 @@ _d_: defun   _u_: url       | _F_: full path
   ("o" (hydra/smart-copy 'er/mark-outside-quotes) :exit t :color teal)
   ("." (hydra/smart-copy 'er/mark-text-sentence) :exit t :color teal)
   ("h" (hydra/smart-copy 'er/mark-text-paragraph) :exit t :color teal)
+  ("b" (kill-new (buffer-name)) :exit t :color teal)
   ("F" (kill-new (buffer-file-name)) :exit t :color teal)
   ("f" (kill-new (file-name-nondirectory (buffer-file-name))) :exit t :color teal)
   ("d" (kill-new (file-name-directory (buffer-file-name))) :exit t :color teal)
