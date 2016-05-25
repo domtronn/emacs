@@ -214,14 +214,14 @@
              ("C-p" . previous-line)
              ("q" . kill-all-dired-buffers)))
 
-(use-package dired-rainbow
-  :after 'dired)
-
 (use-package dired-filter
   :after 'dired
   :init (setq dired-filter-group-saved-groups
               '(("default"
-                 ("JavaScript" (extension "js" "json")))))
+                 ("JavaScript" (extension "js" "json"))
+                 ("MarkUp" (extension "md" "org"))
+                 ("Archives" (extension "zip" "rar" "gz" "bz2" "tar"))
+                 ("Images" (extension "png" "gif" "jpg")))))
   :config (bind-keys :map dired-mode-map
                      ("//" . dired-filter-group-mode)))
 
