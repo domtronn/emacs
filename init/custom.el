@@ -197,8 +197,8 @@
  '(neo-smart-open t)
  '(neo-theme (quote ascii))
  '(neo-window-width 35)
- '(org-agenda-files (quote ("~/org/tasks.org")))
  '(org-support-shift-select t)
+ '(user-mail-address "dgc336@gmail.com")
  '(package-user-dir
    (expand-file-name
     (format "%s/%s/elpa" common-load-dir common-package-dir)))

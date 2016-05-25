@@ -154,11 +154,35 @@
            "* TODO %?\n %t")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "** %^{Heading}  :LOG:\n%?")))
+  (setq org-src-fontify-natively t
+        org-agenda-files
+        '("~/org/tasks.org" "~/org/birthdays.org" "~/org/holidays.org" "~/org/reminders.org")
+        org-ellipsis "⤵"
+        org-todo-keywords
+        '((sequence "TODO" "WAITING" "IN PROGRESS" "DONE"))
+        org-todo-keyword-faces
+        '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
+          ("WAITING" . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
+        org-agenda-custom-commands
+        '(("n" "Agenda and all TODOs"
+           ((agenda "") (todo "TODO") (todo "IN PROGRESS")))))
+
   :config
-  (setq org-ellipsis "⤵")
   (use-package ox-twbs)
   (add-hook 'org-mode-hook 'org-bullets-mode)
-  (org-beamer-mode))
+  (org-beamer-mode)
+  (run-with-idle-timer 300 t
+    '(lambda () (with-current-buffer (get-buffer-create "*Org Agenda*")
+             (org-agenda nil "n")
+             (delete-other-windows)
+             (switch-to-buffer "*Org Agenda*"))))
+  (defun org-color-tag (tag col)
+    (while (re-search-forward tag nil t)
+      (add-text-properties (match-beginning 0) (point-at-eol)
+                           `(face (:foreground ,col)))))
+  (add-hook 'org-finalize-agenda-hook
+            (org-color-tag "Birthdays:" "#27ae60")
+            (org-color-tag "Reminders:" "#8e44ad")))
 
 (use-package doc-view
   :mode ("\\.pdf" . doc-view-mode)
@@ -975,8 +999,7 @@
 
 (when window-system
   (load-theme 'aurora)
-  (server-start)
-  (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+  (server-start))
 
 (unless window-system
   (load-theme 'spacemacs-dark))
