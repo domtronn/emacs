@@ -352,12 +352,13 @@
   (jpop-global-mode)
   (add-hook 'jpop-toggle-test-fallback-hook 'jpop-find-test)
   :bind
-  ([C-tab] . jpop-find-file)
+  ([C-tab]     . jpop-find-file)
   ("C-S-<tab>" . jpop-git-find-file)
   ("C-x p f c" . jpop-change-and-find-file)
-  ("C-x p c" . jpop-change)
-  ("C-x C-b" . jpop-switch-buffer)
-  ("C-x C-p" . jpop-switch-and-find-file))
+  ("C-x p c"   . jpop-change)
+  ("C-x C-b"   . jpop-switch-buffer)
+  ("C-o"       . jpop-find-file)
+  ("C-x C-p"   . jpop-switch-and-find-file))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
@@ -396,8 +397,10 @@
                       (call-interactively 'counsel-set-font)))
   :bind ([f2]      . counsel-git-grep)
         ("<M-f2>"  . counsel-ag)
+        ("C-c v"   . counsel-git-grep)
         ("<s-f1>"  . counsel-imenu)
         ("<H-tab>" . counsel-git)
+        ("M-o"     . counsel-git)
         ("M-x"     . counsel-M-x)
         ("C-x C-f" . counsel-find-file)
         ("C-h b"   . counsel-descbinds)
