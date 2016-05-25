@@ -631,7 +631,6 @@
             '(lambda () (ac-lambda 'ac-source-functions
                               'ac-source-symbols
                               'ac-source-variables
-                              'ac-source-filepath
                               'ac-source-yasnippet
                               'ac-source-words-in-same-mode-buffers)))
   :config
@@ -730,7 +729,6 @@
                     ac-source-css-id
                     ac-source-css-property))
           ("jsx" . (ac-source-yasnippet
-                    ac-source-filepath
                     ac-source-words-in-same-mode-buffers
                     ac-source-tern-completion))))
 
@@ -755,8 +753,6 @@
 (use-package auto-complete-config :after auto-complete)
 
 ;; Custom Auto Complete Sources
-(use-package ac-jpop :load-path "~/.env/elisp" :after js2-mode)
-(use-package ac-filepath :load-path "~/.env/elisp")
 (use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
 (use-package ac-emmet :after emmet-mode)
@@ -768,7 +764,6 @@
   (ac-config-default)
   (set-default 'ac-sources
                '(ac-source-yasnippet
-                 ac-source-filepath
                  ac-source-words-in-same-mode-buffers))
   (global-auto-complete-mode t)
 
@@ -789,7 +784,6 @@
                   'ac-source-css-property
                   'ac-source-css-id
                   'ac-source-css-selector
-                  'ac-source-filepath
                   'ac-source-scss-colors)
              (emmet-mode)
              (ac-emmet-css-setup)))
