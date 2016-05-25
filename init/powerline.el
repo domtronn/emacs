@@ -64,6 +64,8 @@
                     :secondary ("#151515" "#101010" "#7F6A4F")))
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2")
                      :secondary ("#292B2E" "#292B2E" "#292B2E")))
+    (solarized-dark (:primary ("#657b83" "#073642" "#073642")
+                     :secondary ("#002b36" "#002b36" "#93a1a1")))
     (gruvbox       (:primary ("#3c3836" "#282828" "#f4e8ba")
                     :secondary ("#504945" "#282828" "#a89984")))
     (monokai       (:primary ("#363731" "#272822" "#E5DDB7")

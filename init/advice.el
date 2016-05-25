@@ -24,11 +24,17 @@
 ;;; Code:
 
 ;; Disable all themes before loading a new one
-(defun disable-themes (orig-f &rest args)
+(defun disable-themes (&rest args)
+  (disable-all-themes))
+
+(defun preserve-font (orig-f &rest args)
   (let ((current-font (assoc (face-attribute 'default :family) font-list)))
-    (disable-all-themes)
     (apply orig-f args)
     (set-font current-font)))
+
+(defun remove-mode-line-box (&rest args)
+  (set-face-attribute 'mode-line nil :box nil :underline nil)
+  (set-face-attribute 'mode-line-inactive nil :box nil :underline nil))
 
 (defun markdown-style-themes (&rest args)
   (let ((class '((class color) (min-colors 89))))
@@ -38,8 +44,10 @@
      '(markdown-header-face-2 ((t (:inherit font-lock-function-name-face :weight bold :height 1.4))))
      '(markdown-header-face-3 ((t (:inherit font-lock-function-name-face :weight bold :height 1.2)))))))
 
-(advice-add 'load-theme :around 'disable-themes)
-(advice-add 'load-theme :after 'markdown-style-themes)
+(advice-add 'load-theme :before 'disable-themes)
+(advice-add 'counsel-load-theme :around 'preserve-font)
+(advice-add 'counsel-load-theme :after 'markdown-style-themes)
+(advice-add 'counsel-load-theme :after 'remove-mode-line-box)
 
 (advice-add 'ansi-term :after '(lambda (&rest r) (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
