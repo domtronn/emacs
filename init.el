@@ -48,14 +48,14 @@
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'counsel-set-font)
-    (local-set-key "o" 'org-agenda)
+    (local-set-key "a" 'org-agenda)
     (local-set-key "di" 'docker-images)
     (local-set-key "dc" 'docker-containers)
     (local-set-key "p" 'jpop-change)
     (local-set-key "P" 'jpop-change-and-find-file)))
 
 (eval-when-compile (require 'use-package))
-(require 'bind-key)
+(use-package bind-key)
 
 (use-package functions :load-path "init")
 
@@ -141,17 +141,23 @@
           (setq darkroom-margins 0.0)
           (setq darkroom-text-scale-increase 1.0))
 
-(use-package org-mode
+(use-package org
   :mode ("\\.org" . org-mode)
   :bind ("C-c c" . org-capture)
+        ("C-c a" . org-agenda)
+        ("C-c l" . org-store-link)
+        ("C-c e" . org-export-dispatch)
+        ("C-c C-l" . org-link)
   :init
-  (add-hook 'org-mode-hook 'darkroom-mode)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
            "* TODO %?\n %t")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "** %^{Heading}  :LOG:\n%?")))
   :config
+  (setq org-ellipsis "⤵")
+  (use-package ox-twbs)
+  (add-hook 'org-mode-hook 'org-bullets-mode)
   (org-beamer-mode))
 
 (use-package doc-view
