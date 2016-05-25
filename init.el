@@ -180,8 +180,34 @@
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
   (bind-keys :map dired-mode-map
+             ("<right>" . dired-find-file)
+             ("<left>" . dired-up-directory)
              ("C-p" . previous-line)
              ("q" . kill-all-dired-buffers)))
+
+(use-package dired-rainbow
+  :after 'dired)
+
+(use-package dired-filter
+  :after 'dired
+  :init (setq dired-filter-group-saved-groups
+              '(("default"
+                 ("JavaScript" (extension "js" "json")))))
+  :config (bind-keys :map dired-mode-map
+                     ("//" . dired-filter-group-mode)))
+
+(use-package dired-narrow
+  :after 'dired
+  :config (bind-keys :map dired-mode-map
+                     ("/f" . dired-narrow)
+                     ("/t" . dired-narrow-fuzzy)))
+
+(use-package dired-subtree
+  :after 'dired
+  :config
+  (bind-keys :map dired-mode-map
+             ("i" . dired-subtree-cycle)
+             ("x" . dired-subtree-remove)))
 
 (use-package dired-quick-sort
   :after 'dired
