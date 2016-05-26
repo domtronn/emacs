@@ -649,10 +649,10 @@
           (key-combo-mode 1)
           (key-combo-load-default))
 
+(add-hook 'after-init-hook 'yas-global-mode)
 (use-package yasnippet
-  :config
-  (setq yas-snippet-dirs (concat base-path "/snippets"))
-  (add-hook 'after-init-hook 'yas-global-mode))
+  :commands (yas-global-mode yas-minor-mode)
+  :config   (setq yas-snippet-dirs (concat base-path "/snippets")))
 
 (use-package neotree
   :bind ([f1] . neotree-toggle)
