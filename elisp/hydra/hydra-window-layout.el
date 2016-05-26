@@ -201,7 +201,7 @@
   ("W" (wlf:javascript-repls))
   ("R" (wlf:ramda))
   ("s" (wlf:startup))
-  ("s" (wlf:agenda))
+  ("a" (wlf:agenda))
   ("_" (wlf:lodash))
   ("D" (wlf:docker))
   ("r" (wlf:select-window) "select")
