@@ -176,6 +176,7 @@
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (org-beamer-mode)
 
+  (add-hook 'org-mode-hook 'auto-fill-mode)
   (run-with-idle-timer 300 t 'wlf:agenda)
   (add-hook 'org-finalize-agenda-hook
             '(lambda () (org-color-tag "Birthdays:" "#27ae60")
@@ -590,6 +591,7 @@
   :mode ("\\.md" . markdown-mode)
   :config
   (add-hook 'markdown-mode-hook 'ac-emoji-setup)
+  (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (bind-keys* ("M-<left>" . backward-word)
               ("<M-S-left>" . backward-word)
               ("M-<right>" . forward-word)
