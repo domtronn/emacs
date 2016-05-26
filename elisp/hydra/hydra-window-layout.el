@@ -7,26 +7,28 @@
     (with-current-buffer agenda-buf (ignore-errors (org-agenda nil "n")))
     (with-current-buffer benchmark-buf (ignore-errors (benchmark-init/show-durations-tree)))
     (wlf:show (wlf:no-layout
-      '(| (:left-size-ratio 0.4)
+      '(| (:left-size-ratio 0.46)
           benchmark
           agenda)
       '((:name benchmark :buffer benchmark-buf)
         (:name agenda :buffer agenda-buf))))
     (select-window-1)))
 
+;;;###autoload
 (defun wlf:agenda ()
   (let ((calendar-buf (get-buffer-create "*cfw-calendar*"))
         (agenda-buf (get-buffer-create "*Org Agenda*")))
     (with-current-buffer agenda-buf (ignore-errors (org-agenda nil "n")))
     (with-current-buffer calendar-buf
       (cfw:open-org-calendar)
-      (cfw:change-view-week))
+      (cfw:change-view-two-weeks))
     (wlf:show (wlf:no-layout
       '(| (:left-size-ratio 0.46)
           agenda
           calendar)
       '((:name calendar :buffer calendar-buf)
         (:name agenda :buffer agenda-buf))))
+    (with-current-buffer calendar-buf (cfw:refresh-calendar-buffer nil))
     (select-window-1)))
 
 (defun wlf:triple-split-layout ()

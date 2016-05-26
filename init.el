@@ -328,6 +328,7 @@
 
 (use-package hydra-window-layout
   :load-path "elisp"
+  :commands (wlf:agenda wlf:startup)
   :init (use-package window-layout)
   :bind ("C-c w" . hydra-window-layout/body))
 
