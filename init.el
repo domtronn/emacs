@@ -126,7 +126,7 @@
 (use-package command-log-mode
   :defer t
   :config (global-command-log-mode)
-  :bind ("C-c o" . clm/toggle-command-log-buffer))
+  :bind ("<f8>" . clm/toggle-command-log-buffer))
 
 (use-package popup :defer t)
 (use-package popwin
