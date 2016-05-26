@@ -370,13 +370,12 @@
   :load-path "elisp/hydra")
 
 (use-package embrace
-  :config (use-package hydra-embrace
-            :load-path "elisp/hydra")
+  :config (use-package hydra-embrace :load-path "elisp/hydra")
   :bind
-  ("H-SPC" . hydra-embrace/body)
+  ("H-SPC"   . hydra-embrace-or-native)
   ("H-S-SPC" . embrace-delete)
-  ("H-x" . embrace-delete)
-  ("H-c" . embrace-change))
+  ("H-x"     . embrace-delete)
+  ("H-c"     . embrace-change))
 
 (use-package counsel :after ivy
   :defer 5

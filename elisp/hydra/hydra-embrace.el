@@ -23,4 +23,9 @@ _d_: defun
   ("h" (hydra-embrace/add 'er/mark-text-paragraph) :exit t :color teal)
   ("q" nil "quit" :color blue))
 
+(defun hydra-embrace-or-native ()
+  "Invokes `hydra-embrace/body` unless the region is active"
+  (interactive)
+  (if (region-active-p) (embrace-add) (hydra-embrace/body)))
+
 (provide 'hydra-embrace)

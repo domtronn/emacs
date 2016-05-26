@@ -355,12 +355,6 @@
     (end-of-line)
     (insert ";")))
 
-(defun wrap-space-or-space ()
-  (interactive)
-  (if (use-region-p)
-      (insert-pair 1 " " " " )
-    (insert " ")))
-
 (defun setup-cpp-mode ()
   (interactive)
   (let ((cb (get-buffer (buffer-name))))
