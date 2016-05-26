@@ -175,9 +175,10 @@
   ;; Export Backends
   (use-package ox-twbs)
   (use-package ox-reveal)
+  ;; Calendar Framework
+  (use-package calfw)
+  (use-package calfw-org)
   (add-hook 'org-mode-hook 'org-bullets-mode)
-  (org-beamer-mode)
-
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (run-with-idle-timer 300 t 'wlf:agenda)
   (add-hook 'org-finalize-agenda-hook
