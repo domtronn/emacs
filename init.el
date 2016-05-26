@@ -175,12 +175,8 @@
   (use-package ox-twbs)
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (org-beamer-mode)
-  (run-with-idle-timer 300 t
-    '(lambda () (with-current-buffer (get-buffer-create "*Org Agenda*")
-             (org-agenda nil "n")
-             (delete-other-windows)
-             (switch-to-buffer "*Org Agenda*"))))
 
+  (run-with-idle-timer 300 t 'wlf:agenda)
   (add-hook 'org-finalize-agenda-hook
             '(lambda () (org-color-tag "Birthdays:" "#27ae60")
                    (org-color-tag "Holidays:" "#3498db")
