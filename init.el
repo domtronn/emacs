@@ -143,27 +143,30 @@
 
 (use-package org
   :defer t
-  :mode ("\\.org" . org-mode)
-  :bind ("C-c c" . org-capture)
-        ("C-c a" . org-agenda)
-        ("C-c l" . org-store-link)
-        ("C-c e" . org-export-dispatch)
+  :mode ("\\.org"  . org-mode)
+  :bind ("C-c c"   . org-capture)
+        ("C-c a"   . org-agenda)
+        ("C-c l"   . org-store-link)
+        ("C-c e"   . org-export-dispatch)
         ("C-c C-l" . org-link)
+        ("C-j"     . join-line)
   :init
-  (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
-           "* TODO %?\n %t")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "** %^{Heading}  :LOG:\n%?")))
   (setq org-src-fontify-natively t
         org-agenda-files
-        '("~/org/tasks.org" "~/org/birthdays.org" "~/org/holidays.org" "~/org/reminders.org")
+        '("~/org/meetings.org" "~/org/tasks.org" "~/org/birthdays.org" "~/org/holidays.org" "~/org/reminders.org")
         org-ellipsis "⤵"
         org-todo-keywords
-        '((sequence "TODO" "WAITING" "IN PROGRESS" "DONE"))
+        '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
         org-todo-keyword-faces
         '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
           ("WAITING" . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
+        org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+           "* TODO %?\n %t")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "** %^{Heading}  :LOG:\n%?")
+          ("m" "Scheduled appointment" entry (file+headline "~/org/meetings.org" "MEETINGS")
+           "* %^{Brief description} %^g\n  %?   \n    SCHEDULED: %T\n%i%a"))
         org-agenda-custom-commands
         '(("n" "Agenda and all TODOs"
            ((agenda "") (todo "TODO") (todo "IN PROGRESS")))))
