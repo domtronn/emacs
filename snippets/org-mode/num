@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: num
+# key: num
+# Create reveal title page
+# --
+#+OPTIONS: num:nil
