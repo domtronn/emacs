@@ -775,7 +775,7 @@
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
 
-  :bind ([S-tab] . auto-complete))
+  :bind ("<M-tab>" . auto-complete))
 
 (add-hook 'scss-mode-hook
           '(lambda () (ac-lambda
