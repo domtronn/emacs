@@ -397,6 +397,7 @@
         ("<M-f2>"  . counsel-ag)
         ("C-c v"   . counsel-git-grep)
         ("<s-f1>"  . counsel-imenu)
+        ("H-M-."   . counsel-imenu)
         ("<H-tab>" . counsel-git)
         ("M-o"     . counsel-git)
         ("M-x"     . counsel-M-x)
