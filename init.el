@@ -172,7 +172,9 @@
            ((agenda "") (todo "TODO") (todo "IN PROGRESS")))))
 
   :config
+  ;; Export Backends
   (use-package ox-twbs)
+  (use-package ox-reveal)
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (org-beamer-mode)
 
