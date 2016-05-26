@@ -14,6 +14,21 @@
         (:name agenda :buffer agenda-buf))))
     (select-window-1)))
 
+(defun wlf:agenda ()
+  (let ((calendar-buf (get-buffer-create "*cfw-calendar*"))
+        (agenda-buf (get-buffer-create "*Org Agenda*")))
+    (with-current-buffer agenda-buf (ignore-errors (org-agenda nil "n")))
+    (with-current-buffer calendar-buf
+      (cfw:open-org-calendar)
+      (cfw:change-view-week))
+    (wlf:show (wlf:no-layout
+      '(| (:left-size-ratio 0.46)
+          agenda
+          calendar)
+      '((:name calendar :buffer calendar-buf)
+        (:name agenda :buffer agenda-buf))))
+    (select-window-1)))
+
 (defun wlf:triple-split-layout ()
   (wlf:show (wlf:no-layout
     '(| (:left-size-ratio 0.6) file
@@ -176,6 +191,7 @@
  _R_: Ramda
  ___: Lodash
  _s_: Start Up
+ _a_: Agenda
 
 "
   ("S" (wlf:system-layout))
@@ -185,6 +201,7 @@
   ("W" (wlf:javascript-repls))
   ("R" (wlf:ramda))
   ("s" (wlf:startup))
+  ("s" (wlf:agenda))
   ("_" (wlf:lodash))
   ("D" (wlf:docker))
   ("r" (wlf:select-window) "select")
