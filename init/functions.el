@@ -745,6 +745,13 @@ When given a PFX it will ask for a search term before searching."
       (add-text-properties (match-beginning 0) (point-at-eol)
                            `(face (:foreground ,col)))))
 
+(defun cfw:capture-schedule-day ()
+  (let* ((date (s-chop-prefix "<" (s-chop-suffix ">" (cfw:org-capture-day))))
+         (h (format-time-string "%H"))
+         (m (format-time-string "%M"))
+         (H (1+ (string-to-number h))))
+    (message "%s" (format "<%s %s:%s-%s:%s>" date h m H m ))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:

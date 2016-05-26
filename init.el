@@ -154,31 +154,29 @@
   :init
   (setq org-src-fontify-natively t
         org-agenda-files
-        '("~/org/meetings.org" "~/org/tasks.org" "~/org/birthdays.org" "~/org/holidays.org" "~/org/reminders.org")
+        '("~/org/meetings.org" "~/org/tasks.org" "~/org/birthdays.org" "~/org/reminders.org")
         org-ellipsis "⤵"
         org-todo-keywords
         '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
         org-todo-keyword-faces
         '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
-          ("WAITING" . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
+          ("WAITING"     . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
         org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
            "* TODO %?\n %t")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
-          ("m" "Scheduled appointment" entry (file+headline "~/org/meetings.org" "MEETINGS")
-           "* %^{Brief description} %^g\n  %?   \n    SCHEDULED: %T\n%i%a"))
+          ("m" "Meeting" entry (file+headline "~/org/meetings.org" "MEETINGS")
+           "* %^{Title} %^g\n  %?   \n    SCHEDULED: %(cfw:capture-schedule-day)"))
         org-agenda-custom-commands
         '(("n" "Agenda and all TODOs"
-           ((agenda "") (todo "TODO") (todo "IN PROGRESS")))))
+           ((agenda "" ((org-agenda-sorting-strategy '(time-up deadline-up))))
+            (alltodo "" ((org-agenda-sorting-strategy '(todo-state-up))))))))
 
   :config
   ;; Export Backends
   (use-package ox-twbs)
   (use-package ox-reveal)
-  ;; Calendar Framework
-  (use-package calfw)
-  (use-package calfw-org)
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (run-with-idle-timer 300 t 'wlf:agenda)
@@ -186,6 +184,21 @@
             '(lambda () (org-color-tag "Birthdays:" "#27ae60")
                    (org-color-tag "Holidays:" "#3498db")
                    (org-color-tag "Reminders:" "#8e44ad"))))
+
+(use-package calfw :after org)
+(use-package calfw-org
+  :after calfw
+  :bind ("C-c s" . cfw:open-org-calendar)
+  :config
+  (setq cfw:org-agenda-schedule-args '(:deadline :scheduled :sexp))
+  (setq cfw:org-overwrite-default-keybinding t)
+  (setq cfw:org-capture-template
+        '("m" "calfw2org" entry (file nil)  "* %?\n %(cfw:org-capture-day)"))
+  (setq calendar-week-start-day 1)
+  (setq calendar-week-end-day 6)
+  (bind-keys :map cfw:calendar-mode-map
+             ("g" . cfw:refresh-calendar-buffer)
+             ("RET" . cfw:change-view-day)))
 
 (use-package doc-view
   :mode ("\\.pdf" . doc-view-mode)
