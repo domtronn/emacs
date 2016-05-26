@@ -48,6 +48,7 @@
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'counsel-set-font)
+    (local-set-key "j" 'jenkins)
     (local-set-key "a" 'org-agenda)
     (local-set-key "di" 'docker-images)
     (local-set-key "dc" 'docker-containers)
