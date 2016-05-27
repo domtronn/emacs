@@ -643,40 +643,6 @@
           (eslint-base "http://eslint.org/docs/rules/%s"))
       (browse-url (format eslint-base rule)))))
 
-(defvar devdocs--docset-alist
-  '((R . "Ramda")
-    (_ . "Lodash")
-    ($ . "jquery"))
-  "Alist of common short hands and their docset names")
-
-(defun devdocs--caller (&optional pfx)
-  (when (symbol-at-point)
-    (let ((sym (symbol-at-point))
-          (caller
-           (save-excursion
-             (goto-char (- (car (bounds-of-thing-at-point 'symbol)) 1))
-             (symbol-at-point))))
-      (or (cdr (assoc caller devdocs--docset-alist))
-          (if pfx caller nil)))))
-
-(defun devdocs-search (&optional pfx)
-  "Search the devdocs for the thing at point.
-When given a PFX it will ask for a search term before searching."
-  (interactive "P")
-  (let* ((s (symbol-at-point))
-         (caller (devdocs--caller))
-         (term (cond
-                ((and (numberp (car pfx)) (<= (car pfx) 4))
-                 (read-string "Search term: " (format "%s" (or s ""))))
-                ((and (numberp (car pfx)) (> (car pfx) 4))
-                 (setq caller (read-string "Docset: " (devdocs--caller t)))
-                 (read-string "Search term: " (format "%s" (or s ""))))
-                (t (symbol-at-point))))
-         (query (url-hexify-string
-                 (if caller (format "%s %s" caller term) (format "%s" term)))))
-    (unless term
-      (error "Could not find at symbol at point"))
-    (browse-url (format "http://devdocs.io/#q=%s" query))))
 
 (defun other-window-everything (thing)
   (cond
