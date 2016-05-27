@@ -178,8 +178,10 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(font-latex-string-face ((t (:inherit ,font-lock-string-face))))
    `(font-latex-math-face ((t (:foreground ,aurora-orange))))
 ;;;;; auto-complete
-   `(ac-candidate-face ((t (:background ,aurora-bg+3 :foreground ,aurora-fg))))
-   `(ac-selection-face ((t (:background ,aurora-bg+3 :foreground ,aurora-fg+1))))
+   `(ac-candidate-face ((t (:background ,aurora-bg-05 :foreground ,aurora-yellow))))
+   `(ac-selection-face ((t (:background ,aurora-bg-05 :foreground ,aurora-yellow+1))))
+   `(ac-yasnippet-selection-face ((t (:background ,aurora-bg-05 :foreground ,aurora-cyan))))
+   `(ac-yasnippet-candidate-face ((t (:background ,aurora-bg-05 :foreground ,aurora-green+4))))
    `(popup-tip-face ((t (:background ,aurora-bg-05 :foreground ,aurora-fg))))
    `(popup-scroll-bar-foreground-face ((t (:background ,aurora-blue))))
    `(popup-scroll-bar-background-face ((t (:background ,aurora-bg-1))))
