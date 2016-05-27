@@ -601,12 +601,14 @@
                                        (jpop-stylise 2 t))))
 
 (use-package engine-mode
+  :bind ("C-c / e" . engine/eslint)
   :config (engine-mode t)
   (setq engine/browser-function browse-url-browser-function)
   (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")
   (defengine google "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s" :keybinding "g")
   (defengine devdocs-ramda "http://devdocs.io/ramda/index#%s" :keybinding "R")
-  (defengine devdocs "http://devdocs.io/#q=%s" :keybinding "d"))
+  (defengine devdocs "http://devdocs.io/#q=%s" :keybinding "d")
+  (defengine eslint "http://eslint.org/docs/rules/%s"))
 
 (use-package eww
   :defer t

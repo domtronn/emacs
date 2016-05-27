@@ -631,18 +631,15 @@
        ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
        (t 'javascript-eslint)))))
 
-(defun flycheck--eslint-doc ()
+(defun engine/eslint ()
   "Open the doc for the rule violation under point"
   (interactive)
   (let ((e (flycheck-display-error-at-point)))
     (when (not e) (error "No flycheck error at point"))
-    (let ((rule (with-temp-buffer
-                  (insert e)
+    (let ((rule (with-temp-buffer (insert e)
                   (string-match "\\[\\(.*?\\)\\]" (format " %s"(buffer-string)))
                   (match-string-no-properties 1)))
-          (eslint-base "http://eslint.org/docs/rules/%s"))
-      (browse-url (format eslint-base rule)))))
-
+          (engine/search-eslint rule)))))
 
 (defun other-window-everything (thing)
   (cond
