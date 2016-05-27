@@ -195,7 +195,6 @@
   (setq cfw:org-capture-template
         '("m" "calfw2org" entry (file nil)  "* %?\n %(cfw:org-capture-day)"))
   (setq calendar-week-start-day 1)
-  (setq calendar-week-end-day 6)
   (bind-keys :map cfw:calendar-mode-map
              ("g" . cfw:refresh-calendar-buffer)
              ("RET" . cfw:change-view-day)))
@@ -601,7 +600,6 @@
                                        (jpop-stylise 2 t))))
 
 (use-package engine-mode
-  :bind ("C-c / e" . engine/eslint)
   :config (engine-mode t)
   (setq engine/browser-function browse-url-browser-function)
   (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")

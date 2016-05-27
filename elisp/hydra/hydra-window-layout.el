@@ -1,5 +1,7 @@
 (require 'dash)
 
+(defvar wlf:previous-layout nil "Layout to restore to when switching to agenda")
+
 ;;;###autoload
 (defun wlf:startup ()
   (let ((benchmark-buf (get-buffer-create "*Benchmark Init Results Tree*"))
@@ -15,9 +17,14 @@
     (select-window-1)))
 
 ;;;###autoload
+(defun wlf:set-restore-layout-binding ()
+  (interactive)
+  (set-window-configuration wlf:previous-layout))
+
 (defun wlf:agenda ()
   (let ((calendar-buf (get-buffer-create "*cfw-calendar*"))
         (agenda-buf (get-buffer-create "*Org Agenda*")))
+    (setq wlf:previous-layout (current-window-configuration))
     (with-current-buffer agenda-buf (ignore-errors (org-agenda nil "n")))
     (with-current-buffer calendar-buf
       (cfw:open-org-calendar)
@@ -28,7 +35,11 @@
           calendar)
       '((:name calendar :buffer calendar-buf)
         (:name agenda :buffer agenda-buf))))
-    (with-current-buffer calendar-buf (cfw:refresh-calendar-buffer nil))
+    (with-current-buffer calendar-buf
+      (cfw:refresh-calendar-buffer nil)
+      (local-set-key (kbd "R") 'wlf:set-restore-layout-binding))
+    (with-current-buffer agenda-buf
+      (local-set-key (kbd "R") 'wlf:set-restore-layout-binding))
     (select-window-1)))
 
 (defun wlf:triple-split-layout ()
