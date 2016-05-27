@@ -178,9 +178,9 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(font-latex-string-face ((t (:inherit ,font-lock-string-face))))
    `(font-latex-math-face ((t (:foreground ,aurora-orange))))
 ;;;;; auto-complete
-   `(ac-candidate-face ((t (:background ,aurora-bg+3 :foreground ,aurora-bg-2))))
-   `(ac-selection-face ((t (:background ,aurora-blue :foreground ,aurora-fg))))
-   `(popup-tip-face ((t (:background ,aurora-yellow+1 :foreground ,aurora-bg-2))))
+   `(ac-candidate-face ((t (:background ,aurora-bg+3 :foreground ,aurora-fg))))
+   `(ac-selection-face ((t (:background ,aurora-bg+3 :foreground ,aurora-fg+1))))
+   `(popup-tip-face ((t (:background ,aurora-bg-05 :foreground ,aurora-fg))))
    `(popup-scroll-bar-foreground-face ((t (:background ,aurora-blue))))
    `(popup-scroll-bar-background-face ((t (:background ,aurora-bg-1))))
    `(popup-isearch-match ((t (:background ,aurora-bg :foreground ,aurora-fg))))
@@ -955,6 +955,8 @@ Also bind `class' to ((class color) (min-colors 89))."
 ;;;;; fill-column-indicator
    `(fci-rule-color ,aurora-bg-05)
 ;;;;; vc-annotate
+   `(pos-tip-foreground-color ,aurora-fg)
+   `(pos-tip-background-color ,aurora-bg-05)
    `(vc-annotate-color-map
      '(( 20. . ,aurora-red)
        ( 40. . ,aurora-red)
