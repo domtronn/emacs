@@ -1033,7 +1033,7 @@
 (unless window-system
   (load-theme 'spacemacs-dark))
 
-(wlf:startup)
+(benchmark-init/show-durations-tree)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
