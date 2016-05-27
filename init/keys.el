@@ -46,6 +46,7 @@
 (global-set-key (kbd "s-p") 'ibuffer)
 
 (global-set-key (kbd "s-<") 'fill-paragraph)
+(global-set-key (kbd "s->") 'unfill-paragraph)
 
 (global-set-key (kbd "s-h") 'goto-line)
 
