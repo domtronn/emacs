@@ -69,7 +69,9 @@
     (gruvbox       (:primary ("#3c3836" "#282828" "#f4e8ba")
                     :secondary ("#504945" "#282828" "#a89984")))
     (monokai       (:primary ("#363731" "#272822" "#E5DDB7")
-                    :secondary ("#272822" "#272822" "#75715E")))
+                             :secondary ("#272822" "#272822" "#75715E")))
+    (arjen-grey    (:primary ("#242a34" "#2b303a" "#bdc3ce")
+                    :secondary ("#444444" "#343434" "#a0a5a0")))
     (wombat        (:primary ("#444444" "#343434" "#CCC9C0")
                     :secondary ("#444444" "#343434" "#99968b")))))
 
