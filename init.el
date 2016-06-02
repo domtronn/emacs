@@ -167,7 +167,14 @@
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
           ("m" "Meeting" entry (file+headline "~/org/meetings.org" "MEETINGS")
-           "* %^{Title} %^g\n  %?   \n    SCHEDULED: %(cfw:capture-schedule-day)"))
+           "* %^{Title} %^g\n  SCHEDULED: %(cfw:capture-schedule-day)\n  %?\n"))
+        org-agenda-todo-ignore-scheduled 'past
+        org-scheduled-past-days 0
+        org-deadline-warning-days 7
+        org-agenda-tags-todo-honor-ignore-options t
+        org-todo-keywords-for-agenda t
+        org-agenda-skip-deadline-prewarning-if-schedule t
+        org-agenda-skip-scheduled-if-done t
         org-agenda-custom-commands
         '(("n" "Agenda and all TODOs"
            ((agenda "" ((org-agenda-sorting-strategy '(time-up deadline-up))))
