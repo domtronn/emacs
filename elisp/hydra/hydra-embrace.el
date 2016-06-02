@@ -7,16 +7,16 @@
   "
 ^Mark^                     ^Pairs^             ^Quotes^
 ^^^^^^-----------------------^-------------------^--------^---------------------------
-_w_: word    _._: sentence   _P_: Inside Pairs   _O_: Inside Quotes 
-_s_: symbol  _h_: paragraph  _p_: Outside Pairs  _o_: Outside Quotes
+_w_: word    _._: sentence   _p_: Inside Pairs   _O_: Inside Quotes 
+_s_: symbol  _h_: paragraph  _P_: Outside Pairs  _o_: Outside Quotes
 _d_: defun
 
 "
   ("w" (hydra-embrace/add 'er/mark-word) :exit t :color teal)
   ("s" (hydra-embrace/add 'er/mark-symbol) :exit t :color teal)
   ("d" (hydra-embrace/add 'er/mark-defun) :exit t :color teal)
-  ("P" (hydra-embrace/add 'er/mark-inside-pairs) :exit t :color teal)
-  ("p" (hydra-embrace/add 'er/mark-outside-pairs) :exit t :color teal)
+  ("p" (hydra-embrace/add 'er/mark-inside-pairs) :exit t :color teal)
+  ("P" (hydra-embrace/add 'er/mark-outside-pairs) :exit t :color teal)
   ("O" (hydra-embrace/add 'er/mark-inside-quotes) :exit t :color teal)
   ("o" (hydra-embrace/add 'er/mark-outside-quotes) :exit t :color teal)
   ("." (hydra-embrace/add 'er/mark-text-sentence) :exit t :color teal)
