@@ -19,16 +19,23 @@
 ;;;###autoload
 (defun wlf:set-restore-layout-binding ()
   (interactive)
-  (set-window-configuration wlf:previous-layout))
+  (when wlf:previous-layout
+    (set-window-configuration wlf:previous-layout)
+    (setq wlf:previous-layout nil)))
 
 (defun wlf:agenda ()
   (let ((calendar-buf (get-buffer-create "*cfw-calendar*"))
         (agenda-buf (get-buffer-create "*Org Agenda*")))
-    (setq wlf:previous-layout (current-window-configuration))
-    (with-current-buffer agenda-buf (ignore-errors (org-agenda nil "n")))
-    (with-current-buffer calendar-buf
-      (cfw:open-org-calendar)
-      (cfw:change-view-two-weeks))
+    (unless (or (get-buffer-window agenda-buf)
+                (get-buffer-window calendar-buf))
+      (setq wlf:previous-layout (current-window-configuration)))
+    (when (not (get-buffer-window agenda-buf))
+      (with-current-buffer agenda-buf
+        (org-agenda nil "n")))
+    (when (not (get-buffer-window calendar-buf))
+      (with-current-buffer calendar-buf
+        (cfw:open-org-calendar)
+        (cfw:change-view-two-weeks)))
     (wlf:show (wlf:no-layout
       '(| (:left-size-ratio 0.46)
           agenda
@@ -36,6 +43,7 @@
       '((:name calendar :buffer calendar-buf)
         (:name agenda :buffer agenda-buf))))
     (with-current-buffer calendar-buf
+      (cfw:change-view-two-weeks)
       (cfw:refresh-calendar-buffer nil)
       (local-set-key (kbd "R") 'wlf:set-restore-layout-binding))
     (with-current-buffer agenda-buf
