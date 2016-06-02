@@ -711,7 +711,8 @@
 (defun cfw:capture-schedule-day ()
   (let* ((date (s-chop-prefix "<" (s-chop-suffix ">" (cfw:org-capture-day))))
          (h (format-time-string "%H"))
-         (m (format-time-string "%M"))
+         (M (string-to-number (format-time-string "%M")))
+         (m (format "%02d" (- M (mod M 30))))
          (H (1+ (string-to-number h))))
     (message "%s" (format "<%s %s:%s-%s:%s>" date h m H m ))))
 
