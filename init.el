@@ -797,6 +797,8 @@
 (use-package ac-emmet :after emmet-mode)
 (use-package ac-html :after web-mode)
 
+(use-package company :after auto-complete)
+
 (use-package auto-complete
   :demand t
   :config

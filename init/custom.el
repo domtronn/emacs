@@ -299,6 +299,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight extra-light :height 130 :width normal :foundry "nil" :family "Courier New"))))
+ '(ac-candidate-face ((t (:inherit (company-scrollbar-bg company-scrollbar-fg)))))
+ '(ac-selection-face ((t (:inherit company-tooltip-common-selection))))
+ '(ac-yasnippet-candidate-face ((t (:inherit company-scrollbar-bg :foreground "#e74c3c"))))
+ '(ac-yasnippet-selection-face ((t (:foreground "#c0392b"))))
  '(cfw:face-header ((t (:inherit \#F9690E :weight bold))))
  '(cfw:face-holiday ((t (:inherit (font-lock-doc-face cfw:face-day-title) :weight bold))))
  '(cfw:face-periods ((t (:inherit font-lock-warning-face :weight light))))
@@ -318,6 +322,9 @@
  '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
  '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
+ '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
+ '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
+ '(popup-tip-face ((t (:inherit (company-scrollbar-bg company-scrollbar-fg)))))
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;;; Font Manipulation:

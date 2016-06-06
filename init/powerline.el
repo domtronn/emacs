@@ -72,6 +72,8 @@
                     :secondary ("#1c1f26" "#1c1f26" "#a7adba")))
     (monokai       (:primary ("#363731" "#272822" "#E5DDB7")
                              :secondary ("#272822" "#272822" "#75715E")))
+    (suscolors     (:primary ("#5faf5f" "#262626" "#262626")
+                    :secondary ("#262626" "#262626" "#949494")))
     (arjen-grey    (:primary ("#242a34" "#2b303a" "#bdc3ce")
                     :secondary ("#444444" "#343434" "#a0a5a0")))
     (wombat        (:primary ("#444444" "#343434" "#CCC9C0")
