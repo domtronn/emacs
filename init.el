@@ -398,6 +398,9 @@
   :bind ("M-W" . hydra-smart-copy/body)
   :load-path "elisp/hydra")
 
+(use-package cycle-quotes
+  :bind ("H-C" . cycle-quotes))
+
 (use-package embrace
   :config (use-package hydra-embrace :load-path "elisp/hydra")
   :bind
