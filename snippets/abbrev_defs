@@ -2,6 +2,7 @@
 	'(
 		("afaict" "as far as I can tell" nil 1)
 		("wrt" "with respect to" nil 1)
+		("w" "with" nil 1)
 		("atm" "at the moment" nil 1)
 		("bc" "because" nil 1)
 		("k" "the" nil 1)
