@@ -790,9 +790,8 @@
   ;;                (bemify-emmet-string (emmet-expr-on-line))))
   )
 
-(use-package auto-complete-config :after auto-complete)
-
 ;; Custom Auto Complete Sources
+(use-package auto-complete-config :after auto-complete)
 (use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
 (use-package ac-emmet :after emmet-mode)
@@ -816,7 +815,9 @@
              ("C-n" . ac-next)
              ("C-p" . ac-previous))
 
-  :bind ("<M-tab>" . auto-complete))
+  :bind
+  ("<M-tab>" . auto-complete)
+  ("§" . auto-complete))
 
 (add-hook 'scss-mode-hook
           '(lambda () (ac-lambda
