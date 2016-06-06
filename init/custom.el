@@ -322,9 +322,11 @@
  '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
  '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
+ '(popup-menu-summary-face ((t (:inherit company-tooltip-annotation))))
  '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
  '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
- '(popup-tip-face ((t (:inherit (company-scrollbar-bg company-scrollbar-fg)))))
+ '(popup-summary-face ((t (:inherit (company-tooltip-annotation ac-candidate-face)))))
+ '(popup-tip-face ((t (:inherit (company-scrollbar-bg company-scrollbar-fg) :underline nil :slant normal :weight normal))))
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;;; Font Manipulation:
