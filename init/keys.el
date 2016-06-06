@@ -138,6 +138,9 @@
 (global-set-key (kbd "<s-return>") 'eval-defun)
 (global-set-key (kbd "<s-S-return>") 'eval-buffer)
 
+;; Regexp snippets
+(global-set-key (kbd "C-c C-v i") '(lambda () (interactive) (insert "\\(.*?\\)")))
+
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
 
