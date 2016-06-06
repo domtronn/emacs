@@ -735,6 +735,12 @@
     (message "✓ Saving window layout")
     (setq dgc/window-config (current-window-configuration))))
 
+(global-set-key (kbd "H-S-SPC") 'wrap-space)
+(defun wrap-space ()
+  (interactive)
+  (er/mark-inside-pairs)
+  (embrace--add-internal (region-beginning) (region-end) ? ))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
