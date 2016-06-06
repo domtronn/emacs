@@ -724,6 +724,17 @@
             (emacs-lisp-docstring-fill-column t))
         (fill-paragraph nil region)))
 
+(global-set-key (kbd "<s-f12>") 'dgc/save-or-restore-window-config)
+(defvar dgc/window-config nil "A variable to store current window config")
+(defun dgc/save-or-restore-window-config ()
+  (interactive)
+  (if dgc/window-config
+      (progn (message "♺ Restoring window layout")
+           (set-window-configuration dgc/window-config)
+           (setq dgc/window-config nil))
+    (message "✓ Saving window layout")
+    (setq dgc/window-config (current-window-configuration))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
