@@ -735,7 +735,7 @@
     (message "✓ Saving window layout")
     (setq dgc/window-config (current-window-configuration))))
 
-(global-set-key (kbd "H-S-SPC") 'wrap-space)
+(global-set-key (kbd "M-S-SPC") 'wrap-space)
 (defun wrap-space ()
   (interactive)
   (er/mark-inside-pairs)
