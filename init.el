@@ -183,8 +183,10 @@
   ;; Export Backends
   (use-package ox-twbs)
   (use-package ox-reveal)
+  (use-package org-wc)
   (bind-keys :map org-mode-map
-             ("C-c C-x C-l"   . org-toggle-link-display))
+             ("C-c C-x C-l"   . org-toggle-link-display)
+             ("M-=" . org-wc-display))
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'flyspell-mode)
