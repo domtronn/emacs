@@ -627,7 +627,6 @@
 (use-package markdown-mode
   :mode ("\\.md" . markdown-mode)
   :config
-  (add-hook 'markdown-mode-hook 'ac-emoji-setup)
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (bind-keys* ("M-<left>" . backward-word)
               ("<M-S-left>" . backward-word)
@@ -789,15 +788,23 @@
 
 ;; Custom Auto Complete Sources
 (use-package auto-complete-config :after auto-complete)
-(use-package ac-css :load-path "~/.env/elisp" :after (web-mode scss-mode))
 
 (use-package ac-emmet :after emmet-mode)
-(use-package ac-html :after web-mode)
+(use-package ac-html
+  :after web-mode
+  :config
+  (add-hook 'web-mode-hook 'ac/setup-html)
+  (defun ac/setup-html ()
+    (require 'ac-html-default-data-provider)
+    (ac-html-enable-data-provider 'ac-html-default-data-provider)
+    (setq ac-sources '(ac-source-html-tag
+                       ac-source-html-attr
+                       ac-source-html-attrv))
+    (auto-complete-mode)))
 
 (use-package company :after auto-complete)
 
 (use-package auto-complete
-  :demand t
   :config
   (ac-config-default)
   (set-default 'ac-sources
@@ -817,16 +824,6 @@
   :bind
   ("<M-tab>" . auto-complete)
   ("§" . auto-complete))
-
-(add-hook 'scss-mode-hook
-          '(lambda () (ac-lambda
-                  'ac-source-yasnippet
-                  'ac-source-css-property
-                  'ac-source-css-id
-                  'ac-source-css-selector
-                  'ac-source-scss-colors)
-             (emmet-mode)
-             (ac-emmet-css-setup)))
 
 (add-hook 'LaTeX-mode-hook
             '(lambda () (ac-lambda
@@ -1013,6 +1010,7 @@
 
 (when window-system
   (load-theme 'aurora)
+  (remove-mode-line-box)
   (server-start))
 
 (unless window-system
