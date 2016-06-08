@@ -531,7 +531,6 @@
                (push '("err" . ?ε) prettify-symbols-alist)
                (push '("return" . ?⇐) prettify-symbols-alist)
                (push '("undefined" . ?∅) prettify-symbols-alist)
-               (push '("error" . ?Ε) prettify-symbols-alist)
                (push '("_.map" . ?↦) prettify-symbols-alist)
                (push '("R.map" . ?↦) prettify-symbols-alist)
                (push '("_.compose" . ?∘) prettify-symbols-alist)
@@ -604,10 +603,9 @@
           (lambda () (set (make-local-variable 'compile-command)
                      (format "esformatter -i %s" buffer-file-name))))
 
-(use-package json-snatcher :after json)
 (use-package json
   :mode ("\\.json" . json-mode)
-  :config (add-hook 'json-mode-hook '(lambda () (jpop-stylise 2 t))))
+  :config (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
 
 (use-package engine-mode
   :config (engine-mode t)
