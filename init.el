@@ -754,9 +754,13 @@
   :config
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
+             ("<backtab>" . web-mode-complete)
              ("s-/" . web-mode-comment-or-uncomment)
              ("M-P" . key-combo-mode)
              ("C-o" . emmet-expand-yas))
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-attr-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2)
   (setq web-mode-ac-sources-alist
         '(("html" . (ac-source-html-tag
                      ac-source-words-in-same-mode-buffers
