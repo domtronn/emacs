@@ -234,10 +234,10 @@
   :config
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
+  (add-hook 'dired-mode-hook '(lambda () (local-set-key (kbd "C-p") 'previous-line)))
   (bind-keys :map dired-mode-map
              ("<right>" . dired-find-file)
              ("<left>" . dired-up-directory)
-             ("C-p" . previous-line)
              ("q" . kill-all-dired-buffers)))
 
 (use-package dired-filter
