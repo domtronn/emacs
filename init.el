@@ -52,8 +52,7 @@
     (local-set-key "a" 'org-agenda)
     (local-set-key "di" 'docker-images)
     (local-set-key "dc" 'docker-containers)
-    (local-set-key "p" 'jpop-change)
-    (local-set-key "P" 'jpop-change-and-find-file)))
+    (local-set-key "p" 'projectile-switch-project)))
 
 (eval-when-compile (require 'use-package))
 (use-package bind-key)
@@ -374,19 +373,16 @@
           (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
   :bind ("M-{" . flyspell-toggle))
 
-(use-package jpop
-  :load-path "elisp/projectable"
+(use-package projectile
+  :commands (projectile-switch-project)
+  :bind ("C-c p p" . projectile-switch-project)
   :config
-  (jpop-global-mode)
-  (add-hook 'jpop-toggle-test-fallback-hook 'jpop-find-test)
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy)
   :bind
-  ([C-tab]     . jpop-find-file)
-  ("C-S-<tab>" . jpop-git-find-file)
-  ("C-x p f c" . jpop-change-and-find-file)
-  ("C-x p c"   . jpop-change)
-  ("C-x C-b"   . jpop-switch-buffer)
-  ("C-o"       . jpop-find-file)
-  ("C-x C-p"   . jpop-switch-and-find-file))
+  ("C-o" . projectile-find-file)
+  ("C-c f" . projectile-ag)
+  ("C-c s-p" . projectile-ibuffer))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
@@ -888,7 +884,7 @@
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-c e" . magit-vc-ediff)
-                     ("C-<tab>" . jpop-find-file)))
+                     ("C-<tab>" . projectile-find-file)))
 
 
 (use-package yahoo-weather
@@ -913,29 +909,6 @@
   :load-path "elisp"
   :init   (add-hook 'after-init-hook 'update-powerline)
   :config (advice-add 'load-theme :after 'update-powerline))
-
-(use-package boop :load-path "elisp/boop"
-  :defer t
-  :init
-  (add-hook 'boop-update-hook
-            '(lambda () (let ((local-config))
-                     (deboop-group 'jpop)
-                     (when (and (bound-and-true-p jpop-project-plist)
-                                (plist-get jpop-project-plist :boop)
-                                (boundp 'jpop-id))
-                       (maphash
-                        (lambda (key value)
-                          (setq local-config (append local-config
-                                        (list (list (intern key)
-                                                    :script (intern (plist-get value :script))
-                                                    :group 'jpop
-                                                    :args (plist-get value :args)
-                                                    :onselect `(lambda () (interactive) (browse-url (plist-get ,value :onclick))))))))
-                        (plist-get jpop-project-plist :boop)))
-                     (setq boop-config-alist (append boop-config-alist local-config))
-                     (boop--sync-result-and-config))))
-
-  :commands (boop-start))
 
 (use-package window-numbering
   :init
