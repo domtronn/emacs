@@ -1,1 +1,2 @@
-import $1 from '$0'
+import $1 from '$2'
+$0
