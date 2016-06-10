@@ -203,39 +203,60 @@
   "
  ^Layouts^           ^|^ ^Sizing^  ^|^ Splitting
 -------------------^+^---------^+^----------------
- _S_: System         |  ^ ^ _k_ ^ ^  | _d_: Kill
- _D_: Docker         |  _h_ ^+^ _l_  | _x_: Remove
- _T_: Triple Split   |  ^ ^ _j_ ^ ^  | _-_: Horizontal
- _C_: CodePen        |         | _|_: Vertical
- _E_: Ert Runner
- _W_: JavaScript
- _R_: Ramda
- ___: Lodash
- _s_: Start Up
- _a_: Agenda
+ _S_/_s_: System         |  ^ ^ _k_ ^ ^  | _z_: Kill
+ _D_/_d_: Docker         |  _h_ ^+^ _l_  | _x_: Remove
+ _T_/_t_: Triple Split   |  ^ ^ _j_ ^ ^  | _-_: Horizontal
+ _C_/_c_: CodePen        |         | _|_: Vertical
+ _E_/_e_: Ert Runner
+ _W_/_w_: JavaScript
+ _R_/_r_: Ramda
+ ___/_-_: Lodash
+ _A_/_a_: Agenda
 
 "
-  ("S" (wlf:system-layout))
-  ("T" (wlf:triple-split-layout))
-  ("C" (wlf:codepen-layout))
-  ("E" (wlf:ert-layout))
-  ("W" (wlf:javascript-repls))
-  ("R" (wlf:ramda))
-  ("s" (wlf:startup))
+  ("s" (wlf:system-layout))
+  ("S" (wlf:system-layout) :exit t)
+
+  ("t" (wlf:triple-split-layout))
+  ("T" (wlf:triple-split-layout) :exit t)
+
+  ("c" (wlf:codepen-layout))
+  ("C" (wlf:codepen-layout) :exit t)
+
+  ("e" (wlf:ert-layout))
+  ("E" (wlf:ert-layout) :exit t)
+
+  ("w" (wlf:javascript-repls))
+  ("W" (wlf:javascript-repls) :exit t)
+
+  ("r" (wlf:ramda))
+  ("R" (wlf:ramda) :exit t)
+
+  ;; ("s" (wlf:startup))
   ("a" (wlf:agenda))
-  ("_" (wlf:lodash))
-  ("D" (wlf:docker))
-  ("r" (wlf:select-window) "select")
+  ("A" (wlf:agenda) :exit t)
+
+  ("-" (wlf:lodash) :exit t)
+  ("_" (wlf:lodash) :exit t)
+
+  ("d" (wlf:docker))
+  ("D" (wlf:docker) :exit t)
+
+  ("/" (wlf:select-window) "select")
   ("k" (enlarge-window 1))
-  ("j" (shrink-window 1))
-  ("l" (enlarge-window-horizontally 1))
-  ("h" (shrink-window-horizontally 1))
   ("K" (enlarge-window 10))
+
+  ("j" (shrink-window 1))
   ("J" (shrink-window 10))
+
+  ("l" (enlarge-window-horizontally 1))
   ("L" (enlarge-window-horizontally 10))
+
+  ("h" (shrink-window-horizontally 1))
   ("H" (shrink-window-horizontally 10))
+
   ("x" (delete-window))
-  ("d" (lambda () (kill-buffer) (delete-window)))
+  ("z" (lambda () (kill-buffer) (delete-window)))
   ("|" (split-window-horizontally))
   ("-" (split-window-vertically))
   ("q" nil "quit"))
