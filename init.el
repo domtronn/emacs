@@ -695,6 +695,9 @@
   :config   (setq yas-snippet-dirs (concat base-path "/snippets")))
 
 (use-package neotree
+  :load-path "elisp/neotree"
+  :config (setq neo-theme 'file-icons)
+  (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   :bind ([f1] . neotree-toggle)
   ("<S-f1>" . neotree-find))
 
