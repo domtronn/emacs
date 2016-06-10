@@ -753,6 +753,14 @@
   (er/mark-inside-pairs)
   (embrace--add-internal (region-beginning) (region-end) ? ))
 
+(global-set-key (kbd "M-K") 'kill-assignment)
+(defun kill-assignment ()
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (let ((start (+ 3 (search-backward " = " (line-beginning-position) t))))
+      (kill-region start (line-end-position))
+      (goto-char start))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
