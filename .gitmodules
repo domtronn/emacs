@@ -16,3 +16,6 @@
 [submodule "elisp/eslint-reader"]
 	path = elisp/eslint-reader
 	url = git@github.com:domtronn/eslint-reader.el.git
+[submodule "elisp/neotree"]
+	path = elisp/neotree
+	url = git@github.com:domtronn/emacs-neotree.git
