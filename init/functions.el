@@ -658,6 +658,18 @@
 (defun node-repl () "Open a node repl" (interactive) (repl-make "node-repl" "node"))
 (defun lodash-repl () "Open a lodash repl" (interactive) (repl-make "lodash-repl" "n_"))
 
+(defun send-to-repl ()
+  (interactive)
+  (let ((buf (or (and (get-buffer-window "*ramda-repl*") (get-buffer "*ramda-repl*"))
+                 (and (get-buffer-window "*lodash-repl*") (get-buffer "*lodash-repl*"))
+                 (and (get-buffer-window "*node-repl*") (get-buffer "*node-repl*")))))
+    (when (not buf) (error "Could not find repl to send to"))
+    (let ((proc (get-buffer-process buf))
+          (content (if (region-active-p)
+                       (buffer-substring (region-beginning) (region-end))
+                     (buffer-string))))
+      (comint-send-string proc (format "%s\n" content)))))
+
 ;; Docker helper functions
 
 (defun docker-containers--remove-trailing-whitespace (proc string)

@@ -549,6 +549,7 @@
 
   (bind-keys :map js2-mode-map
              ("C-x c" . grunt-exec)
+             ("C-c x" . send-to-repl)
 
              ;; JS2 Refactor things
              ("C-c C-m" . context-coloring-mode)
@@ -741,10 +742,7 @@
 (use-package pug-mode :mode ("\\.pug$" . pug-mode))
 
 (use-package web-mode
-  :load-path "~/.env/elisp/web-mode/"
-
   :mode
-  ("\\.phtml$" . web-mode)
   ("\\.html$" . web-mode)
   ("\\.spv$" . web-mode)
   ("\\.erb$" . web-mode)
