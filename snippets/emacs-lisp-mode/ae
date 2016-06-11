@@ -1,0 +1,4 @@
+#name: alist entry
+#key: ae
+# --
+($1 . $2)$0
