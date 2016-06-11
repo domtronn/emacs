@@ -322,6 +322,8 @@
  '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
  '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
+ '(neo-dir-link-face ((t (:inherit default))))
+ '(neo-file-link-face ((t (:inherit default))))
  '(popup-menu-summary-face ((t (:inherit company-tooltip-annotation))))
  '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
  '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
