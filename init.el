@@ -661,7 +661,7 @@
   :after markdown-mode
   :load-path "elisp/emacs-livedown"
   :config (bind-keys :map markdown-mode-map
-                     ("C-c p" . livedown:preview)))
+                     ("C-c C-c p" . livedown:preview)))
 
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
 (use-package scss-mode :mode ("\\.scss$" . scss-mode))
