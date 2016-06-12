@@ -377,10 +377,13 @@
     (interactive)
     (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
   (use-package flyspell-popup :defer t)
-  :config (bind-keys :map flyspell-mode-map
-                     ("s-]" . flyspell-goto-next-error)
-                     ("M-/" . flyspell-popup-correct))
-          (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
+  :config
+  (bind-keys :map flyspell-mode-map
+             ("s-]" . flyspell-goto-next-error)
+             ("s-." . flyspell-goto-next-error)
+             ("s-," . flyspell-popup-correct))
+  (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
+  (setq ispell-dictionary "english")
   :bind ("M-{" . flyspell-toggle))
 
 (use-package projectile
