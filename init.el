@@ -352,10 +352,6 @@
   :load-path "eslip"
   :after flycheck)
 
-(use-package flycheck-pos-tip
-  :after flycheck
-  :config (flycheck-pos-tip-mode))
-
 (use-package flycheck
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
