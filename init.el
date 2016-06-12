@@ -702,10 +702,20 @@
 
 (use-package neotree
   :load-path "elisp/neotree"
-  :config (setq neo-theme 'file-icons)
+  :config
+  (setq neo-theme 'file-icons)
+  (setq neo-show-updir-line nil)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
-  :bind ([f1] . neotree-toggle)
-  ("<S-f1>" . neotree-find))
+  (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
+  (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
+  (defun neotree-projectile ()
+    (interactive )
+    (if (neo-global--window-exists-p)
+        (neotree-hide)
+      (neotree-find (or (ignore-errors (projectile-project-root))
+                        (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
+                        (getenv "HOME")))))
+  :bind ([f1] . neotree-projectile))
 
 (use-package eshell
   :defer t
