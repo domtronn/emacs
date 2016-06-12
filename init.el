@@ -619,6 +619,7 @@
   (setq engine/browser-function browse-url-browser-function)
   (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")
   (defengine google "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s" :keybinding "g")
+  (defengine thesaurus "http://www.thesaurus.com/browse/%s?s=t" :keybinding "t")
   (defengine devdocs-ramda "http://devdocs.io/ramda/index#%s" :keybinding "R")
   (defengine devdocs "http://devdocs.io/#q=%s" :keybinding "d")
   (defengine eslint "http://eslint.org/docs/rules/%s"))
