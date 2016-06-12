@@ -391,6 +391,7 @@
   :bind
   ("C-o" . projectile-find-file)
   ("C-c f" . projectile-ag)
+  ("C-x C-b" . projectile-switch-to-buffer)
   ("C-c s-p" . projectile-ibuffer))
 
 (use-package visual-regexp
