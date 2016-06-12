@@ -708,6 +708,7 @@
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
+  (add-hook 'magit-mode-hook 'neotree-hide)
   (defun neotree-projectile ()
     (interactive )
     (if (neo-global--window-exists-p)
