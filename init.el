@@ -519,6 +519,7 @@
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :config
+  (setq js2-indent-switch-body t)
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
