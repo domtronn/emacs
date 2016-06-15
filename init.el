@@ -192,6 +192,8 @@
              ("s-f" . org-next-link)
              ("s-o" . org-open-at-point)
              ("s-b" . org-previous-link))
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'flyspell-mode)
