@@ -145,6 +145,7 @@
   (let (result)
     (save-excursion
       (with-current-buffer (buffer-name)
+        (goto-char (point-min))
         (while (search-forward-regexp goto-address-url-regexp nil t)
           (setq result (append (list (match-string 0)) result)))))
     (browse-url
