@@ -33,8 +33,9 @@
 (global-set-key [M-tab] 'dabbrev-expand)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 
+(global-set-key (kbd "<s-mouse-1>") 'goto-address-at-mouse)
+
 (global-set-key (kbd "C-x c") 'compile)
-(global-set-key (kbd "C-x |") 'toggle-window-split)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)
@@ -80,6 +81,8 @@
 ;; Tag searching
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 (global-set-key (kbd "H-<") 'pop-to-mark-command)
+(global-set-key (kbd "H-s-,") '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))))
+
 
 ;; move and resize windows
 (global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
@@ -107,8 +110,6 @@
 
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
-
-(global-set-key (kbd "C-?") 'devdocs-search)
 
 (global-set-key (kbd "C-c C-,") 'whitespace-mode)
 (global-set-key (kbd "C-c C-.") 'whitespace-cleanup)

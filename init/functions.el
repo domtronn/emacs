@@ -32,21 +32,21 @@
   (if (buffer-modified-p) (save-buffer))
   (let ((f1 (current-frame-configuration))
         (retcode (shell-command (concat "rubber --pdf " (buffer-file-name)))))
-    (message "Return code : %s" retcode)
+    (message "Return code ❯ %s" retcode)
     (if (= retcode 0) (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))))
 
 (defun xelatex-make ()
   (interactive)
-  (if (string-equal (buffer-mode (buffer-name)) "latex-mode")
+  (if (string-equal major-mode "latex-mode")
       (progn
         (setq buffer-save-without-query t)
         (if (buffer-modified-p) (save-buffer))
         (let ((f1 (current-frame-configuration))
               (retcode (shell-command (concat "xelatex " (buffer-file-name)))))
-          (message "Return code : %s" retcode)
+          (message "Return code ❯ %s" retcode)
           (if (= retcode 0)
               (progn
-                (if (buffer-exists (concat (file-name-sans-extension (buffer-name)) ".pdf"))
+                (if (get-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf"))
                     (kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
                 (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
                 (delete-other-windows)))))
@@ -130,13 +130,6 @@
 ;; Opening Files in other applications ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun open-in-and-activate-intellj ()
-  "Opens the current file in intellij for n00b5!"
-  (interactive)
-  (shell-command
-   (format "/Applications/IntelliJ\\ IDEA\\ 14\\ CE.app/Contents/MacOS/idea %s; osascript -e \"tell application \\\"IntelliJ Idea 14 CE\\\" to activate\""
-           (buffer-file-name))))
-
 (defun open-in (ed &optional file)
   "Opens the current file in ED or specified FILE."
   (shell-command (format "%s %s" ed (or file buffer-file-name))))
@@ -146,24 +139,31 @@
   (interactive)
   (open-current-file))
 
+
+(defun open-urls-in-file ()
+  (interactive)
+  (let (result)
+    (save-excursion
+      (with-current-buffer (buffer-name)
+        (while (search-forward-regexp goto-address-url-regexp nil t)
+          (setq result (append (list (match-string 0)) result)))))
+    (browse-url
+     (completing-read "Open URL: "
+                      (-uniq (--map (s-chop-suffix "\)" it) result))))))
+
 (defun open-current-file ()
   "Open the current file in different things."
   (interactive)
   (let ((type (completing-read
-               "Open current file in editor: " '("IntelliJ IDEA" "Sublime Text" "Atom" "Chrome" "Finder" "Multiple URLs" "URL") nil nil)))
+               "Open current file in editor ❯ " '("Sublime Text" "Atom" "Chrome" "Finder" "Multiple URLs" "URL") nil nil)))
     (cond ((string-equal type "Sublime Text") (open-in "subl"))
           ((string-equal type "Atom") (open-in "atom"))
-          ((string-equal type "IntelliJ IDEA") (open-in-and-activate-intellj))
           ((string-equal type "Chrome") (browse-url (buffer-file-name)))
           ((string-equal type "Multiple URLs")
            (call-interactively 'link-hint-open-multiple-links))
           ((string-equal type "URL")
            (if (browse-url-url-at-point) (browse-url-at-point) (link-hint-open-link)))
           ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
-
-(defun buffer-mode (buf)
-  "Return the major mode associated with BUF."
-  (with-current-buffer buf major-mode))
 
 (defun isearch-yank-from-start ()
   "Move to beginning of word before yanking word in `isearch-mode`."
@@ -193,36 +193,9 @@
         (vc-dir repo-root))))
 
 (defun quick-term (name)
-  (interactive "sEnter terminal name : ")
+  (interactive "sEnter terminal name ❯ ")
   (ansi-term "/bin/bash" name))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Custom utilities for using multiple cursors ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun mc/malt ()
-  "Shortcut for `mc/mark-all-symbols-like-this`."
-  (interactive)
-  (mc/mark-all-symbols-like-this))
-
-(defun malt ()
-  "Call `mc/mark-all-like-this` on word at point."
-  (interactive)
-  (er/mark-symbol)
-  (mc/mark-all-symbols-like-this))
-
-(defun mc/dalt ()
-  "Shortcut for `mc/mark-all-symbols-like-this-in-defun`."
-  (interactive)
-  (mc/mark-all-symbols-like-this-in-defun))
-
-(defun dalt ()
-  "Call `mc/mark-all-like-this-in-defun` on word at point."
-  (interactive)
-  (er/mark-symbol)
-  (mc/mark-all-symbols-like-this-in-defun))
-
-(defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
 
 ;; ============================================================================
 (defun dgc-comment ()
@@ -239,7 +212,7 @@
 
 (defun kill-buffer-regexps (r)
   "Kill all buffers matching regexp R."
-  (interactive "sEnter Regexp: ")
+  (interactive "sEnter Regexp ❯ ")
   (let ((killable-buffers (-filter '(lambda (b) (string-match r (buffer-name b))) (buffer-list))))
     (when (yes-or-no-p (format "Kill %d buffers matching \"%s\"? " (length killable-buffers) r))
       (mapc #'kill-buffer killable-buffers))))
@@ -273,7 +246,7 @@
 
 (defun my-ediff-qh ()
   "Function to be called when ediff quits."
-  (if (buffer-exists "*vc-dir*")
+  (if (get-buffer "*vc-dir*")
       (progn (switch-to-buffer "*vc-dir*")
              (delete-other-windows))
     (when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config))))
@@ -290,21 +263,6 @@
           (kill-buffer buffer)))
       (message "Killed %i dired buffer(s)." count))))
 
-;; ============================================================================
-;; Copying Things
-;; ============================================================================
-
-(defun copy-file-name ()
-  "Returns a random colour"
-  (interactive)
-  (message (concat "Copied " (buffer-file-name)))
-  (kill-new (buffer-file-name)))
-
-(defun copy-file-dir ()
-  "Copies the files directory to the kill region"
-  (interactive)
-  (message (concat "Copied " (file-name-directory (buffer-file-name))))
-  (kill-new (file-name-directory (buffer-file-name))))
 
 ;; ============================================================================
 (defun random-hex ()
@@ -354,23 +312,6 @@
     (delete-trailing-whitespace)
     (end-of-line)
     (insert ";")))
-
-(defun setup-cpp-mode ()
-  (interactive)
-  (let ((cb (get-buffer (buffer-name))))
-    (get-buffer-create "*compilation*")
-    (unless (buffer-exists "*cpp-runner*")
-          (quick-term "cpp-runner"))
-    (switch-to-buffer cb)
-    (wlf:show cpp-layout)))
-
-(defun setup-beacon-mode ()
-  (interactive)
-  (let ((cb (get-buffer (buffer-name))))
-    (unless (buffer-exists "*gulp-watch*")
-          (quick-term "gulp-watch"))
-    (switch-to-buffer cb)
-    (wlf:show beacon-layout)))
 
 (defun kill-whitespace ()
   "Kill the whitespace between two non-whitespace characters."
@@ -431,36 +372,14 @@
 
 (defun font-scale (op &optional amount)
   "Apply function operator OP (+/-) to scale face attribute height by AMOUNT."
-  (let ((height (face-attribute 'default :height)))
-    (set-face-attribute 'default nil :height (funcall op height (or amount 10)))))
-
-(defun toggle-window-split ()
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-         (next-win-buffer (window-buffer (next-window)))
-         (this-win-edges (window-edges (selected-window)))
-         (next-win-edges (window-edges (next-window)))
-         (this-win-2nd (not (and (<= (car this-win-edges)
-                     (car next-win-edges))
-                     (<= (cadr this-win-edges)
-                     (cadr next-win-edges)))))
-         (splitter
-          (if (= (car this-win-edges)
-             (car (window-edges (next-window))))
-          'split-window-horizontally
-        'split-window-vertically)))
-    (delete-other-windows)
-    (let ((first-win (selected-window)))
-      (funcall splitter)
-      (if this-win-2nd (other-window 1))
-      (set-window-buffer (selected-window) this-win-buffer)
-      (set-window-buffer (next-window) next-win-buffer)
-      (select-window first-win)
-      (if this-win-2nd (other-window 1))))))
+  (let* ((height (face-attribute 'default :height))
+         (mode-line-height (face-attribute 'mode-line :height)))
+    (set-face-attribute 'default nil :height (funcall op height (or amount 10)))
+    (set-face-attribute 'mode-line nil :height powerline/default-height)
+    (set-face-attribute 'mode-line-inactive nil :height powerline/default-height)))
 
 (defun elisp-debug (var)
-  (interactive "sDebug variable: ")
+  (interactive "sDebug variable ❯ ")
   (insert (concat "(message \"" (capitalize var) ": %s\" " var ")")))
 
 (defun smart-delete-pair (&rest args)
@@ -516,6 +435,10 @@
           (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
         (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/youcanneverleave.wav && exit 0\\\"\""))))
   (restart-emacs))
+
+(defun gallery-music ()
+  (interactive)
+  (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/gallery.m4a && exit 0\\\"\""))
 
 (defun dired-mark-duplicate-dirs ()
   "Mark all directories which have a common part."
@@ -578,39 +501,28 @@
              (brace (and (goto-char restore) (search-forward "}" nil t))))
         (when (and quote brace) (< quote brace))))))
 
-(defun open-urls-in-file ()
-  (interactive)
-  (let (result)
-    (save-excursion
-      (with-current-buffer (buffer-name)
-        (while (search-forward-regexp goto-address-url-regexp nil t)
-          (setq result (append (list (match-string 0)) result)))))
-    (browse-url
-     (completing-read "Open URL: "
-                      (-uniq (--map (s-chop-suffix "\)" it) result))))))
-
-(defun bemify-emmet-string (expr)
-  "Pre process an emmet string to be bemified."
-	(let* ((split (split-string (car expr) "|"))
-				 (filter (cadr split))
-				 (emmet-s (car split)))
-		(when (equal filter "bem")
-			(let ((bemified
-						 (with-temp-buffer
-							 (insert emmet-s)
-							 (goto-char (point-min))
-							 (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
-								 (let ((base-class (match-string 1))
-											 (restore-point (point)))
-									 (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
-										 (replace-match (format ".%s%s" base-class (match-string 1))))
-									 (goto-char restore-point)))
-							 (buffer-string))))
-				(when (not (equal emmet-s bemified))
-					(with-current-buffer (current-buffer)
-						(goto-char (cadr expr))
-						(delete-region (cadr expr) (caddr expr))
-						(insert bemified)))))))
+;; (defun bemify-emmet-string (expr)
+;;   "Pre process an emmet string to be bemified."
+;; 	(let* ((split (split-string (car expr) "|"))
+;; 				 (filter (cadr split))
+;; 				 (emmet-s (car split)))
+;; 		(when (equal filter "bem")
+;; 			(let ((bemified
+;; 						 (with-temp-buffer
+;; 							 (insert emmet-s)
+;; 							 (goto-char (point-min))
+;; 							 (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
+;; 								 (let ((base-class (match-string 1))
+;; 											 (restore-point (point)))
+;; 									 (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
+;; 										 (replace-match (format ".%s%s" base-class (match-string 1))))
+;; 									 (goto-char restore-point)))
+;; 							 (buffer-string))))
+;; 				(when (not (equal emmet-s bemified))
+;; 					(with-current-buffer (current-buffer)
+;; 						(goto-char (cadr expr))
+;; 						(delete-region (cadr expr) (caddr expr))
+;; 						(insert bemified)))))))
 
 (defun dir-depth (dir)
   "Gives depth of directory DIR"
@@ -630,16 +542,6 @@
        ((and eslintrc-loc (not jshintrc-loc)) 'javascript-eslint)
        ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
        (t 'javascript-eslint)))))
-
-(defun engine/eslint ()
-  "Open the doc for the rule violation under point"
-  (interactive)
-  (let ((e (flycheck-display-error-at-point)))
-    (when (not e) (error "No flycheck error at point"))
-    (let ((rule (with-temp-buffer (insert e)
-                  (string-match "\\[\\(.*?\\)\\]" (format " %s"(buffer-string)))
-                  (match-string-no-properties 1)))
-          (engine/search-eslint rule)))))
 
 (defun other-window-everything (thing)
   (cond
@@ -747,12 +649,6 @@
     (message "✓ Saving window layout")
     (setq dgc/window-config (current-window-configuration))))
 
-(global-set-key (kbd "M-S-SPC") 'wrap-space)
-(defun wrap-space ()
-  (interactive)
-  (er/mark-inside-pairs)
-  (embrace--add-internal (region-beginning) (region-end) ? ))
-
 (global-set-key (kbd "M-K") 'kill-assignment)
 (defun kill-assignment ()
   (interactive)
@@ -761,10 +657,33 @@
       (kill-region start (line-end-position))
       (goto-char start))))
 
+(defun projectile-test-suffix (project-type)
+  "Find default test files suffix based on PROJECT-TYPE."
+  (cond
+   ((member project-type '(rebar)) "_SUITE")
+   ((member project-type '(emacs-cask)) "-test")
+   ((member project-type '(rails-rspec ruby-rspec)) "_spec")
+   ((member project-type '(rails-test ruby-test lein-test boot-clj go)) "_test")
+   ((member project-type '(scons)) "test")
+   ((member project-type '(maven symfony)) "Test")
+   ((member project-type '(gradle gradlew grails)) "Spec")
+   ((member project-type '(grunt generic)) "Spec")
+   ((member project-type '(gulp)) "-spec")))
+
+(global-set-key (kbd "C--") 'itunes-remote)
+(defun itunes-remote (pfx)
+  (interactive "P")
+  (let* ((prefix (cond
+                  ((equal pfx '(4)) '("-a" . "Arists "))
+                  ((equal pfx '(16)) '("-A" . "Albums "))
+                  (t '("" . ""))))
+         (search-term (read-string (format "Search %s❯ " (cdr prefix))))
+         (cmd-f (format "itunes-remote \"search \\\"%s\\\" %s\" > /dev/null" search-term (car prefix))))
+    (shell-command cmd-f)))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
-;; eval: (add-hook 'after-save-hook '(lambda () (byte-compile-file (buffer-file-name))) nil t)
 ;; End:
