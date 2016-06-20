@@ -208,7 +208,7 @@
  '(package-user-dir
    (expand-file-name
     (format "%s/%s/elpa" common-load-dir common-package-dir)))
- '(popwin:popup-window-height 20)
+ '(popwin:popup-window-height 15)
  '(popwin:special-display-config
    (quote
     (("*Flycheck errors*" :regexp nil :position bottom :stick t)
