@@ -153,7 +153,9 @@
   :init
   (setq org-src-fontify-natively t
         org-agenda-files
-        '("~/org/meetings.org" "~/org/tasks.org" "~/org/birthdays.org" "~/org/reminders.org")
+        '("~/Dropbox/Documents/Org/meetings.org"
+          "~/Dropbox/Documents/Org/tasks.org"
+          "~/Dropbox/Documents/Org/birthdays.org")
         org-ellipsis "⤵"
         org-todo-keywords
         '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
@@ -161,11 +163,11 @@
         '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
           ("WAITING"     . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
         org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
            "* TODO %?\n %t")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+          ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
-          ("m" "Meeting" entry (file+headline "~/org/meetings.org" "MEETINGS")
+          ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS")
            "* %^{Title} %^g\n  SCHEDULED: %(cfw:capture-schedule-day)\n  %?\n"))
         org-agenda-todo-ignore-scheduled 'past
         org-scheduled-past-days 0
@@ -198,6 +200,7 @@
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
+  (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
   (run-with-idle-timer 300 t 'wlf:agenda)
   (add-hook 'org-finalize-agenda-hook
             '(lambda () (org-color-tag "Birthdays:" "#27ae60")
@@ -244,8 +247,12 @@
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
   (add-hook 'dired-mode-hook '(lambda () (local-set-key (kbd "C-p") 'previous-line)))
+  (defun dired-find-only-file ()
+     (interactive)
+     (when (file-directory-p (dired-get-file-for-visit))
+       (dired-find-file)))
   (bind-keys :map dired-mode-map
-             ("<right>" . dired-find-file)
+             ("<right>" . dired-find-only-file)
              ("<left>" . dired-up-directory)
              ("q" . kill-all-dired-buffers)))
 
@@ -482,9 +489,8 @@
 (use-package avy
   :bind
   ("H-\\" . avy-goto-line)
-  ("H-\"" . avy-goto-char)
-  ("H-'" . avy-goto-word-1)
-  ("H-;" . avy-goto-word-0)
+  ("C-\"" . avy-goto-char)
+  ("C-'" . avy-goto-word-1)
   :config
   (avy-setup-default)
   (bind-keys ("M-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
@@ -779,8 +785,7 @@
              ("M-;" . semi-colon-end)
              ("<backtab>" . web-mode-complete)
              ("s-/" . web-mode-comment-or-uncomment)
-             ("M-P" . key-combo-mode)
-             ("C-o" . emmet-expand-yas))
+             ("M-P" . key-combo-mode))
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-attr-indent-offset 2)
   (setq web-mode-markup-indent-offset 2)
@@ -861,7 +866,6 @@
 (add-hook 'LaTeX-mode-hook
           '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'darkroom-mode)
 
 (add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
 (add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
@@ -888,7 +892,7 @@
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
 (use-package grunt
-  :load-path "~/code/grunt-el"
+  :load-path "~/workspace/grunt-el"
   :bind ("C-M-g" . grunt-exec))
 
 (use-package repository-root
@@ -930,6 +934,10 @@
 (use-package mode-icons
   :if window-system
   :load-path "elisp/mode-icons")
+
+(use-package neo-mode-icons
+  :if window-system
+  :load-path "elisp/neotree")
 
 (use-package powerline
   :if window-system
@@ -1034,9 +1042,10 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-
+ 
 (when window-system
   (load-theme 'aurora)
+  (toggle-frame-fullscreen)
   (remove-mode-line-box)
   (server-start))
 
