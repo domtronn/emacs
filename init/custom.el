@@ -194,6 +194,8 @@
      ("{ RET" . "{
 `!!'
 }"))))
+ '(magit-commit-arguments nil)
+ '(magit-diff-use-overlays nil)
  '(magit-popup-show-common-commands nil)
  '(magit-push-always-verify nil)
  '(magit-revert-buffers t t)
@@ -322,8 +324,11 @@
  '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
  '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
- '(neo-dir-link-face ((t (:inherit default))))
- '(neo-file-link-face ((t (:inherit default))))
+ '(neo-dir-link-face ((t (:inherit default :height 0.9))))
+ '(neo-file-link-face ((t (:inherit default :height 0.9))))
+ '(neo-vc-added-face ((t (:foreground "LightGreen" :height 0.9))))
+ '(neo-vc-edited-face ((t (:foreground "#FFA15" :height 0.9))))
+ '(neo-vc-up-to-date-face ((t (:foreground "LightGray" :height 0.9))))
  '(popup-menu-summary-face ((t (:inherit company-tooltip-annotation))))
  '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
  '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
@@ -333,15 +338,14 @@
 
 ;;; Font Manipulation:
 (defvar font-list '(("Menlo" normal)
-                    ("BPmono" normal)
                     ("Monaco" normal)
                     ("Courier New" normal)
-                    ("Ubuntu Mono" normal)
+                    ("Droid Sans Mono" normal)
+                    ("Ubuntu Mono derivative Powerline" normal)
                     ("Source Code Pro" extralight)
-                    ("NK57 Monospace" light)
                     ("Inconsolata" medium)
+                    ("Kawkab Mono" medium)
                     ("Hack" normal)
-                    ("Cutive Mono" normal)
                     ("Anonymous Pro" normal)))
 
 (defun counsel-set-font ()
