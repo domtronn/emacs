@@ -30,6 +30,8 @@
 (defvar powerline-c2-secondary "#666666")
 (defvar powerline-fg-secondary "#bababa")
 
+(defvar powerline/default-height 130)
+
 (defun powerline-primary-window () (eq (get-buffer-window) powerline-current-window))
 (defun powerline-c1 () (if (powerline-primary-window) powerline-c1-primary powerline-c1-secondary))
 (defun powerline-c2 () (if (powerline-primary-window) powerline-c2-primary powerline-c2-secondary))
@@ -95,37 +97,119 @@
       (setq powerline-fg-primary "white"
             powerline-fg-secondary "white"))))
 
+(defun colon-xpm
+  (color1 color2)
+  "Return an XPM left arrow string representing."
+  (create-image
+   (format "/* XPM */
+static char * arrow_left[] = {
+\"10 26 2 1\",
+\". c %s\",
+\"  c %s\",
+\"          \",
+\"          \",
+\"          \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"          \",
+\"          \",
+\"          \"};"
+           (if color1 color1 "None")
+           (if color2 color2 "None"))
+   'xpm t :ascent 'center))
+
+(defun colon-alt-xpm
+  (color1 color2)
+  "Return an XPM left arrow string representing."
+  (create-image
+   (format "/* XPM */
+static char * arrow_left[] = {
+\"10 26 2 1\",
+\"  c %s\",
+\". c %s\",
+\"          \",
+\"          \",
+\"          \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"          \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"   ....   \",
+\"          \",
+\"          \",
+\"          \"};"
+           (if color1 color1 "None")
+           (if color2 color2 "None"))
+   'xpm t :ascent 'center))
+
 (defun arrow-left-xpm
   (color1 color2)
   "Return an XPM left arrow string representing."
   (create-image
    (format "/* XPM */
 static char * arrow_left[] = {
-\"12 22 2 1\",
+\"14 26 2 1\",
 \". c %s\",
 \"  c %s\",
-\".           \",
-\"..          \",
-\"...         \",
-\"....        \",
-\".....       \",
-\"......      \",
-\".......     \",
-\"........    \",
-\".........   \",
-\"..........  \",
-\"........... \",
-\"........... \",
-\"..........  \",
-\".........   \",
-\"........    \",
-\".......     \",
-\"......      \",
-\".....       \",
-\"....        \",
-\"...         \",
-\"..          \",
-\".           \"};"
+\".             \",
+\"..            \",
+\"...           \",
+\"....          \",
+\".....         \",
+\"......        \",
+\".......       \",
+\"........      \",
+\".........     \",
+\"..........    \",
+\"...........   \",
+\"............  \",
+\"............. \",
+\"............. \",
+\"............  \",
+\"...........   \",
+\"..........    \",
+\".........     \",
+\"........      \",
+\".......       \",
+\"......        \",
+\".....         \",
+\"....          \",
+\"...           \",
+\"..            \",
+\".             \"};"
            (if color1 color1 "None")
            (if color2 color2 "None"))
    'xpm t :ascent 'center))
@@ -136,31 +220,35 @@ static char * arrow_left[] = {
   (create-image
    (format "/* XPM */
 static char * arrow_right[] = {
-\"12 22 2 1\",
+\"14 26 2 1\",
 \". c %s\",
-\"  c %s\",
-\"           .\",
-\"          ..\",
-\"         ...\",
-\"        ....\",
-\"       .....\",
-\"      ......\",
-\"     .......\",
-\"    ........\",
-\"   .........\",
-\"  ..........\",
-\" ...........\",
-\" ...........\",
-\"  ..........\",
-\"   .........\",
-\"    ........\",
-\"     .......\",
-\"      ......\",
-\"       .....\",
-\"        ....\",
-\"         ...\",
-\"          ..\",
-\"           .\"};"
+\"   c %s\",
+\"             .\",
+\"            ..\",
+\"           ...\",
+\"          ....\",
+\"         .....\",
+\"        ......\",
+\"       .......\",
+\"      ........\",
+\"     .........\",
+\"    ..........\",
+\"   ...........\",
+\"  ............\",
+\" .............\",
+\" .............\",
+\"  ............\",
+\"   ...........\",
+\"    ..........\",
+\"     .........\",
+\"      ........\",
+\"       .......\",
+\"        ......\",
+\"         .....\",
+\"          ....\",
+\"           ...\",
+\"            ..\",
+\"             .\"};"
            (if color2 color2 "None")
            (if color1 color1 "None"))
    'xpm t :ascent 'center))
@@ -171,30 +259,34 @@ static char * arrow_right[] = {
   (create-image
    (format "/* XPM */
 static char * curve_right[] = {
-\"12 22 2 1\",
+\"12 26 2 1\",
 \". c %s\",
 \"  c %s\",
 \"           .\",
+\"          ..\",
 \"         ...\",
-\"         ...\",
-\"       .....\",
-\"       .....\",
-\"       .....\",
+\"        ....\",
+\"        ....\",
 \"      ......\",
 \"      ......\",
 \"      ......\",
 \"     .......\",
 \"     .......\",
 \"     .......\",
+\"    ........\",
+\"    ........\",
+\"    ........\",
+\"    ........\",
+\"     .......\",
+\"     .......\",
 \"     .......\",
 \"      ......\",
 \"      ......\",
 \"      ......\",
-\"       .....\",
-\"       .....\",
-\"       .....\",
+\"        ....\",
+\"        ....\",
 \"         ...\",
-\"         ...\",
+\"          ..\",
 \"           .\"};"
            (if color2 color2 "None")
            (if color1 color1 "None"))
@@ -206,30 +298,34 @@ static char * curve_right[] = {
   (create-image
    (format "/* XPM */
 static char * curve_left[] = {
-\"12 22 2 1\",
+\"12 26 2 1\",
 \". c %s\",
 \"  c %s\",
 \".           \",
+\"..          \",
 \"...         \",
-\"...         \",
-\".....       \",
-\".....       \",
-\".....       \",
+\"....        \",
+\"....        \",
 \"......      \",
 \"......      \",
 \"......      \",
 \".......     \",
 \".......     \",
 \".......     \",
+\"........    \",
+\"........    \",
+\"........    \",
+\"........    \",
+\".......     \",
+\".......     \",
 \".......     \",
 \"......      \",
 \"......      \",
 \"......      \",
-\".....       \",
-\".....       \",
-\".....       \",
+\"....        \",
+\"....        \",
 \"...         \",
-\"...         \",
+\"..          \",
 \".           \"};"
            (if color1 color1 "None")
            (if color2 color2 "None"))
@@ -268,7 +364,7 @@ Inverse of `color-values'."
     (format "/* XPM */
 static char * gradient_left[] = {
 /* columns rows colours chars-per-pixel */
-\"12 22 12 1\",
+\"12 26 12 1\",
 \"a c %s\",
 \"b c %s\",
 \"c c %s\",
@@ -282,6 +378,10 @@ static char * gradient_left[] = {
 \"k c %s\",
 \"l c %s\",
 /* pixels */
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
+\"abcdefghijkl\",
 \"abcdefghijkl\",
 \"abcdefghijkl\",
 \"abcdefghijkl\",
@@ -324,31 +424,35 @@ static char * gradient_left[] = {
   (create-image
    (format "/* XPM */
 static char * curve_left[] = {
-\"12 22 2 1\",
+\"14 26 2 1\",
 \". c %s\",
 \"  c %s\",
-\"........... \",
-\"........... \",
-\"..........  \",
-\"..........  \",
-\".........   \",
-\".........   \",
-\"........    \",
-\"........    \",
-\".......     \",
-\".......     \",
-\"......      \",
-\"......      \",
-\".....       \",
-\".....       \",
-\"....        \",
-\"....        \",
-\"...         \",
-\"...         \",
-\"..          \",
-\"..          \",
-\".           \",
-\".           \"};"
+\"............. \",
+\"............. \",
+\"............  \",
+\"............  \",
+\"...........   \",
+\"...........   \",
+\"..........    \",
+\"..........    \",
+\".........     \",
+\".........     \",
+\"........      \",
+\"........      \",
+\".......       \",
+\".......       \",
+\"......        \",
+\"......        \",
+\".....         \",
+\".....         \",
+\"....          \",
+\"....          \",
+\"...           \",
+\"...           \",
+\"..            \",
+\"..            \",
+\".             \",
+\".             \"};"
            (if color1 color1 "None")
            (if color2 color2 "None"))
    'xpm t :ascent 'center))
@@ -359,31 +463,35 @@ static char * curve_left[] = {
   (create-image
    (format "/* XPM */
 static char * curve_left[] = {
-\"12 22 2 1\",
+\"14 26 2 1\",
 \". c %s\",
 \"  c %s\",
-\".           \",
-\".           \",
-\"..          \",
-\"..          \",
-\"...         \",
-\"...         \",
-\"....        \",
-\"....        \",
-\".....       \",
-\".....       \",
-\"......      \",
-\"......      \",
-\".......     \",
-\".......     \",
-\"........    \",
-\"........    \",
-\".........   \",
-\".........   \",
-\"..........  \",
-\"..........  \",
-\"........... \",
-\"........... \"};"
+\".             \",
+\".             \",
+\"..            \",
+\"..            \",
+\"...           \",
+\"...           \",
+\"....          \",
+\"....          \",
+\".....         \",
+\".....         \",
+\"......        \",
+\"......        \",
+\".......       \",
+\".......       \",
+\"........      \",
+\"........      \",
+\".........     \",
+\".........     \",
+\"..........    \",
+\"..........    \",
+\"...........   \",
+\"...........   \",
+\"............  \",
+\"............  \",
+\"............. \",
+\"............. \"};"
            (if color1 color1 "None")
            (if color2 color2 "None"))
    'xpm t :ascent 'center))
@@ -479,6 +587,8 @@ install the memoized function over the original function."
 (memoize 'slash-left-xpm)
 (memoize 'slash-right-xpm)
 (memoize 'gradient-xpm)
+(memoize 'colon-xpm)
+(memoize 'colon-alt-xpm)
 
 (defun powerline-set-style ()
   "Set the style of the powerline separator"
@@ -486,6 +596,7 @@ install the memoized function over the original function."
   (let* ((styles
           '(("arrow" arrow-left-xpm arrow-right-xpm)
             ("curve" curve-left-xpm curve-right-xpm)
+            ("bolts" colon-xpm colon-alt-xpm)
             ("slash-/\\" slash-left-xpm slash-right-xpm)
             ("slash-//" slash-left-xpm slash-left-xpm)
             ("slash-\\/" slash-right-xpm slash-left-xpm)
@@ -553,17 +664,17 @@ install the memoized function over the original function."
 
 
 (defun powerline-make-right
-  (string color2 &optional color1 localmap)
+    (string color2 &optional color1 localmap)
   (let ((plface (powerline-make-face color2))
         (arrow  (and color1 (not (string= color1 color2)))))
     (concat
      (if arrow
          (propertize " " 'display
                      (right-xpm color1 color2)
-                   'local-map (make-mode-line-mouse-map
-                               'mouse-1 (lambda () (interactive)
-                                          (setq powerline-arrow-shape 'arrow)
-                                          (force-mode-line-update))))
+                     'local-map (make-mode-line-mouse-map
+                                 'mouse-1 (lambda () (interactive)
+                                            (setq powerline-arrow-shape 'arrow)
+                                            (force-mode-line-update))))
        "")
      (if arrow
          (propertize " " 'face plface)
@@ -581,15 +692,52 @@ install the memoized function over the original function."
   ;; justify right by filling with spaces to right fringe, 20 should be calculated
   (let ((plface (powerline-make-face color))
         (amount (- (window-total-width)
-                   (+ 34
+                   (+ (- 37 (* (face-attribute 'default :height) 0.11238))
                       (if (eq (get-buffer-window) powerline-current-window)
-                          (length (-powerline-get-weather " %(weather) "))
+                          (+ (length (-powerline-get-weather "%(weather)"))
+                             (length (-powerline-get-weather "%(sunrise)  %(sunset)"))
+                             (if (and (boundp 'yahoo-weather-info) yahoo-weather-mode) 4 0))
                         0)
-                      (if (and (fboundp 'boop-format-results)
-                               (eq (get-buffer-window) powerline-current-window))
-                          (+ 1 (length  (boop-format-results))) 0)
+                      ;; (length (powerline-flycheck-status))
+                      ;; (length (format-mode-line "%l:%c"))
+                      ;; (if mark-active (length (powerline-region-info)) 0)
+                      ;; (if (and (fboundp 'boop-format-results)
+                      ;;          (eq (get-buffer-window) powerline-current-window))
+                      ;;     (+ 1 (length  (boop-format-results))) 0)
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
+
+;; 130 = 27 
+;; 260 = 27 - 15 = 12
+;; (- 42 (* (face-attribute 'default :height) 0.11538))
+
+(defvar powerline/render-center? t)
+(defvar powerline/colour-flycheck? nil)
+(defvar powerline/upgrades nil)
+
+(defun powerline/count-upgrades ()
+  (let ((buf (current-buffer)))
+    (package-list-packages-no-fetch)
+    (with-current-buffer "*Packages*"
+      (setq powerline/upgrades (length (package-menu--find-upgrades))))
+    (switch-to-buffer buf)))
+(advice-add 'package-menu-execute :after 'powerline/count-upgrades)
+(defun powerline-package-updates ()
+  (let ((num (or powerline/upgrades (powerline/count-upgrades))))
+    (when (> num 0)
+      (concat
+       (propertize " ·" 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
+       (propertize
+        (concat
+         (propertize (format "   %s" (neo/octicon "package"))
+                     'face `(:family "github-octicons" :foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
+                     'display '(raise -0.1))
+         (propertize (format " %d updates " num)
+                     'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 0.9)))
+        'help-echo "Open Packages Menu"
+        'mouse-face '(:box 1)
+        'local-map (make-mode-line-mouse-map
+                    'mouse-1 (lambda () (interactive) (package-list-packages))))))))
 
 (defun powerline-make-text
   (string color &optional fg localmap)
@@ -612,17 +760,17 @@ install the memoized function over the original function."
   "Macro to create a powerline chunk."
   `(defun ,(intern (concat "powerline-" (symbol-name name)))
        (side color1 &optional color2)
-     (powerline-make side
-                     (let ((result ,string))
-                       (cond ((listp result)
-                              (format-mode-line result))
-                             ((not (or (stringp result)
-                                       (null result)))
-                              (progn
-                                " ERR"))
-                             (t
-                              result)))
-                     color1 color2)))
+     (powerline-make
+      side
+      (let ((result ,string))
+        (cond ((listp result)
+               (format-mode-line result))
+              ((not (or (stringp result)
+                        (null result)))
+               (progn " ERR"))
+              (t
+               result)))
+      color1 color2)))
 
 
 
@@ -648,100 +796,174 @@ install the memoized function over the original function."
 (defpowerline arrow       "")
 
 (defvar powerline-buffer-size-suffix t)
-(defpowerline buffer-size (propertize
-                            (if powerline-buffer-size-suffix
-                                "%I"
-                              "%i")
-                            'local-map (make-mode-line-mouse-map
-                                        'mouse-1 (lambda () (interactive)
-                                                   (setq powerline-buffer-size-suffix
-                                                         (not powerline-buffer-size-suffix))
-                                                   (redraw-modeline)))))
-(defpowerline rmw         "%*")
-(defpowerline major-mode  (propertize (if (stringp mode-name) mode-name (format "%s" (buffer-mode (current-buffer))))
-                                      'help-echo "Major mode\n\ mouse-1: Display major mode menu\n\ mouse-2: Show help for major mode\n\ mouse-3: Toggle minor modes"
-                                      'local-map (let ((map (make-sparse-keymap)))
-                                                   (define-key map [mode-line down-mouse-1]
-                                                     `(menu-item ,(purecopy "Menu Bar") ignore
-                                                                 :filter (lambda (_) (mouse-menu-major-mode-map))))
-                                                   (define-key map [mode-line mouse-2] 'describe-mode)
-                                                   (define-key map [mode-line down-mouse-3] mode-line-mode-menu)
-                                                   map)))
-(defpowerline process      mode-line-process)
-(defpowerline minor-modes (let ((mms (split-string (format-mode-line minor-mode-alist))))
-                            (apply 'concat
-                                   (mapcar #'(lambda (mm)
-                                              (propertize (if (string= (car mms)
-                                                                       mm)
-                                                              mm
-                                                            (concat " " mm))
-                                                          'help-echo "Minor mode\n mouse-1: Display minor mode menu\n mouse-2: Show help for minor mode\n mouse-3: Toggle minor modes"
-                                                          'local-map (let ((map (make-sparse-keymap)))
-                                                                       (define-key map [mode-line down-mouse-1]   (powerline-mouse 'minor 'menu mm))
-                                                                       (define-key map [mode-line mouse-2]        (powerline-mouse 'minor 'help mm))
-                                                                       (define-key map [mode-line down-mouse-3]   (powerline-mouse 'minor 'menu mm))
-                                                                       (define-key map [header-line down-mouse-3] (powerline-mouse 'minor 'menu mm))
-                                                                       map)))
-                                           mms))))
+(defun powerline-buffer-size (&rest args)
+  (propertize (format-mode-line " %I                                          ")
+              'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1))))
+
+(defun powerline-process (&rest args)
+  (let ((icon (neo-icon-for-buffer)))
+    (concat
+     (when (or (symbolp icon) ;; This implies it's the major mode
+               mode-line-process)
+       (propertize
+        (format-mode-line " %m")
+        'face `(:height 0.8 :foreground ,(powerline-fg) :background ,(powerline-c1))
+        'display '(raise 0.0)))
+     (when mode-line-process
+       (propertize (format-mode-line mode-line-process)
+                   'face `(:height 0.8 :foreground ,(powerline-fg) :background ,(powerline-c1)))))))
+
 (defpowerline row         "%4l")
 (defpowerline column      "%3c")
 (defpowerline percent     "%6p")
-(defpowerline narrow      (let (real-point-min real-point-max)
-                            (save-excursion
-                              (save-restriction
-                                (widen)
-                                (setq real-point-min (point-min) real-point-max (point-max))))
-                            (when (or (/= real-point-min (point-min))
-                                      (/= real-point-max (point-max)))
-                              (propertize "Narrow"
-                                          'help-echo "mouse-1: Remove narrowing from the current buffer"
-                                          'local-map (make-mode-line-mouse-map
-                                                      'mouse-1 'mode-line-widen)))))
-(defpowerline status      "%s")
-(defpowerline global      global-mode-string)
-(defpowerline emacsclient mode-line-client)
-(defpowerline project-id (if (and (boundp 'jpop-id)
-                                  (not (eql nil jpop-id)))
-                             (propertize (format "%s" (concat (upcase jpop-id) " ∘"))
-                                         'display '(height 0.8))
-                           (format "×")))
+(defun powerline-row-col ()
+  (propertize  (format-mode-line " %l:%c")
+               'face `(:foreground ,(powerline-fg) :background ,(powerline-c1) :height 0.9)))
 
-(defpowerline vc vc-mode)
-(defpowerline time (format-time-string "%H:%M"))
+(defun powerline-region-info ()
+  (when mark-active
+    (let ((words (count-lines (region-beginning) (region-end)))
+          (chars (count-words (region-end) (region-beginning))))
+      (concat
+       (propertize (format "   %s" (neo/octicon "pencil") words chars)
+                   'face `(:foreground ,(powerline-fg) :background ,(powerline-c1) :family "github-octicons")
+                   'display '(raise -0.0))
+       (propertize (format " (%s, %s)" words chars)
+                   'face `(:foreground ,(powerline-fg) :background ,(powerline-c1) :height 0.9))))))
 
-(defpowerline flycheck-status (propertize (format "%s" (cadr (flycheck-status-emoji-mode-line-text)))
-                                          'display '(height 0.8)))
+(defun powerline-project-id (&rest args)
+  (if (and (fboundp 'projectile-project-name)
+           (projectile-project-name))
+      (format " | %s |"
+              (propertize (format "%s" (concat (projectile-project-name) ))
+                          'face '(:height 0.8)
+                          'help-echo "Switch Project"
+                          'mouse-face '(:box 1)
+                          'local-map (make-mode-line-mouse-map
+                                      'mouse-1 (lambda () (interactive) (projectile-switch-project)))))
+    (propertize " | × |" 'face '(:height 0.8))))
+
+(defun powerline-buffer-id (&rest args)
+  (if (and (fboundp 'projectile-project-root))
+      (let* ((buf (or (buffer-file-name) (buffer-name)))
+             (proj (ignore-errors (projectile-project-root)) )
+             (name (if (buffer-file-name)
+                       (or (cadr (split-string buf proj))
+                           (format-mode-line "%b"))
+                     (format-mode-line "%b"))))
+        (propertize (format "  %s" name)
+                    'face `(:height 0.8)
+                    'help-echo (format "Major-mode: `%s`" major-mode)))
+    (propertize (format-mode-line "  %b") 'face '(:height 0.8))))
+
+(defun powerline-flycheck-status (&rest args)
+  (when (fboundp 'flycheck-status-emoji-mode-line-text)
+    (let* ((text (cadr (flycheck-status-emoji-mode-line-text)))
+           (fg (cond
+                ((not powerline/colour-flycheck?) (powerline-fg))
+                ((string-match "Disabled" text) (powerline-fg))
+                ((string-match "Running" text) (powerline-fg))
+                ((string-match "⚠" text) (face-attribute 'warning :foreground))
+                ((string-match "✖" text) (face-attribute 'error :foreground))
+                (t (face-attribute 'success :foreground)))))
+      (concat
+       (when (and
+              vc-mode
+              (eq (get-buffer-window) powerline-current-window)
+              powerline/render-center?)
+         (propertize " ·" 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2))))
+       (propertize (format " %s" text)
+                   'face `(:height 0.9 :foreground ,fg :background ,(powerline-c2))
+                   'help-echo "Show Flycheck Errors"
+                   ;; 'display '(raise 0.1)
+                   'mouse-face '(:box 1)
+                   'local-map (make-mode-line-mouse-map
+                               'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))))
+
+(defun -powerline-github-vc ()
+  (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+    (concat
+     (propertize (format " %s" (neo/mficon "git"))
+                 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
+                 'display '(raise -0.1))
+     (propertize " · " 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
+     (propertize (format "%s" (neo/octicon "git-branch"))
+                 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.3 :family "github-octicons")
+                 'display '(raise -0.1))
+     (propertize (format " %s" branch)
+                 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 0.9)))))
+
+(defun -powerline-svn-vc ()
+  (let ((revision (cadr (split-string vc-mode "-"))))
+    (concat
+     (propertize (format " %s" (neo/faicon "cloud"))
+                 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
+                 'display '(raise -0.1))
+     (propertize (format " · %s" revision)
+                 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 0.9)))))
+
+(defun powerline-icon-vc ()
+  (when vc-mode
+    (cond ((string-match "Git[:-]" vc-mode) (-powerline-github-vc))
+         ((string-match "SVN-" vc-mode) (-powerline-svn-vc))
+         (t (propertize (format "%s" vc-mode) 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))))))
+
+(defpowerline gap "")
+
+(defun powerline-time ()
+  (let* ((hour (string-to-number (format-time-string "%I")))
+         (icon (neo/wicon (format "time-%s" hour) 1.3 0.0)))
+    (concat
+     (propertize (format-time-string " %H:%M ")
+                 'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1)))
+     (propertize (format "%s " icon)
+                 'face `(:height 1.0 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c1))
+                 'display '(raise -0.0))
+     (propertize " · " 'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1))))))
 
 (defun -powerline-get-temp ()
-  (let ((temp (-powerline-get-weather "%(temperature)")))
+  (let ((temp (-powerline-get-weather " %(temperature) ")))
     (unless (string= "" temp) (format "%s°C" (round (string-to-number temp))))))
 
 (defun -powerline-get-weather (format)
-  (if (boundp 'yahoo-weather-info)
-      (downcase (yahoo-weather-info-format yahoo-weather-info format))
+  (if (and (boundp 'yahoo-weather-info)
+           yahoo-weather-mode)
+      (let* ((weather (yahoo-weather-info-format yahoo-weather-info format))
+             (icon (neo-icon-for-weather (downcase weather)))
+             (family (if (> (length icon) 2)
+                         (face-attribute 'default :family)
+                       "Weather Icons")))
+        (propertize (format " %s " icon)
+                    'help-echo weather
+                    'face `( :height 1.0 :family ,family
+                             :foreground ,(powerline-fg)
+                             :background ,(powerline-c2))
+                    'display '(raise 0.1)))
+  ""))
+
+(defun powerline-weather () (-powerline-get-weather "%(weather)"))
+(defun powerline-suntime ()
+  (if (and (boundp 'yahoo-weather-info)
+           yahoo-weather-mode)
+      
+      (concat
+              (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunrise-time)"))
+                          'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
+              (propertize (format "%s  " (neo/wicon "sunrise" 0.5 -0.1))
+                          'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2)))
+              (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunset-time)"))
+                          'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
+              (propertize (format "%s "(neo/wicon "sunset" 0.5 -0.1))
+                          'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2))))
     ""))
 
-(defpowerline weather (-powerline-get-weather " %(weather) "))
 (defpowerline temperature (-powerline-get-temp))
-
 (defpowerline eb-indicator (eyebrowse-mode-line-indicator))
 
-(defpowerline buffer-id (propertize (car (propertized-buffer-identification "%12b"))
-                                      'face (powerline-make-face color1)))
-
-(defpowerline window-number (format "%c" (+ 10121 (window-numbering-get-number))))
-
-(defpowerline percent-xpm (propertize "  "
-                                      'display
-                                      (let (pmax
-                                            pmin
-                                            (ws (window-start))
-                                            (we (window-end)))
-                                        (save-restriction
-                                          (widen)
-                                          (setq pmax (point-max))
-                                          (setq pmin (point-min)))
-                                        (percent-xpm pmax pmin we ws 15 color1 color2))))
+(defun powerline-window-number (&rest args)
+  (propertize (format " %c" (+ 9311 (window-numbering-get-number)))
+              'face `(:height ,(/ (* 0.90 powerline/default-height) 100.0))
+              'display '(raise 0.0)))
 
 (defvar powerline-current-window nil)
 (defun update-current-window (windows)
@@ -769,50 +991,73 @@ install the memoized function over the original function."
 (defpowerline new-im-notifications (-count-notifications "[0-9]+ \\([0-9]+\\) (.*?)" "✩"))
 (defpowerline new-channel-notifications (-count-notifications "(.*?) \\([0-9]+\\) [0-9]+ nil" "✧"))
 
-(defun powerline-mode-xpm ()
-  (propertize " " 'display (mode-icon-ruby-xpm (powerline-fg) (powerline-c1))
-              'face `(:background ,(powerline-c1))))
+(defun powerline-mode-icon ()
+  (let ((icon (neo-icon-for-buffer)))
+    (unless (symbolp icon) ;; This implies it's the major mode
+      (format " %s"
+              (propertize icon
+                          'help-echo (format "Major-mode: `%s`" major-mode)
+                          'face `(:height 1.2 :family ,(neo-icon-family-for-buffer)))))))
 
-(defun powerline-mode-icon-xpm ()
-  (let ((mode-supported (assoc major-mode mode-icon-alist)))
-    (if mode-supported
-        (mode-icon)
-      (powerline-major-mode 'left (powerline-c1)))))
+(defun powerline-mode-default ()
+  (let ((icon (neo-icon-for-buffer)))
+    (when (symbolp icon) ;; This implies it's the major mode
+      (propertize
+       (format-mode-line " %m")
+       'face `(:height 0.8 :foreground ,(powerline-fg) :background ,(powerline-c1))
+       'display '(raise 0.1)))))
 
-(setq-default mode-line-format
-              (list "%e"
-                    '(:eval (concat
-                             (powerline-rmw    'left  nil  )
-                             (powerline-project-id     'left  nil  )
-                             (powerline-window-number  'left  nil  )
+(defun powerline-modified ()
+  (let* ((config-alist
+          '(("*" neo/faicon-family neo/faicon "chain-broken" 1.2 -0.0)
+            ("-" neo/faicon-family neo/faicon "link" 1.2 -0.0)
+            ("%" neo/octicon-family neo/octicon "lock" 1.2 0.1)))
+         (result (cdr (assoc (format-mode-line "%*") config-alist))))
+    (propertize (apply (cadr result) (cddr result))
+                'face `(:family ,(funcall (car result))))))
 
-                             ;; (powerline-new-im-notifications  'left  nil  )
-
-                             (powerline-buffer-id      'left  nil   (powerline-c1)  )
-
-                             (powerline-make-text " " (powerline-c1))
-
-                             (powerline-mode-icon-xpm)
-                             (powerline-process          'text        (powerline-c1)  )
-                             (powerline-flycheck-status  'left        (powerline-c1)  )
-                             (powerline-narrow           'left        (powerline-c1)  (powerline-c2) )
-
-
-                             (if (eq (get-buffer-window) powerline-current-window)
-                                 (concat
-                                  (powerline-vc       'center      (powerline-c2)  )
-                                  (powerline-make-fill             (powerline-c2)  )
-                                  (powerline-weather  'text        (powerline-c2)  )
-                                  (powerline-boop))
-                               (powerline-make-fill                (powerline-c2)  ))
-
-                             (powerline-row            'right       (powerline-c1)  (powerline-c2) )
-                             (powerline-make-text      ":"          (powerline-c1)  )
-                             (powerline-column         'right       (powerline-c1)  )
-                             (powerline-time           'right  nil  (powerline-c1)  )
-                             (powerline-temperature    'right  nil  )
-                             (powerline-make-text      "-"   nil  )
-                             (powerline-buffer-size    'left   nil  )))))
+(setq-default
+ mode-line-format
+ (list "%e"
+       '(:eval (concat
+                
+                (powerline-make-text " "  nil)
+                (powerline-modified)
+                (powerline-window-number  'left  nil  )
+                (powerline-project-id     'left  nil  )
+                (powerline-mode-icon)
+                
+                (powerline-buffer-id)
+                (powerline-gap 'left nil (powerline-c1))
+                
+                (powerline-process)
+                
+                (powerline-row-col)
+                (powerline-region-info)
+                (powerline-gap 'left (powerline-c1) (powerline-c2))
+                
+                (if (and (eq (get-buffer-window) powerline-current-window)
+                         powerline/render-center?)
+                    (concat
+                     (powerline-icon-vc)
+                     (powerline-flycheck-status)
+                     (powerline-package-updates)
+                     (powerline-make-fill             (powerline-c2)  )
+                     (powerline-suntime)
+                     (when (and (boundp 'yahoo-weather-info)
+                                yahoo-weather-mode)
+                       (powerline-make-text " · " (powerline-c2)))
+                     (powerline-weather)
+                     (powerline-temperature    'right  (powerline-c2)  )
+                     (powerline-boop))
+                  (concat
+                   (powerline-flycheck-status)
+                   (powerline-make-fill                (powerline-c2)  )))
+                
+                (powerline-gap  'right (powerline-c1) (powerline-c2))
+                
+                (powerline-time)
+                (powerline-buffer-size    'left   nil  )))))
 
 (provide 'powerline)
 ;; Local Variables:
