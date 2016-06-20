@@ -35,6 +35,8 @@ xkcd
 *.wav
 *.m4a
 
+projectile.chace
+
 # Authentication files
 .jenkins-auth.el
 .docker-auth.el
