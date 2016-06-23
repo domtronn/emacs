@@ -460,6 +460,10 @@
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (advice-add 'counsel-git-grep :around
+              '(lambda (f &rest args)
+                 (let ((ivy-re-builders-alist '((t . ivy--regex-plus))))
+                   (apply f args))))
   (setq ivy-display-style nil)
   (ivy-set-actions
    t
