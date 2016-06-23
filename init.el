@@ -689,9 +689,9 @@
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook
             '(lambda () (ac-lambda 'ac-source-functions
-                              'ac-source-symbols
                               'ac-source-variables
                               'ac-source-yasnippet
+                              'ac-source-symbols
                               'ac-source-words-in-same-mode-buffers)))
   :config
   (bind-keys :map emacs-lisp-mode-map

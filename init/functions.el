@@ -649,6 +649,23 @@
    ((member project-type '(grunt generic)) "Spec")
    ((member project-type '(gulp)) "-spec")))
 
+(advice-add 'projectile-toggle-between-implementation-and-test :around
+            '(lambda (f &rest args)
+               (if (or (eq major-mode 'scss-mode)
+                       (eq major-mode 'css-mode))
+                   (projectile-other-resolution)
+                 (apply f args))))
+(defun projectile-other-resolution ()
+  (interactive)
+  (let ((res (and (string-match "/\\([0-9]+\\)/" (buffer-file-name))
+                  (match-string 1 (buffer-file-name)))))
+    (find-file
+     (format "%s/%s"
+             (projectile-project-root)
+             (car (--reject (string-match res it)
+                            (--filter (string-match (file-name-base (buffer-file-name)) it)
+                                      (projectile-current-project-files))))))))
+
 (global-set-key (kbd "C--") 'itunes-remote)
 (defun itunes-remote (pfx)
   (interactive "P")
