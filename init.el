@@ -151,7 +151,8 @@
         ("C-c C-l" . org-link)
         ("C-j"     . join-line)
   :init
-  (setq org-src-fontify-natively t
+  (setq diary-file "~/Dropbox/Documents/Org/diary"
+        org-src-fontify-natively t
         org-agenda-files
         '("~/Dropbox/Documents/Org/meetings.org"
           "~/Dropbox/Documents/Org/tasks.org"
