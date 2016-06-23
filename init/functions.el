@@ -549,23 +549,26 @@
    ((get-buffer thing) (switch-to-buffer-other-window thing))
    (t (find-file-other-window thing))))
 
-(defun repl-make (name exec)
-  (ansi-color-for-comint-mode-on)
-  (add-to-list
-   'comint-preoutput-filter-functions
-   (lambda (output)
-     (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
-  (pop-to-buffer (make-comint name exec)))
+(defmacro defrepl (name executable)
+  `(prog1
+       (defun ,(intern (format "%s-repl" name)) ()
+         ,(format "Open a `%s` repl" name)
+         (interactive)
+         (ansi-color-for-comint-mode-on)
+         (add-to-list
+          'comint-preoutput-filter-functions
+          (lambda (output)
+            (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))
+         (pop-to-buffer (make-comint ,(format "%s-repl" name) ,executable)))))
 
-(defun ramda-repl () "Open a ramda repl" (interactive) (repl-make "ramda-repl" "ramda-repl"))
-(defun node-repl () "Open a node repl" (interactive) (repl-make "node-repl" "node"))
-(defun lodash-repl () "Open a lodash repl" (interactive) (repl-make "lodash-repl" "n_"))
+(defrepl "ramda" "ramda-repl")
+(defrepl "node" "node")
+(defrepl "lodash" "n_")
 
 (defun send-to-repl ()
   (interactive)
-  (let ((buf (or (and (get-buffer-window "*ramda-repl*") (get-buffer "*ramda-repl*"))
-                 (and (get-buffer-window "*lodash-repl*") (get-buffer "*lodash-repl*"))
-                 (and (get-buffer-window "*node-repl*") (get-buffer "*node-repl*")))))
+  (let ((buf (car (--filter (and (string-match "repl" (buffer-name it)) (get-buffer-window it))
+                            (buffer-list)))))
     (when (not buf) (error "Could not find repl to send to"))
     (let ((proc (get-buffer-process buf))
           (content (if (region-active-p)
