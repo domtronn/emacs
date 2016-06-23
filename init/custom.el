@@ -201,11 +201,7 @@
  '(magit-revert-buffers t t)
  '(magit-visit-ref-create t)
  '(make-backup-files nil)
- '(neo-auto-indent-point nil)
- '(neo-persist-show nil)
  '(neo-smart-open t)
- '(neo-theme (quote ascii))
- '(neo-window-width 35)
  '(org-support-shift-select t)
  '(package-user-dir
    (expand-file-name

@@ -33,7 +33,7 @@
 (global-set-key [M-tab] 'dabbrev-expand)
 (global-set-key (kbd "M-\\") 'kill-whitespace)
 
-(global-set-key (kbd "<s-mouse-1>") 'goto-address-at-mouse)
+(global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
 
 (global-set-key (kbd "C-x c") 'compile)
 
