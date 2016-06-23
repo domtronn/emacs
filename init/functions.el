@@ -677,6 +677,14 @@
          (cmd-f (format "itunes-remote \"search \\\"%s\\\" %s\" > /dev/null" search-term (car prefix))))
     (shell-command cmd-f)))
 
+(global-set-key (kbd "<S-f10>") 'eww-edit-url)
+(defun eww-edit-url ()
+  (interactive)
+  (let ((url (read-string "sEnter terminal name ❯ "
+                       (when (eq major-mode 'eww-mode)
+                         (eww-copy-page-url)))))
+    (eww url)))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
