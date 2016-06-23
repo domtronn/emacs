@@ -725,12 +725,22 @@
 (use-package neotree
   :load-path "elisp/neotree"
   :config
-  (setq neo-theme 'file-icons)
-  (setq neo-show-updir-line nil)
+  (setq neo-theme 'file-icons
+        neo-show-updir-line nil
+        neo-window-width 25
+        neo-persist-show t)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
   (add-hook 'magit-mode-hook 'neotree-hide)
+  (advice-add 'display-buffer :around
+              '(lambda (f &rest args)
+                 (let ((neotree? (get-buffer-window " *NeoTree*")))
+                   (when neotree? (neotree-hide))
+                   (apply f args)
+                   (select-window (apply 'get-buffer-window args))
+                   (when neotree? (neotree-projectile))
+                   (select-window (apply 'get-buffer-window args)))))
   (defun neotree-projectile ()
     (interactive )
     (if (neo-global--window-exists-p)
