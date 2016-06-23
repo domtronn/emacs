@@ -1019,6 +1019,7 @@
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
+(setq blink-cursor-mode 0)
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 
 ;; Set mac modifiers to what I'm used to
