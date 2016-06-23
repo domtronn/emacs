@@ -661,16 +661,10 @@
       (kill-region start (line-end-position))
       (goto-char start))))
 
-(defun projectile-test-suffix (project-type)
+(defun my/projectile-test-suffix (project-type)
   "Find default test files suffix based on PROJECT-TYPE."
   (cond
-   ((member project-type '(rebar)) "_SUITE")
    ((member project-type '(emacs-cask)) "-test")
-   ((member project-type '(rails-rspec ruby-rspec)) "_spec")
-   ((member project-type '(rails-test ruby-test lein-test boot-clj go)) "_test")
-   ((member project-type '(scons)) "test")
-   ((member project-type '(maven symfony)) "Test")
-   ((member project-type '(gradle gradlew grails)) "Spec")
    ((member project-type '(grunt generic)) "Spec")
    ((member project-type '(gulp)) "-spec")))
 

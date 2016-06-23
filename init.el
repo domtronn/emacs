@@ -398,6 +398,7 @@
   :config
   (projectile-global-mode)
   (setq projectile-completion-system 'ivy)
+  (setq projectile-test-suffix-function 'my/projectile-test-suffix)
   :bind
   ("C-o" . projectile-find-file)
   ("C-c f" . projectile-ag)
