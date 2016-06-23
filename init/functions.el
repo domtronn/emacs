@@ -457,25 +457,6 @@
   (auto-complete-mode)
   (setq-local ac-sources sources))
 
-(defun format-for-frame-title (joke)
-  (with-temp-buffer
-    (insert (format "%s" joke))
-    (while (and (search-backward "she" (point-min) t) (looking-at "she"))
-      (replace-match "it"))
-    (goto-char (point-max))
-    (while (search-backward-regexp "her[\.]\\{0,1\\}\\s-*$" (point-min) t)
-      (replace-match "it"))
-    (goto-char (point-max))
-    (while (and (search-backward "her" (point-min) t) (looking-at "her"))
-      (replace-match "its"))
-    (goto-char (point-max))
-    (while (and (search-backward "fat" (point-min) t) (looking-at "fat"))
-      (replace-match "big (%I)"))
-    (goto-char (point-max))
-    (while (search-backward-regexp "[Yy]o[ur]\\{0,2\\} m[oua][m]+[as]+" (point-min) t)
-      (replace-match "%b"))
-    (buffer-string)))
-
 (defun -move-link (f)
   (funcall f "http[s]\\{0,1\\}://[a-z0-9#%\./_-]+"))
 

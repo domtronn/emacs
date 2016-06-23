@@ -975,22 +975,6 @@
   (window-numbering-mode)
   (window-numbering-clear-mode-line))
 
-(use-package request
-  :defer t
-  :init (use-package json)
-  :config
-  (defun set-frame-title-yo-momma ()
-    (interactive)
-    (request
-     "http://api.yomomma.info/"
-     :parser 'json-read
-     :success (function*
-               (lambda (&key data &allow-other-keys)
-                 (let ((f (format-for-frame-title (cdr (assoc 'joke data)))))
-                   (setq frame-title-format f))))))
-  :bind ("<s-f8>" . set-frame-title-yo-momma))
-(add-hook 'after-init-hook 'set-frame-title-yo-momma)
-
 (add-hook 'magit-mode-hook 'image-minor-mode)
 
 ;; Load stuff to do with grep initially
