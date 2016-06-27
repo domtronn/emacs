@@ -519,7 +519,6 @@
   :after 'js2-mode
   :config
   (bind-keys :map tern-mode-keymap
-             ("M-." . jump-to-thing-at-point)
              ("M-," . pop-tag-mark))
   (use-package tern-auto-complete :config (tern-ac-setup)))
 
@@ -627,7 +626,8 @@
 
 (use-package json
   :mode ("\\.json" . json-mode)
-  :config (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
+  :config
+  (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
 
 (use-package engine-mode
   :config (engine-mode t)
@@ -729,7 +729,7 @@
   (setq neo-theme 'file-icons
         neo-show-updir-line nil
         neo-window-width 25
-        neo-persist-show t)
+        neo-persist-show nil)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
@@ -1004,8 +1004,8 @@
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
-(setq blink-cursor-mode 0)
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
+(blink-cursor-mode 0)
 
 ;; Set mac modifiers to what I'm used to
 (setq mac-function-modifier 'hyper)

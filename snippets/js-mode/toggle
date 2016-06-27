@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : toggle
+# --
+// :FEATURE_TOGGLE:[${1:toggle}] - ${2:description}
+var featureEnabled = options.featureToggles && R.contains('$1', options.featureToggles)
+if (featureEnabled) {
+$0
+}
+// :END_FEATURE_TOGGLE:

@@ -52,79 +52,11 @@
                 (delete-other-windows)))))
     nil))
 
-(defun get-last-spy ()
-  (interactive)
-  (save-excursion
-    (let ((start (+ (search-backward-regexp "spyOn(" 6)))
-          (end (- (search-forward-regexp ")") 1)))
-      (if (string-match "spyOn\(\\\(.*\\\),\\s-*['\"]\\\(.*?\\\)['\"]" (buffer-substring start end))
-          (format "%s.%s" (match-string 1 (buffer-substring start end)) (match-string 2 (buffer-substring start end)))))))
-
-(defun jump-to-class ()
-  "Find and go to the class at point"
-  (interactive)
-  (let ((class-name (thing-at-point 'symbol)))
-    (ring-insert find-tag-marker-ring (point-marker))
-    (save-excursion
-      (beginning-of-buffer)
-      (let ((start (search-forward-regexp "function\\s-*(" (point-max) t))
-            (end (- (search-forward ")") 1)))
-        (goto-char start)
-        (if (search-forward class-name end t)
-            (mapcar #'(lambda (lib-alist)
-                        (let* ((id (car lib-alist))
-                               (file-alist (cdr lib-alist))
-                               (record (assoc (concat (downcase class-name) ".js") file-alist)))
-                          (if (and record (= (length record) 2))
-                            (let ((found-file (cadr record)))
-                              (message "Found %s" found-file)
-                              (find-file found-file))
-                            nil)))
-                    jpop-project-alist)
-          nil)))))
-
-(defun jump-to-require ()
-  "Tries to load the require path assoscaited with a variable for node includes"
-  (interactive)
-  (save-excursion
-    (ring-insert find-tag-marker-ring (point-marker))
-    (goto-char (line-beginning-position))
-    (let ((require-pos (search-forward "require" (line-end-position) t)))
-      (when require-pos
-        (if (search-forward-regexp "(['\"]\\(.*?\\)['\"])" (line-end-position) t)
-            (mapcar #'(lambda (lib-alist)
-                        (let* ((id (car lib-alist))
-                               (file-alist (cdr lib-alist))
-                               (file (file-name-base (match-string 1)))
-                               (record (assoc (concat file ".js") file-alist)))
-                          (if (and record (= (length record) 2))
-                              (let ((found-file (cadr record)))
-                                (message "Found %s" found-file)
-                                (find-file found-file))
-                            nil)))
-                    jpop-project-alist)
-          nil)))))
-
 (defun jump-to-find-function ()
   "Go to the function definition for elisp"
   (interactive)
   (ring-insert find-tag-marker-ring (point-marker))
   (find-function (intern (thing-at-point 'symbol))))
-
-(defun jump-to-thing-at-point ()
-  "Go to the thing at point assuming if it's not a class or function it's a variable."
-  (interactive)
-  (let ((thing (thing-at-point 'symbol))
-        (p (point)))
-    (if thing
-        (when (and (eq nil (jump-to-require))
-                   (or (eq nil (jump-to-class))
-                       (equal '(nil) (jump-to-class))))
-          (ignore-errors (js2-jump-to-definition))
-          (when (and (eq p (point))
-                     (not (eq nil (etags-select-find-tag-at-point))))
-            (helm-swoop)))
-      (etags-select-find-tag))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
@@ -138,7 +70,6 @@
   "Alias to run `open-current-file`."
   (interactive)
   (open-current-file))
-
 
 (defun open-urls-in-file ()
   (interactive)
@@ -322,12 +253,6 @@
       (re-search-forward "[ \t\r\n]+" nil t)
       (replace-match "" nil nil))))
 
-(defun json-format ()
-  (interactive)
-  (save-excursion
-    (mark-whole-buffer)
-    (shell-command-on-region (mark) (point) "python -m json.tool" (buffer-name) t)))
-
 (defun upcase-case-next-letter ()
   "Upcase the next letter, then move forward one character."
   (interactive)
@@ -361,15 +286,6 @@
   (set-mark-command nil)
   (move-end-of-line 1)
   (call-interactively 'vr/query-replace))
-
-(defun leet-mode ()
-  "Turn off auto complete and major mode."
-  (interactive)
-  (auto-complete-mode 0)
-  (smartparens-mode 0)
-  (key-combo-mode 0)
-  (flycheck-mode 0)
-  (font-lock-mode 0))
 
 (defun font-scale (op &optional amount)
   "Apply function operator OP (+/-) to scale face attribute height by AMOUNT."
@@ -467,12 +383,6 @@
 (defun next-link ()
   (interactive)
   (-move-link 'search-forward-regexp))
-
-(defun get-quote-char ()
-  "Get the majority quote character used in a file."
-  (if (> (count-matches "\"" (point-min) (point-max))
-         (count-matches "'" (point-min) (point-max)))
-      "\"" "'"))
 
 (defun json-comma? ()
   "Whether or not to use a comma at the end of a json snippet"
@@ -680,7 +590,7 @@
 (global-set-key (kbd "<S-f10>") 'eww-edit-url)
 (defun eww-edit-url ()
   (interactive)
-  (let ((url (read-string "sEnter terminal name ❯ "
+  (let ((url (read-string "Enter URL or keywords ❯ "
                        (when (eq major-mode 'eww-mode)
                          (eww-copy-page-url)))))
     (eww url)))
