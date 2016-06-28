@@ -274,21 +274,10 @@
                      ("/f" . dired-narrow)
                      ("/t" . dired-narrow-fuzzy)))
 
-(use-package dired-subtree
-  :after 'dired
-  :config
-  (bind-keys :map dired-mode-map
-             ("i" . dired-subtree-cycle)
-             ("x" . dired-subtree-remove)))
-
 (use-package dired-quick-sort
   :after 'dired
   :config
   (dired-quick-sort-setup))
-
-(use-package ranger
-  :defer t
-  :bind ("<s-f3>" . ranger))
 
 (use-package git-timemachine :bind ("C-x v t" . git-timemachine))
 (use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
@@ -354,7 +343,6 @@
 
 (use-package hydra-window-layout
   :load-path "elisp"
-  :commands (wlf:agenda wlf:startup)
   :init (use-package window-layout)
   :bind ("C-c w" . hydra-window-layout/body))
 
@@ -485,12 +473,6 @@
                    ("C-;" . swiper-from-isearch)
                    ("C-'" . avy-isearch)
                    ("C-l" . counsel-git-grep-from-isearch)))
-
-(global-prettify-symbols-mode)
-(push '("->" . ?→) prettify-symbols-alist)
-(push '("<-" . ?←) prettify-symbols-alist)
-(push '("<=" . ?≤) prettify-symbols-alist)
-(push '(">=" . ?≥) prettify-symbols-alist)
 
 (use-package avy
   :bind
@@ -648,17 +630,6 @@
                      ("c" . eww-copy-page-url)))
 
 (use-package goto-addr :after markdown-mode)
-(use-package markdown-mode
-  :mode ("\\.md" . markdown-mode)
-  :config
-  (add-hook 'markdown-mode-hook 'auto-fill-mode)
-  (bind-keys* ("M-<left>" . backward-word)
-              ("<M-S-left>" . backward-word)
-              ("M-<right>" . forward-word)
-              ("<M-S-right>" . forward-word))
-  (bind-keys :map markdown-mode-map
-             ("s-f" . next-link)
-             ("s-b" . previous-link)))
 
 (use-package browse-url
   :defer t
@@ -673,11 +644,26 @@
   :config (bind-keys :map markdown-mode-map
                      ("C-c C-t g" . markdown-toc-generate-toc)))
 
+(use-package markdown-mode
+  :mode ("\\.md" . markdown-mode)
+  :config
+  (add-hook 'markdown-mode-hook 'auto-fill-mode)
+  (bind-keys* ("M-<left>" . backward-word)
+              ("<M-S-left>" . backward-word)
+              ("M-<right>" . forward-word)
+              ("<M-S-right>" . forward-word))
+  (bind-keys :map markdown-mode-map
+             ("s-f" . next-link)
+             ("s-b" . previous-link)))
+
 (use-package livedown
   :after markdown-mode
   :load-path "elisp/emacs-livedown"
   :config (bind-keys :map markdown-mode-map
                      ("C-c C-c p" . livedown:preview)))
+
+(use-package sudo-edit
+  :commands (sudo-edit-current-file))
 
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
 (use-package scss-mode :mode ("\\.scss$" . scss-mode))
@@ -733,7 +719,6 @@
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
-  (add-hook 'magit-mode-hook 'neotree-hide)
   (advice-add 'display-buffer :around
               '(lambda (f &rest args)
                  (let ((neotree? (get-buffer-window " *NeoTree*")))
@@ -858,8 +843,6 @@
                        ac-source-html-attrv))
     (auto-complete-mode)))
 
-(use-package company :after auto-complete)
-
 (use-package auto-complete
   :config
   (ac-config-default)
@@ -940,7 +923,6 @@
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-c e" . magit-vc-ediff)
                      ("C-<tab>" . projectile-find-file)))
-
 
 (use-package yahoo-weather
   :defer t
@@ -1028,6 +1010,7 @@
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
+(global-prettify-symbols-mode)
 
 ;;------------------
 ;; My Load Files
