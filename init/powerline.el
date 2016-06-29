@@ -43,6 +43,7 @@
     (darktooth      (:primary ("#222222" "#222222" "#FDF3C3") :secondary ("#403935" "#403935" "#988975")))
     (niflheim       (:primary ("#222222" "#2a2a2a" "#bababa") :secondary ("#222222" "#2a2a2a" "#bababa")))
     (aurora         (:primary ("#455a64" "#2B3B40" "#CDD3D3") :secondary ("#232A2F" "#232A2F" "#556D79")))
+    (forest-blue    (:primary ("#0e5994" "#203439" "#d3cbc4") :secondary ("#203439" "#203439" "#203439")))
     (eink           (:primary ("#DDDDD8" "#DDDDD8" "#383838") :secondary ("#DDDDD8" "#DDDDD8" "#DDDDD8")))
     (ujelly         (:primary ("#000000" "#000000" "#ffffff") :secondary ("#000000" "#000000" "#ffffff")))
     (tango          (:primary ("#babdb6" "#d3d7cf" "#5f615c") :secondary ("#888a85" "#888a85" "#2e3436")))
