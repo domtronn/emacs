@@ -46,8 +46,6 @@
     (forest-blue    (:primary ("#0e5994" "#203439" "#d3cbc4") :secondary ("#203439" "#203439" "#203439")))
     (eink           (:primary ("#DDDDD8" "#DDDDD8" "#383838") :secondary ("#DDDDD8" "#DDDDD8" "#DDDDD8")))
     (ujelly         (:primary ("#000000" "#000000" "#ffffff") :secondary ("#000000" "#000000" "#ffffff")))
-    (tango          (:primary ("#babdb6" "#d3d7cf" "#5f615c") :secondary ("#888a85" "#888a85" "#2e3436")))
-    (tango-dark     (:primary ("#212526" "#373C3F" "#BF984B") :secondary ("#212526" "#212526" "#ffcc66")))
     (spacemacs-dark (:primary ("#6c3163" "#292B2E" "#b2b2b2") :secondary ("#292B2E" "#292B2E" "#292B2E")))
     (solarized-dark (:primary ("#657b83" "#073642" "#073642") :secondary ("#002b36" "#002b36" "#586e75")))
     (gruvbox        (:primary ("#3c3836" "#282828" "#f4e8ba") :secondary ("#504945" "#282828" "#a89984")))
