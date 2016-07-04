@@ -940,8 +940,7 @@
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
-                     ("C-c e" . magit-vc-ediff)
-                     ("C-<tab>" . projectile-find-file)))
+                     ("C-c e" . magit-vc-ediff)))
 
 (use-package yahoo-weather
   :defer t
@@ -951,8 +950,10 @@
   (defun yahoo-weather-async-update-info ()
     (interactive)
     (async-start `(lambda ()
-                    (require 'yahoo-weather (format "%s/yahoo-weather.el" (car (directory-files ,package-user-dir t "yahoo-weather"))))
-                    (yahoo-weather-update-info))
+                    (let* ((dir (car (directory-files ,package-user-dir t "yahoo-weather")))
+                           (file (format "%s/yahoo-weather.el")))
+                      (require 'yahoo-weather file)
+                      (yahoo-weather-update-info)))
                  '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
@@ -1048,7 +1049,7 @@
 (put 'narrow-to-region 'disabled nil)
  
 (when window-system
-  (load-theme 'aurora)
+  (load-theme 'forest-blue)
   (toggle-frame-fullscreen)
   (remove-mode-line-box)
   (server-start))
