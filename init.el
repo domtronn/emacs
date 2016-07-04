@@ -522,11 +522,12 @@
   :mode ("\\.js$" . js2-mode)
   :config
   (setq js2-indent-switch-body t)
+  (setq js2-jump-fallback-f '(lambda (thing) (counsel-ag thing (projectile-project-root))))
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-  (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
+  ;; (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (add-hook 'js2-mode-hook
@@ -547,8 +548,6 @@
                (push '("_.compose" . ?∘) prettify-symbols-alist)
                (push '("R.compose" . ?∘) prettify-symbols-alist)
                ;; Key words
-               (push '("for" . ?↻) prettify-symbols-alist)
-               (push '("while" . ?∞) prettify-symbols-alist)
                (push '("module.exports" . ?⇧) prettify-symbols-alist)
                ;; Maths symbols
                (push '("<=" . ?≤) prettify-symbols-alist)
@@ -575,6 +574,8 @@
              ("C-c C-l" . js2r-log-this)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
+             ("M-." . js2-jump-around)
+             ("M-," . pop-tag-mark)
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-hook 'js2-mode-hook 'skewer-mode)
@@ -692,8 +693,9 @@
   (bind-keys :map emacs-lisp-mode-map
              ("C-c C-l" . elisp-debug)
              ("C-c RET" . context-coloring-mode)
-             ("M-." . jump-to-find-function)
-             ("M-," . pop-tag-mark)))
+             ("M-." . jump-to-find-function)))
+
+(global-set-key (kbd "M-,") 'pop-tag-mark)
 
 (use-package context-coloring-mode
   :defer t

@@ -58,6 +58,64 @@
   (ring-insert find-tag-marker-ring (point-marker))
   (find-function (intern (thing-at-point 'symbol))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; JS2 Navigation Helpers ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar js2-jump-fallback-f nil)
+(defun js2-jump-around ()
+  "Jump to variable definition or try to find its module"
+  (interactive)
+  (let ((found? (ignore-errors (js2-jump-to-definition))))
+    (unless found?
+      (when (js2--looking-at "let\\|var\\|const")
+        (beginning-of-line)
+        (search-forward "= ")
+        (setq found? (ignore-errors (js2-jump-to-definition)))))
+    (unless found?
+      (when (js2--looking-at "require\(.*?\)")
+        (beginning-of-line)
+        (search-forward "require")
+        (setq found? (ignore-errors (js2-jump-to-require)))))
+    (unless found?
+      (when (js2--looking-at "import.*?from")
+        (setq found? (ignore-errors (js2-jump-to-import)))))
+    (unless found?
+      (if (not js2-jump-fallback-f)
+          (error "Could not find module to jump to...")
+        (ring-insert find-tag-marker-ring (point-marker))
+        (funcall js2-jump-fallback-f (thing-at-point 'symbol))))))
+
+(defun js2-jump-to-require ()
+  "Jump to a require module"
+  (let* ((node (js2r--closest 'js2-call-node-p))
+         (args (first (js2-call-node-args node)))
+         (name (js2-string-node-value args)))
+    (js2--find-file name)))
+
+(defun js2-jump-to-import ()
+  "Jump to an import module"
+  (let* ((node (js2r--closest 'js2-import-node-p))
+         (name (js2-import-node-module-id node)))
+    (js2--find-file name)))
+    
+(defun js2--find-file (name)
+  (let* ((module-dir (file-name-directory name))
+         (module-name (concat (file-name-base name) "\\."))
+         (modules (ignore-errors
+                    (or
+                     (directory-files module-dir t module-name)
+                     (directory-files name t "index")))))
+    (unless modules
+      (error "Could not find module '%s'" name))
+    (ring-insert find-tag-marker-ring (point-marker))
+    (find-file (first modules))))
+
+(defun js2--looking-at (s)
+  (save-excursion
+    (let ((line (buffer-substring (line-beginning-position) (line-end-position))))
+      (not (eq nil (string-match s line))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -209,10 +267,9 @@
 (defun ahahah ()
   "You know what it displays..."
   (interactive)
-  (random)
-  (setq clr (nth (random (length (defined-colors))) (defined-colors)))
-  (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
-                            'face `(:foreground ,clr))))
+  (let ((clr (random-hex)))
+    (message "%s" (propertize "Ah ah ah, you didn't say the magic word!"
+                              'face `(:foreground ,clr)))))
 
 (defun rotate-windows ()
   "Rotate your windows"
@@ -221,21 +278,21 @@
    ((not (> (count-windows) 1))
     (message "You can't rotate a single window!"))
    (t
-    (setq i 1)
-    (setq numWindows (count-windows))
-    (while  (< i numWindows)
-      (let* (
-             (w1 (elt (window-list) i))
-             (w2 (elt (window-list) (+ (% i numWindows) 1)))
-             (b1 (window-buffer w1))
-             (b2 (window-buffer w2))
-             (s1 (window-start w1))
-             (s2 (window-start w2)))
-        (set-window-buffer w1  b2)
-        (set-window-buffer w2 b1)
-        (set-window-start w1 s2)
-        (set-window-start w2 s1)
-        (setq i (1+ i)))))))
+    (let  ((i 1)
+           (numWindows (count-windows)))
+      (while  (< i numWindows)
+        (let* (
+               (w1 (elt (window-list) i))
+               (w2 (elt (window-list) (+ (% i numWindows) 1)))
+               (b1 (window-buffer w1))
+               (b2 (window-buffer w2))
+               (s1 (window-start w1))
+               (s2 (window-start w2)))
+          (set-window-buffer w1  b2)
+          (set-window-buffer w2 b1)
+          (set-window-start w1 s2)
+          (set-window-start w2 s1)
+          (setq i (1+ i))))))))
 
 (defun semi-colon-end ()
   "Function to insert a semi colon at the end of the line from anywhere."
@@ -276,7 +333,7 @@
   (kill-line)
   (yank)
   (open-line 1)
-  (next-line 1)
+  (forward-line 1)
   (yank))
 
 (defun duplicate-line-and-replace-regexp ()
@@ -590,10 +647,9 @@
 (global-set-key (kbd "<S-f10>") 'eww-edit-url)
 (defun eww-edit-url ()
   (interactive)
-  (let ((url (read-string "Enter URL or keywords ❯ "
-                       (when (eq major-mode 'eww-mode)
-                         (eww-copy-page-url)))))
-    (eww url)))
+  (eww (read-string "Enter URL or keywords ❯ "
+                    (when (eq major-mode 'eww-mode)
+                      (eww-copy-page-url)))))
 
 (provide 'functions)
 ;;; functions.el ends here
