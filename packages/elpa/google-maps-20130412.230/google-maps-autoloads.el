@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "google-maps" "google-maps.el" (22342 43608
+;;;### (autoloads nil "google-maps" "google-maps.el" (22390 16282
 ;;;;;;  0 0))
 ;;; Generated autoloads from google-maps.el
 
@@ -17,7 +17,7 @@ and do not ask the user for a more precise location.
 ;;;***
 
 ;;;### (autoloads nil "google-maps-geocode" "google-maps-geocode.el"
-;;;;;;  (22342 43608 0 0))
+;;;;;;  (22390 16282 0 0))
 ;;; Generated autoloads from google-maps-geocode.el
 
 (autoload 'google-maps-geocode-replace-region "google-maps-geocode" "\
@@ -28,7 +28,7 @@ Geocode region and replace it with a more accurate result.
 ;;;***
 
 ;;;### (autoloads nil "google-maps-static" "google-maps-static.el"
-;;;;;;  (22342 43608 0 0))
+;;;;;;  (22390 16282 0 0))
 ;;; Generated autoloads from google-maps-static.el
 
 (autoload 'google-maps-static-mode "google-maps-static" "\
@@ -39,7 +39,7 @@ A major mode for Google Maps service
 ;;;***
 
 ;;;### (autoloads nil "org-location-google-maps" "org-location-google-maps.el"
-;;;;;;  (22342 43608 0 0))
+;;;;;;  (22390 16282 0 0))
 ;;; Generated autoloads from org-location-google-maps.el
 
 (autoload 'org-location-google-maps "org-location-google-maps" "\
@@ -79,7 +79,7 @@ Set coordinates property to LOCATION coordinates for current entry using Google 
 ;;;***
 
 ;;;### (autoloads nil nil ("google-maps-base.el" "google-maps-pkg.el")
-;;;;;;  (22342 43608 176007 0))
+;;;;;;  (22390 16282 212526 0))
 
 ;;;***
 
