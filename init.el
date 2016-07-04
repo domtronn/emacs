@@ -498,14 +498,12 @@
   ("M-z" . avy-zap-up-to-char))
 
 (use-package wgrep
-  :after 'helm-files
   :init (defun wgrep-end ()
           (interactive)
           (wgrep-finish-edit)
           (wgrep-save-all-buffers))
         (autoload 'wgrep-change-to-wgrep-mode "browse-url")
-  :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end)
-          (define-key helm-grep-mode-map (kbd "C-c C-p") 'wgrep-change-to-wgrep-mode))
+  :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end))
 
 (use-package tern
   :after 'js2-mode
@@ -523,7 +521,7 @@
   :mode ("\\.js$" . js2-mode)
   :config
   (setq js2-indent-switch-body t)
-  (setq js2-jump-fallback-f '(lambda (thing) (counsel-ag thing (projectile-project-root))))
+  (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
