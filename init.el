@@ -635,7 +635,7 @@
   :bind ("<f10>" . eww)
         ("<s-f10>" . eww-list-bookmarks)
   :config (bind-keys :map eww-mode-map
-                     ("j" . json-format)
+                     ("j" . json-mode-beautify)
                      ("c" . eww-copy-page-url)))
 
 (use-package goto-addr :after markdown-mode)
