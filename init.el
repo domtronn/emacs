@@ -763,6 +763,14 @@
   :config (bind-keys :map eshell-mode-map
              ("C-r" . counsel-esh-history)))
 
+(use-package ansi-color
+  :config
+  (defun colorize-compilation-buffer ()
+    (toggle-read-only)
+    (ansi-color-apply-on-region compilation-filter-start (point))
+    (toggle-read-only))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+
 (use-package shell-pop
   :bind ("C-`" . shell-pop)
   :config
