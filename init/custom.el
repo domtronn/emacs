@@ -249,6 +249,7 @@
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))
  '(tab-stop-list (quote (2 4 6 8 10 12 14 16 18 20 22 24 26 28 30)))
  '(tabbar-background-color "#353535")
+ '(tags-add-tables nil)
  '(tags-revert-without-query t)
  '(user-mail-address "dgc336@gmail.com")
  '(vc-annotate-background nil)

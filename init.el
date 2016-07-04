@@ -388,11 +388,19 @@
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-test-suffix-function 'my/projectile-test-suffix)
+  (setq projectile-globally-ignored-directories
+        (append projectile-globally-ignored-directories
+                '("node_modules" "build" "tests" "lib")))
+  (setq projectile-globally-ignored-file-suffixes '(".min.js"))
+  (setq projectile-tags-file-name ".tags")
+  (add-hook 'projectile-after-switch-project-hook
+            '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
   :bind
   ("C-o" . projectile-find-file)
   ("C-c f" . projectile-ag)
   ("C-x C-b" . projectile-switch-to-buffer)
-  ("C-c s-p" . projectile-ibuffer))
+  ("C-c s-p" . projectile-ibuffer)
+  ("C-c p x x" . projectile-remove-known-project))
 
 (use-package visual-regexp
   :bind ("C-c r" . vr/replace)
