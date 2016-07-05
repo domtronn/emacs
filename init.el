@@ -643,7 +643,8 @@
         ("<s-f10>" . eww-list-bookmarks)
   :config (bind-keys :map eww-mode-map
                      ("j" . json-mode-beautify)
-                     ("c" . eww-copy-page-url)))
+                     ("c" . eww-copy-page-url)
+                     ("i" . eww-imenu)))
 
 (use-package goto-addr :after markdown-mode)
 
@@ -976,9 +977,8 @@
    'window-numbering-mode-hook
    '(lambda ()
       (let ((map (make-sparse-keymap)))
-        (mapc
-         (lambda (n) (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
-         (number-sequence 1 9))
+        (dotimes (n 10)
+          (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
         (setq window-numbering-keymap map))))
   :config
   (window-numbering-mode)
