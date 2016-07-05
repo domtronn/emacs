@@ -66,12 +66,15 @@
 (defun js2-jump-around ()
   "Jump to variable definition or try to find its module"
   (interactive)
-  (let ((found? (ignore-errors (js2-jump-to-definition))))
+  (let* ((p (point))
+         (found? (and (ignore-errors (js2-jump-to-definition))
+                      (not (eq p (point))))))
     (unless found?
-      (when (js2--looking-at "let\\|var\\|const")
-        (beginning-of-line)
-        (search-forward "= ")
-        (setq found? (ignore-errors (js2-jump-to-definition)))))
+      (save-excursion
+        (when (js2--looking-at "let\\|var\\|const")
+         (beginning-of-line)
+         (search-forward "= ")
+         (setq found? (ignore-errors (js2-jump-to-definition))))))
     (unless found?
       (when (js2--looking-at "require\(.*?\)")
         (beginning-of-line)
