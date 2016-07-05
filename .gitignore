@@ -41,6 +41,8 @@ projectile.cache
 .jenkins-auth.el
 .docker-auth.el
 
+.projectile-ignore.el
+
 # Emacs Directories form Packages #
 ###################################
 /var/

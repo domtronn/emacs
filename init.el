@@ -385,11 +385,12 @@
   :bind ("C-c p p" . projectile-switch-project)
   :config
   (projectile-global-mode)
+  (require 'projectile-ignore (concat base-path ".projectile-ignore.el"))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-test-suffix-function 'my/projectile-test-suffix)
   (setq projectile-project-root-files-bottom-up
-        (append '(".projectile" "gulpfile.js" "gruntfile.js")
+        (append '(".projectile" "gulpfile.js" "gruntfile.js" "Gulpfile.js" "Gruntfile.js")
                 projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
