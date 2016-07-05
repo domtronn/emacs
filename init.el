@@ -580,6 +580,8 @@
              ("C-k" . js2r-kill)
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
+             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
+             ("<s-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-hook 'js2-mode-hook 'skewer-mode)
