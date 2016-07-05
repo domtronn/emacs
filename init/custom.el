@@ -52,7 +52,7 @@
     ("Message (Checker)" 0 t)] t)
  '(flycheck-eslintrc ".eslintrc.json")
  '(flycheck-highlighting-mode (quote lines))
- '(flycheck-idle-change-delay 4)
+ '(flycheck-idle-change-delay 2)
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
  '(helm-reuse-last-window-split-state t)
@@ -195,6 +195,7 @@
      ("{ RET" . "{
 `!!'
 }"))))
+ '(line-spacing 3)
  '(magit-commit-arguments nil)
  '(magit-diff-use-overlays nil)
  '(magit-popup-show-common-commands nil)
