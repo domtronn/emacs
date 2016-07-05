@@ -388,10 +388,13 @@
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-test-suffix-function 'my/projectile-test-suffix)
+  (setq projectile-project-root-files-bottom-up
+        (append '(".projectile" "gulpfile.js" "gruntfile.js")
+                projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
-                '("node_modules" "build" "tests" "lib")))
-  (setq projectile-globally-ignored-file-suffixes '(".min.js"))
+                '("node_modules" "build" "tests" "lib" ".cache")))
+  (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags"))
   (setq projectile-tags-file-name ".tags")
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
@@ -498,6 +501,7 @@
   ("M-z" . avy-zap-up-to-char))
 
 (use-package wgrep
+  :defer t
   :init (defun wgrep-end ()
           (interactive)
           (wgrep-finish-edit)
@@ -517,6 +521,7 @@
 (use-package js-injector
   :after js2-mode
   :load-path "elisp/js-dependency-injector")
+
 (use-package js2-mode
   :mode ("\\.js$" . js2-mode)
   :config
