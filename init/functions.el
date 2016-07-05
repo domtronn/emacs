@@ -516,6 +516,42 @@
 (defrepl "node" "node")
 (defrepl "lodash" "n_")
 
+(defmacro defewwmenu (name query)
+  `(defun ,(intern (format "eww-%s-imenu" name)) ()
+     (interactive)
+     (with-current-buffer (get-buffer "*eww*")
+       (let ((p (point)) (results (list )))
+         (goto-char (point-min))
+         (while (re-search-forward ,query (point-max) t)
+           (unless (assoc (match-string 1) results)
+             (setq results (append results
+                                   (list (cons
+                                          (match-string-no-properties 1)
+                                          (match-string-no-properties 0)))))))
+         (goto-char p)
+         (ivy-read "Jump to ❯ " results
+                   :action
+                   (lambda (match)
+                     (with-current-buffer (get-buffer "*eww*")
+                       (goto-char (point-min))
+                       (set-window-point
+                        (get-buffer-window "*eww*")
+                        (search-forward match))))
+                   :update-fn (lambda () (setq ivy-calling t))
+                   :unwind (lambda () (setq ivy-calling nil)))))))
+
+(defewwmenu "ramda" "\\(.*?\\) Added in")
+(defewwmenu "lodash" "_\.\\([a-z]+?\\)(.*?)")
+
+(defun eww-imenu ()
+  (interactive)
+  (cond
+   ((string-match "docs/ramda" eww-current-url)
+    (eww-ramda-imenu))
+   ((string-match "docs/lodash" eww-current-url)
+    (eww-lodash-imenu))
+   (t (error "Could not find a matching imenu"))))
+
 (defun send-to-repl ()
   (interactive)
   (let ((buf (car (--filter (and (string-match "repl" (buffer-name it)) (get-buffer-window it))
