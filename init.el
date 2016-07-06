@@ -73,7 +73,8 @@
   :init (autoload 'css-color-mode "mon-css-color" "" t)
   :config (css-color-global-mode))
 
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (use-package paren)
 
 (use-package multiple-cursors
@@ -426,6 +427,8 @@
   ("H-S-SPC" . embrace-delete)
   ("H-x"     . embrace-delete)
   ("H-c"     . embrace-change))
+
+(use-package smex :after counsel)
 
 (use-package counsel :after ivy
   :defer 5
@@ -904,7 +907,6 @@
 
 (setq truncate-lines nil)
 
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
