@@ -521,7 +521,7 @@
      (interactive)
      (unless (get-buffer-window "*eww*")
        (if (get-buffer "*eww*")
-         (switch-to-buffer-other-window "*eww*")
+           (popwin:popup-buffer "*eww*" :height 30 :noselect t :stick nil)
          (error "Could not find current *eww* buffer")))
      (with-current-buffer (get-buffer "*eww*")
        (let ((p (point)) (results (list )))
@@ -551,14 +551,16 @@
 (defewwmenu "ramda" "\\(.*?\\) Added in")
 (defewwmenu "lodash" "_\.\\([a-z]+?\\)(.*?)")
 
+(global-set-key (kbd "C-c / i") 'eww-imenu)
 (defun eww-imenu ()
   (interactive)
-  (cond
-   ((string-match "docs/ramda" eww-current-url)
-    (eww-ramda-imenu))
-   ((string-match "docs/lodash" eww-current-url)
-    (eww-lodash-imenu))
-   (t (error "Could not find a matching imenu"))))
+  (with-current-buffer (get-buffer "*eww*")
+    (cond
+     ((string-match "docs/ramda" eww-current-url)
+      (eww-ramda-imenu))
+     ((string-match "docs/lodash" eww-current-url)
+      (eww-lodash-imenu))
+     (t (error "Could not find a matching imenu")))))
 
 (defun send-to-repl ()
   (interactive)
