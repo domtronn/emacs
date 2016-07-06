@@ -846,16 +846,6 @@
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "jsx") (tern-mode)))))
 
-(use-package emmet-mode :after web-mode
-  :config
-  (bind-keys :map scss-mode-map
-             ("M-P" . key-combo-mode)
-             ("C-o" . emmet-expand-yas))
-  ;; (advice-add 'emmet-expand-yas :before
-  ;;             '(lambda () "Bemify the expression before expanding snippet when using the `|bem` filter"
-  ;;                (bemify-emmet-string (emmet-expr-on-line))))
-  )
-
 ;; Custom Auto Complete Sources
 (use-package auto-complete-config :after auto-complete)
 
@@ -1056,7 +1046,7 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
- 
+
 (when window-system
   (load-theme 'forest-blue)
   (toggle-frame-fullscreen)
