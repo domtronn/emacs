@@ -644,6 +644,7 @@
         ("<s-f10>" . eww-list-bookmarks)
   :config (bind-keys :map eww-mode-map
                      ("j" . json-mode-beautify)
+                     ("g" . (lambda () (interactive) (eww eww-current-url)))
                      ("c" . eww-copy-page-url)
                      ("i" . eww-imenu)))
 
