@@ -98,10 +98,10 @@
         (image-buf (get-buffer-create "*docker-images*"))
         (log-buf (wlf:get-docker-logs-buffer)))
     (wlf:show (wlf:no-layout
-      '(- (:upper-size-ratio 0.7)
-          (| (:left-size-ratio 0.6)
+      '(- (:upper-size-ratio 0.5)
+          (| (:left-size-ratio 0.3)
              file
-             (- (:upper-size-ration 0.5)
+             (| (:left-size-ration 0.5)
                 log
                 build))
           (- (:upper-size-ratio 0.5)
