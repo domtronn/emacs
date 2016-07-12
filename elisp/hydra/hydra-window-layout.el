@@ -115,9 +115,7 @@
     (select-window-1)))
 
 (defun wlf:devdocs-url (docset)
-  (let ((ip (replace-regexp-in-string "\n$" ""
-             (shell-command-to-string "docker-machine ip default"))))
-    (format "http://%s/docs/%s" ip docset)))
+  (format "http://localhost:5000/docs/%s" docset))
 
 (defun wlf:lodash ()
   (let ((current (current-buffer))
