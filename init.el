@@ -167,6 +167,8 @@
         org-capture-templates
         '(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
            "* TODO %?\n %t")
+          ("T" "Ticket" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tickets")
+           "* TODO [[https://jira.dev.bbc.co.uk/browse/iptv-%\\1][IPTV-%^{Ticket Number}]] %?\n %t")
           ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS")
@@ -181,7 +183,7 @@
         org-agenda-custom-commands
         '(("n" "Agenda and all TODOs"
            ((agenda "" ((org-agenda-sorting-strategy '(time-up deadline-up))))
-            (alltodo "" ((org-agenda-sorting-strategy '(todo-state-up))))))))
+            (alltodo "" ((org-agenda-sorting-strategy '(todo-state-up tag-down priority-down effort-down))))))))
 
   :config
   ;; Export Backends
