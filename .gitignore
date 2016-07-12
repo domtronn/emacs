@@ -46,6 +46,7 @@ projectile.cache
 # Emacs Directories form Packages #
 ###################################
 /var/
+smex-items
 
 # Compiled source #
 ###################

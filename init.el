@@ -92,6 +92,10 @@
 (use-package expand-region
   :bind ("M-q" . er/expand-region))
 
+(use-package hydra-expand-region
+  :load-path "elisp/hydra"
+  :bind ("M-Q" . hydra-expand-region/body))
+
 (use-package ibuffer
   :defer t
   :config
