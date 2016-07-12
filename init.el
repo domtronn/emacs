@@ -202,7 +202,6 @@
    'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
-  (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
   (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
   (run-with-idle-timer 300 t 'wlf:agenda)
@@ -397,7 +396,7 @@
                 projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
-                '("node_modules" "build" "tests" "lib" ".cache")))
+                '("node_modules" "build" "tests" ".cache")))
   (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags"))
   (setq projectile-tags-file-name ".tags")
   (add-hook 'projectile-after-switch-project-hook
@@ -435,6 +434,7 @@
 (use-package counsel :after ivy
   :defer 5
   :config
+  (setq counsel-find-file-at-point t)
   (defalias 'counsel-use-package 'counsel-load-library)
   (defun counsel-git-grep-from-isearch ()
     "Invoke `counsel-git-grep' from isearch."
@@ -689,8 +689,13 @@
 (use-package sudo-edit
   :commands (sudo-edit-current-file))
 
+(use-package scss-mode
+  :mode ("\\.scss$" . scss-mode)
+  :config
+  (bind-keys :map scss-mode-map
+             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
+             ("<s-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
-(use-package scss-mode :mode ("\\.scss$" . scss-mode))
 (use-package css-mode :mode ("\\.css$" . css-mode))
 
 (use-package lisp-mode
@@ -1053,7 +1058,7 @@
 
 (when window-system
   (load-theme 'forest-blue)
-  (toggle-frame-fullscreen)
+  (toggle-frame-maximized)
   (remove-mode-line-box)
   (server-start))
 
