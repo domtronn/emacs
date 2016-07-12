@@ -150,7 +150,7 @@
   (let ((type (completing-read
                "Open current file in editor ❯ " '("Sublime Text" "Atom" "Chrome" "Finder" "Multiple URLs" "URL") nil nil)))
     (cond ((string-equal type "Sublime Text") (open-in "subl"))
-          ((string-equal type "Atom") (open-in "atom"))
+          ((string-equal type "Atom") (shell-command (format "atom %s" (projectile-project-root))))
           ((string-equal type "Chrome") (browse-url (buffer-file-name)))
           ((string-equal type "Multiple URLs")
            (call-interactively 'link-hint-open-multiple-links))
