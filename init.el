@@ -50,8 +50,6 @@
     (local-set-key "f" 'counsel-set-font)
     (local-set-key "j" 'jenkins)
     (local-set-key "a" 'org-agenda)
-    (local-set-key "di" 'docker-images)
-    (local-set-key "dc" 'docker-containers)
     (local-set-key "p" 'projectile-switch-project)))
 
 (eval-when-compile (require 'use-package))
@@ -114,6 +112,7 @@
 (use-package smart-newline
   :bind ("RET" . smart-newline))
 
+(use-package smartparens-config :after smartparens)
 (use-package smartparens
   :demand
   :config (smartparens-global-mode)
@@ -309,28 +308,6 @@
   :config (bind-keys :map dockerfile-mode-map
                      ("C-x c" . dockerfile-build-buffer)
                      ("C-x C-c" . dockerfile-build-no-cache-buffer)))
-(use-package docker-tramp
-  :after docker
-  :config
-  (defun docker-tramp-onto-entry ()
-    "Tramp onto a docker instance"
-    (interactive)
-    (let ((tramp-string (format "/docker:root@%s:/" (tabulated-list-get-id))))
-      (find-file tramp-string))))
-
-(use-package docker
-  :commands
-  (docker-images docker-containers docker-volumes docker-networks docker-machines)
-  :init
-  (require 'docker-auth (concat base-path ".docker-auth.el"))
-  (setenv "DOCKER_TLS_VERIFY" (plist-get docker-auth :tlsverify))
-  (setenv "DOCKER_HOST" (plist-get docker-auth :host))
-  (setenv "DOCKER_CERT_PATH" (plist-get docker-auth :certpath))
-  (setenv "DOCKER_MACHINE_NAME" (plist-get docker-auth :machinename))
-  (add-hook 'docker-containers-mode-hook
-            (lambda () (bind-keys :map docker-containers-mode-map
-                             ("T" . docker-tramp-onto-entry)
-                             ("l" . docker-containers-logs-follow-selection)))))
 
 (use-package jenkins
   :commands (jenkins)
@@ -591,7 +568,8 @@
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
-             ("<s-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
+             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
+             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-hook 'js2-mode-hook 'skewer-mode)
@@ -698,7 +676,8 @@
   :config
   (bind-keys :map scss-mode-map
              ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
-             ("<s-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
+             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
+             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
 (use-package css-mode :mode ("\\.css$" . css-mode))
 
@@ -833,14 +812,29 @@
   ("\\.jsx$" . web-mode)
 
   :config
-  (bind-keys :map web-mode-map
+  ;; Key combo stuff
+  (key-combo-define web-mode-map ":" '(": "))
+  (advice-add
+   'key-combo-pre-command-function
+   :around '(lambda (orig-f &rest args)
+              (unless  (and (web-mode-jsx-is-html)
+                            (member (this-command-keys) '("=" "-" "+")))
+                (apply orig-f args)))) ()
+  
+                (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
+             ("±" . emmet-expand-line)
+             ("C-j" . join-line)
              ("<backtab>" . web-mode-complete)
-             ("s-/" . web-mode-comment-or-uncomment)
-             ("M-P" . key-combo-mode))
+             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
+             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
+             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
+             ("s-/" . web-mode-comment-or-uncomment))
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-attr-indent-offset 2)
+  (setq web-mode-auto-quote-style 2)
   (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-enable-auto-expanding t)
   (setq web-mode-ac-sources-alist
         '(("html" . (ac-source-html-tag
                      ac-source-words-in-same-mode-buffers
@@ -858,7 +852,28 @@
       ad-do-it))
 
   (add-hook 'web-mode-hook
-            (lambda () (when (equal web-mode-content-type "jsx") (tern-mode)))))
+            (lambda () (when (equal web-mode-content-type "jsx")
+                    (emmet-mode)
+                    (tern-mode)))))
+
+(use-package web-beautify :after web-mode
+  :config
+  (advice-add 'web-beautify-html :around
+              '(lambda (f &rest args)
+                 (let ((rb (region-beginning))
+                       (re (region-end)))
+                   (apply f args)
+                   (indent-region rb re))))
+  (setq web-beautify-args '("-A" "\"force\"" "-f" ""))
+  (bind-keys :map web-mode-map
+             ("s-l" . web-beautify-html)))
+
+(use-package emmet-mode :after web-mode
+  :init (setq emmet-mode-keymap (make-sparse-keymap))
+  :config
+  (setq emmet-expand-jsx-className? t)
+  (advice-add 'emmet-expand-line :before
+              '(lambda (&rest r) (end-of-line))))
 
 ;; Custom Auto Complete Sources
 (use-package auto-complete-config :after auto-complete)
@@ -1062,7 +1077,6 @@
 
 (when window-system
   (load-theme 'forest-blue)
-  (toggle-frame-maximized)
   (remove-mode-line-box)
   (server-start))
 
