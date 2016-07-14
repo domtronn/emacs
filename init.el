@@ -801,6 +801,10 @@
 
 (use-package pug-mode :mode ("\\.pug$" . pug-mode))
 
+(use-package jsx-reformat
+  :after web-mode
+  :load-path "elisp/jsx-reformat")
+
 (use-package web-mode
   :mode
   ("\\.html$" . web-mode)
@@ -812,7 +816,7 @@
   ("\\.jsx$" . web-mode)
 
   :config
-  ;; Key combo stuff
+  ;; JSX Reformat
   (key-combo-define web-mode-map ":" '(": "))
   (advice-add
    'key-combo-pre-command-function
