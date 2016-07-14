@@ -825,6 +825,16 @@
              ("M-;" . semi-colon-end)
              ("±" . emmet-expand-line)
              ("C-j" . join-line)
+             ("s-l" . jsx-reformat)
+             ("s-=" . web-mode-fold-or-unfold)
+             ("M-s M-m" . web-mode-tag-match)
+             ("M-s M-e" . web-mode-tag-end)
+             ("M-s M-a" . web-mode-tag-beginning)
+             ("M-s M-n" . web-mode-tag-next)
+             ("M-s M-p" . web-mode-tag-previous)
+             ("M-a M-n" . web-mode-attribute-next)
+             ("M-a M-p" . web-mode-attribute-previous)
+             ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -856,22 +866,12 @@
                     (emmet-mode)
                     (tern-mode)))))
 
-(use-package web-beautify :after web-mode
-  :config
-  (advice-add 'web-beautify-html :around
-              '(lambda (f &rest args)
-                 (let ((rb (region-beginning))
-                       (re (region-end)))
-                   (apply f args)
-                   (indent-region rb re))))
-  (setq web-beautify-args '("-A" "\"force\"" "-f" ""))
-  (bind-keys :map web-mode-map
-             ("s-l" . web-beautify-html)))
-
 (use-package emmet-mode :after web-mode
+  :load-path "~/workspace/el-emmet-mode"
   :init (setq emmet-mode-keymap (make-sparse-keymap))
   :config
   (setq emmet-expand-jsx-className? t)
+  (setq emmet-quote-style "'")
   (advice-add 'emmet-expand-line :before
               '(lambda (&rest r) (end-of-line))))
 

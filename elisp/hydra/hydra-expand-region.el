@@ -1,3 +1,5 @@
+(require 'expand-region)
+
 (defhydra hydra-expand-region (:color pink :hint nil)
   "
 ^Mark^                     ^Pairs^             ^Quotes^
