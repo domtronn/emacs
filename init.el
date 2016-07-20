@@ -951,7 +951,7 @@
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
 (use-package grunt
-  :load-path "~/workspace/grunt-el"
+  :load-path "~/workspace/el-grunt"
   :bind ("C-M-g" . grunt-exec))
 
 (use-package repository-root
