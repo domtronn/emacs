@@ -568,7 +568,6 @@
              ("C-k" . js2r-kill)
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
-             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
@@ -676,7 +675,6 @@
   :mode ("\\.scss$" . scss-mode)
   :config
   (bind-keys :map scss-mode-map
-             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
 (use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
@@ -824,9 +822,9 @@
    :around '(lambda (orig-f &rest args)
               (unless  (and (web-mode-jsx-is-html)
                             (member (this-command-keys) '("=" "-" "+")))
-                (apply orig-f args)))) ()
+                (apply orig-f args))))
   
-                (bind-keys :map web-mode-map
+  (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
              ("±" . emmet-expand-line)
              ("C-j" . join-line)
@@ -841,7 +839,6 @@
              ("M-a M-p" . web-mode-attribute-previous)
              ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
-             ("<M-return>" . (lambda () (interactive) (end-of-line) (smart-newline)))
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
              ("s-/" . web-mode-comment-or-uncomment))
