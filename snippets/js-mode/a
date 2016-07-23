@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : a
-# --
-jasmine.any($1)$0

@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : tbgt
-# --
-toBeGreaterThan($1);$0

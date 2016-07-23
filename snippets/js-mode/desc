@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#name : desc
-# --
-describe(`(er!? 'quotes)`${1:Description}`(er!? 'quotes)`, function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{
-$0
-})`(er!? 'semi)`

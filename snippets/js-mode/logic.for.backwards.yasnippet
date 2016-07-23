@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name : for (..., i--)
+# key  : for-
+# --
+var ${1:i} = ${2:collection}.length`(er!? 'semi)`
+for ($1; $1--;) {`(er!? 'padded-blocks-blocks)`
+`(er!? 'semi)`$0
+`(er!? 'padded-blocks-blocks)`}

@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : tblt
-# --
-toBeLessThan($1);$0

@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : mra
-# --
-${1:object}.${2:method}.calls.mostRecent().args[${3:0}](${4:args});

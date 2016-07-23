@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#name : acf
-# --
-and.callFake(function`(er!? 'space-before-function-paren)`() {
-`(er!? 'indent)``(er!? 'padded-blocks-blocks)`$3`(er!? 'padded-blocks-blocks)`
-})`(er!? 'semi)`

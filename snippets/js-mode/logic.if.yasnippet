@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : ES#if
+# key  : if
+# --
+if (`(er!? 'space-in-parens)`${1:condition}`(er!? 'space-in-parens)`) {`(er!? 'padded-blocks)`
+`(er!? 'indent)`$0
+`(er!? 'padded-blocks)`}

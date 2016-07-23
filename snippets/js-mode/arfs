@@ -1,4 +1,0 @@
-# -*- mode: snippet -*-
-#name : arfs
-# --
-${1:object}.${2:method}.and.returnValue(`(er!? 'quotes)`$3`(er!? 'quotes)`)`(er!? 'semi)`$0

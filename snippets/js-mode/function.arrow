@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : ES2015#ArrowFunction - () => {  }
+# key  : .
+# --
+($1) => {`(er!? 'block-spacing)`$0`(er!? 'block-spacing)`}

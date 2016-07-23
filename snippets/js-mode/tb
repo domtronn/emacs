@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : tb
-# --
-toBe($1);$0

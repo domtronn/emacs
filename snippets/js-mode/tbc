@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : tbc
-# --
-toHaveBeenCalled();$0

@@ -1,4 +1,0 @@
-# -*- mode: snippet -*-
-#name : cf
-# --
-spyOn(${1:class},`(er!? 'quotes)`${2:method}`(er!? 'quotes)`).and.callFake(function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{`(er!? 'block-spacing)`return $3${3:$(when yas-modified-p (er!? 'semi))}`(er!? 'block-spacing)`})`(er!? 'semi)`$0

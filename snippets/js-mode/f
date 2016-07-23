@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name				: anonymous function
-# binding			: C-c C-c f
-# expand-env	: ((prepend-space nil))
-# --
-function${1:$(when yas-modified-p " ")}$1`(er!? 'space-before-function-paren)`(`(er!? 'space-in-parens)`$2`(er!? 'space-in-parens)`)`(er!? 'space-before-functions)`{
-$0
-}

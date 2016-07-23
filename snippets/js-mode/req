@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name : require('modulepath')
-# expand-env: ((req-module (call-interactively 'require-relative-module)))
-# --
-require(`(cadr req-module)`);

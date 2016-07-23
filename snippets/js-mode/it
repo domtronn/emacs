@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#name : it
-# --
-it(`(er!? 'quotes)`${1:should...}`(er!? 'quotes)`, function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{
-$2
-})`(er!? 'semi)`$0

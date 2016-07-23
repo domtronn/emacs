@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : tbcw
-# --
-toHaveBeenCalledWith($1);$0

@@ -1,4 +1,0 @@
-# -*- mode: snippet -*-
-#afunc : anonymous inline function
-# --
-function`(er!? 'space-before-function-paren)`($1) {`(er!? 'block-spacing)`$2${2:$(when yas-modified-p (er!? 'semi))}`(er!? 'block-spacing)`}$0

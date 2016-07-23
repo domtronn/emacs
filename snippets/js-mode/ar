@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : ar
-# --
-and.returnValue(`(er!? 'quotes)`$3`(er!? 'quotes)`)`(er!? 'semi)`$0

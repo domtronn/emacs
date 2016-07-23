@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name				: anonymous function
-# binding			: C-c C-c f
-# expand-env	: ((prepend-space nil))
-# --
-($1${1:$(with-temp-buffer (insert yas-text) (when (s-contains? "," (buffer-string)) ")")} => {`(er!? 'block-spacing)`$0`(er!? 'block-spacing)`}

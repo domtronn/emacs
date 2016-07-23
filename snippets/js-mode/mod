@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-#name : node module
-# expand-env: ((yas/indent-line 'fixed))
-# --
-`(er!? 'strict)``(and (er? 'strict) (concat (er!? 'semi) "\n"))`module.exports = function`(er!? 'space-before-function-paren)`(`(er!? 'space-in-parens)`$1`(er!? 'space-in-parens)`)`(er!? 'space-before-functions)`{
-`(er!? 'indent)`$0
-};

@@ -1,4 +1,0 @@
-# -*- mode: snippet -*-
-#name : alert
-# --
-jasmine.objectContaining($0)

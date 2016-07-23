@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-#name : toggle
+# name : Fature Toggle Comments
+# key  : toggle
 # --
 // :FEATURE_TOGGLE:[${1:toggle}] - ${2:description}
 var featureEnabled = options.featureToggles && R.contains('$1', options.featureToggles)

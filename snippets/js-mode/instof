@@ -1,4 +1,5 @@
-# -*- mode: js-mode -*-
-#name : instof
+# -*- mode: snippet -*-
+# name : ES#InstanceOf
+# key  : inst
 # --
 ${1:foo} instanceof ${2:bar}$0

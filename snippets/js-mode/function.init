@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : Function#Constructor
+# key  : init
+# --
+initialize: function($1) {`(er!? 'padded-blocks)`
+`(er!? 'indent)`$0
+`(er!? 'padded-blocks)`}

@@ -1,6 +1,0 @@
-# -*- mode: js-mode -*-
-#name : ocb
-# --
-spyOn($1, '$2').and.callFake(function () { 
-	${1:object}.${2:method}.calls.mostRecent().args[${3:0}].${4:onSuccess$$(yas-choose-value '("onError" "onSuccess"))}('${5:args$$(when yas-modified-p (replace-regexp-in-string ", " "','" yas-text))}');
-});$0

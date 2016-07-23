@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : JavaScript#Method
+# key  : m
+# --
+$1: ${2:function}${3:$(when yas-modified-p " ")}$3`(er!? 'space-before-function-paren)`(`(er!? 'space-in-parens)`$4`(er!? 'space-in-parens)`)`(er!? 'space-before-functions)`{`(er!? 'padded-blocks)`
+`(er!? 'indent)`$0
+`(er!? 'padded-blocks)`},

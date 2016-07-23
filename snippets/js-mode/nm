@@ -1,4 +1,0 @@
-# -*- mode: snippet -*-
-#name : nm
-# --
-var ${1:$(sanitise yas-text)} = require(`(get-quote-char)`${1:$$(if yas-modified-p (yas-exit-snippet) (popup-menu* (get-node-modules) :point (point)))}`(get-quote-char)`);$0

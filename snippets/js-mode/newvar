@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : newvar
-# --
-var ${1:a} = new ${1:$(upcase-initials yas-text)}();$0

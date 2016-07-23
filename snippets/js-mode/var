@@ -1,4 +1,0 @@
-# -*- mode: js-mode -*-
-#name : var
-# --
-var ${1:a} = ${2:b};$0

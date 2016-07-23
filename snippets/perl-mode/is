@@ -1,5 +1,0 @@
-# -*- mode: perl-mode -*-
-#name : is
-# --
-is ( $1, $2 );
-$0

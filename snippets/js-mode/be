@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#name : be
-# --
-beforeEach(function`(er!? 'space-before-function-paren)`()`(er!? 'space-before-functions)`{
-`(er!? 'indent)`$1
-})`(er!? 'semi)`$0

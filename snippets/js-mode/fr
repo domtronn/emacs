@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Require a relative file
-# expand-env: ((req-module (call-interactively 'require-relative-module)))
-# --
-var `(car req-module)` = require(`(cadr req-module)`);
