@@ -823,7 +823,7 @@
               (unless  (and (web-mode-jsx-is-html)
                             (member (this-command-keys) '("=" "-" "+")))
                 (apply orig-f args))))
-  
+
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
              ("±" . emmet-expand-line)
@@ -862,6 +862,10 @@
     (if (equal web-mode-content-type "jsx")
         (let ((web-mode-enable-part-face nil)) ad-do-it)
       ad-do-it))
+
+  (add-hook 'web-mode-hook
+            (lambda () (when (equal web-mode-content-type "javascript")
+                    (web-mode-set-content-type "jsx"))))
 
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "jsx")
@@ -1046,7 +1050,7 @@
 (delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
-(setq frame-title-format "Who's hacking %b?")
+(setq frame-title-format "")
 (setq-default cursor-type 'bar)             ; Change cursor to bar
 (setq-default tab-width 2)
 (setq js-indent-level 2)
