@@ -259,6 +259,7 @@
      (when (file-directory-p (dired-get-file-for-visit))
        (dired-find-file)))
   (bind-keys :map dired-mode-map
+             ("M-r" . wdired-change-to-wdired-mode)
              ("<right>" . dired-find-only-file)
              ("<left>" . dired-up-directory)
              ("q" . kill-all-dired-buffers)))
@@ -327,6 +328,7 @@
 
 (use-package hydra-window-layout
   :load-path "elisp"
+  :commands (wlf:agenda)
   :init (use-package window-layout)
   :bind ("C-c w" . hydra-window-layout/body))
 
@@ -478,6 +480,7 @@
 (use-package avy
   :bind
   ("H-\\" . avy-goto-line)
+  ("H-'" . avy-goto-char-in-line)
   ("C-\"" . avy-goto-char)
   ("C-'" . avy-goto-word-1)
   :config
@@ -522,34 +525,8 @@
   ;; (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
-  (add-hook 'js2-mode-hook
-            '(lambda ()
-               (push '("function" . ?ƒ) prettify-symbols-alist)
-               (push '("var" . ?ν) prettify-symbols-alist)
-               (push '("const" . ?ς) prettify-symbols-alist)
-               (push '("let" . ?γ) prettify-symbols-alist)
-               (push '("=>" . ?→) prettify-symbols-alist)
-               (push '("R" . ?Λ) prettify-symbols-alist)
-               (push '("R.__" . ?ρ) prettify-symbols-alist)
-               (push '("_" . ?λ) prettify-symbols-alist)
-               (push '("err" . ?ε) prettify-symbols-alist)
-               (push '("return" . ?⇐) prettify-symbols-alist)
-               (push '("undefined" . ?∅) prettify-symbols-alist)
-               (push '("_.map" . ?↦) prettify-symbols-alist)
-               (push '("R.map" . ?↦) prettify-symbols-alist)
-               (push '("_.compose" . ?∘) prettify-symbols-alist)
-               (push '("R.compose" . ?∘) prettify-symbols-alist)
-               ;; Key words
-               (push '("module.exports" . ?⇧) prettify-symbols-alist)
-               ;; Maths symbols
-               (push '("<=" . ?≤) prettify-symbols-alist)
-               (push '(">=" . ?≥) prettify-symbols-alist)
-               (push '("!=" . ?≠) prettify-symbols-alist)
-               (push '("!==" . ?≢) prettify-symbols-alist)
-               (push '("===" . ?≡) prettify-symbols-alist)))
-
+  (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
   (bind-keys :map js2-mode-map
-             ("C-x c" . grunt-exec)
              ("C-c x" . send-to-repl)
 
              ;; JS2 Refactor things
@@ -566,6 +543,7 @@
              ("C-c C-l" . js2r-log-this)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
+             ("s-w" . web-mode)
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -608,7 +586,7 @@
 
 (add-hook 'js2-mode-hook
           (lambda () (set (make-local-variable 'compile-command)
-                     (format "esformatter -i %s" buffer-file-name))))
+                     (format "eslint --fix %s" buffer-file-name))))
 
 (use-package json
   :mode ("\\.json" . json-mode)
@@ -765,6 +743,10 @@
   :config (bind-keys :map eshell-mode-map
              ("C-r" . counsel-esh-history)))
 
+(use-package compile
+  :config
+  (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3)))
+
 (use-package ansi-color
   :config
   (defun colorize-compilation-buffer ()
@@ -837,6 +819,7 @@
              ("M-s M-p" . web-mode-tag-previous)
              ("M-a M-n" . web-mode-attribute-next)
              ("M-a M-p" . web-mode-attribute-previous)
+             ("s-w" . js2-mode)
              ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -844,7 +827,7 @@
              ("s-/" . web-mode-comment-or-uncomment))
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-attr-indent-offset 2)
-  (setq web-mode-auto-quote-style 2)
+  (setq web-mode-auto-quote-style 1)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-enable-auto-expanding t)
   (setq web-mode-ac-sources-alist
@@ -863,6 +846,7 @@
         (let ((web-mode-enable-part-face nil)) ad-do-it)
       ad-do-it))
 
+  (add-hook 'web-mode-hook 'js2/load-prettify-symbols-alist)
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "javascript")
                     (web-mode-set-content-type "jsx"))))

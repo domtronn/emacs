@@ -43,6 +43,7 @@
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
+ '(emmet-quote-style "\"")
  '(fci-rule-color "#232A2F")
  '(flycheck-error-list-format
    [("Line" 4 flycheck-error-list-entry-< :right-align t)
@@ -134,6 +135,9 @@
  '(jpop-project-directory "/Users/charld13/Projects")
  '(js-indent-level 2)
  '(js-injector-get-relative-func (quote js-injector--get-projectile-files-alist))
+ '(js-injector-get-requirejs-func
+   (quote
+    (:files js-injector--get-projectile-relative-requirejs-alist :config js-injector--get-projectile-relative-requirejs-config)))
  '(js-injector-node-camelise (quote s-lower-camel-case))
  '(js2-basic-offset 2)
  '(js2-enter-indents-newline t t)

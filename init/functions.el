@@ -70,11 +70,11 @@
          (found? (and (ignore-errors (js2-jump-to-definition))
                       (not (eq p (point))))))
     (unless found?
-      (save-excursion
-        (when (js2--looking-at "let\\|var\\|const")
-         (beginning-of-line)
-         (search-forward "= ")
-         (setq found? (ignore-errors (js2-jump-to-definition))))))
+      (when (js2--looking-at "let\\|var\\|const")
+        (beginning-of-line)
+        (search-forward "= ")
+        (setq found? (ignore-errors (js2-jump-to-definition))))
+      (unless found? (goto-char p)))
     (unless found?
       (when (js2--looking-at "require\(.*?\)")
         (beginning-of-line)
@@ -118,6 +118,31 @@
   (save-excursion
     (let ((line (buffer-substring (line-beginning-position) (line-end-position))))
       (not (eq nil (string-match s line))))))
+
+(defun js2/load-prettify-symbols-alist ()
+  (push '("function" . ?ƒ) prettify-symbols-alist)
+  (push '("var" . ?ν) prettify-symbols-alist)
+  (push '("const" . ?ς) prettify-symbols-alist)
+  (push '("let" . ?γ) prettify-symbols-alist)
+  (push '("=>" . ?→) prettify-symbols-alist)
+  (push '("R" . ?Λ) prettify-symbols-alist)
+  (push '("R.__" . ?ρ) prettify-symbols-alist)
+  (push '("_" . ?λ) prettify-symbols-alist)
+  (push '("err" . ?ε) prettify-symbols-alist)
+  (push '("return" . ?⇐) prettify-symbols-alist)
+  (push '("undefined" . ?∅) prettify-symbols-alist)
+  (push '("_.map" . ?↦) prettify-symbols-alist)
+  (push '("R.map" . ?↦) prettify-symbols-alist)
+  (push '("_.compose" . ?∘) prettify-symbols-alist)
+  (push '("R.compose" . ?∘) prettify-symbols-alist)
+  ;; Key words
+  (push '("module.exports" . ?⇧) prettify-symbols-alist)
+  ;; Maths symbols
+  (push '("<=" . ?≤) prettify-symbols-alist)
+  (push '(">=" . ?≥) prettify-symbols-alist)
+  (push '("!=" . ?≠) prettify-symbols-alist)
+  (push '("!==" . ?≢) prettify-symbols-alist)
+  (push '("===" . ?≡) prettify-symbols-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
