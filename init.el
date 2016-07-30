@@ -420,6 +420,9 @@
   :config
   (setq counsel-find-file-at-point t)
   (defalias 'counsel-use-package 'counsel-load-library)
+  (defun counsel-ag-project ()
+      (interactive)
+      (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
   (defun counsel-git-grep-from-isearch ()
     "Invoke `counsel-git-grep' from isearch."
     (interactive)
@@ -432,8 +435,9 @@
                     (lambda () (interactive)
                       (call-interactively 'counsel-load-theme)
                       (call-interactively 'counsel-set-font)))
+
   :bind ([f2]      . counsel-git-grep)
-        ("C-c f"   . counsel-ag)
+        ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
         ("C-x l"   . counsel-locate)
         ("<s-f1>"  . counsel-imenu)
