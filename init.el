@@ -700,9 +700,9 @@
   :if window-system
   :load-path "elisp/mode-icons")
 
-(use-package neo-mode-icons
+(use-package all-the-icons
   :if window-system
-  :load-path "elisp/neotree")
+  :load-path "elisp/all-the-icons")
 
 (use-package neotree
   :load-path "elisp/neotree"
