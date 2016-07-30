@@ -725,6 +725,15 @@
                     (when (eq major-mode 'eww-mode)
                       (eww-copy-page-url)))))
 
+(defun org-start-ticket ()
+  (interactive)
+  (call-interactively 'link-hint-copy-link)
+  (let ((link (car kill-ring)))
+    (goto-char (point-min))
+    (search-forward link)
+    (org-agenda-todo 2)
+    (browse-url (car (split-string link "]")))))
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:
