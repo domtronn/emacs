@@ -109,8 +109,9 @@
 
 (defun jsx-reformat ()
   (interactive)
-  (let ((restore-point (point)))
-    (unless (region-active-p)
+  (let ((restore-point (point))
+        (started-region (region-active-p)))
+    (unless started-region
       (unless (web-mode-jsx-is-html) (web-mode-element-previous))
       (unless (web-mode-jsx-is-html) (error "Not in JSX Html"))
       (er/mark-inside-pairs))
@@ -118,6 +119,7 @@
         ((start (region-beginning))
          (end (region-end))
          (text (buffer-substring start end)) result)
+      (goto-char start)
       (with-temp-buffer
         (insert (concat " "
                         (replace-regexp-in-string
@@ -131,14 +133,15 @@
         (setq result (s-chomp (s-trim (buffer-string))))
         )
       (delete-region start end)
-      (er/mark-inside-pairs)
+      (unless started-region (er/mark-inside-pairs))
       (delete-active-region)
-      (insert (format "\n%s\n" result))
-      (let* ((end (1+ (point)))
-             (start (scan-lists end -1 0)))
-        (goto-char start)
-        (indent-region start end)
-        (whitespace-cleanup-region start end))
+      (insert (if started-region result (format "\n%s\n" result)))
+      (unless started-region
+        (setq end (1+ (point)))
+        (setq start (scan-lists end -1 0)))
+      (goto-char start)
+      (indent-region start end)
+      (whitespace-cleanup-region start end)
       (goto-char restore-point)
       )))
 
