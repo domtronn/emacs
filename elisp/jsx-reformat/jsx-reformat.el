@@ -52,17 +52,9 @@
         (start-line (count-lines (point-min) (1+ (point))))
         (match-line (and
                      (web-mode-tag-match-position)
-                     (count-lines (point-min) (web-mode-tag-match-position))))
-        (self-closing (eq nil (web-mode-tag-match-position))))
+                     (count-lines (point-min) (web-mode-tag-match-position)))))
     (when (not match-line)
       (unless (looking-back "^\s+") (newline)))
-    (when self-closing
-      (web-mode-tag-end)
-      (unless (or (looking-back "^\s+/>")
-                  (not (looking-at "\s+$")))
-        (newline)
-        (web-mode-tag-previous)
-        (web-mode-tag-end)))
     (when (and match-line (eq start-line match-line))
       (web-mode-tag-match)
       (newline)
@@ -118,15 +110,20 @@
 (defun jsx-reformat ()
   (interactive)
   (let ((restore-point (point)))
-    (unless (web-mode-jsx-is-html) (web-mode-element-previous))
-    (unless (web-mode-jsx-is-html) (error "Not in JSX Html"))
-    (unless (region-active-p) (er/mark-inside-pairs))
+    (unless (region-active-p)
+      (unless (web-mode-jsx-is-html) (web-mode-element-previous))
+      (unless (web-mode-jsx-is-html) (error "Not in JSX Html"))
+      (er/mark-inside-pairs))
     (let*
         ((start (region-beginning))
          (end (region-end))
          (text (buffer-substring start end)) result)
       (with-temp-buffer
-        (insert (concat " " text))
+        (insert (concat " "
+                        (replace-regexp-in-string
+                         " +" " "
+                         (replace-regexp-in-string "\n" " " text))))
+        ;; (insert (concat " " text))
         (goto-char (point-min))
         (save-excursion (jsx-reformat--tags))
         (save-excursion (jsx-reformat--attributes))
@@ -137,9 +134,13 @@
       (er/mark-inside-pairs)
       (delete-active-region)
       (insert (format "\n%s\n" result))
-      (backward-char (length (format "\n%s\n" result)))
-      (indent-region (point) (forward-list))
-      (goto-char restore-point))))
+      (let* ((end (1+ (point)))
+             (start (scan-lists end -1 0)))
+        (goto-char start)
+        (indent-region start end)
+        (whitespace-cleanup-region start end))
+      (goto-char restore-point)
+      )))
 
 (provide 'jsx-reformat)
 
