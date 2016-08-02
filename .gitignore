@@ -38,8 +38,7 @@ xkcd
 projectile.cache
 
 # Authentication files
-.jenkins-auth.el
-.docker-auth.el
+.*-auth.el
 
 .projectile-ignore.el
 
