@@ -155,6 +155,7 @@
         ("C-c C-l" . org-link)
         ("C-j"     . join-line)
   :init
+  (require 'jira-auth (concat base-path ".jira-auth.el"))
   (setq diary-file "~/Dropbox/Documents/Org/diary"
         org-src-fontify-natively t
         org-agenda-files
@@ -168,10 +169,10 @@
         '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
           ("WAITING"     . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
         org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
+        `(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
            "* TODO %?\n %t")
           ("T" "Ticket" entry (file+headline "~/Dropbox/Documents/Org/tickets.org" "Tickets")
-           "* TODO [#C] [[https://jira.dev.bbc.co.uk/browse/iptv-%\\1][IPTV-%^{Ticket Number}]] %?\n %t")
+           ,(concat "* TODO [#C] [[" (plist-get jira-auth :url) "iptv-%\\1][IPTV-%^{Ticket Number}]] %?\n %t"))
           ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS")
@@ -196,8 +197,9 @@
   (use-package ox-md)
   (use-package org-wc)
   (bind-keys :map org-mode-map
-             ("C-c C-x C-l"   . org-toggle-link-display)
+             ("C-c C-x l"   . org-toggle-link-display)
              ("M-=" . org-wc-display)
+             ("C-;" . org-search-view)
              ("C-j" . join-line)
              ("s-f" . org-next-link)
              ("s-o" . org-open-at-point)
@@ -231,8 +233,7 @@
              ("RET" . cfw:change-view-day)))
 
 (use-package doc-view
-  :mode ("\\.pdf" . doc-view-mode)
-  :init (add-hook 'doc-view-mode-hook 'darkroom-mode))
+  :mode ("\\.pdf" . doc-view-mode))
 
 (use-package undo-tree
   :config (global-undo-tree-mode)
