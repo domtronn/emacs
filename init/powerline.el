@@ -702,7 +702,7 @@ install the memoized function over the original function."
        (propertize " ·" 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
        (propertize
         (concat
-         (propertize (format "   %s" (ati/octicon "package"))
+         (propertize (format "   %s" (all-the-icons-octicon "package"))
                      'face `(:family "github-octicons" :foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
                      'display '(raise -0.1))
          (propertize (format " %d updates " num)
@@ -774,7 +774,7 @@ install the memoized function over the original function."
               'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1))))
 
 (defun powerline-process (&rest args)
-  (let ((icon (ati-icon-for-buffer)))
+  (let ((icon (all-the-icons-icon-for-buffer)))
     (concat
      (when (or (symbolp icon) ;; This implies it's the major mode
                mode-line-process)
@@ -798,7 +798,7 @@ install the memoized function over the original function."
     (let ((words (count-lines (region-beginning) (region-end)))
           (chars (count-words (region-end) (region-beginning))))
       (concat
-       (propertize (format "   %s" (ati/octicon "pencil") words chars)
+       (propertize (format "   %s" (all-the-icons-octicon "pencil") words chars)
                    'face `(:foreground ,(powerline-fg) :background ,(powerline-c1) :family "github-octicons")
                    'display '(raise -0.0))
        (propertize (format " (%s, %s)" words chars)
@@ -856,11 +856,11 @@ install the memoized function over the original function."
 (defun -powerline-github-vc ()
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
     (concat
-     (propertize (format " %s" (ati/alltheicon "git"))
+     (propertize (format " %s" (all-the-icons-alltheicon "git"))
                  'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
                  'display '(raise -0.1))
      (propertize " · " 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
-     (propertize (format "%s" (ati/octicon "git-branch"))
+     (propertize (format "%s" (all-the-icons-octicon "git-branch"))
                  'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.3 :family "github-octicons")
                  'display '(raise -0.1))
      (propertize (format " %s" branch)
@@ -869,7 +869,7 @@ install the memoized function over the original function."
 (defun -powerline-svn-vc ()
   (let ((revision (cadr (split-string vc-mode "-"))))
     (concat
-     (propertize (format " %s" (ati/faicon "cloud"))
+     (propertize (format " %s" (all-the-icons-faicon "cloud"))
                  'face `(:foreground ,(powerline-fg) :background ,(powerline-c2) :height 1.2)
                  'display '(raise -0.1))
      (propertize (format " · %s" revision)
@@ -885,7 +885,7 @@ install the memoized function over the original function."
 
 (defun powerline-time ()
   (let* ((hour (string-to-number (format-time-string "%I")))
-         (icon (ati/wicon (format "time-%s" hour) 1.3 0.0)))
+         (icon (all-the-icons-wicon (format "time-%s" hour) 1.3 0.0)))
     (concat
      (propertize (format-time-string " %H:%M ")
                  'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1)))
@@ -922,11 +922,11 @@ install the memoized function over the original function."
       (concat
               (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunrise-time)"))
                           'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
-              (propertize (format "%s  " (ati/wicon "sunrise" 0.5 -0.1))
+              (propertize (format "%s  " (all-the-icons-wicon "sunrise" 0.5 -0.1))
                           'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2)))
               (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunset-time)"))
                           'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
-              (propertize (format "%s "(ati/wicon "sunset" 0.5 -0.1))
+              (propertize (format "%s "(all-the-icons-wicon "sunset" 0.5 -0.1))
                           'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2))))
     ""))
 
@@ -965,15 +965,15 @@ install the memoized function over the original function."
 (defpowerline new-channel-notifications (-count-notifications "(.*?) \\([0-9]+\\) [0-9]+ nil" "✧"))
 
 (defun powerline-mode-icon ()
-  (let ((icon (ati-icon-for-buffer)))
+  (let ((icon (all-the-icons-icon-for-buffer)))
     (unless (symbolp icon) ;; This implies it's the major mode
       (format " %s"
               (propertize icon
                           'help-echo (format "Major-mode: `%s`" major-mode)
-                          'face `(:height 1.2 :family ,(ati-icon-family-for-buffer)))))))
+                          'face `(:height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))))
 
 (defun powerline-mode-default ()
-  (let ((icon (ati-icon-for-buffer)))
+  (let ((icon (all-the-icons-icon-for-buffer)))
     (when (symbolp icon) ;; This implies it's the major mode
       (propertize
        (format-mode-line " %m")
@@ -982,9 +982,9 @@ install the memoized function over the original function."
 
 (defun powerline-modified ()
   (let* ((config-alist
-          '(("*" ati/faicon-family ati/faicon "chain-broken" 1.2 -0.0)
-            ("-" ati/faicon-family ati/faicon "link" 1.2 -0.0)
-            ("%" ati/octicon-family ati/octicon "lock" 1.2 0.1)))
+          '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" 1.2 -0.0)
+            ("-" all-the-icons-faicon-family all-the-icons-faicon "link" 1.2 -0.0)
+            ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" 1.2 0.1)))
          (result (cdr (assoc (format-mode-line "%*") config-alist))))
     (propertize (apply (cadr result) (cddr result))
                 'face `(:family ,(funcall (car result))))))
