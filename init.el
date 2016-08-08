@@ -811,7 +811,8 @@
   (advice-add
    'key-combo-pre-command-function
    :around '(lambda (orig-f &rest args)
-              (unless  (and (web-mode-jsx-is-html)
+              (unless  (and (or (web-mode-jsx-is-html)
+                                (equal web-mode-content-type "html"))
                             (member (this-command-keys) '("=" "-" "+")))
                 (apply orig-f args))))
 
