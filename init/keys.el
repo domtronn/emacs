@@ -93,14 +93,21 @@
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
+
+;; F Functions
+
 (global-set-key (kbd "<s-f2>") 'ag-regexp-project-at-point)
-
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
-
 (global-set-key [f5] '(lambda () (interactive) (if defining-kbd-macro (end-kbd-macro) (start-kbd-macro))))
 (global-set-key [f6] 'my-vc-dir)
+(global-set-key (kbd "<M-f6>") '(lambda () (interactive) (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir)))
+(global-set-key (kbd "<M-f9>")
+                '(lambda () (interactive)
+                   (if (or (not (frame-parameter (selected-frame) 'alpha))
+                           (eq 100 (frame-parameter (selected-frame) 'alpha)))
+                       (set-frame-parameter (selected-frame) 'alpha '80)
+                     (set-frame-parameter (selected-frame) 'alpha '100))))
 (global-set-key [f12] '(lambda () (interactive) (find-file user-init-file)))
-(global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
 
 (global-set-key (kbd "M-d") 'kill-word)
 (global-set-key (kbd "M-D") 'backward-kill-word)

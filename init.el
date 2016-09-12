@@ -729,12 +729,20 @@
                    (select-window (apply 'get-buffer-window args)))))
   (defun neotree-projectile ()
     (interactive )
-    (if (neo-global--window-exists-p)
-        (neotree-hide)
-      (neotree-find (or (ignore-errors (projectile-project-root))
-                        (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
-                        (getenv "HOME")))))
-  :bind ([f1] . neotree-projectile))
+    (let ((cw (get-buffer-window (current-buffer))))
+     (if (neo-global--window-exists-p)
+         (neotree-hide)
+       (neotree-find (or (ignore-errors (projectile-project-root))
+                         (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
+                         (getenv "HOME"))))
+     (select-window cw)))
+  (defun neotree-projectile-find ()
+    (interactive)
+    (let ((cw (get-buffer-window (current-buffer))))
+      (neotree-find)
+      (select-window cw)))
+  :bind ([f1] . neotree-projectile)
+        ("<S-f1>" . neotree-projectile-find))
 
 (use-package eshell
   :defer t
@@ -1085,8 +1093,6 @@
 
 (unless window-system
   (load-theme 'spacemacs-dark))
-
-;; (set-frame-parameter (selected-frame) 'alpha '(50 50))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
