@@ -61,11 +61,6 @@
 
 (use-package linum-off)
 
-(use-package drag-stuff
-  :config (drag-stuff-global-mode 1)
-  :bind ("s-N" . drag-stuff-down)
-        ("s-P" . drag-stuff-up))
-
 (use-package mon-css-color
   :load-path "elisp"
   :init (autoload 'css-color-mode "mon-css-color" "" t)
