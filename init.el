@@ -1086,6 +1086,8 @@
 (unless window-system
   (load-theme 'spacemacs-dark))
 
+;; (set-frame-parameter (selected-frame) 'alpha '(50 50))
+
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
