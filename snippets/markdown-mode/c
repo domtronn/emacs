@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : Code Block
+# --
+\`\`\`${1:language}
+${2:code}
+\`\`\` $0
