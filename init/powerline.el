@@ -672,18 +672,8 @@ install the memoized function over the original function."
                              (length (-powerline-get-weather "%(sunrise)  %(sunset)"))
                              (if (and (boundp 'yahoo-weather-info) yahoo-weather-mode) 4 0))
                         0)
-                      ;; (length (powerline-flycheck-status))
-                      ;; (length (format-mode-line "%l:%c"))
-                      ;; (if mark-active (length (powerline-region-info)) 0)
-                      ;; (if (and (fboundp 'boop-format-results)
-                      ;;          (eq (get-buffer-window) powerline-current-window))
-                      ;;     (+ 1 (length  (boop-format-results))) 0)
                       (length (-powerline-get-temp))))))
     (propertize " " 'display `((space :align-to ,amount)) 'face plface)))
-
-;; 130 = 27 
-;; 260 = 27 - 15 = 12
-;; (- 42 (* (face-attribute 'default :height) 0.11538))
 
 (defvar powerline/render-center? t)
 (defvar powerline/colour-flycheck? nil)
@@ -831,28 +821,39 @@ install the memoized function over the original function."
     (propertize (format-mode-line "  %b") 'face '(:height 0.8))))
 
 (defun powerline-flycheck-status (&rest args)
-  (when (fboundp 'flycheck-status-emoji-mode-line-text)
-    (let* ((text (cadr (flycheck-status-emoji-mode-line-text)))
-           (fg (cond
-                ((not powerline/colour-flycheck?) (powerline-fg))
-                ((string-match "Disabled" text) (powerline-fg))
-                ((string-match "Running" text) (powerline-fg))
-                ((string-match "⚠" text) (face-attribute 'warning :foreground))
-                ((string-match "✖" text) (face-attribute 'error :foreground))
-                (t (face-attribute 'success :foreground)))))
-      (concat
-       (when (and
-              vc-mode
-              (eq (get-buffer-window) powerline-current-window)
-              powerline/render-center?)
-         (propertize " ·" 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2))))
-       (propertize (format " %s" text)
-                   'face `(:height 0.9 :foreground ,fg :background ,(powerline-c2))
-                   'help-echo "Show Flycheck Errors"
-                   ;; 'display '(raise 0.1)
-                   'mouse-face '(:box 1)
-                   'local-map (make-mode-line-mouse-map
-                               'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))))
+  (let* ((text 
+          (pcase flycheck-last-status-change
+            (`finished (if flycheck-current-errors
+                           (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
+                                          (+ (or .warning 0) (or .error 0)))))
+                             (format "✖ %s Issue%s" count (unless (eq 1 count) "s")))
+                         "✔ No Issues"))
+            (`running     "⟲ Running")
+            (`no-checker  "⚠ No Checker")
+            (`not-checked "✖ Disabled")
+            (`errored     "⚠ Error")
+            (`interrupted "⛔ Interrupted")
+            (`suspicious  "")))
+         (fg (cond
+              ((not powerline/colour-flycheck?) (powerline-fg))
+              ((string-match "Disabled" text) (powerline-fg))
+              ((string-match "Running" text) (powerline-fg))
+              ((string-match "⚠" text) (face-attribute 'warning :foreground))
+              ((string-match "✖" text) (face-attribute 'error :foreground))
+              (t (face-attribute 'success :foreground)))))
+    (concat
+     (when (and
+            vc-mode
+            (eq (get-buffer-window) powerline-current-window)
+            powerline/render-center?)
+       (propertize " ·" 'face `(:foreground ,(powerline-fg) :background ,(powerline-c2))))
+     (propertize (format " %s" text)
+                 'face `(:height 0.9 :foreground ,fg :background ,(powerline-c2))
+                 'help-echo "Show Flycheck Errors"
+                 ;; 'display '(raise 0.1)
+                 'mouse-face '(:box 1)
+                 'local-map (make-mode-line-mouse-map
+                             'mouse-1 (lambda () (interactive) (flycheck-list-errors)))))))
 
 (defun -powerline-github-vc ()
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
@@ -903,7 +904,7 @@ install the memoized function over the original function."
   (if (and (boundp 'yahoo-weather-info)
            yahoo-weather-mode)
       (let* ((weather (yahoo-weather-info-format yahoo-weather-info format))
-             (icon (ati-icon-for-weather (downcase weather)))
+             (icon (all-the-icons-icon-for-weather (downcase weather)))
              (family (if (> (length icon) 2)
                          (face-attribute 'default :family)
                        "Weather Icons")))

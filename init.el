@@ -331,10 +331,6 @@
   :init (use-package window-layout)
   :bind ("C-c w" . hydra-window-layout/body))
 
-(use-package flycheck-status-emoji
-  :load-path "eslip"
-  :after flycheck)
-
 (use-package flycheck
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
