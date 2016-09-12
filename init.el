@@ -188,7 +188,8 @@
         '(("n" "Agenda and all TODOs"
            ((agenda "" ((org-agenda-sorting-strategy '(time-up deadline-up))))
             (alltodo "" ((org-agenda-sorting-strategy '(todo-state-up tag-down priority-down effort-down))))
-            (todo "" ((org-agenda-files '("~/Dropbox/Documents/org/tickets.org"))))))))
+            (todo "" ((org-agenda-files '("~/Dropbox/Documents/org/tickets.org"))
+                      (org-agenda-sorting-strategy '(todo-state-up))))))))
 
   :config
   ;; Export Backends
