@@ -859,6 +859,7 @@
       ad-do-it))
 
   (add-hook 'web-mode-hook 'js2/load-prettify-symbols-alist)
+  (add-hook 'web-mode-hook 'js-injector-minor-mode)
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "javascript")
                     (web-mode-set-content-type "jsx"))))
