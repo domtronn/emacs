@@ -97,7 +97,7 @@
 
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 
-(global-set-key [f5] 'vc-ediff)
+(global-set-key [f5] '(lambda () (interactive) (if defining-kbd-macro (end-kbd-macro) (start-kbd-macro))))
 (global-set-key [f6] 'my-vc-dir)
 (global-set-key [f12] '(lambda () (interactive) (find-file user-init-file)))
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (progn (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir))))
