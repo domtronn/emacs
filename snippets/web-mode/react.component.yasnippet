@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: React#Tal.component
+# key: comp
+# --
+define(
+  'bigscreen/app/`(if (buffer-file-name) (file-name-sans-extension (cadr (split-string (buffer-file-name) "/app/"))) "")`',
+  [
+  ],
+  function ($1) {
+    'use strict';
+
+    return function ($2) {
+      return {
+        render: function () {
+          return ($0);
+        }
+      };
+    };
+  }
+);
