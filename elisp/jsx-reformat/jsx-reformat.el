@@ -96,6 +96,8 @@
                  (not (looking-back "^\s+")))
         (newline)
         (forward-char 2))
+      (goto-char (1- (search-forward ">")))
+      (newline)
       )
     (when (and (eq count 1)
                (> spread 1))
