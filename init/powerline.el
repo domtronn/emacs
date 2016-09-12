@@ -51,7 +51,7 @@
     (gruvbox        (:primary ("#3c3836" "#282828" "#f4e8ba") :secondary ("#504945" "#282828" "#a89984")))
     (material       (:primary ("#1c1f26" "#1c1f26" "#ffffff") :secondary ("#1c1f26" "#1c1f26" "#a7adba")))
     (monokai        (:primary ("#363731" "#272822" "#E5DDB7") :secondary ("#272822" "#272822" "#75715E")))
-    (darkokai       (:primary ("#4BBEAE" "#242728" "#3D4345") :secondary ("#242728" "#242728" "#5D6365")))
+    (darkokai       (:primary ("#ab7eff" "#242728" "#3D4345") :secondary ("#242728" "#242728" "#5D6365")))
     (suscolors      (:primary ("#5faf5f" "#262626" "#262626") :secondary ("#262626" "#262626" "#949494")))
     (wombat         (:primary ("#444444" "#343434" "#CCC9C0") :secondary ("#444444" "#343434" "#99968b")))))
 
@@ -886,7 +886,7 @@ install the memoized function over the original function."
 
 (defun powerline-time ()
   (let* ((hour (string-to-number (format-time-string "%I")))
-         (icon (all-the-icons-wicon (format "time-%s" hour) 1.3 0.0)))
+         (icon (all-the-icons-wicon (format "time-%s" hour) :height 1.3 :v-adjust 0.0)))
     (concat
      (propertize (format-time-string " %H:%M ")
                  'face `(:height 0.9 :foreground ,(powerline-fg) :background ,(powerline-c1)))
@@ -923,11 +923,11 @@ install the memoized function over the original function."
       (concat
               (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunrise-time)"))
                           'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
-              (propertize (format "%s  " (all-the-icons-wicon "sunrise" 0.5 -0.1))
+              (propertize (format "%s  " (all-the-icons-wicon "sunrise" :height 0.5 :v-adjust -0.1))
                           'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2)))
               (propertize (format "%s "(yahoo-weather-info-format yahoo-weather-info "%(sunset-time)"))
                           'face `(:foreground ,(powerline-fg) :background ,(powerline-c2)))
-              (propertize (format "%s "(all-the-icons-wicon "sunset" 0.5 -0.1))
+              (propertize (format "%s "(all-the-icons-wicon "sunset" :height 0.5 :v-adjust -0.1))
                           'face `(:height 1.1 :family "Weather Icons" :foreground ,(powerline-fg) :background ,(powerline-c2))))
     ""))
 
@@ -983,9 +983,9 @@ install the memoized function over the original function."
 
 (defun powerline-modified ()
   (let* ((config-alist
-          '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" 1.2 -0.0)
-            ("-" all-the-icons-faicon-family all-the-icons-faicon "link" 1.2 -0.0)
-            ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" 1.2 0.1)))
+          '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :height 1.2 :v-adjust -0.0)
+            ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :height 1.2 :v-adjust -0.0)
+            ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" :height 1.2 :v-adjust 0.1)))
          (result (cdr (assoc (format-mode-line "%*") config-alist))))
     (propertize (apply (cadr result) (cddr result))
                 'face `(:family ,(funcall (car result))))))
