@@ -826,7 +826,7 @@ install the memoized function over the original function."
             (`finished (if flycheck-current-errors
                            (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
                                           (+ (or .warning 0) (or .error 0)))))
-                             (format "✖ %s Issue%s" count (unless (eq 1 count) "s")))
+                             (format "✖ %s Issue%s" count (if (eq 1 count) "" "s")))
                          "✔ No Issues"))
             (`running     "⟲ Running")
             (`no-checker  "⚠ No Checker")
