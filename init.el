@@ -135,11 +135,6 @@
           (setq popwin:close-popup-window-timer nil)
   :bind ("C-x m" . popwin:messages))
 
-(use-package darkroom
-  :config (setq darkroom-fringes-outside-margins nil)
-          (setq darkroom-margins 0.0)
-          (setq darkroom-text-scale-increase 1.0))
-
 (use-package org
   :defer t
   :mode ("\\.org"  . org-mode)
