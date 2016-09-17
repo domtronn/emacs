@@ -68,6 +68,12 @@
 
 (use-package rainbow-delimiters
   :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+(use-package context-coloring-mode
+  :defer t
+  :config (advice-add 'load-theme :after
+                      '(lambda (&rest args) (context-coloring-mode 0))))
+
 (use-package paren)
 
 (use-package multiple-cursors
@@ -675,11 +681,6 @@
              ("M-." . jump-to-find-function)))
 
 (global-set-key (kbd "M-,") 'pop-tag-mark)
-
-(use-package context-coloring-mode
-  :defer t
-  :config (advice-add 'load-theme :after
-                      '(lambda (&rest args) (context-coloring-mode 0))))
 
 (use-package key-combo
   :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
