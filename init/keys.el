@@ -44,8 +44,6 @@
 (global-set-key (kbd "s-W")
   '(lambda () (interactive) (kill-buffer (buffer-name))))
 
-(global-set-key (kbd "s-p") 'ibuffer)
-
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
 

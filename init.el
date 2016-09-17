@@ -61,6 +61,7 @@
 
 (use-package linum-off)
 
+
 (use-package mon-css-color
   :load-path "elisp"
   :init (autoload 'css-color-mode "mon-css-color" "" t)
@@ -101,6 +102,7 @@
 
 (use-package ibuffer
   :defer t
+  :bind ("s-p" . ibuffer)
   :config
   (use-package ibuf-ext
     :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
@@ -1070,13 +1072,11 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(when window-system
+(if (not window-system)
+    (load-theme 'spacemacs-dark)
   (load-theme 'forest-blue)
   (remove-mode-line-box)
   (server-start))
-
-(unless window-system
-  (load-theme 'spacemacs-dark))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
