@@ -82,6 +82,10 @@
   :bind ("C-c [" . multi-line-single-line)
         ("C-c ]" . multi-line))
 
+(use-package drag-stuff
+  :bind ("s-S-<up>" . drag-stuff-up)
+        ("s-S-<down>" . drag-stuff-down))
+
 (use-package expand-region
   :bind ("M-q" . er/expand-region))
 
