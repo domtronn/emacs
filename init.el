@@ -508,13 +508,6 @@
         (autoload 'wgrep-change-to-wgrep-mode "browse-url")
   :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end))
 
-(use-package tern
-  :after 'js2-mode
-  :config
-  (bind-keys :map tern-mode-keymap
-             ("M-," . pop-tag-mark))
-  (use-package tern-auto-complete :config (tern-ac-setup)))
-
 (use-package js2-refactor :after js2-mode)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
 (use-package js-injector
@@ -530,7 +523,6 @@
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-  ;; (add-hook 'js2-mode-hook '(lambda () (tern-mode t)))
   (add-hook 'js2-mode-hook
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
@@ -846,8 +838,7 @@
                     ac-source-css-id
                     ac-source-css-property))
           ("jsx" . (ac-source-yasnippet
-                    ac-source-words-in-same-mode-buffers
-                    ac-source-tern-completion))))
+                    ac-source-words-in-same-mode-buffer)))
 
   (defadvice web-mode-highlight-part (around tweak-jsx activate)
     (if (equal web-mode-content-type "jsx")
@@ -861,9 +852,7 @@
                     (web-mode-set-content-type "jsx"))))
 
   (add-hook 'web-mode-hook
-            (lambda () (when (equal web-mode-content-type "jsx")
-                    (emmet-mode)
-                    (tern-mode)))))
+            (lambda () (when (equal web-mode-content-type "jsx") (emmet-mode))))))
 
 (use-package emmet-mode :after web-mode
   :load-path "~/workspace/el-emmet-mode"
