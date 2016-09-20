@@ -91,7 +91,9 @@
 
 (use-package drag-stuff
   :bind ("s-S-<up>" . drag-stuff-up)
-        ("s-S-<down>" . drag-stuff-down))
+        ("s-P" . drag-stuff-up)
+        ("s-S-<down>" . drag-stuff-down)
+        ("s-N" . drag-stuff-down))
 
 (use-package expand-region
   :bind ("M-q" . er/expand-region))
