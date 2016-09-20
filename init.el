@@ -698,7 +698,6 @@
   :load-path "elisp/all-the-icons")
 
 (use-package neotree
-  :load-path "elisp/neotree"
   :config
   (setq neo-theme (if window-system 'arrow 'icons))
   (setq neo-show-updir-line nil
