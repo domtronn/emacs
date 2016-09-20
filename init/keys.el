@@ -88,6 +88,9 @@
 (global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
 (global-set-key (kbd "H-=") '(lambda () (interactive) (font-scale '+ 10)))
 
+
+(global-set-key (kbd "s-]") 'exchange-point-and-mark)
+
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
