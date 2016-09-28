@@ -688,11 +688,6 @@
   :commands (yas-global-mode yas-minor-mode)
   :config   (setq yas-snippet-dirs (concat base-path "/snippets")))
 
-(use-package mode-icons
-  :disabled t
-  :if window-system
-  :load-path "elisp/mode-icons")
-
 (use-package all-the-icons
   :if window-system
   :load-path "elisp/all-the-icons")
@@ -942,14 +937,7 @@
   (add-to-list 'repository-root-matchers repository-root-matcher/svn)
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
 
-(use-package magit-gh-issues
-  :disabled t
-  :load-path "elisp/magit-gh-issues"
-  :after 'magit
-  :config (add-hook 'magit-mode-hook 'magit-gh-issues-mode)
-          (use-package magit-gh-issues-emoji
-            :load-path "elisp/magit-gh-issues-emoji"))
-
+(use-package magithub :after magit)
 (use-package magit
   :defer t
   :config (bind-keys :map magit-mode-map
