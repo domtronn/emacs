@@ -400,7 +400,8 @@
   :bind ("C-c r" . vr/replace)
         ("C-c q" . vr/query-replace)
         ("C-c m" . vr/mc-mark)
-        ("s-r" . vr/query-replace))
+        ("s-r" . vr/query-replace)
+  :config (setq vr/match-separator-string " → "))
 
 (use-package hydra-smart-copy
   :bind ("M-W" . hydra-smart-copy/body)
