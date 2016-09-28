@@ -540,7 +540,6 @@
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
-             ("C-c C-l" . js2r-log-this)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
              ("s-w" . web-mode)

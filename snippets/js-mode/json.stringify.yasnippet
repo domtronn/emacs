@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name : JSON#stringify
 # key  : jsons
+# binding : C-c C-:
 # --
-JSON.stringify($1${2:, null, 2})$0
+JSON.stringify(`yas-selected-text`$1${2:, null, 2})$0
