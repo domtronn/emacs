@@ -839,10 +839,10 @@
           ("jsx" . (ac-source-yasnippet
                     ac-source-words-in-same-mode-buffer)))
 
-  (defadvice web-mode-highlight-part (around tweak-jsx activate)
-    (if (equal web-mode-content-type "jsx")
-        (let ((web-mode-enable-part-face nil)) ad-do-it)
-      ad-do-it))
+  ;; (defadvice web-mode-highlight-part (around tweak-jsx activate)
+  ;;   (if (equal web-mode-content-type "jsx")
+  ;;       (let ((web-mode-enable-part-face nil)) ad-do-it)
+  ;;     ad-do-it))
 
   (add-hook 'web-mode-hook 'js2/load-prettify-symbols-alist)
   (add-hook 'web-mode-hook 'js-injector-minor-mode)
@@ -1062,9 +1062,8 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(if (not window-system)
-    (load-theme 'spacemacs-dark)
-  (load-theme 'forest-blue)
+(load-theme 'forest-blue)
+(when window-system
   (remove-mode-line-box)
   (server-start))
 
