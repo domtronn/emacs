@@ -242,7 +242,9 @@
 
 (use-package undo-tree
   :config (global-undo-tree-mode)
-  :bind ("s-z" . undo-tree-undo)
+          (setq undo-tree-visualizer-diff t)
+  :bind ("C-c C-u" . undo-tree-visualize)
+        ("s-z" . undo-tree-undo)
         ("s-Z" . undo-tree-redo)
         ("s-y" . undo-tree-redo)
         ("C-+" . undo-tree-redo))
