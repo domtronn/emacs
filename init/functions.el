@@ -42,15 +42,12 @@
         (setq buffer-save-without-query t)
         (if (buffer-modified-p) (save-buffer))
         (let ((f1 (current-frame-configuration))
-              (retcode (shell-command (concat "xelatex " (buffer-file-name)))))
+              (retcode (shell-command (concat "xelatex -interaction=nonstopmode " (buffer-file-name)))))
           (message "Return code ❯ %s" retcode)
-          (if (= retcode 0)
-              (progn
-                (if (get-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf"))
-                    (kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
-                (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
-                (delete-other-windows)))))
-    nil))
+          (if (get-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf"))
+              (kill-buffer (concat (file-name-sans-extension (buffer-name)) ".pdf")))
+          (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
+          (delete-other-windows)))))
 
 (defun jump-to-find-function ()
   "Go to the function definition for elisp"
