@@ -30,6 +30,7 @@
 
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
+(global-set-key (kbd "M-*") '(lambda () (interactive) (insert "•")))
 (global-set-key [M-tab] 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
 
