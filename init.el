@@ -171,6 +171,8 @@
         '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
         org-todo-keyword-faces
         '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
+          ("DONE"        . (:foreground "#0fbf5c" :weight bold
+                                        :box (:line-width 1 :color "#3dc748") ))
           ("WAITING"     . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
         org-capture-templates
         `(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
