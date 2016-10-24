@@ -2,6 +2,6 @@
 # name : JavaScript#Function
 # key  : f
 # --
-${1:function}${2:$(when yas-modified-p " ")}$2`(er!? 'space-before-function-paren)`(`(er!? 'space-in-parens)`$3`(er!? 'space-in-parens)`)`(er!? 'space-before-functions)`{
+function${2:$(when yas-modified-p " ")}$2`(er!? 'space-before-function-paren)`(`(er!? 'space-in-parens)`$3`(er!? 'space-in-parens)`)`(er!? 'space-before-functions)`{
   $0
 }
