@@ -53,31 +53,25 @@
     (local-set-key "p" 'projectile-switch-project)))
 
 (eval-when-compile (require 'use-package))
-(use-package bind-key)
+(use-package bind-key :ensure t)
 
 (use-package functions :load-path "init")
 
 ;; !!! - For package updating comment this region
 
-(use-package linum-off)
-
+(use-package linum-off :ensure t)
 
 (use-package mon-css-color
   :load-path "elisp"
   :init (autoload 'css-color-mode "mon-css-color" "" t)
   :config (css-color-global-mode))
 
-(use-package rainbow-delimiters
+(use-package rainbow-delimiters :ensure t
   :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(use-package context-coloring-mode
-  :defer t
-  :config (advice-add 'load-theme :after
-                      '(lambda (&rest args) (context-coloring-mode 0))))
+(use-package paren :ensure t)
 
-(use-package paren)
-
-(use-package multiple-cursors
+(use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
         ("s-n" . mc/skip-to-next-like-this)
         ("H-p" . mc/mark-previous-like-this)
@@ -85,24 +79,24 @@
         ("H-l" . mc/mark-all-symbols-like-this)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
-(use-package multi-line
+(use-package multi-line :ensure t
   :bind ("C-c [" . multi-line-single-line)
         ("C-c ]" . multi-line))
 
-(use-package drag-stuff
+(use-package drag-stuff :ensure t
   :bind ("s-S-<up>" . drag-stuff-up)
         ("s-P" . drag-stuff-up)
         ("s-S-<down>" . drag-stuff-down)
         ("s-N" . drag-stuff-down))
 
-(use-package expand-region
+(use-package expand-region :ensure t
   :bind ("M-q" . er/expand-region))
 
 (use-package hydra-expand-region
   :load-path "elisp/hydra"
   :bind ("M-Q" . hydra-expand-region/body))
 
-(use-package ibuffer
+(use-package ibuffer :ensure t
   :defer t
   :bind ("s-p" . ibuffer)
   :config
@@ -112,17 +106,17 @@
              ("G" . ibuffer-vc-set-filter-groups-by-vc-root)
              ("M-u" . ibuffer-unmark-all)))
 
-(use-package smart-forward
+(use-package smart-forward :ensure t
   :bind ("s-." . forward-sexp)
         ("s-," . backward-sexp)
         ("C-." . smart-forward)
         ("C-," . smart-backward))
 
-(use-package smart-newline
+(use-package smart-newline :ensure t
   :bind ("RET" . smart-newline))
 
 (use-package smartparens-config :after smartparens)
-(use-package smartparens
+(use-package smartparens :ensure t
   :demand
   :config (smartparens-global-mode)
           (sp-local-pair
@@ -133,23 +127,23 @@
         ("s-f" . sp-slurp-hybrid-sexp)
         ("s-b" . sp-forward-barf-sexp))
 
-(use-package operate-on-number
+(use-package operate-on-number :ensure t
   :bind ("s-@" . operate-on-number-at-point))
 
-(use-package command-log-mode
+(use-package command-log-mode :ensure t
   :defer t
   :config (global-command-log-mode)
   :bind ("<f8>" . clm/toggle-command-log-buffer))
 
-(use-package popup :defer t)
-(use-package popwin
+(use-package popup :ensure t :defer t)
+(use-package popwin :ensure t
   :demand
   :config (popwin-mode 1)
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil)
   :bind ("C-x m" . popwin:messages))
 
-(use-package org
+(use-package org :ensure t
   :defer t
   :mode ("\\.org"  . org-mode)
   :bind ("C-c c"   . org-capture)
@@ -199,10 +193,10 @@
 
   :config
   ;; Export Backends
-  (use-package ox-twbs)
-  (use-package ox-reveal)
-  (use-package ox-md)
-  (use-package org-wc)
+  (use-package ox-twbs :ensure t)
+  (use-package ox-reveal :ensure t)
+  (use-package ox-md :ensure t)
+  (use-package org-wc :ensure t)
   (bind-keys :map org-mode-map
              ("C-c C-x l"   . org-toggle-link-display)
              ("M-=" . org-wc-display)
@@ -225,7 +219,7 @@
                    (org-color-tag "Holidays:" "#3498db")
                    (org-color-tag "Reminders:" "#8e44ad"))))
 
-(use-package calfw :after org)
+(use-package calfw :ensure t :after org)
 (use-package calfw-org
   :after calfw
   :bind ("C-c s" . cfw:open-org-calendar)
@@ -239,10 +233,10 @@
              ("g" . cfw:refresh-calendar-buffer)
              ("RET" . cfw:change-view-day)))
 
-(use-package doc-view
+(use-package doc-view :ensure t
   :mode ("\\.pdf" . doc-view-mode))
 
-(use-package undo-tree
+(use-package undo-tree :ensure t
   :config (global-undo-tree-mode)
           (setq undo-tree-visualizer-diff t)
   :bind ("C-c C-u" . undo-tree-visualize)
@@ -251,16 +245,19 @@
         ("s-y" . undo-tree-redo)
         ("C-+" . undo-tree-redo))
 
-(use-package etags-select :after (lisp-mode)
+(use-package etags-select :ensure t :after (lisp-mode)
   :bind ("H-." . etags-select-find-tag-at-point)
         ("H->" . etags-select-find-tag))
 
-(use-package git-gutter-fringe
+(use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
+(use-package git-gutter-fringe :ensure t
   :if window-system
-  :config (global-git-gutter-mode))
+  :config (global-git-gutter-mode)
+  :bind ("C-x v p" . git-gutter:previous-diff)
+        ("C-x v n" . git-gutter:next-diff))
 
-(use-package image+ :after 'image-mode)
-(use-package dired+
+(use-package image+ :ensure t :after 'image-mode)
+(use-package dired+ :ensure t
   :after 'dired
   :config
   (setq insert-directory-program "gls")
@@ -274,7 +271,7 @@
              ("M-r" . wdired-change-to-wdired-mode)
              ("q" . kill-all-dired-buffers)))
 
-(use-package dired-filter
+(use-package dired-filter :ensure t
   :after 'dired
   :init (setq dired-filter-group-saved-groups
               '(("default"
@@ -285,64 +282,44 @@
   :config (bind-keys :map dired-mode-map
                      ("//" . dired-filter-group-mode)))
 
-(use-package dired-narrow
-  :after 'dired
+(use-package dired-narrow :ensure t
+  :after 'diredb
   :config (bind-keys :map dired-mode-map
                      ("/f" . dired-narrow)
                      ("/t" . dired-narrow-fuzzy)))
 
-(use-package dired-quick-sort
+(use-package dired-quick-sort :ensure t
   :after 'dired
   :config
   (dired-quick-sort-setup))
 
-(use-package git-timemachine :bind ("C-x v t" . git-timemachine))
-(use-package git-messenger :bind ("C-x v p" . git-messenger:popup-message))
-
-(use-package windmove
+(use-package windmove :ensure t
   :bind ("<M-s-right>" . windmove-right)
         ("<M-s-left>" . windmove-left)
         ("<M-s-up>" . windmove-up)
         ("<M-s-down>" . windmove-down))
 
-(use-package zoom-window
+(use-package zoom-window :ensure t
   :config (setq zoom-window-mode-line-color "#d35400")
-  :bind ("C-x C-z" . zoom-window-zoom))
+  :bind ("C-x C-x" . zoom-window-zoom))
 
-(use-package tabulated-list
-  :defer t
-  :config
-  (bind-keys :map tabulated-list-mode-map
-             ("<S-tab>" . tablist-backward-column)))
-
-(use-package dockerfile-mode
+(use-package dockerfile-mode :ensure t
   :mode ("^Dockerfile$" . dockerfile-mode)
   :config (bind-keys :map dockerfile-mode-map
                      ("C-x c" . dockerfile-build-buffer)
                      ("C-x C-c" . dockerfile-build-no-cache-buffer)))
 
-(use-package jenkins
-  :commands (jenkins)
-  :init
-  (require 'jenkins-auth (concat base-path ".jenkins-auth.el"))
-  (setq jenkins-username (plist-get jenkins-auth :user))
-  (setq jenkins-api-token (plist-get jenkins-auth :apitoken))
-  (setq jenkins-url (plist-get jenkins-auth :url))
-  :config
-  (add-hook 'jenkins-mode-hook 'tablist-minor-mode)
-  (add-hook 'jenkins-mode-hook '(lambda () (setq-local mode-line-format nil))))
-
-(use-package nameless
+(use-package nameless :ensure t
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
 
 (use-package hydra-window-layout
   :load-path "elisp"
   :commands (wlf:agenda)
-  :init (use-package window-layout)
+  :init (use-package window-layout :ensure t)
   :bind ("C-c w" . hydra-window-layout/body))
 
-(use-package flycheck
+(use-package flycheck :ensure t
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint")
@@ -357,12 +334,12 @@
   :load-path "elisp/eslint-reader"
   :after js2-mode)
 
-(use-package flyspell
+(use-package flyspell :ensure t
   :init (setq flyspell-mode-map (make-sparse-keymap))
   (defun flyspell-toggle ()
     (interactive)
     (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
-  (use-package flyspell-popup :defer t)
+  (use-package flyspell-popup :ensure t :defer t)
   :config
   (bind-keys :map flyspell-mode-map
              ("s-]" . flyspell-goto-next-error)
@@ -372,7 +349,7 @@
   (setq ispell-dictionary "english")
   :bind ("M-{" . flyspell-toggle))
 
-(use-package projectile
+(use-package projectile :ensure t
   :commands (projectile-switch-project)
   :bind ("C-c p p" . projectile-switch-project)
   :config
@@ -398,7 +375,7 @@
   ("C-c s-p" . projectile-ibuffer)
   ("C-c p x x" . projectile-remove-known-project))
 
-(use-package visual-regexp
+(use-package visual-regexp :ensure t
   :bind ("C-c r" . vr/replace)
         ("C-c q" . vr/query-replace)
         ("C-c m" . vr/mc-mark)
@@ -409,10 +386,10 @@
   :bind ("M-W" . hydra-smart-copy/body)
   :load-path "elisp/hydra")
 
-(use-package cycle-quotes
+(use-package cycle-quotes :ensure t
   :bind ("H-C" . cycle-quotes))
 
-(use-package embrace
+(use-package embrace :ensure t
   :config (use-package hydra-embrace :load-path "elisp/hydra")
   :bind
   ("H-SPC"   . hydra-embrace-or-native)
@@ -420,9 +397,8 @@
   ("H-x"     . embrace-delete)
   ("H-c"     . embrace-change))
 
-(use-package smex :after counsel)
-
-(use-package counsel :after ivy
+(use-package smex :ensure t :after counsel)
+(use-package counsel :ensure t :after ivy
   :defer 5
   :config
   (setq counsel-find-file-at-point t)
@@ -446,8 +422,6 @@
   :bind ([f2]      . counsel-git-grep)
         ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
-        ("C-x l"   . counsel-locate)
-        ("<s-f1>"  . counsel-imenu)
         ("H-M-."   . counsel-imenu)
         ("<H-tab>" . counsel-git)
         ("M-o"     . counsel-git)
@@ -459,7 +433,7 @@
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
-(use-package ivy :after avy
+(use-package ivy :ensure t :after avy
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
@@ -488,21 +462,16 @@
                    ("C-'" . avy-isearch)
                    ("C-l" . counsel-git-grep-from-isearch)))
 
-(use-package avy
+(use-package avy :ensure t
   :bind
   ("H-\\" . avy-goto-line)
-  ("H-'" . avy-goto-char-in-line)
-  ("C-\"" . avy-goto-char)
-  ("C-'" . avy-goto-word-1)
+  ("H-'" . avy-goto-word-1)
+  ("H-\"" . avy-goto-char)
   :config
   (avy-setup-default)
-  (bind-keys ("M-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
+  (bind-keys ("H-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
 
-(use-package avy-zap :after avy
-  :bind
-  ("M-z" . avy-zap-up-to-char))
-
-(use-package wgrep
+(use-package wgrep :ensure t
   :defer t
   :init (defun wgrep-end ()
           (interactive)
@@ -511,7 +480,7 @@
         (autoload 'wgrep-change-to-wgrep-mode "browse-url")
   :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end))
 
-(use-package js2-refactor :after js2-mode)
+(use-package js2-refactor :after js2-mode :ensure t)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
 (use-package js-injector
   :after js2-mode
@@ -533,7 +502,6 @@
              ("C-c x" . send-to-repl)
 
              ;; JS2 Refactor things
-             ("C-c C-m" . context-coloring-mode)
              ("C-c m" . prettify-symbols-mode)
              ("s-P" . js2r-drag-stuff-up)
              ("s-N" . js2r-drag-stuff-down)
@@ -553,10 +521,6 @@
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
-(add-hook 'js2-mode-hook 'skewer-mode)
-(add-hook 'css-mode-hook 'skewer-css-mode)
-(add-hook 'web-mode-hook 'skewer-html-mode)
-
 (use-package comint-mode
   :init
   (add-hook
@@ -566,7 +530,7 @@
      (local-set-key (kbd "<up>") 'comint-previous-input)
      (local-set-key (kbd "<down>") 'comint-next-input))))
 
-(use-package cpp
+(use-package cpp :ensure t
   :mode ("\\.cpp" . c++-mode)
         ("\\.h" . c++-mode)
   :config
@@ -587,16 +551,12 @@
                        (let ((file (file-name-sans-extension buffer-file-name)))
                          (format "sass '%s':%s.css" buffer-file-name file))))))
 
-(add-hook 'js2-mode-hook
-          (lambda () (set (make-local-variable 'compile-command)
-                     (format "eslint --fix %s" buffer-file-name))))
-
-(use-package json
+(use-package json :ensure t
   :mode ("\\.json" . json-mode)
   :config
   (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
 
-(use-package engine-mode
+(use-package engine-mode :ensure t
   :config (engine-mode t)
   (setq engine/browser-function browse-url-browser-function)
   (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")
@@ -604,9 +564,9 @@
   (defengine thesaurus "http://www.thesaurus.com/browse/%s?s=t" :keybinding "t")
   (defengine devdocs-ramda "http://devdocs.io/ramda/index#%s" :keybinding "R")
   (defengine devdocs "http://devdocs.io/#q=%s" :keybinding "d")
-  (defengine eslint "http://eslint.org/docs/rules/%s"))
+  (defengine eslint "http://eslint.org/docs/rules/%s" :keybinding "e"))
 
-(use-package eww
+(use-package eww :ensure t
   :defer t
   :bind ("<f10>" . eww)
         ("<s-f10>" . eww-list-bookmarks)
@@ -616,22 +576,21 @@
                      ("c" . eww-copy-page-url)
                      ("i" . eww-imenu)))
 
-(use-package goto-addr :after markdown-mode)
-
-(use-package browse-url
+(use-package goto-addr :ensure t :after markdown-mode)
+(use-package browse-url :ensure t
   :defer t
   :init (autoload 'browse-url-url-at-point "browse-url"))
 
-(use-package link-hint
+(use-package link-hint :ensure t
   :bind ("H-o" . link-hint-open-link)
         ("H-O" . link-hint-open-multiple-links))
 
-(use-package markdown-toc
+(use-package markdown-toc :ensure t
   :after markdown-mode
   :config (bind-keys :map markdown-mode-map
                      ("C-c C-t g" . markdown-toc-generate-toc)))
 
-(use-package markdown-mode
+(use-package markdown-mode :ensure t
   :mode ("\\.md" . markdown-mode)
   :config
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
@@ -649,17 +608,16 @@
   :config (bind-keys :map markdown-mode-map
                      ("C-c C-c p" . livedown:preview)))
 
-(use-package sudo-edit
+(use-package sudo-edit :ensure t
   :commands (sudo-edit-current-file))
 
-(use-package scss-mode
+(use-package scss-mode :ensure t
   :mode ("\\.scss$" . scss-mode)
   :config
   (bind-keys :map scss-mode-map
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
-(use-package coffee-mode :mode ("\\.coffee" . coffee-mode))
-(use-package css-mode :mode ("\\.css$" . css-mode))
+(use-package css-mode :ensure t :mode ("\\.css$" . css-mode))
 
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
@@ -675,30 +633,30 @@
   (bind-keys :map emacs-lisp-mode-map
              ("C-c n" . nameless-mode)
              ("C-c C-l" . elisp-debug)
-             ("C-c RET" . context-coloring-mode)
              ("M-." . jump-to-find-function)))
 
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 
-(use-package key-combo
+(use-package key-combo :ensure t
   :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
           (key-combo-mode 1)
           (key-combo-load-default))
 
 (add-hook 'after-init-hook 'yas-global-mode)
-(use-package yasnippet
+(use-package yasnippet :ensure t
   :commands (yas-global-mode yas-minor-mode)
   :config   (setq yas-snippet-dirs (concat base-path "/snippets")))
 
+(use-package font-lock+ :ensure t :after all-the-icons)
 (use-package all-the-icons
   :if window-system
   :load-path "elisp/all-the-icons")
 
 (setq neo-theme (if window-system 'icons 'arrow))
-(use-package neotree
+(use-package neotree :ensure t
   :config
   (setq neo-show-updir-line nil
-        neo-window-width 25
+        neo-window-width 45
         neo-persist-show nil)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
@@ -718,29 +676,14 @@
       (neotree-find)
       (select-window cw)))
   :bind ([f1] . neotree-projectile)
-        ("<S-f1>" . neotree-projectile-find))
+        ("<S-f1>" . neotree-projectile-find)
+        ("<M-f1>" . neotree-find))
 
-(use-package eshell
-  :defer t
-  :config
-  (defun eshell/ansi () (ansi-term "/bin/bash"))
-  (defun eshell/e (f) (find-file f))
-  (defun eshell/ee (f) (find-file-other-window f)))
-
-(use-package esh-mode
-  :defer t
-  :init (with-eval-after-load "esh-opt"
-          (autoload 'epe-theme-dakrone "eshell-prompt-extras")
-          (setq eshell-highlight-prompt nil
-                eshell-prompt-function 'epe-theme-dakrone))
-  :config (bind-keys :map eshell-mode-map
-             ("C-r" . counsel-esh-history)))
-
-(use-package compile
+(use-package compile :ensure t
   :config
   (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3)))
 
-(use-package ansi-color
+(use-package ansi-color :ensure t
   :config
   (defun colorize-compilation-buffer ()
     (toggle-read-only)
@@ -748,7 +691,7 @@
     (toggle-read-only))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
-(use-package shell-pop
+(use-package shell-pop :ensure t
   :bind ("C-`" . shell-pop)
   :config
   (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
@@ -756,10 +699,9 @@
    '(shell-pop-autocd-to-working-dir nil)
    '(shell-pop-shell-type
      (quote
-      ("ansi-term" "*ansi-term*"
+      ("term" "*terminal*"
        (lambda nil
          (ansi-term shell-pop-term-shell)))))
-   '(shell-pop-term-shell "/bin/bash")
    '(shell-pop-window-position "bottom")
    '(shell-pop-window-size 40)))
 
@@ -773,13 +715,13 @@
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
 (setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
 
-(use-package pug-mode :mode ("\\.pug$" . pug-mode))
+(use-package pug-mode :ensure t :mode ("\\.pug$" . pug-mode))
 
 (use-package jsx-reformat
   :after web-mode
   :load-path "elisp/jsx-reformat")
 
-(use-package web-mode
+(use-package web-mode :ensure t
   :mode
   ("\\.html$" . web-mode)
   ("\\.spv$" . web-mode)
@@ -802,7 +744,6 @@
 
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
-             ("±" . emmet-expand-line)
              ("C-j" . join-line)
              ("s-l" . jsx-reformat)
              ("s-=" . web-mode-fold-or-unfold)
@@ -836,11 +777,6 @@
           ("jsx" . (ac-source-yasnippet
                     ac-source-words-in-same-mode-buffer)))
 
-  ;; (defadvice web-mode-highlight-part (around tweak-jsx activate)
-  ;;   (if (equal web-mode-content-type "jsx")
-  ;;       (let ((web-mode-enable-part-face nil)) ad-do-it)
-  ;;     ad-do-it))
-
   (add-hook 'web-mode-hook 'js2/load-prettify-symbols-alist)
   (add-hook 'web-mode-hook 'js-injector-minor-mode)
   (add-hook 'web-mode-hook
@@ -850,20 +786,13 @@
   (add-hook 'web-mode-hook
             (lambda () (when (equal web-mode-content-type "jsx") (emmet-mode))))))
 
-(use-package emmet-mode :after web-mode
-  :load-path "~/workspace/el-emmet-mode"
-  :init (setq emmet-mode-keymap (make-sparse-keymap))
-  :config
-  (setq emmet-expand-jsx-className? t)
-  (setq emmet-quote-style "'")
-  (advice-add 'emmet-expand-line :before
-              '(lambda (&rest r) (end-of-line))))
-
 ;; Custom Auto Complete Sources
+(use-package company :ensure t)
+(use-package auto-complete :ensure t)
 (use-package auto-complete-config :after auto-complete)
 
-(use-package ac-emmet :after emmet-mode)
-(use-package ac-html
+(use-package ac-emmet :ensure t :after emmet-mode)
+(use-package ac-html :ensure t
   :after web-mode
   :config
   (add-hook 'web-mode-hook 'ac/setup-html)
@@ -872,12 +801,12 @@
     (ac-html-enable-data-provider 'ac-html-default-data-provider)
     (setq ac-sources '(ac-source-html-tag
                        ac-source-html-attr
-                       ac-source-html-attrv))
-    (auto-complete-mode)))
+                       ac-source-html-attrv))))
 
-(use-package auto-complete
+(use-package auto-complete :ensure t
   :config
   (ac-config-default)
+  (setq ac-delay 0.2)
   (set-default 'ac-sources
                '(ac-source-yasnippet
                  ac-source-words-in-same-mode-buffers))
@@ -897,12 +826,6 @@
   ("§" . auto-complete))
 
 (add-hook 'LaTeX-mode-hook
-            '(lambda () (ac-lambda
-                    'ac-source-math-unicode
-                    'ac-source-math-latex
-                    'ac-source-latex-commands)))
-
-(add-hook 'LaTeX-mode-hook
           '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
@@ -920,7 +843,7 @@
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
-(use-package hideshowvis
+(use-package hideshowvis :ensure t
   :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
   :config (hideshowvis-symbols)
   :bind ("s-_" . hs-show-all)
@@ -929,27 +852,21 @@
         ("s-+" . hs-hide-level))
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
-(use-package grunt
-  :load-path "~/workspace/el-grunt"
-  :bind ("C-M-g" . grunt-exec))
+(use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 
-(use-package repository-root
-  :defer t
-  :config
-  (add-to-list 'repository-root-matchers repository-root-matcher/svn)
-  (add-to-list 'repository-root-matchers repository-root-matcher/git))
-
-(use-package magit
+(use-package magit :ensure t
   :defer t
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-c e" . magit-vc-ediff)))
 
-(use-package atomic-chrome
-  :config (setq atomic-chrome-default-major-mode "js2-mode"))
+(use-package atomic-chrome :ensure t :defer t
+  :config
+  (atomic-chrome-start-server)
+  (setq atomic-chrome-default-major-mode 'js2-mode))
 
-(use-package yahoo-weather
+(use-package yahoo-weather :ensure t
   :defer t
   :init (setq yahoo-weather-location "Salford Quays")
   :config
@@ -964,13 +881,15 @@
                  '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
+(use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
+
 (use-package powerline
   :if window-system
   :load-path "elisp"
   :init   (add-hook 'after-init-hook 'update-powerline)
   :config (advice-add 'load-theme :after 'update-powerline))
 
-(use-package window-numbering
+(use-package window-numbering :ensure t
   :init
   (add-hook
    'window-numbering-mode-hook
@@ -998,10 +917,6 @@
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
 
 (add-hook 'ediff-startup-hook 'ediff-swap-buffers)
-
-(add-hook 'vc-annotate-mode-hook 'sticky-window-delete-other-windows)
-(add-hook 'magit-status-mode-hook 'sticky-window-delete-other-windows)
-(add-hook 'magit-branch-manager-mode-hook 'sticky-window-delete-other-windows)
 
 ;; !!! - Comment up to this location for updating
 
@@ -1044,7 +959,24 @@
 ;;------------------
 
 (setq custom-file (concat base-path "init/custom.el"))
-(add-to-list 'custom-theme-load-path (concat base-path "/packages/themes"))
+
+;;------------------
+;; Themes
+;;------------------
+(use-package atom-one-dark-theme :ensure t :defer t)
+(use-package aurora-theme :ensure t :defer t)
+(use-package creamsody-theme :ensure t :defer t)
+(use-package darkokai-theme :ensure t :defer t)
+(use-package darktooth-theme :ensure t :defer t)
+(use-package eink-theme :ensure t :defer t)
+(use-package forest-blue-theme :ensure t :defer t)
+(use-package gruvbox-theme :ensure t :defer t)
+(use-package monokai-theme :ensure t :defer t)
+(use-package niflheim-theme :ensure t :defer t)
+(use-package solarized-theme :ensure t :defer t)
+(use-package spacemacs-theme :ensure t :defer t)
+(use-package suscolors-theme :ensure t :defer t)
+(use-package tao-theme :ensure t :defer t)
 
 (use-package keys :load-path "init")
 (load-file (concat base-path "init/custom.elc"))
@@ -1054,7 +986,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(load-theme 'forest-blue)
+(load-theme 'creamsody)
 (when window-system
   (remove-mode-line-box)
   (server-start))
