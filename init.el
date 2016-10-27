@@ -941,7 +941,6 @@
   (add-to-list 'repository-root-matchers repository-root-matcher/svn)
   (add-to-list 'repository-root-matchers repository-root-matcher/git))
 
-(use-package magithub :after magit)
 (use-package magit
   :defer t
   :config (bind-keys :map magit-mode-map
