@@ -101,7 +101,7 @@
 (global-set-key (kbd "<s-f2>") 'ag-regexp-project-at-point)
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 (global-set-key [f5] '(lambda () (interactive) (if defining-kbd-macro (end-kbd-macro) (start-kbd-macro))))
-(global-set-key [f6] 'my-vc-dir)
+(global-set-key [f6] 'magit-status)
 (global-set-key (kbd "<M-f6>") '(lambda () (interactive) (if (buffer-exists "*vc-dir*") (kill-buffer "*vc-dir*")) (my-vc-dir)))
 (global-set-key (kbd "<M-f9>")
                 '(lambda () (interactive)
@@ -133,7 +133,7 @@
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
 
-(global-set-key (kbd "C-x C-x") 'delete-other-windows)
+(global-set-key (kbd "C-x C-z") 'delete-other-windows)
 
 ;; Duplicate line
 (global-set-key (kbd "s-d") 'duplicate-line)
