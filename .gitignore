@@ -87,3 +87,8 @@ smex-items
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Packages
+packages/elpa
+!packages/elpa/use-package*
+!packages/elpa/benchmark-init*
