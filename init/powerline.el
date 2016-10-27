@@ -53,6 +53,7 @@
     (monokai        (:primary ("#363731" "#272822" "#E5DDB7") :secondary ("#272822" "#272822" "#75715E")))
     (darkokai       (:primary ("#ab7eff" "#242728" "#3D4345") :secondary ("#242728" "#242728" "#5D6365")))
     (suscolors      (:primary ("#5faf5f" "#262626" "#262626") :secondary ("#262626" "#262626" "#949494")))
+    (creamsody      (:primary ("#1D2021" "#282C32" "#EBDBB2") :secondary ("#504945" "#282C32" "#A89984")))
     (wombat         (:primary ("#444444" "#343434" "#CCC9C0") :secondary ("#444444" "#343434" "#99968b")))))
 
 (defun update-powerline (&rest args)
