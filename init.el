@@ -949,6 +949,9 @@
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-c e" . magit-vc-ediff)))
 
+(use-package atomic-chrome
+  :config (setq atomic-chrome-default-major-mode "js2-mode"))
+
 (use-package yahoo-weather
   :defer t
   :init (setq yahoo-weather-location "Salford Quays")
