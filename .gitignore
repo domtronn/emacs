@@ -89,6 +89,8 @@ ehthumbs.db
 Thumbs.db
 
 # Packages
-packages/elpa
-!packages/elpa/use-package*
-!packages/elpa/benchmark-init*
+packages/elpa/*
+!use-package*
+!benchmark-init*
+!bind-key*
+!diminish*
