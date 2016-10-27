@@ -253,8 +253,8 @@
 (use-package git-gutter-fringe :ensure t
   :if window-system
   :config (global-git-gutter-mode)
-  :bind ("C-x v p" . git-gutter:previous-diff)
-        ("C-x v n" . git-gutter:next-diff))
+  :bind ("C-x v p" . git-gutter:previous-hunk)
+        ("C-x v n" . git-gutter:next-hunk))
 
 (use-package image+ :ensure t :after 'image-mode)
 (use-package dired+ :ensure t
