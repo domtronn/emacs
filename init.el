@@ -272,8 +272,6 @@
        (dired-find-file)))
   (bind-keys :map dired-mode-map
              ("M-r" . wdired-change-to-wdired-mode)
-             ("<right>" . dired-find-only-file)
-             ("<left>" . dired-up-directory)
              ("q" . kill-all-dired-buffers)))
 
 (use-package dired-filter
