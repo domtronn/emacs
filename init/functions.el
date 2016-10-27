@@ -199,14 +199,6 @@
                              'isearch-yank-from-start
                              isearch-mode-map)))
 
-(defun my-vc-dir ()
-  "Call `vc-dir` on the appropriate project."
-  (interactive)
-  (let ((repo-root (repository-root)))
-    (if (repository-root-match repository-root-matcher/git repo-root repo-root)
-        (magit-status)
-        (vc-dir repo-root))))
-
 (defun quick-term (name)
   (interactive "sEnter terminal name ❯ ")
   (ansi-term "/bin/bash" name))
@@ -452,7 +444,6 @@
 (defun ac-lambda (&rest sources)
   "Sets up autocomplete mode and local SOURCES"
   (interactive)
-  (auto-complete-mode)
   (setq-local ac-sources sources))
 
 (defun -move-link (f)
@@ -703,17 +694,6 @@
              (car (--reject (string-match res it)
                             (--filter (string-match (file-name-base (buffer-file-name)) it)
                                       (projectile-current-project-files))))))))
-
-(global-set-key (kbd "C--") 'itunes-remote)
-(defun itunes-remote (pfx)
-  (interactive "P")
-  (let* ((prefix (cond
-                  ((equal pfx '(4)) '("-a" . "Arists "))
-                  ((equal pfx '(16)) '("-A" . "Albums "))
-                  (t '("" . ""))))
-         (search-term (read-string (format "Search %s❯ " (cdr prefix))))
-         (cmd-f (format "itunes-remote \"search \\\"%s\\\" %s\" > /dev/null" search-term (car prefix))))
-    (shell-command cmd-f)))
 
 (global-set-key (kbd "<S-f10>") 'eww-edit-url)
 (defun eww-edit-url ()
