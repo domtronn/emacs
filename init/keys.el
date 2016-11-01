@@ -25,13 +25,12 @@
 ;; My Keys
 
 ;; Welcome to the Hotel Califronia
-(global-set-key (kbd "s-q") 'you-can-never-leave)
 (global-set-key (kbd "C-x C-c") 'you-can-never-leave)
 
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "M-*") '(lambda () (interactive) (insert "•")))
-(global-set-key [M-tab] 'dabbrev-expand)
+(global-set-key (kbd "M-§") 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
 
 (global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
@@ -84,20 +83,16 @@
 (global-set-key (kbd "H-<") 'pop-to-mark-command)
 (global-set-key (kbd "H-s-,") '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))))
 
-
 ;; move and resize windows
 (global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
 (global-set-key (kbd "H-=") '(lambda () (interactive) (font-scale '+ 10)))
-
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
 
 ;; Comment regions
 (global-set-key (kbd "s-/") 'dgc-comment)
 
-
 ;; F Functions
-
 (global-set-key (kbd "<s-f2>") 'ag-regexp-project-at-point)
 (global-set-key [f3] '(lambda () (interactive) (dired (when (buffer-file-name) (file-name-directory (buffer-file-name))))))
 (global-set-key [f5] '(lambda () (interactive) (if defining-kbd-macro (end-kbd-macro) (start-kbd-macro))))
@@ -118,7 +113,6 @@
 (global-set-key [(control backspace)] 'backward-kill-word)
 
 ;; Buffer Movemenet
-
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
@@ -140,10 +134,6 @@
 (global-set-key (kbd "s-D")
                 '(lambda () (interactive)
                    (call-interactively 'duplicate-line-and-replace-regexp)))
-
-;; Use C-i as my personal prefix command
-(global-set-key (kbd "H-a") 'beginning-of-line)
-(global-set-key (kbd "H-e") 'end-of-line)
 
 (global-set-key (kbd "<s-return>") 'eval-defun)
 (global-set-key (kbd "<s-S-return>") 'eval-buffer)
