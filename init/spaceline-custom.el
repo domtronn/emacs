@@ -46,7 +46,7 @@
     (propertize (format "%c" (+ 9311 (window-numbering-get-number)))
                 'face `(:height 1.3 :inherit)
                 'display '(raise -0.0))
-    :tight t)
+    :tight t :when (fboundp 'window-numbering-mode))
 
 (spaceline-define-segment
     ati-projectile "An `all-the-icons' segment for current `projectile' project"
@@ -306,7 +306,7 @@
                (propertize (if charging? (format "%s%%%%" percentage) time) 'face `(:height 0.9 :foreground ,fg)))
            (propertize time 'face '(:height 0.9 :inherit)))
          )))
-    :global-override fancy-battery-mode-line :when (and active fancy-battery-mode))
+    :global-override fancy-battery-mode-line :when (and active (fboundp 'fancy-battery-mode)))
 
 (defun spaceline--direction (dir)
   "Inverts DIR from right to left & vice versa."
