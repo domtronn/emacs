@@ -885,9 +885,18 @@
 
 (use-package powerline
   :if window-system
-  :load-path "elisp"
-  :init   (add-hook 'after-init-hook 'update-powerline)
-  :config (advice-add 'load-theme :after 'update-powerline))
+  :config (setq-default powerline-default-separator 'nil))
+
+(use-package fancy-battery :after spaceline :defer 10
+  :config (fancy-battery-mode))
+
+(use-package spaceline-custom :after spaceline :load-path "init/spaceline-custom")
+(use-package spaceline-colors :after spaceline-custom :load-path "init/spaceline-colors"
+  :init (add-hook 'after-init-hook 'spaceline-update-faces)
+  :config (advice-add 'load-theme :after 'spaceline-update-faces))
+
+(use-package spaceline :after powerline
+  :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
 
 (use-package window-numbering :ensure t
   :init
