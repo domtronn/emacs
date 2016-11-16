@@ -365,9 +365,7 @@
   "Apply function operator OP (+/-) to scale face attribute height by AMOUNT."
   (let* ((height (face-attribute 'default :height))
          (mode-line-height (face-attribute 'mode-line :height)))
-    (set-face-attribute 'default nil :height (funcall op height (or amount 10)))
-    (set-face-attribute 'mode-line nil :height powerline/default-height)
-    (set-face-attribute 'mode-line-inactive nil :height powerline/default-height)))
+    (set-face-attribute 'default nil :height (funcall op height (or amount 10)))))
 
 (defun elisp-debug (var)
   (interactive "sDebug variable ❯ ")
@@ -701,6 +699,33 @@
   (eww (read-string "Enter URL or keywords ❯ "
                     (when (eq major-mode 'eww-mode)
                       (eww-copy-page-url)))))
+
+(defcustom livedown-port 1337
+  "Port on which livedown server will run."
+  :type 'integer
+  :group 'livedown)
+
+(defcustom livedown-open t
+  "Open browser automatically."
+  :type 'boolean
+  :group 'livedown)
+
+(defun livedown-preview ()
+  "Preview the current file in livedown."
+  (interactive)
+
+  (call-process-shell-command
+   (format "livedown stop --port %s &"
+           livedown-port))
+
+  (start-process-shell-command
+   (format "emacs-livedown")
+   (format "emacs-livedown-buffer")
+   (format "livedown start %s --port %s %s "
+           buffer-file-name
+           livedown-port
+           (if livedown-open "--open" "")))
+  (print (format "%s rendered @ %s" buffer-file-name livedown-port) (get-buffer "emacs-livedown-buffer")))
 
 (defun org-start-ticket ()
   (interactive)

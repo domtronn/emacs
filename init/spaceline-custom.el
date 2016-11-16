@@ -282,7 +282,7 @@
            (icon-set (if charging? 'alltheicon 'faicon))
            (icon-alist
             (cond
-             (charging? '((icon . "charging") (inherit . success) (height . 1.2) (raise . -0.1)))
+             (charging? '((icon . "charging") (inherit . success) (height . 1.3) (raise . -0.1)))
              ((> percentage 95) '((icon . "full") (inherit . success)))
              ((> percentage 70) '((icon . "three-quarters")))
              ((> percentage 35) '((icon . "half")))
@@ -306,7 +306,7 @@
                (propertize (if charging? (format "%s%%%%" percentage) time) 'face `(:height 0.9 :foreground ,fg)))
            (propertize time 'face '(:height 0.9 :inherit)))
          )))
-    :global-override fancy-battery-mode-line :when (and active (fboundp 'fancy-battery-mode)))
+    :global-override fancy-battery-mode-line :when (and active (fboundp 'fancy-battery-mode) fancy-battery-mode))
 
 (defun spaceline--direction (dir)
   "Inverts DIR from right to left & vice versa."
@@ -354,13 +354,14 @@ the directions of the separator."
  "ati"
  '(
    ((ati-modified ati-window-numbering ati-buffer-size) :face highlight-face :skip-alternate t)
+   ;; left-active-3
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
    ((ati-process ati-position ati-region-info) :face highlight-face :separator " | ")
    ati-left-3-separator
    ati-left-inactive-separator
-   ((ati-vc-icon ati-flycheck-status ati-package-updates) :separator " · " :face other-face)
+   ((ati-vc-icon ati-flycheck-status ati-package-updates purpose) :separator " · " :face other-face)
    ati-left-4-separator)
 
  '(ati-right-1-separator

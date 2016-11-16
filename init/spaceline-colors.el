@@ -60,6 +60,14 @@
                      (inactive . ((default   . ((background . "#1d2021") (foreground . "#a89984")))
                                   (other     . ((background . "#1d2021") (foreground . "#a89984")))
                                   (middle    . ((background . "#282C32")))))))
+    (atom-one-dark  ((active   . ((highlight . ((background . "#98C379") (foreground . "#1d2021")))
+                                  (default   . ((background . "#3E4451") (foreground . "#AAAAAA")))
+                                  (other     . ((background . "#282C32") (foreground . "#AAAAAA")))
+                                  (middle    . ((background . "#282C32")))))
+
+                     (inactive . ((default   . ((background . "#1d2021") (foreground . "#666D7A")))
+                                  (other     . ((background . "#1d2021") (foreground . "#666D7A")))
+                                  (middle    . ((background . "#282C32")))))))
     ))
 
 (defun spaceline--set-face (face alist)
