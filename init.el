@@ -48,7 +48,6 @@
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'counsel-set-font)
-    (local-set-key "j" 'jenkins)
     (local-set-key "a" 'org-agenda)
     (local-set-key "p" 'projectile-switch-project)))
 
@@ -153,7 +152,6 @@
         ("C-c C-l" . org-link)
         ("C-j"     . join-line)
   :init
-  (require 'jira-auth (concat base-path ".jira-auth.el"))
   (setq diary-file "~/Dropbox/Documents/Org/diary"
         org-src-fontify-natively t
         org-agenda-files
@@ -171,8 +169,6 @@
         org-capture-templates
         `(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
            "* TODO %?\n %t")
-          ("T" "Ticket" entry (file+headline "~/Dropbox/Documents/Org/tickets.org" "Tickets")
-           ,(concat "* TODO [#C] [[" (plist-get jira-auth :url) "iptv-%\\1][IPTV-%^{Ticket Number}]] %?\n %t"))
           ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org")
            "** %^{Heading}  :LOG:\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS")
@@ -195,7 +191,6 @@
   ;; Export Backends
   (use-package ox-twbs :ensure t)
   (use-package ox-reveal :ensure t)
-  (use-package ox-md :ensure t)
   (use-package org-wc :ensure t)
   (bind-keys :map org-mode-map
              ("C-c C-x l"   . org-toggle-link-display)
@@ -245,7 +240,7 @@
         ("s-y" . undo-tree-redo)
         ("C-+" . undo-tree-redo))
 
-(use-package etags-select :ensure t :after (lisp-mode)
+(use-package etags-select :ensure t :defer t
   :bind ("H-." . etags-select-find-tag-at-point)
         ("H->" . etags-select-find-tag))
 
@@ -280,7 +275,8 @@
                  ("Archives" (extension "zip" "rar" "gz" "bz2" "tar"))
                  ("Images" (extension "png" "gif" "jpg")))))
   :config (bind-keys :map dired-mode-map
-                     ("//" . dired-filter-group-mode)))
+                     ("//" . dired-filter-group-mode)
+                     ("C-o" . project-find-file)))
 
 (use-package dired-narrow :ensure t
   :after 'diredb
@@ -323,6 +319,7 @@
   :config (global-flycheck-mode)
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint")
+  (setq flycheck-eslintrc ".eslintrc.json")
   (bind-keys :map flycheck-mode-map
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
@@ -334,19 +331,18 @@
   :load-path "elisp/eslint-reader"
   :after js2-mode)
 
+(use-package flyspell-popup :ensure t :defer t :after flyspell
+  :config (bind-keys :map flyspell-mode-map ("±" . flyspell-popup-correct)))
+
 (use-package flyspell :ensure t
-  :init (setq flyspell-mode-map (make-sparse-keymap))
-  (defun flyspell-toggle ()
-    (interactive)
-    (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
-  (use-package flyspell-popup :ensure t :defer t)
+  :init (defun flyspell-toggle ()
+          (interactive)
+          (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
   :config
-  (bind-keys :map flyspell-mode-map
-             ("s-]" . flyspell-goto-next-error)
-             ("s-." . flyspell-goto-next-error)
-             ("s-," . flyspell-popup-correct))
-  (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
   (setq ispell-dictionary "english")
+  (dolist (hook '(text-mode-hook)) (add-hook hook (lambda () (flyspell-mode 1))))
+  (dolist (hook '(change-log-mode-hook log-edit-mode-hook)) (add-hook hook (lambda () (flyspell-mode -1))))
+  (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
   :bind ("M-{" . flyspell-toggle))
 
 (use-package projectile :ensure t
@@ -433,6 +429,7 @@
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
+(use-package ivy-hydra :ensure t :after ivy)
 (use-package ivy :ensure t :after avy
   :config
   (ivy-mode)
@@ -471,14 +468,14 @@
   (avy-setup-default)
   (bind-keys ("H-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
 
-(use-package wgrep :ensure t
-  :defer t
-  :init (defun wgrep-end ()
-          (interactive)
-          (wgrep-finish-edit)
-          (wgrep-save-all-buffers))
-        (autoload 'wgrep-change-to-wgrep-mode "browse-url")
-  :config (define-key wgrep-mode-map (kbd "C-c C-s") 'wgrep-end))
+(use-package ag
+  :ensure t
+  :commands (ag-regexp ag-project-regexp)
+  :bind ("C-c g" . ag-project-regexp))
+
+(use-package wgrep-ag
+  :ensure t
+  :after ag)
 
 (use-package js2-refactor :after js2-mode :ensure t)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
@@ -551,12 +548,12 @@
                        (let ((file (file-name-sans-extension buffer-file-name)))
                          (format "sass '%s':%s.css" buffer-file-name file))))))
 
-(use-package json :ensure t
+(use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
   :config
   (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
 
-(use-package engine-mode :ensure t
+(use-package engine-mode :ensure t :defer t
   :config (engine-mode t)
   (setq engine/browser-function browse-url-browser-function)
   (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")
@@ -656,11 +653,10 @@
 (use-package neotree :ensure t
   :config
   (setq neo-show-updir-line nil
-        neo-window-width 45
-        neo-persist-show nil)
+        neo-window-width 45)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
-  (add-hook 'neotree-mode-hook (lambda () (setq-local mode-line-format nil)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
+
   (defun neotree-projectile ()
     (interactive )
     (let ((cw (get-buffer-window (current-buffer))))
@@ -670,11 +666,13 @@
                          (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
                          (getenv "HOME"))))
      (select-window cw)))
+
   (defun neotree-projectile-find ()
     (interactive)
     (let ((cw (get-buffer-window (current-buffer))))
       (neotree-find)
       (select-window cw)))
+
   :bind ([f1] . neotree-projectile)
         ("<S-f1>" . neotree-projectile-find)
         ("<M-f1>" . neotree-find))
@@ -695,25 +693,17 @@
   :bind ("C-`" . shell-pop)
   :config
   (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
-  (custom-set-variables
-   '(shell-pop-autocd-to-working-dir nil)
-   '(shell-pop-shell-type
-     (quote
-      ("term" "*terminal*"
-       (lambda nil
-         (ansi-term shell-pop-term-shell)))))
-   '(shell-pop-window-position "bottom")
-   '(shell-pop-window-size 40)))
+  (setq shell-pop-autocd-to-working-dir nil
+        shell-pop-shell-type '("term" "*terminal*" (lambda () (ansi-term "/bin/bash" "*ansi-terminal*")))
+        shell-pop-window-position "bottom"
+        shell-pop-window-size 40))
 
 (use-package uniquify
   :config
-  (setq uniquify-buffer-name-style 'reverse) ; Used for unique buffer names)
-  (setq uniquify-separator "/")              ; including parts of the path
-  (setq uniquify-after-kill-buffer-p t)      ; rename after killing uniquified
-  (setq uniquify-ignore-buffers-re "^\\*"))  ; don't muck with special buffers
-
-(setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
-(setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
+  (setq uniquify-buffer-name-style 'reverse)
+  (setq uniquify-separator "/")
+  (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-ignore-buffers-re "^\\*"))
 
 (use-package pug-mode :ensure t :mode ("\\.pug$" . pug-mode))
 
@@ -825,20 +815,14 @@
   ("<M-tab>" . auto-complete)
   ("§" . auto-complete))
 
-(add-hook 'LaTeX-mode-hook
-          '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
+(add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
 (add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
 (add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
 
-;;---------------
-;; Mode Hooks
-;;---------------
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
-
-(setq truncate-lines nil)
 
 (add-hook 'prog-mode-hook 'css-color-mode)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
@@ -902,19 +886,13 @@
   :init
   (add-hook
    'window-numbering-mode-hook
-   '(lambda ()
-      (let ((map (make-sparse-keymap)))
-        (dotimes (n 10)
-          (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
-        (setq window-numbering-keymap map))))
+   '(lambda () (let ((map (make-sparse-keymap)))
+            (dotimes (n 10)
+              (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
+            (setq window-numbering-keymap map))))
   :config
   (window-numbering-mode)
   (window-numbering-clear-mode-line))
-
-(add-hook 'magit-mode-hook 'image-minor-mode)
-
-;; Load stuff to do with grep initially
-(eval-after-load "grep" '(grep-compute-defaults))
 
 ;; change vc-diff to use vc-ediff
 (setq ediff-split-window-function (quote split-window-horizontally))
@@ -931,6 +909,7 @@
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
+(setq truncate-lines nil)
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)                 ; don't make lock files
@@ -939,24 +918,27 @@
 (setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
 (blink-cursor-mode 0)
 
-;; Set mac modifiers to what I'm used to
+;; Set Path
+(setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
+(setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
+
+;; Set Mac modifiers keys
 (setq mac-function-modifier 'hyper)
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
 
-(delete-selection-mode 1)                    ; Allows for deletion when typing over highlighted text
+(delete-selection-mode 1)                   ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
-(setq frame-title-format "")
 (setq-default cursor-type 'bar)             ; Change cursor to bar
 (setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
 
 ;; Get rid of stupid menu bar and Tool Bar..
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
-
+(menu-bar-mode 1)
 (show-paren-mode t)   ; Show paranthesis matching
 
 ;; Global Mode Stuff
@@ -964,14 +946,10 @@
 (global-prettify-symbols-mode)
 
 ;;------------------
-;; My Load Files
-;;------------------
-
-(setq custom-file (concat base-path "init/custom.el"))
-
-;;------------------
 ;; Themes
 ;;------------------
+(setq custom-file (concat base-path "init/custom.el"))
+
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package aurora-theme :ensure t :defer t)
 (use-package creamsody-theme :ensure t :defer t)
