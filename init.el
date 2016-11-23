@@ -190,6 +190,7 @@
   :config
   ;; Export Backends
   (use-package ox-twbs :ensure t)
+  (use-package ox-bullets :ensure t)
   (use-package ox-reveal :ensure t)
   (use-package org-wc :ensure t)
   (bind-keys :map org-mode-map
@@ -320,6 +321,7 @@
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint")
   (setq flycheck-eslintrc ".eslintrc.json")
+  (setq-default flycheck-disabled-checkers '(javascript-jshint))
   (bind-keys :map flycheck-mode-map
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
@@ -349,7 +351,6 @@
   :commands (projectile-switch-project)
   :bind ("C-c p p" . projectile-switch-project)
   :config
-  (projectile-global-mode)
   (require 'projectile-ignore (concat base-path ".projectile-ignore.el"))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
