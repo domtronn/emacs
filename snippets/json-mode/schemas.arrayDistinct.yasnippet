@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.ArrayUnique
+# key  : SA
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "array",
+  "items": [
+    $0
+  ]`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

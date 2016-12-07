@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name : anonymous function
+# key  : So
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "object",
+"properties": {
+  $0
+  }`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.SchemaRef
+# key  : Sr
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"$ref": "$0"`(when wrap "\n}")`

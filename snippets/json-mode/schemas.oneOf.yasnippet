@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.OneOf
+# key  : Soo
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"oneOf": [
+    $0
+  ]`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

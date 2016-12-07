@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.String
+# key  : Ss
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "string"`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

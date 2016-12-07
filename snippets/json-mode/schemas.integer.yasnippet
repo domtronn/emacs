@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.Integer
+# key  : Si
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "integer",
+"minimum": -10000,
+"maximum": 10000`(when wrap "\n}")`

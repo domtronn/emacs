@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.ArrayOfItems
+# key  : Sa
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "array",
+  "minLength": 0,
+  "maxLength": 100,
+  "items": {
+    $0
+  }`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

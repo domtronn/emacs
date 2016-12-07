@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.PatterneredString
+# key  : Sp
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "string",
+  "pattern": "^$0$"`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

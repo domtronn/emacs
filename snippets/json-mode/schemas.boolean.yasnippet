@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.Boolean
+# key  : Sb
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"type": "boolean"`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`

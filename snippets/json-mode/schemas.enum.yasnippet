@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.Enum
+# key  : Se
+# expand-env : ((wrap (looking-back ": ")))
+# --
+`(when wrap "{\n")`"enum": [ $0 ]`(when wrap "\n}")``(when (and wrap (json-comma?)) ",")`
