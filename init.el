@@ -190,7 +190,6 @@
   :config
   ;; Export Backends
   (use-package ox-twbs :ensure t)
-  (use-package ox-bullets :ensure t)
   (use-package ox-reveal :ensure t)
   (use-package org-wc :ensure t)
   (bind-keys :map org-mode-map
@@ -354,14 +353,13 @@
   (require 'projectile-ignore (concat base-path ".projectile-ignore.el"))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
-  (setq projectile-test-suffix-function 'my/projectile-test-suffix)
   (setq projectile-project-root-files-bottom-up
         (append '(".projectile" "gulpfile.js" "gruntfile.js" "Gulpfile.js" "Gruntfile.js")
                 projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
                 '("node_modules" "build" "tests" ".cache")))
-  (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags"))
+  (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags" ".elc"))
   (setq projectile-tags-file-name ".tags")
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
@@ -880,7 +878,7 @@
   :init (add-hook 'after-init-hook 'spaceline-update-faces)
   :config (advice-add 'load-theme :after 'spaceline-update-faces))
 
-(use-package spaceline :after powerline
+(use-package spaceline :after powerline :ensure t
   :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
 
 (use-package window-numbering :ensure t
