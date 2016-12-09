@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name : JSONSchema.Schema
+# key  : SS
+# --
+{
+  "id": "${1:`(when (buffer-file-name) (file-name-base (file-name-sans-extension (buffer-file-name))))`}",
+  "description": "$2",
+  "type": "object",
+  "properties": {
+    $0 
+  }
+}
