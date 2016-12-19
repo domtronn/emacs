@@ -367,9 +367,12 @@
   (setq projectile-tags-file-name ".tags")
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
+  (defun projectile-find-file-non-fuzzy ()
+    (interactive)
+    (let ((ivy-re-builders-alist '((t . ivy--regex)))) (projectile-find-file)))
   :bind
   ("C-o" . projectile-find-file)
-  ("C-c f" . projectile-ag)
+  ("C-S-o" . projectile-find-file-non-fuzzy);
   ("C-x C-b" . projectile-switch-to-buffer)
   ("C-c s-p" . projectile-ibuffer)
   ("C-c p x x" . projectile-remove-known-project))
