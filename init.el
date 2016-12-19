@@ -310,6 +310,7 @@
   :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
 
 (use-package hydra-window-layout
+  :disabled t
   :load-path "elisp"
   :commands (wlf:agenda)
   :init (use-package window-layout :ensure t)
