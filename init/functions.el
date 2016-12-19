@@ -669,6 +669,18 @@
       (kill-region start (line-end-position))
       (goto-char start))))
 
+(global-set-ke y (kbd "S-SPC") 'wrap-space-or-space)
+(defun wrap-space-or-space ()
+  (interactive)
+  (if mark-active
+      (let ((p (point))
+            (rb (region-beginning))
+            (re (region-end)))
+        (goto-char re) (insert " ")
+        (goto-char rb) (insert " ")
+        (goto-char p))
+    (insert " ")))
+
 (defun my/projectile-test-suffix (project-type)
   "Find default test files suffix based on PROJECT-TYPE."
   (cond
