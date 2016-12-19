@@ -547,6 +547,20 @@
                        (let ((file (file-name-sans-extension buffer-file-name)))
                          (format "g++ %s -o %s" buffer-file-name file))))))
 
+(defun js2-standard-fix ()
+  (interactive)
+  (when (buffer-file-name)
+    (shell-command
+     (format (if (flycheck-eslint-config-exists-p)
+                 "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
+
+(add-hook 'after-save-hook
+          (lambda () (when (or (and (string-equal major-mode "web-mode")
+                               (or (string-equal web-mode-content-type "jsx")
+                                   (string-equal web-mode-content-type "javascript")))
+                          (string-equal major-mode "js2-mode"))
+                  (js2-standard-fix))))
+
 (add-hook 'scss-mode-hook
           (lambda () (when (buffer-file-name)
                   (set (make-local-variable 'compile-command)
