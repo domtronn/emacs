@@ -516,7 +516,7 @@
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
              ("s-w" . web-mode)
-             ("s-W" . (lambda () (interactive) (setq js2-basic-offset (if (eq js2-basic-offset 2) 4 2))))
+             ("s-W" . rjsx-mode)
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -727,7 +727,7 @@
 (use-package pug-mode :ensure t :mode ("\\.pug$" . pug-mode))
 
 (use-package jsx-reformat
-  :after web-mode
+  :after (web-mode rjsx-mode)
   :load-path "elisp/jsx-reformat")
 
 (use-package web-mode :ensure t
@@ -765,7 +765,7 @@
              ("M-a M-p" . web-mode-attribute-previous)
              ("s-=" . hs-toggle-hiding)
              ("s-w" . js2-mode)
-             ("s-W" . (lambda () (interactive) (setq js2-basic-offset (if (eq js2-basic-offset 2) 4 2))))
+             ("s-W" . rjsx-mode)
              ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
