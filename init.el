@@ -327,6 +327,9 @@
              ("C-c C-n" . flycheck-next-error)
              ("C-c C-p" . flycheck-previous-error))
   (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-mode 'javascript-standard 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
+  (flycheck-add-mode 'javascript-standard 'rjsx-mode)
   :bind ("M-}" . flycheck-mode))
 
 (use-package eslint-reader
