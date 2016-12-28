@@ -19,6 +19,11 @@ xkcd
 *bookmarks*
 *ede-projects*
 
+# My custom pacakages that aren't ready to be submodules
+elisp/all-the-icons*
+elisp/boop
+elisp/magit-gh-issues-emoji
+
 # Dynamic Emacs Files #
 #######################
 *.emacs.desktop*
