@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : JavaScript#Promise
+# key  : fp
+# --
+new Promise(`(er!? 'space-in-parens)`(`(er!? 'space-in-parens)`resolve, reject`(er!? 'space-in-parens)`) => {
+  $0
+})

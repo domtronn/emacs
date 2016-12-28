@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name : Node#Module.exports#Promise
+# key  : mp
+# --
+`(er!? 'strict)``(and (er? 'strict) (concat (er!? 'semi) "\n"))`module.exports = new Promise(`(er!? 'space-in-parens)`(`(er!? 'space-in-parens)`resolve, reject`(er!? 'space-in-parens)`) => {
+`(er!? 'indent)`$0
+})`(er!? 'semi)`
