@@ -915,7 +915,6 @@
 
 ;; change vc-diff to use vc-ediff
 (setq ediff-split-window-function (quote split-window-horizontally))
-(setq ediff-keep-variants nil)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)

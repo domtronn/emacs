@@ -227,14 +227,9 @@
 ;; ============================================================================
 
 (defvar my-ediff-bwin-config nil "Window configuration before ediff.")
-(defcustom my-ediff-bwin-reg ?b
-  "*Register to be set up to hold `my-ediff-bwin-config'
-    configuration.")
-
+(defcustom my-ediff-bwin-reg ?b "*Register to be set up to hold `my-ediff-bwin-config'configuration.")
 (defvar my-ediff-awin-config nil "Window configuration after ediff.")
-(defcustom my-ediff-awin-reg ?e
-  "*Register to be used to hold `my-ediff-awin-config' window
-    configuration.")
+(defcustom my-ediff-awin-reg ?e "*Register to be used to hold `my-ediff-awin-config' window configuration.")
 
 (defun my-ediff-bsh ()
   "Function to be called before any buffers or window setup for
@@ -256,7 +251,16 @@
   (if (get-buffer "*vc-dir*")
       (progn (switch-to-buffer "*vc-dir*")
              (delete-other-windows))
-    (when my-ediff-bwin-config (set-window-configuration my-ediff-bwin-config))))
+    (when my-ediff-bwin-config
+      (set-window-configuration my-ediff-bwin-config)
+      (kill-ediff-revisions))))
+
+(defun kill-ediff-revisions ()
+  "Function tor emove the revision buffers after quit"
+  (let ((bufs (--filter (and
+                         (not (string-equal (buffer-name) (buffer-name it)))
+                         (s-starts-with? (buffer-name) (buffer-name it))) (buffer-list))))
+    (-map 'kill-buffer bufs)))
 
 (defun kill-all-dired-buffers ()
   "Kill all dired buffers."
