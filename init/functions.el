@@ -673,7 +673,7 @@
       (kill-region start (line-end-position))
       (goto-char start))))
 
-(global-set-ke y (kbd "S-SPC") 'wrap-space-or-space)
+(global-set-key (kbd "S-SPC") 'wrap-space-or-space)
 (defun wrap-space-or-space ()
   (interactive)
   (if mark-active
