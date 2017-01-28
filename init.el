@@ -120,12 +120,14 @@
 (use-package smartparens-config :after smartparens)
 (use-package smartparens :ensure t
   :demand
-  :config (smartparens-global-mode)
-          (sp-local-pair
-           '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
+  :config
+  (smartparens-global-mode)
+  (sp-local-pair
+   '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
            "'" nil :actions nil)
-          (sp-with-modes sp-lisp-modes (sp-local-pair "(" nil :bind "s-("))
+  (sp-with-modes sp-lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
+        ("<s-backspace>" . sp-splice-sexp)
         ("s-f" . sp-slurp-hybrid-sexp)
         ("s-b" . sp-forward-barf-sexp))
 
