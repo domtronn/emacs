@@ -158,30 +158,31 @@
 
 (spaceline-define-segment
     ati-flycheck-status "An `all-the-icons' representaiton of `flycheck-status'"
-    (let* ((text
-            (pcase flycheck-last-status-change
-              (`finished (if flycheck-current-errors
-                             (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
-                                            (+ (or .warning 0) (or .error 0)))))
-                               (format "✖ %s Issue%s" count (if (eq 1 count) "" "s")))
-                           "✔ No Issues"))
-              (`running     "⟲ Running")
-              (`no-checker  "⚠ No Checker")
-              (`not-checked "✖ Disabled")
-              (`errored     "⚠ Error")
-              (`interrupted "⛔ Interrupted")
-              (`suspicious  "")))
-           (f (cond
-               ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-warning :foreground)))
-               ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-error :foreground)))
-               ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-attribute 'font-lock-comment-face :foreground)))
-               (t '(:height 0.9 :inherit)))))
-      (propertize (format "%s" text)
-                  'face f
-                  'help-echo "Show Flycheck Errors"
-                  'display '(raise 0.2)
-                  'mouse-face '(:box 1)
-                  'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors)))))
+    (when (fboundp 'flycheck-last-status-change)
+      (let* ((text
+             (pcase flycheck-last-status-change
+               (`finished (if flycheck-current-errors
+                              (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
+                                             (+ (or .warning 0) (or .error 0)))))
+                                (format "✖ %s Issue%s" count (if (eq 1 count) "" "s")))
+                            "✔ No Issues"))
+               (`running     "⟲ Running")
+               (`no-checker  "⚠ No Checker")
+               (`not-checked "✖ Disabled")
+               (`errored     "⚠ Error")
+               (`interrupted "⛔ Interrupted")
+               (`suspicious  "")))
+            (f (cond
+                ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-warning :foreground)))
+                ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-error :foreground)))
+                ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-attribute 'font-lock-comment-face :foreground)))
+                (t '(:height 0.9 :inherit)))))
+       (propertize (format "%s" text)
+                   'face f
+                   'help-echo "Show Flycheck Errors"
+                   'display '(raise 0.2)
+                   'mouse-face '(:box 1)
+                   'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))
     :when active :tight t )
 
 (defvar spaceline--upgrades nil)

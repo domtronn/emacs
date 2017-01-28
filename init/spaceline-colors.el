@@ -22,26 +22,6 @@
 
 ;;; Code:
 
-
-(defvar theme-spaceline-color-alist
-  '((whiteboard     ((active . ((highlight . "#bbbbbb") "#d7d7d7" "#2a2a2a")) (secondary . ("#bbbbbb" "#d7d7d7" "#2a2a2a"))))
-    (atom-one-dark  ((active . ("#3E4451" "#5C6370" "#ABB2BF")) (secondary . ("#3E4451" "#5C6370" "#ABB2BF"))))
-    (darktooth      ((active . ("#222222" "#222222" "#FDF3C3")) (secondary . ("#403935" "#403935" "#988975"))))
-    (niflheim       ((active . ("#222222" "#2a2a2a" "#bababa")) (secondary . ("#222222" "#2a2a2a" "#bababa"))))
-    (aurora         ((active . ("#455a64" "#2B3B40" "#CDD3D3")) (secondary . ("#232A2F" "#232A2F" "#556D79"))))
-    (forest-blue    ((active . ("#0e5994" "#203439" "#d3cbc4")) (secondary . ("#203439" "#203439" "#203439"))))
-    (eink           ((active . ("#DDDDD8" "#DDDDD8" "#383838")) (secondary . ("#DDDDD8" "#DDDDD8" "#DDDDD8"))))
-    (ujelly         ((active . ("#000000" "#000000" "#ffffff")) (secondary . ("#000000" "#000000" "#ffffff"))))
-    (spacemacs-dark ((active . ("#6c3163" "#292B2E" "#b2b2b2")) (secondary . ("#292B2E" "#292B2E" "#292B2E"))))
-    (solarized-dark ((active . ("#657b83" "#073642" "#073642")) (secondary . ("#002b36" "#002b36" "#586e75"))))
-    (gruvbox        ((active . ("#3c3836" "#282828" "#f4e8ba")) (secondary . ("#504945" "#282828" "#a89984"))))
-    (material       ((active . ("#1c1f26" "#1c1f26" "#ffffff")) (secondary . ("#1c1f26" "#1c1f26" "#a7adba"))))
-    (monokai        ((active . ("#363731" "#272822" "#E5DDB7")) (secondary . ("#272822" "#272822" "#75715E"))))
-    (darkokai       ((active . ("#ab7eff" "#242728" "#3D4345")) (secondary . ("#242728" "#242728" "#5D6365"))))
-    (suscolors      ((active . ("#5faf5f" "#262626" "#262626")) (secondary . ("#262626" "#262626" "#949494"))))
-    (creamsody      ((active . ("#1D2021" "#282C32" "#EBDBB2")) (secondary . ("#504945" "#282C32" "#A89984"))))
-    (wombat         ((active . ("#444444" "#343434" "#CCC9C0")) (secondary . ("#444444" "#343434" "#99968b"))))))
-
 (defvar spaceline--theme-colors-alist
   '((gruvbox        ((active   . ((highlight . ((background . "#83a598") (foreground . "#1d2021")))
                                   (default   . ((background . "#3c3836") (foreground . "#f4e8ba")))
@@ -68,6 +48,38 @@
                      (inactive . ((default   . ((background . "#1d2021") (foreground . "#666D7A")))
                                   (other     . ((background . "#1d2021") (foreground . "#666D7A")))
                                   (middle    . ((background . "#282C32")))))))
+    (forest-blue    ((active   . ((highlight . ((background . "#fc5a7b") (foreground . "#1d2021")))
+                                  (default   . ((background . "#f42f56") (foreground . "#232a2f")))
+                                  (other     . ((background . "#203439") (foreground . "#bfb8b1")))
+                                  (middle    . ((background . "#203439")))))
+
+                     (inactive . ((default   . ((background . "#253c41") (foreground . "#506064")))
+                                  (other     . ((background . "#253c41") (foreground . "#506064")))
+                                  (middle    . ((background . "#203439")))))))
+    (suscolors      ((active   . ((highlight . ((background . "#d75f00") (foreground . "#262626")))
+                                  (default   . ((background . "#d78700") (foreground . "#303030")))
+                                  (other     . ((background . "#1d2021") (foreground . "#D8553B")))
+                                  (middle    . ((background . "#1d2021")))))
+
+                     (inactive . ((default   . ((background . "#1d2021") (foreground . "#D8553B")))
+                                  (other     . ((background . "#1d2021") (foreground . "#EF3935")))
+                                  (middle    . ((background . "#262626")))))))
+    (liso           ((active   . ((highlight . ((background . "#C8FF03") (foreground . "#262626")))
+                                  (default   . ((background . "#6E8C02") (foreground . "#303030")))
+                                  (other     . ((background . "#6E8C02") (foreground . "#303030")))
+                                  (middle    . ((background . "#272C2E")))));
+
+                     (inactive . ((default   . ((background . "#131617") (foreground . "#31454F")))
+                                  (other     . ((background . "#131617") (foreground . "#31454F")))
+                                  (middle    . ((background . "#131617")))))))
+    (peacock       ((active   . ((highlight . ((background . "#FF5D38") (foreground . "#262626")))
+                                  (default   . ((background . "#3e3c38") (foreground . "#E0E4CC")))
+                                  (other     . ((background . "#3e3c38") (foreground . "#E0E4CC")))
+                                  (middle    . ((background . "#2B2A27")))));
+
+                     (inactive . ((default   . ((background . "#3e3c38") (foreground . "#524e48")))
+                                  (other     . ((background . "#3e3c38") (foreground . "#524e48")))
+                                  (middle    . ((background . "#3e3c38")))))))
     ))
 
 (defun spaceline--set-face (face alist)
