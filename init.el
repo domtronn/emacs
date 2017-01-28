@@ -243,6 +243,8 @@
   :bind ("H-." . etags-select-find-tag-at-point)
         ("H->" . etags-select-find-tag))
 
+(use-package github-browse-file :ensure t :commands (github-browse-file))
+(use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
 (use-package git-gutter-fringe :ensure t
   :if window-system
