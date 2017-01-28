@@ -95,14 +95,17 @@
   :load-path "elisp/hydra"
   :bind ("M-Q" . hydra-expand-region/body))
 
+(use-package ibuf-ext :after ibuffer
+  :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
+(use-package ibuffer-vc :ensure t :after ibuffer
+  :config
+  (bind-keys :map ibuffer-mode-map
+             ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
 (use-package ibuffer :ensure t
   :defer t
   :bind ("s-p" . ibuffer)
   :config
-  (use-package ibuf-ext
-    :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
   (bind-keys :map ibuffer-mode-map
-             ("G" . ibuffer-vc-set-filter-groups-by-vc-root)
              ("M-u" . ibuffer-unmark-all)))
 
 (use-package smart-forward :ensure t
