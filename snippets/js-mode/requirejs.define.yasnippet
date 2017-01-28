@@ -3,15 +3,13 @@
 # key  : define
 # --
 define(
-`(er!? 'quotes)`$0`(if (buffer-file-name) (cadr (split-string (file-name-sans-extension (buffer-file-name)) (repository-root))) (file-name-sans-extension (buffer-name) ))``(er!? 'quotes)`,
+`(er!? 'quotes)`$0`(if (buffer-file-name) (cadr (split-string (file-name-sans-extension (buffer-file-name)) (projectile-project-root))) (file-name-sans-extension (buffer-name) ))``(er!? 'quotes)`,
   [
     
   ],
   function () {
-    'use strict';
-
     return function () {
 
     };
-  };
+  }
 );
