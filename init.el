@@ -136,7 +136,11 @@
   :config (popwin-mode 1)
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil)
-  :bind ("C-x m" . popwin:messages))
+          (defun popwin:flycheck-errors ()
+            (interactive)
+            (when (get-buffer "*Flycheck errors*") (popwin:popup-buffer "*Flycheck errors*")))
+  :bind ("C-x m" . popwin:messages)
+        ("C-x e" . popwin:flycheck-errors))
 
 (use-package org :ensure t
   :defer t
