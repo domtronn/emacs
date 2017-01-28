@@ -300,6 +300,7 @@
   :config (setq zoom-window-mode-line-color "#d35400")
   :bind ("C-x C-x" . zoom-window-zoom))
 
+(use-package yaml-mode :ensure t :mode ("\\.yml$" . yaml-mode))
 (use-package dockerfile-mode :ensure t
   :mode ("^Dockerfile$" . dockerfile-mode)
   :config (bind-keys :map dockerfile-mode-map
@@ -308,7 +309,7 @@
 
 (use-package nameless :ensure t
   :defer t
-  :config (bind-keys :map nameless-mode-map ("C-c c" . nameless-insert-name)))
+  :config (bind-keys :map nameless-mode-map ("C-c C-c" . nameless-insert-name)))
 
 (use-package hydra-window-layout
   :disabled t
@@ -327,8 +328,6 @@
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
              ("C-c C-p" . flycheck-previous-error))
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (flycheck-add-mode 'javascript-standard 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
   :bind ("M-}" . flycheck-mode))
@@ -355,27 +354,48 @@
   :commands (projectile-switch-project)
   :bind ("C-c p p" . projectile-switch-project)
   :config
+  (recentf-mode)
+  (projectile-mode)
   (require 'projectile-ignore (concat base-path ".projectile-ignore.el"))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-project-root-files-bottom-up
-        (append '(".projectile" "gulpfile.js" "gruntfile.js" "Gulpfile.js" "Gruntfile.js")
+        (append '(".projectile" "gulpfile.js" "gruntfile.js" "Gulpfile.js" "Gruntfile.js" "package.json")
                 projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
                 '("node_modules" "build" "tests" ".cache")))
   (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags" ".elc"))
   (setq projectile-tags-file-name ".tags")
+
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
+
   (defun projectile-find-file-non-fuzzy ()
     (interactive)
     (let ((ivy-re-builders-alist '((t . ivy--regex)))) (projectile-find-file)))
+  (defun projectile-find-file-basename ()
+    (interactive)
+    (projectile-completing-read
+     "Find file: "
+     (--map (cons (format "%s%s%s"
+                          (file-name-nondirectory it)
+                          (make-string (- 35 (min 30 (length (file-name-nondirectory it)))) ? )
+                          (or (file-name-directory it) ".")) it)
+            (projectile-current-project-files))
+     :action `(lambda (file)
+                (find-file (expand-file-name (cdr file) ,(projectile-project-root)))
+                (run-hooks 'projectile-find-file-hook))))
   :bind
+  ("M-o" . projectile-find-file-basename)
   ("C-o" . projectile-find-file)
   ("C-S-o" . projectile-find-file-non-fuzzy);
-  ("C-x C-b" . projectile-switch-to-buffer)
-  ("C-c s-p" . projectile-ibuffer)
+  ("C-c C-p" . projectile-ibuffer)
+  ("C-c p o" . projectile-find-file-in-known-projects)
+  ("C-c p a" . projectile-add-known-project)
+  ("C-c p d" . projectile-find-dir)
+  ("C-x C-b"   . projectile-switch-to-buffer)
+  ("C-x C-c" . projectile-run-async-shell-command-in-root)
   ("C-c p x x" . projectile-remove-known-project))
 
 (use-package visual-regexp :ensure t
@@ -385,10 +405,6 @@
         ("s-r" . vr/query-replace)
   :config (setq vr/match-separator-string " → "))
 
-(use-package hydra-smart-copy
-  :bind ("M-W" . hydra-smart-copy/body)
-  :load-path "elisp/hydra")
-
 (use-package cycle-quotes :ensure t
   :bind ("H-C" . cycle-quotes))
 
@@ -397,7 +413,6 @@
   :bind
   ("H-SPC"   . hydra-embrace-or-native)
   ("H-S-SPC" . embrace-delete)
-  ("H-x"     . embrace-delete)
   ("H-c"     . embrace-change))
 
 (use-package smex :ensure t :after counsel)
@@ -426,8 +441,6 @@
         ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
         ("H-M-."   . counsel-imenu)
-        ("<H-tab>" . counsel-git)
-        ("M-o"     . counsel-git)
         ("M-x"     . counsel-M-x)
         ("C-x C-f" . counsel-find-file)
         ("C-h b"   . counsel-descbinds)
@@ -437,23 +450,21 @@
         ("M-y"     . counsel-yank-pop))
 
 (use-package ivy-hydra :ensure t :after ivy)
+(use-package ivy-rich :ensure t :after ivy
+  :config (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
 (use-package ivy :ensure t :after avy
   :config
   (ivy-mode)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-  (advice-add 'counsel-git-grep :around
-              '(lambda (f &rest args)
-                 (let ((ivy-re-builders-alist '((t . ivy--regex-plus))))
-                   (apply f args))))
-  (ivy-set-actions
-   t
-   '(("y" kill-new "yank")
-     ("p" other-window-everything "other window")))
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))
+        ivy-display-style 'plain)
+  (advice-add 'counsel-git-grep
+              :around '(lambda (f &rest args) (let ((ivy-re-builders-alist '((t . ivy--regex-plus)))) (apply f args))))
   (bind-keys :map ivy-minibuffer-map
              ("C-d" . ivy-backward-delete-char)
              ("C-S-j" . ivy-immediate-done))
   :bind ("C-c C-r" . ivy-resume)
-        ("C-;"     . swiper))
+        ("C-;"     . swiper)
+        ("C-x b"     . ivy-switch-buffer))
 
 (use-package isearch
   :bind ("H-s" . isearch-forward-symbol-at-point)
@@ -465,6 +476,9 @@
                    ("C-'" . avy-isearch)
                    ("C-l" . counsel-git-grep-from-isearch)))
 
+(use-package avy-zap :ensure t
+  :bind
+  ("H-x" . avy-zap-to-char))
 (use-package avy :ensure t
   :bind
   ("H-\\" . avy-goto-line)
@@ -474,33 +488,43 @@
   (avy-setup-default)
   (bind-keys ("H-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
 
+(use-package wgrep-ag :ensure t :after ag)
 (use-package ag
   :ensure t
   :commands (ag-regexp ag-project-regexp)
   :bind ("C-c g" . ag-project-regexp))
 
-(use-package wgrep-ag
-  :ensure t
-  :after ag)
+(use-package rjsx-mode :ensure t
+  :mode ("\\.jsx$" . rjsx-mode)
+  :config
+  (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
+  (advice-add
+   'key-combo-pre-command-function
+   :around '(lambda (orig-f &rest args)
+              (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+                           (member (this-command-keys) '("=" "-" "+")))
+                (apply orig-f args)))))
 
 (use-package js2-refactor :after js2-mode :ensure t)
 (use-package js2r-extensions :after js2-mode :load-path "elisp")
 (use-package js-injector
   :after js2-mode
-  :load-path "elisp/js-dependency-injector")
+  :load-path "elisp/js-dependency-injector"
+  :config
+  (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
 
 (use-package js2-mode
-  :mode ("\\.js$" . js2-mode)
+  :mode "\\.js"
   :config
   (setq js2-indent-switch-body t)
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
+  (setq js2-indent-switch-body t)
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   (add-hook 'js2-mode-hook
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
-  (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
   (bind-keys :map js2-mode-map
              ("C-c x" . send-to-repl)
 
@@ -516,8 +540,7 @@
              ("C-c C-r" . js2r-rename-var)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
-             ("s-w" . web-mode)
-             ("s-W" . rjsx-mode)
+             ("s-w" . rjsx-mode)
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -555,43 +578,21 @@
      (format (if (flycheck-eslint-config-exists-p)
                  "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
 
-(add-hook 'after-save-hook
-          (lambda () (when (or (and (string-equal major-mode "web-mode")
-                               (or (string-equal web-mode-content-type "jsx")
-                                   (string-equal web-mode-content-type "javascript")))
-                          (string-equal major-mode "js2-mode"))
-                  (js2-standard-fix))))
-
-(add-hook 'scss-mode-hook
-          (lambda () (when (buffer-file-name)
-                  (set (make-local-variable 'compile-command)
-                       (let ((file (file-name-sans-extension buffer-file-name)))
-                         (format "sass '%s':%s.css" buffer-file-name file))))))
+;; (use-package scss-mode :ensure t :mode ("\\.scss" . sass-mode))
+;; (add-hook 'scss-mode-hook
+;;           (lambda () (when (buffer-file-name)
+;;                   (set (make-local-variable 'compile-command)
+;;                        (let ((file (file-name-sans-extension buffer-file-name)))
+;;                          (format "sass '%s':%s.css" buffer-file-name file))))))
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
   :config
-  (add-hook 'json-mode-hook '(lambda () (setq-local js-indent-level 2))))
-
-(use-package engine-mode :ensure t :defer t
-  :config (engine-mode t)
-  (setq engine/browser-function browse-url-browser-function)
-  (defengine github "https://github.com/search?ref=simplesearch&q=%s" :keybinding "G")
-  (defengine google "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s" :keybinding "g")
-  (defengine thesaurus "http://www.thesaurus.com/browse/%s?s=t" :keybinding "t")
-  (defengine devdocs-ramda "http://devdocs.io/ramda/index#%s" :keybinding "R")
-  (defengine devdocs "http://devdocs.io/#q=%s" :keybinding "d")
-  (defengine eslint "http://eslint.org/docs/rules/%s" :keybinding "e"))
-
-(use-package eww :ensure t
-  :defer t
-  :bind ("<f10>" . eww)
-        ("<s-f10>" . eww-list-bookmarks)
-  :config (bind-keys :map eww-mode-map
-                     ("j" . json-mode-beautify)
-                     ("g" . (lambda () (interactive) (eww eww-current-url)))
-                     ("c" . eww-copy-page-url)
-                     ("i" . eww-imenu)))
+  (add-hook 'json-mode-hook
+            '(lambda ()
+               (setq-local js-indent-level 2)
+               (local-set-key (kbd "<s-return>") '(lambda () (interactive) (dotimes (i 2) (smart-newline))))
+               (local-set-key (kbd "<s-S-return>") '(lambda () (interactive) (dotimes (i 4) (smart-newline)))))))
 
 (use-package goto-addr :ensure t :after markdown-mode)
 (use-package browse-url :ensure t
@@ -697,8 +698,9 @@
         ("<S-f1>" . neotree-projectile-find)
         ("<M-f1>" . neotree-find))
 
-(use-package compile :ensure t
+(use-package compile :ensure t :defer t
   :config
+  (add-hook 'compilation-mode-hook 'css-color-mode)
   (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3)))
 
 (use-package ansi-color :ensure t
@@ -726,36 +728,15 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 (use-package pug-mode :ensure t :mode ("\\.pug$" . pug-mode))
-
-(use-package jsx-reformat
-  :after (web-mode rjsx-mode)
-  :load-path "elisp/jsx-reformat")
-
 (use-package web-mode :ensure t
   :mode
   ("\\.html$" . web-mode)
-  ("\\.spv$" . web-mode)
-  ("\\.erb$" . web-mode)
-  ("\\.mustache$" . web-mode)
-  ("\\.hbs$" . web-mode)
-  ("\\.partial$" . web-mode)
-  ("\\.jsx$" . web-mode)
+  ("\\.scss$" . web-mode)
 
   :config
-  ;; JSX Reformat
-  (key-combo-define web-mode-map ":" '(": "))
-  (advice-add
-   'key-combo-pre-command-function
-   :around '(lambda (orig-f &rest args)
-              (unless  (and (or (web-mode-jsx-is-html)
-                                (equal web-mode-content-type "html"))
-                            (member (this-command-keys) '("=" "-" "+")))
-                (apply orig-f args))))
-
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
              ("C-j" . join-line)
-             ("s-l" . jsx-reformat)
              ("s-=" . web-mode-fold-or-unfold)
              ("M-s M-m" . web-mode-tag-match)
              ("M-s M-e" . web-mode-tag-end)
@@ -765,8 +746,6 @@
              ("M-a M-n" . web-mode-attribute-next)
              ("M-a M-p" . web-mode-attribute-previous)
              ("s-=" . hs-toggle-hiding)
-             ("s-w" . js2-mode)
-             ("s-W" . rjsx-mode)
              ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -783,36 +762,11 @@
                      ac-source-html-attr))
           ("css" . (ac-source-css-selector
                     ac-source-css-id
-                    ac-source-css-property))
-          ("jsx" . (ac-source-yasnippet
-                    ac-source-words-in-same-mode-buffer)))
-
-  (add-hook 'web-mode-hook 'js2/load-prettify-symbols-alist)
-  (add-hook 'web-mode-hook 'js-injector-minor-mode)
-  (add-hook 'web-mode-hook
-            (lambda () (when (equal web-mode-content-type "javascript")
-                    (web-mode-set-content-type "jsx"))))
-
-  (add-hook 'web-mode-hook
-            (lambda () (when (equal web-mode-content-type "jsx") (emmet-mode))))))
+                    ac-source-css-property)))))
 
 ;; Custom Auto Complete Sources
 (use-package company :ensure t)
-(use-package auto-complete :ensure t)
 (use-package auto-complete-config :after auto-complete)
-
-(use-package ac-emmet :ensure t :after emmet-mode)
-(use-package ac-html :ensure t
-  :after web-mode
-  :config
-  (add-hook 'web-mode-hook 'ac/setup-html)
-  (defun ac/setup-html ()
-    (require 'ac-html-default-data-provider)
-    (ac-html-enable-data-provider 'ac-html-default-data-provider)
-    (setq ac-sources '(ac-source-html-tag
-                       ac-source-html-attr
-                       ac-source-html-attrv))))
-
 (use-package auto-complete :ensure t
   :config
   (ac-config-default)
@@ -837,15 +791,7 @@
 
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-
-(add-hook 'git-commit-mode-hook '(lambda () (ac-lambda 'ac-source-gh-issues)))
-(add-hook 'ghi-comment-mode-hook '(lambda () (ac-lambda 'ac-source-emoji 'ac-source-gh-issues)))
-
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.erb" . html-mode))
-
 (add-hook 'prog-mode-hook 'css-color-mode)
-(add-hook 'prog-mode-hook 'yas-minor-mode)
 
 (use-package hideshowvis :ensure t
   :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
@@ -868,7 +814,7 @@
 (use-package atomic-chrome :ensure t :defer t
   :config
   (atomic-chrome-start-server)
-  (setq atomic-chrome-default-major-mode 'js2-mode))
+  (setq atomic-chrome-default-major-mode 'rjsx-mode))
 
 (use-package yahoo-weather :ensure t
   :defer t
@@ -887,12 +833,12 @@
 
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
 
+(use-package fancy-battery :after spaceline :defer 10
+  :config (fancy-battery-mode))
+
 (use-package powerline
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
-
-(use-package fancy-battery :after spaceline :defer 10
-  :config (fancy-battery-mode))
 
 (use-package spaceline-custom :after spaceline :load-path "init/spaceline-custom")
 (use-package spaceline-colors :after spaceline-custom :load-path "init/spaceline-colors"
@@ -902,6 +848,7 @@
 (use-package spaceline :after powerline :ensure t
   :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
 
+(use-package winum :disabled t :ensure t)
 (use-package window-numbering :ensure t
   :init
   (add-hook
@@ -921,21 +868,17 @@
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
 (add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
-
 (add-hook 'ediff-startup-hook 'ediff-swap-buffers)
 
 ;; !!! - Comment up to this location for updating
 
 ;; Startup variables
 (setq shift-select-mode t)                  ; Allow for shift selection mode
-(setq truncate-lines nil)
 (setq inhibit-splash-screen t)              ; disable splash screen
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq visible-bell nil)                     ; Disbales beep and use visible bell
-(setq ns-function-modifier 'hyper)          ; set Hyper to Mac's Fn key
-(blink-cursor-mode 0)
 
 ;; Set Path
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
@@ -949,7 +892,8 @@
 (delete-selection-mode 1)                   ; Allows for deletion when typing over highlighted text
 (fset 'yes-or-no-p 'y-or-n-p)               ; Use y or n instead of yes or no
 
-(setq-default cursor-type 'bar)             ; Change cursor to bar
+(blink-cursor-mode 0)
+(setq-default cursor-type '(bar . 1))             ; Change cursor to bar
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
@@ -967,32 +911,31 @@
 ;;------------------
 ;; Themes
 ;;------------------
-(setq custom-file (concat base-path "init/custom.el"))
+(use-package keys :load-path "init")
+(load-file (concat base-path "init/custom.el"))
+(load-file (concat base-path "init/advice.elc"))
 
+;; Themed with Spaceline
+(use-package gruvbox-theme :ensure t :defer t)
+(use-package creamsody-theme :ensure t)
+(use-package suscolors-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
-(use-package aurora-theme :ensure t :defer t)
-(use-package creamsody-theme :ensure t :defer t)
+(use-package forest-blue-theme :ensure t :defer t)
+(use-package liso-theme :ensure t :defer t)
+(use-package peacock-theme :ensure t :defer t)
+
 (use-package darkokai-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
-(use-package eink-theme :ensure t :defer t)
-(use-package forest-blue-theme :ensure t :defer t)
-(use-package gruvbox-theme :ensure t :defer t)
 (use-package monokai-theme :ensure t :defer t)
 (use-package niflheim-theme :ensure t :defer t)
 (use-package solarized-theme :ensure t :defer t)
 (use-package spacemacs-theme :ensure t :defer t)
-(use-package suscolors-theme :ensure t :defer t)
-(use-package tao-theme :ensure t :defer t)
-
-(use-package keys :load-path "init")
-(load-file (concat base-path "init/custom.elc"))
-(load-file (concat base-path "init/advice.elc"))
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(load-theme 'creamsody)
+(load-theme 'creamsody t)
 (when window-system
   (remove-mode-line-box)
   (server-start))
