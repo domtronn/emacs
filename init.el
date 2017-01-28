@@ -911,7 +911,12 @@
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
-(global-prettify-symbols-mode)
+(use-package prettify-symbols-mode
+  :bind ("C-c <C-return>" . prettify-symbols-mode)
+  :config
+  (global-prettify-symbols-mode)
+  (setq prettify-symbols-unprettify-at-point t)
+  (add-hook 'js2-mode 'js2/load-prettify-symbols-alist))
 
 ;;------------------
 ;; Themes
