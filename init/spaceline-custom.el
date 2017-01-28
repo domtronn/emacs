@@ -348,8 +348,8 @@ the directions of the separator."
 (define-separator "left-3" "right" 'spaceline-highlight-face 'mode-line)
 (define-separator "left-4" "right" 'mode-line 'powerline-active2)
 
-(define-separator "right-1" "left" 'powerline-active2 'powerline-active1)
-(define-separator "right-2" "left" 'powerline-active1 'mode-line)
+(define-separator "right-1" "right" 'powerline-active2 'powerline-active1)
+(define-separator "right-2" "right" 'powerline-active1 'mode-line)
 
 (spaceline-compile
  "ati"

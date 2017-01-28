@@ -878,7 +878,12 @@
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
-(setq visible-bell nil)                     ; Disbales beep and use visible bell
+;; Disable audible and visible bell in favor of flashing the mode line instead
+(defun mode-line-visible-bell () "A friendlier vaisual bell effect."
+  (invert-face 'mode-line)
+  (run-with-timer 0.1 nil 'invert-face 'mode-line))
+(setq visible-bell nil)
+(setq ring-bell-function 'my-terminal-visible-bell)
 
 ;; Set Path
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
