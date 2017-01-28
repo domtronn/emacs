@@ -513,12 +513,20 @@
   :config
   (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
 
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 (use-package js2-mode
-  :mode "\\.js"
+  :mode "\\.js$"
   :config
-  (setq js2-indent-switch-body t)
+  (setq js-switch-indent-offset 2)
+  (setq js2-include-node-externs t)
+  (setq js2-include-browser-externs t)
+  (setq js2-basic-offset 2)
+  (setq js2-enter-indents-newline t)
+  (setq js2-highlight-level 3)
+  (setq js2-pretty-multiline-declarations 'dynamic)
+
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-  (setq js2-indent-switch-body t)
+
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
@@ -883,7 +891,7 @@
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil 'invert-face 'mode-line))
 (setq visible-bell nil)
-(setq ring-bell-function 'my-terminal-visible-bell)
+(setq ring-bell-function 'mode-line-visible-bell)
 
 ;; Set Path
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
@@ -911,12 +919,13 @@
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
+(add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
+(add-hook 'js2-mode-hook 'prettify-symbols-mode)
 (use-package prettify-symbols-mode
   :bind ("C-c <C-return>" . prettify-symbols-mode)
   :config
   (global-prettify-symbols-mode)
-  (setq prettify-symbols-unprettify-at-point t)
-  (add-hook 'js2-mode 'js2/load-prettify-symbols-alist))
+  (setq prettify-symbols-unprettify-at-point t))
 
 ;;------------------
 ;; Themes

@@ -138,16 +138,6 @@
    (quote
     (:files js-injector--get-projectile-relative-requirejs-alist :config js-injector--get-projectile-relative-requirejs-config)))
  '(js-injector-node-camelise (quote s-lower-camel-case))
- '(js2-basic-offset 2)
- '(js2-enter-indents-newline t t)
- '(js2-global-externs
-   (quote
-    ("log" "require" "spyOn" "jasmine" "expect" "beforeEach" "afterEach" "clearTimeout" "sinon" "module" "describe" "it" "define" "setInterval" "setTimeout" "bbc" "beforeAll")))
- '(js2-highlight-level 3)
- '(js2-pretty-multiline-declarations (quote dynamic))
- '(jshint-configuration-path "~/.jshintrc")
- '(jshint-mode-jshintrc "~/.jshintrc")
- '(jshint-mode-mode "jslint")
  '(key-combo-common-default
    (quote
     (("," . ", ")

@@ -80,6 +80,16 @@
                      (inactive . ((default   . ((background . "#3e3c38") (foreground . "#524e48")))
                                   (other     . ((background . "#3e3c38") (foreground . "#524e48")))
                                   (middle    . ((background . "#3e3c38")))))))
+    ;; Light themes
+    (spacemacs-light ((active   . ((highlight . ((background . "#9380b2") (foreground . "#edf2e9")))
+                                 (default   . ((background . "#efeae9") (foreground . "#655370")))
+                                 (other     . ((background . "#e3dedd") (foreground . "#655370")))
+                                 (middle    . ((background . "#efeae9")))));
+
+                    (inactive . ((default   . ((background . "#efeae9") (foreground . "#a094a2")))
+                                 (other     . ((background . "#efeae9") (foreground . "#a094a2")))
+                                 (middle    . ((background . "#efeae9")))))))
+
     ))
 
 (defun spaceline--set-face (face alist)
