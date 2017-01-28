@@ -91,10 +91,6 @@
 (use-package expand-region :ensure t
   :bind ("M-q" . er/expand-region))
 
-(use-package hydra-expand-region
-  :load-path "elisp/hydra"
-  :bind ("M-Q" . hydra-expand-region/body))
-
 (use-package ibuf-ext :after ibuffer
   :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
 (use-package ibuffer-vc :ensure t :after ibuffer
@@ -133,11 +129,6 @@
 
 (use-package operate-on-number :ensure t
   :bind ("s-@" . operate-on-number-at-point))
-
-(use-package command-log-mode :ensure t
-  :defer t
-  :config (global-command-log-mode)
-  :bind ("<f8>" . clm/toggle-command-log-buffer))
 
 (use-package popup :ensure t :defer t)
 (use-package popwin :ensure t
@@ -209,7 +200,6 @@
              ("I" . org-start-ticket))
   (org-babel-do-load-languages
    'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
-  (add-hook 'org-mode-hook 'org-bullets-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
   (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
