@@ -498,6 +498,8 @@
   :commands (ag-regexp ag-project-regexp)
   :bind ("C-c g" . ag-project-regexp))
 
+(add-hook 'js2-mode-hook 'auto-complete-mode)
+
 (use-package rjsx-mode :ensure t
   :mode ("\\.jsx$" . rjsx-mode)
   :config
@@ -893,8 +895,8 @@
 (setq auto-save-default nil)                ; don't autosave
 ;; Disable audible and visible bell in favor of flashing the mode line instead
 (defun mode-line-visible-bell () "A friendlier vaisual bell effect."
-  (invert-face 'mode-line)
-  (run-with-timer 0.1 nil 'invert-face 'mode-line))
+  (invert-face 'powerline-active1) (run-with-timer 0.1 nil 'invert-face 'powerline-active1)
+  (invert-face 'mode-line) (run-with-timer 0.1 nil 'invert-face 'mode-line))
 (setq visible-bell nil)
 (setq ring-bell-function 'mode-line-visible-bell)
 
@@ -947,12 +949,9 @@
 (use-package forest-blue-theme :ensure t :defer t)
 (use-package liso-theme :ensure t :defer t)
 (use-package peacock-theme :ensure t :defer t)
-
-(use-package darkokai-theme :ensure t :defer t)
-(use-package darktooth-theme :ensure t :defer t)
-(use-package monokai-theme :ensure t :defer t)
-(use-package niflheim-theme :ensure t :defer t)
 (use-package solarized-theme :ensure t :defer t)
+
+(use-package darktooth-theme :ensure t :defer t)
 (use-package spacemacs-theme :ensure t :defer t)
 
 (put 'downcase-region 'disabled nil)

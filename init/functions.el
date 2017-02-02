@@ -126,7 +126,8 @@
   (push '(">=" . ?≥) prettify-symbols-alist)
   (push '("!=" . ?≠) prettify-symbols-alist)
   (push '("!==" . ?≢) prettify-symbols-alist)
-  (push '("===" . ?≡) prettify-symbols-alist))
+  (push '("===" . ?≡) prettify-symbols-alist)
+  (prettify-symbols-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
