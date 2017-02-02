@@ -41,6 +41,8 @@ elisp/magit-gh-issues-emoji
 *.m4a
 
 projectile.cache
+image-dired
+recentf
 
 # Authentication files
 .*-auth.el
