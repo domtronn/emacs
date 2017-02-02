@@ -24,9 +24,6 @@
 
 ;; My Keys
 
-;; Welcome to the Hotel Califronia
-(global-set-key (kbd "C-x C-c") 'you-can-never-leave)
-
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "M-*") '(lambda () (interactive) (insert "•")))
@@ -36,8 +33,6 @@
 (global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
 
 (global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
-
-(global-set-key (kbd "C-x c") 'compile)
 
 ;; Closing Files
 (global-set-key (kbd "s-w") 'delete-window)

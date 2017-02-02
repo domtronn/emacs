@@ -139,8 +139,15 @@
           (defun popwin:flycheck-errors ()
             (interactive)
             (when (get-buffer "*Flycheck errors*") (popwin:popup-buffer "*Flycheck errors*")))
+          (defun popwin:compilation ()
+            (interactive)
+            (when (get-buffer "*compilation*")
+              (if (get-buffer-window "*compilation*")
+                  (delete-window (get-buffer-window "*compilation*"))
+                (popwin:popup-buffer "*compilation*" :noselect t :stick t :tail t))))
   :bind ("C-x m" . popwin:messages)
-        ("C-x e" . popwin:flycheck-errors))
+  ("C-x e" . popwin:flycheck-errors)
+  ("C-x c" . popwin:compilation))
 
 (use-package org :ensure t
   :defer t
@@ -395,7 +402,6 @@
   ("C-c p a" . projectile-add-known-project)
   ("C-c p d" . projectile-find-dir)
   ("C-x C-b"   . projectile-switch-to-buffer)
-  ("C-x C-c" . projectile-run-async-shell-command-in-root)
   ("C-c p x x" . projectile-remove-known-project))
 
 (use-package visual-regexp :ensure t
@@ -709,7 +715,8 @@
 (use-package compile :ensure t :defer t
   :config
   (add-hook 'compilation-mode-hook 'css-color-mode)
-  (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3)))
+  (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3))
+  :bind ("C-x C-c" . compile))
 
 (use-package ansi-color :ensure t
   :config

@@ -132,7 +132,7 @@
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2)
+ '(js-indent-level 2 t)
  '(js-injector-get-relative-func (quote js-injector--get-projectile-files-alist))
  '(js-injector-get-requirejs-func
    (quote
@@ -209,6 +209,7 @@
  '(popwin:special-display-config
    (quote
     (("*Flycheck errors*" :regexp nil :position bottom :stick t)
+     ("*compilation*" :regexp nil :position bottom :noselect t :stick t :tail t)
      ("*s-" :regexp t :position bottom)
      ("*grunt" :regexp nil :position bottom :noselect t)
      ("*RE-Builder*" :height 2 :position bottom)
