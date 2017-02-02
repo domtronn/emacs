@@ -374,6 +374,8 @@
                 '("node_modules" "build" "tests" ".cache")))
   (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags" ".elc"))
   (setq projectile-tags-file-name ".tags")
+  (setq projectile-tags-command "/usr/local/Cellar/ctags/5.8_1/bin/ctags -Re -f \"%s\" %s")
+  (setq projectile-tags-backend 'etags-select)
 
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
