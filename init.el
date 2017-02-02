@@ -379,10 +379,6 @@
 
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
-
-  (defun projectile-find-file-non-fuzzy ()
-    (interactive)
-    (let ((ivy-re-builders-alist '((t . ivy--regex)))) (projectile-find-file)))
   (defun projectile-find-file-basename ()
     (interactive)
     (projectile-completing-read
@@ -396,9 +392,8 @@
                 (find-file (expand-file-name (cdr file) ,(projectile-project-root)))
                 (run-hooks 'projectile-find-file-hook))))
   :bind
-  ("M-o" . projectile-find-file-basename)
+  ("C-S-o" . projectile-find-file-basename)
   ("C-o" . projectile-find-file)
-  ("C-S-o" . projectile-find-file-non-fuzzy);
   ("C-c C-p" . projectile-ibuffer)
   ("C-c p o" . projectile-find-file-in-known-projects)
   ("C-c p a" . projectile-add-known-project)
@@ -457,22 +452,25 @@
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
+(use-package flx :ensure t :after ivy)
 (use-package ivy-hydra :ensure t :after ivy)
 (use-package ivy-rich :ensure t :after ivy
   :config (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
 (use-package ivy :ensure t :after avy
   :config
   (ivy-mode)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))
+  (setq ivy-re-builders-alist
+        '((projectile-find-file . ivy--regex-plus)
+          (t . ivy--regex-fuzzy))
         ivy-display-style 'plain)
-  (advice-add 'counsel-git-grep
-              :around '(lambda (f &rest args) (let ((ivy-re-builders-alist '((t . ivy--regex-plus)))) (apply f args))))
   (bind-keys :map ivy-minibuffer-map
-             ("C-d" . ivy-backward-delete-char)
+             ("s-k" . delete-minibuffer-contents)
              ("C-S-j" . ivy-immediate-done))
   :bind ("C-c C-r" . ivy-resume)
         ("C-;"     . swiper)
         ("C-x b"     . ivy-switch-buffer))
+
+(bind-keys :map minibuffer-local-map ("s-k" . delete-minibuffer-contents))
 
 (use-package isearch
   :bind ("H-s" . isearch-forward-symbol-at-point)
@@ -484,9 +482,7 @@
                    ("C-'" . avy-isearch)
                    ("C-l" . counsel-git-grep-from-isearch)))
 
-(use-package avy-zap :ensure t
-  :bind
-  ("H-x" . avy-zap-to-char))
+(use-package avy-zap :ensure t :bind ("H-x" . avy-zap-to-char))
 (use-package avy :ensure t
   :bind
   ("H-\\" . avy-goto-line)
