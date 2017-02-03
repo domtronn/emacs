@@ -35,6 +35,10 @@
  '(completion-ignored-extensions
    (quote
     (".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".svn-base")))
+ '(cua-global-mark-cursor-color "#2aa198")
+ '(cua-normal-cursor-color "#657b83")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
  '(cursor-type (quote (bar . 1)))
  '(custom-safe-themes
    (quote
@@ -56,6 +60,7 @@
  '(git-gutter-fr:side (quote left-fringe))
  '(global-rainbow-delimiters-mode t)
  '(helm-reuse-last-window-split-state t)
+ '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-current-line-globally t)
  '(highlight-symbol-colors
    (quote
@@ -78,6 +83,12 @@
        ("#9575CD" . 30)
        ("#494949" . 60)
        ("#424242" . 80)))))
+ '(hl-bg-colors
+   (quote
+    ("#DEB542" "#F2804F" "#FF6E64" "#F771AC" "#9EA0E5" "#69B7F0" "#69CABF" "#B4C342")))
+ '(hl-fg-colors
+   (quote
+    ("#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3")))
  '(hl-paren-colors
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
@@ -132,7 +143,7 @@
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2 t)
+ '(js-indent-level 2)
  '(js-injector-get-relative-func (quote js-injector--get-projectile-files-alist))
  '(js-injector-get-requirejs-func
    (quote
@@ -198,10 +209,13 @@
  '(magit-visit-ref-create t)
  '(make-backup-files nil)
  '(neo-smart-open t)
+ '(nrepl-message-colors
+   (quote
+    ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (copy-as-format js-format spaceline ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim benchmark-init avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
+    (window-purpose purpose resize-window window-resize winum copy-as-format js-format spaceline ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim benchmark-init avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
  '(package-user-dir
    (expand-file-name
     (format "%s/%s/elpa" common-load-dir common-package-dir)))
@@ -245,6 +259,7 @@
  '(shell-pop-term-shell "/bin/bash")
  '(shell-pop-window-position "bottom")
  '(shell-pop-window-size 40)
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
  '(smex-prompt-string "Why won't you just fucking ")
  '(sp-hybrid-kill-excessive-whitespace t)
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))
@@ -252,8 +267,11 @@
  '(tabbar-background-color "#353535")
  '(tags-add-tables nil)
  '(tags-revert-without-query t)
+ '(term-default-bg-color "#fdf6e3")
+ '(term-default-fg-color "#657b83")
  '(user-mail-address "dgc336@gmail.com")
  '(vc-annotate-background nil)
+ '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
    (quote
     ((20 . "#cc6666")
@@ -282,6 +300,9 @@
    "\\`\\(?:[\\/][\\/][^\\/]+[\\/]\\|/\\(?:net\\|biscuit\\|tvpjslib\\|node_modules\\|tags\\|filecache\\|afs\\|\\.\\.\\.\\)/\\)\\'|biscuit|tvpjslib|node_modules|.tags")
  '(vc-revert-show-diff nil)
  '(vc-svn-program "/usr/local/bin/svn")
+ '(weechat-color-list
+   (quote
+    (unspecified "#fdf6e3" "#eee8d5" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#657b83" "#839496")))
  '(when
       (or
        (not
@@ -292,6 +313,10 @@
          (aref ansi-term-color-vector 0)))))
  '(xkcd-cache-dir "~/.xkcd/")
  '(xkcd-cache-latest "~/.xkcd/latest")
+ '(xterm-color-names
+   ["#eee8d5" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#073642"])
+ '(xterm-color-names-bright
+   ["#fdf6e3" "#cb4b16" "#93a1a1" "#839496" "#657b83" "#6c71c4" "#586e75" "#002b36"])
  '(yas-fallback-behavior (quote call-other-command)))
 
 (custom-set-faces
@@ -299,7 +324,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight extra-light :height 130 :width normal :foundry "nil" :family "Apercu"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight extra-light :height 130 :width normal :foundry "nil" :family "Droid Sans Mono"))))
  '(ac-candidate-face ((t (:inherit (company-scrollbar-bg company-scrollbar-fg)))))
  '(ac-selection-face ((t (:inherit company-tooltip-common-selection))))
  '(ac-yasnippet-candidate-face ((t (:inherit company-scrollbar-bg :foreground "#e74c3c"))))

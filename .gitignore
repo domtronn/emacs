@@ -43,6 +43,7 @@ elisp/magit-gh-issues-emoji
 projectile.cache
 image-dired
 recentf
+layouts
 
 # Authentication files
 .*-auth.el

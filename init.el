@@ -68,7 +68,7 @@
 (use-package rainbow-delimiters :ensure t
   :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(use-package paren :ensure t)
+(use-package paren :ensure t :disabled t)
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
@@ -94,15 +94,10 @@
 (use-package ibuf-ext :after ibuffer
   :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
 (use-package ibuffer-vc :ensure t :after ibuffer
-  :config
-  (bind-keys :map ibuffer-mode-map
-             ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
-(use-package ibuffer :ensure t
-  :defer t
+  :config (bind-keys :map ibuffer-mode-map ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
+(use-package ibuffer :ensure t :defer t
   :bind ("s-p" . ibuffer)
-  :config
-  (bind-keys :map ibuffer-mode-map
-             ("M-u" . ibuffer-unmark-all)))
+  :config (bind-keys :map ibuffer-mode-map ("M-u" . ibuffer-unmark-all)))
 
 (use-package smart-forward :ensure t
   :bind ("s-." . forward-sexp)
@@ -114,21 +109,17 @@
   :bind ("RET" . smart-newline))
 
 (use-package smartparens-config :after smartparens)
-(use-package smartparens :ensure t
-  :demand
+(use-package smartparens :ensure t :demand :defer 5
   :config
   (smartparens-global-mode)
   (sp-local-pair
-   '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode slack-mode text-mode)
+   '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode text-mode)
            "'" nil :actions nil)
   (sp-with-modes sp-lisp-modes (sp-local-pair "(" nil :bind "s-("))
   :bind ("C-)" . sp-slurp-hybrid-sexp)
         ("<s-backspace>" . sp-splice-sexp)
         ("s-f" . sp-slurp-hybrid-sexp)
         ("s-b" . sp-forward-barf-sexp))
-
-(use-package operate-on-number :ensure t
-  :bind ("s-@" . operate-on-number-at-point))
 
 (use-package popup :ensure t :defer t)
 (use-package popwin :ensure t
@@ -166,20 +157,15 @@
           "~/Dropbox/Documents/Org/tasks.org"
           "~/Dropbox/Documents/Org/birthdays.org")
         org-ellipsis "⤵"
-        org-todo-keywords
-        '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
+        org-todo-keywords '((sequence "TODO" "IN PROGRESS" "DONE" "WAITING"))
         org-todo-keyword-faces
-        '(("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
-          ("DONE"        . (:foreground "#0fbf5c" :weight bold
-                                        :box (:line-width 1 :color "#3dc748") ))
+        '(("DONE"        . (:foreground "#0fbf5c" :weight bold :box (:line-width 1 :color "#3dc748") ))
+          ("IN PROGRESS" . (:background "#f1c40f" :foreground "#2c3e50" :weight bold))
           ("WAITING"     . (:background "#e74c3c" :foreground "#2c3e50" :weight bold)))
         org-capture-templates
-        `(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks")
-           "* TODO %?\n %t")
-          ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org")
-           "** %^{Heading}  :LOG:\n%?")
-          ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS")
-           "* %^{Title} %^g\n  SCHEDULED: %(cfw:capture-schedule-day)\n  %?\n"))
+        `(("t" "Todo" entry (file+headline "~/Dropbox/Documents/Org/tasks.org" "Tasks") "* TODO %?\n %t")
+          ("j" "Journal" entry (file+datetree "~/Dropbox/Documents/Org/journal.org") "** %^{Heading}  :LOG:\n%?")
+          ("m" "Meeting" entry (file+headline "~/Dropbox/Documents/Org/meetings.org" "MEETINGS") "* %^{Title} %^g\n  SCHEDULED: %(cfw:capture-schedule-day)\n  %?\n"))
         org-agenda-todo-ignore-scheduled 'past
         org-scheduled-past-days 0
         org-deadline-warning-days 7
@@ -209,16 +195,15 @@
              ("s-b" . org-previous-link))
   (bind-keys :map org-agenda-mode-map
              ("I" . org-start-ticket))
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
+  (org-babel-do-load-languages 'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
   (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
   (run-with-idle-timer 300 t 'wlf:agenda)
-  (add-hook 'org-finalize-agenda-hook
-            '(lambda () (org-color-tag "Birthdays:" "#27ae60")
-                   (org-color-tag "Holidays:" "#3498db")
-                   (org-color-tag "Reminders:" "#8e44ad"))))
+  (add-hook 'org-finalize-agenda-hook '(lambda ()
+                                         (org-color-tag "Birthdays:" "#27ae60")
+                                         (org-color-tag "Holidays:" "#3498db")
+                                         (org-color-tag "Reminders:" "#8e44ad"))))
 
 (use-package calfw :ensure t :after org)
 (use-package calfw-org
@@ -227,8 +212,7 @@
   :config
   (setq cfw:org-agenda-schedule-args '(:deadline :scheduled :sexp))
   (setq cfw:org-overwrite-default-keybinding t)
-  (setq cfw:org-capture-template
-        '("m" "calfw2org" entry (file nil)  "* %?\n %(cfw:org-capture-day)"))
+  (setq cfw:org-capture-template '("m" "calfw2org" entry (file nil)  "* %?\n %(cfw:org-capture-day)"))
   (setq calendar-week-start-day 1)
   (bind-keys :map cfw:calendar-mode-map
              ("g" . cfw:refresh-calendar-buffer)
@@ -239,7 +223,6 @@
 
 (use-package undo-tree :ensure t
   :config (global-undo-tree-mode)
-          (setq undo-tree-visualizer-diff t)
   :bind ("C-c C-u" . undo-tree-visualize)
         ("s-z" . undo-tree-undo)
         ("s-Z" . undo-tree-redo)
@@ -253,23 +236,25 @@
 (use-package github-browse-file :ensure t :commands (github-browse-file))
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
-(use-package git-gutter-fringe :ensure t
+(use-package git-gutter-fringe :ensure t :demand :defer 5
   :if window-system
   :config (global-git-gutter-mode)
   :bind ("C-x v p" . git-gutter:previous-hunk)
         ("C-x v n" . git-gutter:next-hunk))
 
-(use-package image+ :ensure t :after 'image-mode)
+(use-package image+ :ensure t :after 'image-mode
+  :config (bind-keys :map image-mode-map
+             ("0" . imagex-sticky-restore-original)
+             ("+" . imagex-sticky-maximize)
+             ("=" . imagex-sticky-zoom-in)
+             ("-" . imagex-sticky-zoom-out)))
+
 (use-package dired+ :ensure t
   :after 'dired
   :config
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
   (add-hook 'dired-mode-hook '(lambda () (local-set-key (kbd "C-p") 'previous-line)))
-  (defun dired-find-only-file ()
-     (interactive)
-     (when (file-directory-p (dired-get-file-for-visit))
-       (dired-find-file)))
   (bind-keys :map dired-mode-map
              ("M-r" . wdired-change-to-wdired-mode)
              ("q" . kill-all-dired-buffers)))
@@ -286,12 +271,6 @@
                      ("//" . dired-filter-group-mode)
                      ("C-o" . project-find-file)))
 
-(use-package dired-narrow :ensure t
-  :after 'diredb
-  :config (bind-keys :map dired-mode-map
-                     ("/f" . dired-narrow)
-                     ("/t" . dired-narrow-fuzzy)))
-
 (use-package dired-quick-sort :ensure t
   :after 'dired
   :config
@@ -303,10 +282,6 @@
         ("<M-s-up>" . windmove-up)
         ("<M-s-down>" . windmove-down))
 
-(use-package zoom-window :ensure t
-  :config (setq zoom-window-mode-line-color "#d35400")
-  :bind ("C-x C-x" . zoom-window-zoom))
-
 (use-package yaml-mode :ensure t :mode ("\\.yml$" . yaml-mode))
 (use-package dockerfile-mode :ensure t
   :mode ("^Dockerfile$" . dockerfile-mode)
@@ -317,13 +292,6 @@
 (use-package nameless :ensure t
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c C-c" . nameless-insert-name)))
-
-(use-package hydra-window-layout
-  :disabled t
-  :load-path "elisp"
-  :commands (wlf:agenda)
-  :init (use-package window-layout :ensure t)
-  :bind ("C-c w" . hydra-window-layout/body))
 
 (use-package flycheck :ensure t
   :config (global-flycheck-mode)
@@ -376,23 +344,9 @@
   (setq projectile-tags-file-name ".tags")
   (setq projectile-tags-command "/usr/local/Cellar/ctags/5.8_1/bin/ctags -Re -f \"%s\" %s")
   (setq projectile-tags-backend 'etags-select)
-
   (add-hook 'projectile-after-switch-project-hook
             '(lambda () (setq tags-table-list `(,(concat (projectile-project-root) projectile-tags-file-name)))))
-  (defun projectile-find-file-basename ()
-    (interactive)
-    (projectile-completing-read
-     "Find file: "
-     (--map (cons (format "%s%s%s"
-                          (file-name-nondirectory it)
-                          (make-string (- 35 (min 30 (length (file-name-nondirectory it)))) ? )
-                          (or (file-name-directory it) ".")) it)
-            (projectile-current-project-files))
-     :action `(lambda (file)
-                (find-file (expand-file-name (cdr file) ,(projectile-project-root)))
-                (run-hooks 'projectile-find-file-hook))))
   :bind
-  ("C-S-o" . projectile-find-file-basename)
   ("C-o" . projectile-find-file)
   ("C-c C-p" . projectile-ibuffer)
   ("C-c p o" . projectile-find-file-in-known-projects)
@@ -532,6 +486,13 @@
   (setq js2-pretty-multiline-declarations 'dynamic)
 
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
+  
+  (defun js2-standard-fix ()
+    (interactive)
+    (when (buffer-file-name)
+      (shell-command
+       (format (if (flycheck-eslint-config-exists-p)
+                   "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
 
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
@@ -584,20 +545,6 @@
                   (set (make-local-variable 'compile-command)
                        (let ((file (file-name-sans-extension buffer-file-name)))
                          (format "g++ %s -o %s" buffer-file-name file))))))
-
-(defun js2-standard-fix ()
-  (interactive)
-  (when (buffer-file-name)
-    (shell-command
-     (format (if (flycheck-eslint-config-exists-p)
-                 "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
-
-;; (use-package scss-mode :ensure t :mode ("\\.scss" . sass-mode))
-;; (add-hook 'scss-mode-hook
-;;           (lambda () (when (buffer-file-name)
-;;                   (set (make-local-variable 'compile-command)
-;;                        (let ((file (file-name-sans-extension buffer-file-name)))
-;;                          (format "sass '%s':%s.css" buffer-file-name file))))))
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
@@ -688,7 +635,8 @@
 (use-package neotree :ensure t
   :config
   (setq neo-show-updir-line nil
-        neo-window-width 45)
+        neo-window-width 30
+        neo-window-fixed-size nil)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
 
@@ -719,6 +667,7 @@
   :bind ("C-x C-c" . compile))
 
 (use-package ansi-color :ensure t
+  :after (ansi-term compile)
   :config
   (defun colorize-compilation-buffer ()
     (toggle-read-only)
@@ -753,14 +702,6 @@
              ("M-;" . semi-colon-end)
              ("C-j" . join-line)
              ("s-=" . web-mode-fold-or-unfold)
-             ("M-s M-m" . web-mode-tag-match)
-             ("M-s M-e" . web-mode-tag-end)
-             ("M-s M-a" . web-mode-tag-beginning)
-             ("M-s M-n" . web-mode-tag-next)
-             ("M-s M-p" . web-mode-tag-previous)
-             ("M-a M-n" . web-mode-attribute-next)
-             ("M-a M-p" . web-mode-attribute-previous)
-             ("s-=" . hs-toggle-hiding)
              ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
@@ -818,18 +759,12 @@
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
-
 (use-package magit :ensure t
   :defer t
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
                      ("C-c c" . magit-whitespace-cleanup)
                      ("C-c e" . magit-vc-ediff)))
-
-(use-package atomic-chrome :ensure t :defer t
-  :config
-  (atomic-chrome-start-server)
-  (setq atomic-chrome-default-major-mode 'rjsx-mode))
 
 (use-package yahoo-weather :ensure t
   :defer t
@@ -847,10 +782,7 @@
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
-
-(use-package fancy-battery :after spaceline :defer 10
-  :config (fancy-battery-mode))
-
+(use-package fancy-battery :after spaceline :defer 10 :config (fancy-battery-mode))
 (use-package powerline
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
@@ -863,18 +795,31 @@
 (use-package spaceline :after powerline :ensure t
   :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
 
-(use-package winum :disabled t :ensure t)
-(use-package window-numbering :ensure t
+(use-package winum :ensure t
   :init
   (add-hook
-   'window-numbering-mode-hook
-   '(lambda () (let ((map (make-sparse-keymap)))
-            (dotimes (n 10)
-              (define-key map (kbd (format "s-%s" n)) `(,(intern (format "select-window-%s" n)))))
-            (setq window-numbering-keymap map))))
+   'winum-mode-hook
+   '(lambda ()
+      (setq winum-keymap
+            (let ((map (make-sparse-keymap)))
+              (dotimes (n 10)
+                (define-key map (kbd (format "s-%s" n)) `(,(intern (format "winum-select-window-%s" n)))))
+              map))))
   :config
-  (window-numbering-mode)
-  (window-numbering-clear-mode-line))
+  (winum-mode)
+  (winum--clear-mode-line))
+
+(use-package resize-window :ensure t :bind ("C-x =" . resize-window))
+(use-package window-purpose :ensure t
+  :bind ("C-x -" . purpose-load-window-layout)
+        ("C-x _" . purpose-save-window-layout)
+  :config
+  (add-to-list 'purpose-user-mode-purposes '(js2-mode . js-editor))
+  (add-to-list 'purpose-user-name-purposes '("*compilation*" . js-compilation))
+  (add-to-list 'purpose-user-name-purposes '("*ansi-term-1*" . js-temrinal))
+  (add-to-list 'purpose-user-name-purposes '("*node-repl*" . js-repl))
+  (add-to-list 'purpose-user-name-purposes '(" *Neotree*" . js-filetree))
+  (purpose-compile-user-configuration))
 
 ;; change vc-diff to use vc-ediff
 (setq ediff-split-window-function (quote split-window-horizontally))
@@ -893,12 +838,14 @@
 (setq make-backup-files nil)                ; don't make backup files
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
+(setq truncate-partial-width-windows t)     ; Turn truncation off on split windows
 ;; Disable audible and visible bell in favor of flashing the mode line instead
 (defun mode-line-visible-bell () "A friendlier vaisual bell effect."
   (invert-face 'powerline-active1) (run-with-timer 0.1 nil 'invert-face 'powerline-active1)
   (invert-face 'mode-line) (run-with-timer 0.1 nil 'invert-face 'mode-line))
 (setq visible-bell nil)
 (setq ring-bell-function 'mode-line-visible-bell)
+
 
 ;; Set Path
 (setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
@@ -958,10 +905,10 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(load-theme 'creamsody t)
+
 (when window-system
   (remove-mode-line-box)
-  (server-start))
+  (load-theme 'spacemacs-light))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name				: anonymous function
-# expand-env	: ((prepend-space nil)) 
-# --
-`(unless (json-comma?) ",")`"$1": "$2"$0`(when (json-comma?) ",")`
