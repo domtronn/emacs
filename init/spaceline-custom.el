@@ -23,7 +23,6 @@
 ;;; Code:
 
 (require 'spaceline)
-(require 'spaceline-config)
 (require 'all-the-icons)
 
 ;;---------------;;
@@ -31,7 +30,7 @@
 ;;---------------;;
 
 (spaceline-define-segment
-    ati-modified "An `all-the-icons' modified segment"
+    ati-modified "An `all-the-icons' modified segment - Displays icons to represent buffer state"
     (let* ((config-alist
             '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :height 1.2 :v-adjust -0.0)
               ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :height 1.2 :v-adjust -0.0)
@@ -43,9 +42,7 @@
 
 (spaceline-define-segment
     ati-window-numbering "An `all-the-icons' window numbering segment"
-    (propertize (format "%c" (+ 9311 (winum-get-number)))
-                'face `(:height 1.3 :inherit)
-                'display '(raise -0.0))
+    (propertize (format "%c" (+ 9311 (winum-get-number))) 'face `(:height 1.5 :inherit))
     :tight t :when (fboundp 'winum-mode))
 
 (spaceline-define-segment
@@ -108,7 +105,8 @@
 
 (spaceline-define-segment
     ati-position "An `all-the-icons' segment for the Row and Column of the current point"
-    (propertize (format-mode-line "%l:%c") 'face `(:height 0.9 :inherit) 'display '(raise 0.1)))
+    (propertize (format-mode-line "%l:%c") 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
+    :when active)
 
 (spaceline-define-segment
     ati-region-info "An `all-the-icons' segment for the currently marked region"
@@ -146,22 +144,26 @@
 (spaceline-define-segment
     ati-git-stats "An `all-the-icons' segment for additions vs deletions in current file"
     (pcase-let ((`(,added . ,deleted) (git-gutter:statistic)))
-      (concat
-       (when (> added 0)
-         (concat
-          (propertize
-           (format "%s" (all-the-icons-octicon "diff-added" :v-adjust 0.1 :height 0.8))
-           'face `(:foreground ,(face-foreground 'success) :family ,(all-the-icons-octicon-family)))
-          (propertize " " 'face `(:height 0.4))
-          (propertize (format "%s" added) 'face `(:foreground ,(face-foreground 'success)))))
-       (when (and (> deleted 0) (> added 0)) " ")
-       (when (> deleted 0)
-         (concat
-          (propertize
-           (format "%s" (all-the-icons-octicon "diff-removed" :v-adjust 0.1 :height 0.8))
-           'face `(:foreground ,(face-foreground 'spaceline-flycheck-error) :family ,(all-the-icons-octicon-family)))
-          (propertize " " 'face `(:height 0.4))
-          (propertize (format "%s" deleted) 'face `(:foreground ,(face-foreground 'spaceline-flycheck-error)))))))
+      (propertize
+       (concat
+        (when (> added 0)
+          (concat
+           (propertize
+            (format "%s" (all-the-icons-octicon "diff-added" :v-adjust 0.1 :height 0.8))
+            'face `(:foreground ,(face-foreground 'success) :family ,(all-the-icons-octicon-family)))
+           (propertize " " 'face `(:height 0.4))
+           (propertize (format "%s" added) 'face `(:foreground ,(face-foreground 'success)))))
+        (when (and (> deleted 0) (> added 0)) " ")
+        (when (> deleted 0)
+          (concat
+           (propertize
+            (format "%s" (all-the-icons-octicon "diff-removed" :v-adjust 0.1 :height 0.8))
+            'face `(:foreground ,(face-foreground 'error) :family ,(all-the-icons-octicon-family)))
+           (propertize " " 'face `(:height 0.4))
+           (propertize (format "%s" deleted) 'face `(:foreground ,(face-foreground 'error))))))
+       'help-echo "Diff Current File"
+       'mouse-face `(:box 1 :foreground ,(face-foreground 'default))
+       'local-map (make-mode-line-mouse-map 'mouse-1 'vc-ediff)))
     :when (and active
                (fboundp 'git-gutter:statistic)
                (or (> (car (git-gutter:statistic)) 0)
@@ -191,15 +193,15 @@
               (`interrupted "⛔ Interrupted")
               (`suspicious  "")))
            (f (cond
-               ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-warning :foreground)))
-               ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-error :foreground)))
-               ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-attribute 'font-lock-comment-face :foreground)))
+               ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-foreground 'warning :foreground)))
+               ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-foreground 'error)))
+               ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-foreground 'font-lock-comment-face)))
                (t '(:height 0.9 :inherit)))))
       (propertize (format "%s" text)
                   'face f
                   'help-echo "Show Flycheck Errors"
                   'display '(raise 0.1)
-                  'mouse-face '(:box 1)
+                  'mouse-face `(:box 1 :foreground ,(face-foreground 'default))
                   'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors)))))
     :when (and active (boundp 'flycheck-last-status-change)) :tight t)
 
@@ -255,17 +257,17 @@
            (temp (spaceline--get-temp))
            (help (concat "Weather is '" weather "' and the temperature is " temp))
            (icon (all-the-icons-icon-for-weather (downcase weather))))
-      (concat
-       (if (> (length icon) 1)
-           (propertize icon 'help-echo help 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
+      (when weather
+        (concat
+         (if (> (length icon) 1)
+             (propertize icon 'help-echo help 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
            (propertize icon
-                    'help-echo help
-                    'face `(:height 0.9 :family ,(all-the-icons-wicon-family) :inherit)
-                    'display '(raise 0.0)))
-       (propertize " " 'help-echo help)
-       (propertize (spaceline--get-temp) 'face '(:height 0.9 :inherit) 'help-echo help)))
-    :when (and active (boundp 'yahoo-weather-info) yahoo-weather-mode)
-    :enabled nil
+                       'help-echo help
+                       'face `(:height 0.9 :family ,(all-the-icons-wicon-family) :inherit)
+                       'display '(raise 0.0)))
+         (propertize " " 'help-echo help)
+         (propertize (spaceline--get-temp) 'face '(:height 0.9 :inherit) 'help-echo help))))
+    :when (and active (boundp 'yahoo-weather-info) yahoo-weather-mode (yahoo-weather--extract-from-json-object yahoo-weather-info '(query results)))
     :tight t)
 
 (spaceline-define-segment
@@ -281,8 +283,7 @@
                    'face '(:height 0.9 :inherit) 'display '(raise 0.1) 'help-echo help)
        (propertize (format "%s" (all-the-icons-wicon "sunset" :v-adjust 0.1))
                    'face `(:height 0.8 :family ,(all-the-icons-wicon-family) :inherit) 'help-echo help)))
-    :when (and active (boundp 'yahoo-weather-info) yahoo-weather-mode)
-    :enabled nil
+    :when (and active (boundp 'yahoo-weather-info) yahoo-weather-mode (yahoo-weather--extract-from-json-object yahoo-weather-info '(query results)))
     :tight t )
 
 (spaceline-define-segment
@@ -297,8 +298,13 @@
     :tight t)
 
 (spaceline-define-segment
+    ati-buffer-position "Display the buffer position"
+    (if (string-match "\%" (format-mode-line "%p")) (format-mode-line "%p%%") (format-mode-line "%p")))
+
+(spaceline-define-segment
     ati-hud "Display position through buffer as an XPM image"
-    (let ((color1 (face-foreground default-face))
+    (let ((color1 (or (face-foreground default-face)
+                      (face-foreground other-face)))
           (height (or powerline-height (frame-char-height)))
           pmax
           pmin
@@ -342,17 +348,17 @@
       (let-alist icon-alist
         (concat
          (if .inherit
-             (let ((fg (face-attribute .inherit :foreground)))
+             (let ((fg (face-foreground .inherit)))
                (propertize (funcall icon-f (format "battery-%s" .icon))
-                           'face `(:height ,(or .height 1.0) :family ,family :foreground ,fg)
+                           'face `(:height ,(or .height 1.0) :family ,family :foreground ,fg :background ,(face-background default-face))
                            'display `(raise ,(or .raise 0.0))))
              (propertize (funcall icon-f (format "battery-%s" .icon))
                          'face `(:family ,family :inherit)
                          'display '(raise 0.0)))
          " "
          (if .inherit
-             (let ((fg (face-attribute .inherit :foreground)))
-               (propertize (if charging? (format "%s%%%%" percentage) time) 'face `(:height 0.9 :foreground ,fg)))
+             (let ((fg (face-foreground .inherit)))
+               (propertize (if charging? (format "%s%%%%" percentage) time) 'face `(:height 0.9 :foreground ,fg :background ,(face-background default-face))))
            (propertize time 'face '(:height 0.9 :inherit)))
          )))
     :global-override fancy-battery-mode-line :when (and active (fboundp 'fancy-battery-mode) fancy-battery-mode))
@@ -374,30 +380,29 @@ the directions of the separator."
      (spaceline-define-segment
          ,(intern (format "ati-%s-separator" name))
        (let ((dir (if spaceline-invert-direction (spaceline--direction ,dir) ,dir))
-             (sep (spaceline--separator-type)))
+             (sep (spaceline--separator-type))
+             (sf (if (fboundp ,start-face) (funcall ,start-face) ,start-face))  ;; Allow for functions that evaluate to
+             (ef (if (fboundp ,end-face) (funcall ,end-face) ,end-face)))       ;; faces to be used
          (propertize (all-the-icons-alltheicon (format "%s-%s" sep dir) :v-adjust 0.0)
                      'face `(:height 1.5
-                             :family
-                             ,(all-the-icons-alltheicon-family)
-                             :foreground
-                             ,(face-attribute ,start-face :background)
-                             :background
-                             ,(face-attribute ,end-face :background))))
+                             :family ,(all-the-icons-alltheicon-family)
+                             :foreground ,(face-background sf)
+                             :background ,(face-background ef))))
        :skip-alternate t :tight t :when (if ,invert (not active) active))))
 
-(defvar spaceline-invert-direction t)
+(defvar spaceline-invert-direction nil)
 (defvar spaceline-separator-type "slant")
 
 (define-separator "left-inactive" "right" 'powerline-inactive1 'powerline-inactive2 t)
 (define-separator "right-inactive" "left" 'powerline-inactive2 'mode-line-inactive t)
 
-(define-separator "left-1" "right" 'spaceline-highlight-face 'powerline-active1)
-(define-separator "left-2" "right" 'powerline-active1 'spaceline-highlight-face)
-(define-separator "left-3" "right" 'spaceline-highlight-face 'mode-line)
+(define-separator "left-1" "right" spaceline-highlight-face-func 'powerline-active1)
+(define-separator "left-2" "right" 'powerline-active1 spaceline-highlight-face-func)
+(define-separator "left-3" "right" spaceline-highlight-face-func 'mode-line)
 (define-separator "left-4" "right" 'mode-line 'powerline-active2)
 
-(define-separator "right-1" "right" 'powerline-active2 'powerline-active1)
-(define-separator "right-2" "left" 'powerline-active1 'mode-line)
+(define-separator "right-1" "left" 'powerline-active2 'mode-line)
+(define-separator "right-2" "left" 'mode-line 'powerline-active1)
 
 (spaceline-compile
  "ati"
@@ -407,18 +412,17 @@ the directions of the separator."
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
-   ((ati-process  ati-position ati-region-info) :face highlight-face :separator " | ")
+   ((ati-process ati-position ati-region-info) :face highlight-face :separator " | ")
    ati-left-3-separator
    ati-left-inactive-separator
    ((ati-vc-icon ati-git-stats ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator " · " :face other-face)
    ati-left-4-separator)
 
  '(ati-right-1-separator
-   ((((ati-hud buffer-position) :separator " ") ati-suntime ati-weather) :separator " · " :face default-face)
+   ((((ati-hud ati-buffer-position) :separator " " :when active) ati-suntime ati-weather) :separator " · " :face default-face)
    ati-right-2-separator
    ati-right-inactive-separator
-   ((ati-battery-status ati-time) :separator " | " :face default-face)
-   ""))
+   ((ati-battery-status ati-time "") :separator " | " :face default-face)))
 
 (provide 'spaceline-custom)
 ;;; spaceline-custom.el ends here

@@ -58,7 +58,6 @@
  '(flycheck-highlighting-mode (quote lines))
  '(flycheck-idle-change-delay 2)
  '(git-gutter-fr:side (quote left-fringe))
- '(global-company-mode t)
  '(global-rainbow-delimiters-mode t)
  '(helm-reuse-last-window-split-state t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
