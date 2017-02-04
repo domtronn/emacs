@@ -45,8 +45,8 @@
      '(markdown-header-face-3 ((t (:inherit font-lock-function-name-face :weight bold :height 1.2)))))))
 
 (advice-add 'load-theme :before 'disable-themes)
+(advice-add 'load-theme :after 'remove-mode-line-box)
 (advice-add 'counsel-load-theme :after 'markdown-style-themes)
-(advice-add 'counsel-load-theme :after 'remove-mode-line-box)
 
 (advice-add 'ansi-term :after '(lambda (&rest r) (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
