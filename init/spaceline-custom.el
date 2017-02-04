@@ -121,10 +121,6 @@
          (propertize (format "(%s, %s)" words chars)
                      'face `(:height 0.9 :inherit))))))
 
-(spaceline-define-segment
-    ati-color-control "An `all-the-icons' segment for the currently marked region" "")
-
-
 ;;----------------;;
 ;; Third Segement ;;
 ;;----------------;;
@@ -147,6 +143,29 @@
      (propertize (format " %s" (all-the-icons-faicon "cloud")) 'face `(:height 1.2) 'display '(raise -0.1))
      (propertize (format " · %s" revision) 'face `(:height 0.9)))))
 
+(spaceline-define-segment
+    ati-git-stats "An `all-the-icons' segment for additions vs deletions in current file"
+    (pcase-let ((`(,added . ,deleted) (git-gutter:statistic)))
+      (concat
+       (when (> added 0)
+         (concat
+          (propertize
+           (format "%s" (all-the-icons-octicon "diff-added" :v-adjust 0.1 :height 0.8))
+           'face `(:foreground ,(face-foreground 'success) :family ,(all-the-icons-octicon-family)))
+          (propertize " " 'face `(:height 0.4))
+          (propertize (format "%s" added) 'face `(:foreground ,(face-foreground 'success)))))
+       (when (and (> deleted 0) (> added 0)) " ")
+       (when (> deleted 0)
+         (concat
+          (propertize
+           (format "%s" (all-the-icons-octicon "diff-removed" :v-adjust 0.1 :height 0.8))
+           'face `(:foreground ,(face-foreground 'spaceline-flycheck-error) :family ,(all-the-icons-octicon-family)))
+          (propertize " " 'face `(:height 0.4))
+          (propertize (format "%s" deleted) 'face `(:foreground ,(face-foreground 'spaceline-flycheck-error)))))))
+    :when (and active
+               (fboundp 'git-gutter:statistic)
+               (or (> (car (git-gutter:statistic)) 0)
+                   (> (cdr (git-gutter:statistic)) 0))))
 
 (spaceline-define-segment
     ati-vc-icon "An `all-the-icons' segment for the current Version Control icon"
@@ -290,9 +309,9 @@
         (setq pmax (point-max))
         (setq pmin (point-min)))
       (propertize " "
-                  'display (pl/percent-xpm height pmax pmin we ws (* (frame-char-width) 3) color1 nil)
+                  'display (pl/percent-xpm height pmax pmin we ws (* (frame-char-width) 1) color1 nil)
                   'face default-face))
-    :tight t :when active :enabled t)
+    :tight t :when (and active (not (equal "All" (format-mode-line "%p")))) :enabled t)
 
 (spaceline-define-segment
     ati-height-modifier "Modifies the height of inactive buffers"
@@ -377,7 +396,7 @@ the directions of the separator."
 (define-separator "left-3" "right" 'spaceline-highlight-face 'mode-line)
 (define-separator "left-4" "right" 'mode-line 'powerline-active2)
 
-(define-separator "right-1" "right" 'powerline-active1 'powerline-active2)
+(define-separator "right-1" "right" 'powerline-active2 'powerline-active1)
 (define-separator "right-2" "left" 'powerline-active1 'mode-line)
 
 (spaceline-compile
@@ -391,7 +410,7 @@ the directions of the separator."
    ((ati-process  ati-position ati-region-info) :face highlight-face :separator " | ")
    ati-left-3-separator
    ati-left-inactive-separator
-   ((ati-vc-icon ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator " · " :face other-face)
+   ((ati-vc-icon ati-git-stats ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator " · " :face other-face)
    ati-left-4-separator)
 
  '(ati-right-1-separator
