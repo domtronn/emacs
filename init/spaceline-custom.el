@@ -43,10 +43,10 @@
 
 (spaceline-define-segment
     ati-window-numbering "An `all-the-icons' window numbering segment"
-    (propertize (format "%c" (+ 9311 (window-numbering-get-number)))
+    (propertize (format "%c" (+ 9311 (winum-get-number)))
                 'face `(:height 1.3 :inherit)
                 'display '(raise -0.0))
-    :tight t :when (fboundp 'window-numbering-mode))
+    :tight t :when (fboundp 'winum-mode))
 
 (spaceline-define-segment
     ati-projectile "An `all-the-icons' segment for current `projectile' project"
@@ -137,8 +137,8 @@
      (propertize " · ")
      (propertize (format "%s" (all-the-icons-octicon "git-branch"))
                  'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
-                 'display '(raise 0.2))
-     (propertize (format " %s" branch) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))))
+                 'display '(raise 0.1))
+     (propertize (format " %s" branch) 'face `(:height 0.9 :inherit) 'display '(raise 0.1)))))
 
 (defun spaceline---svn-vc ()
   "Function to return the Spaceline formatted SVN Version Control text."
@@ -158,32 +158,44 @@
 
 (spaceline-define-segment
     ati-flycheck-status "An `all-the-icons' representaiton of `flycheck-status'"
-    (when (fboundp 'flycheck-last-status-change)
-      (let* ((text
-             (pcase flycheck-last-status-change
-               (`finished (if flycheck-current-errors
-                              (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
-                                             (+ (or .warning 0) (or .error 0)))))
-                                (format "✖ %s Issue%s" count (if (eq 1 count) "" "s")))
-                            "✔ No Issues"))
-               (`running     "⟲ Running")
-               (`no-checker  "⚠ No Checker")
-               (`not-checked "✖ Disabled")
-               (`errored     "⚠ Error")
-               (`interrupted "⛔ Interrupted")
-               (`suspicious  "")))
-            (f (cond
-                ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-warning :foreground)))
-                ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-error :foreground)))
-                ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-attribute 'font-lock-comment-face :foreground)))
-                (t '(:height 0.9 :inherit)))))
-       (propertize (format "%s" text)
-                   'face f
-                   'help-echo "Show Flycheck Errors"
-                   'display '(raise 0.2)
-                   'mouse-face '(:box 1)
-                   'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))
-    :when active :tight t )
+    (let* ((text
+            (pcase flycheck-last-status-change
+              (`finished (if flycheck-current-errors
+                             (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
+                                            (+ (or .warning 0) (or .error 0)))))
+                               (format "✖ %s Issue%s" count (if (eq 1 count) "" "s")))
+                           "✔ No Issues"))
+              (`running     "⟲ Running")
+              (`no-checker  "⚠ No Checker")
+              (`not-checked "✖ Disabled")
+              (`errored     "⚠ Error")
+              (`interrupted "⛔ Interrupted")
+              (`suspicious  "")))
+           (f (cond
+               ((string-match "⚠" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-warning :foreground)))
+               ((string-match "✖ [0-9]" text) `(:height 0.9 :foreground ,(face-attribute 'spaceline-flycheck-error :foreground)))
+               ((string-match "✖ Disabled" text) `(:height 0.9 :foreground ,(face-attribute 'font-lock-comment-face :foreground)))
+               (t '(:height 0.9 :inherit)))))
+      (propertize (format "%s" text)
+                  'face f
+                  'help-echo "Show Flycheck Errors"
+                  'display '(raise 0.1)
+                  'mouse-face '(:box 1)
+                  'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors)))))
+    :when (and active (boundp 'flycheck-last-status-change)) :tight t)
+
+(spaceline-define-segment
+    ati-flycheck-info "An `all-the-icons' representaiton of `flycheck-status' info messages"
+    (let-alist flycheck-current-errors
+      (when .info
+        (let ((text (format "%s%s" (all-the-icons-faicon "info") .info)))
+          (propertize (format "%s" text)
+                      'face f
+                      'help-echo "Show Flycheck Errors"
+                      'display '(raise 0.2)
+                      'mouse-face '(:box 1)
+                      'local-map (make-mode-line-mouse-map 'mouse-1 (lambda () (interactive) (flycheck-list-errors)))))))
+    :when (and active (boundp 'flycheck-last-status-change) flycheck-current-errors) :tight t)
 
 (defvar spaceline--upgrades nil)
 (defun spaceline--count-upgrades ()
@@ -203,7 +215,7 @@
         (propertize (format "%s" (all-the-icons-octicon "package"))
                     'face `(:family ,(all-the-icons-octicon-family) :height 1.1 :inherit)
                     'display '(raise 0.1))
-        (propertize (format " %d updates " num) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))
+        (propertize (format " %d updates " num) 'face `(:height 0.9 :inherit) 'display '(raise 0.1)))
        'help-echo "Open Packages Menu"
        'mouse-face '(:box 1)
        'local-map (make-mode-line-mouse-map
@@ -264,6 +276,23 @@
                    'face `(:height 0.8 :family ,(all-the-icons-wicon-family) :inherit)
                    'display '(raise 0.1))))
     :tight t)
+
+(spaceline-define-segment
+    ati-hud "Display position through buffer as an XPM image"
+    (let ((color1 (face-foreground default-face))
+          (height (or powerline-height (frame-char-height)))
+          pmax
+          pmin
+          (ws (window-start))
+          (we (window-end)))
+      (save-restriction
+        (widen)
+        (setq pmax (point-max))
+        (setq pmin (point-min)))
+      (propertize " "
+                  'display (pl/percent-xpm height pmax pmin we ws (* (frame-char-width) 3) color1 nil)
+                  'face default-face))
+    :tight t :when active :enabled t)
 
 (spaceline-define-segment
     ati-height-modifier "Modifies the height of inactive buffers"
@@ -348,8 +377,8 @@ the directions of the separator."
 (define-separator "left-3" "right" 'spaceline-highlight-face 'mode-line)
 (define-separator "left-4" "right" 'mode-line 'powerline-active2)
 
-(define-separator "right-1" "right" 'powerline-active2 'powerline-active1)
-(define-separator "right-2" "right" 'powerline-active1 'mode-line)
+(define-separator "right-1" "right" 'powerline-active1 'powerline-active2)
+(define-separator "right-2" "left" 'powerline-active1 'mode-line)
 
 (spaceline-compile
  "ati"
@@ -359,20 +388,18 @@ the directions of the separator."
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
-   ((ati-process ati-position ati-region-info) :face highlight-face :separator " | ")
+   ((ati-process  ati-position ati-region-info) :face highlight-face :separator " | ")
    ati-left-3-separator
    ati-left-inactive-separator
-   ((ati-vc-icon ati-flycheck-status ati-package-updates purpose) :separator " · " :face other-face)
+   ((ati-vc-icon ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator " · " :face other-face)
    ati-left-4-separator)
 
  '(ati-right-1-separator
-   ((ati-suntime ati-weather) :separator " · " :face other-face)
+   ((((ati-hud buffer-position) :separator " ") ati-suntime ati-weather) :separator " · " :face default-face)
    ati-right-2-separator
    ati-right-inactive-separator
-   ((ati-battery-status ati-time) :separator " | " :face other-face)
-   ))
-
-;; (setq mode-line-format '("%e" (:eval (spaceline-ml-main))))
+   ((ati-battery-status ati-time) :separator " | " :face default-face)
+   ""))
 
 (provide 'spaceline-custom)
 ;;; spaceline-custom.el ends here

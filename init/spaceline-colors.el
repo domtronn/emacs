@@ -89,7 +89,6 @@
                     (inactive . ((default   . ((background . "#efeae9") (foreground . "#a094a2")))
                                  (other     . ((background . "#efeae9") (foreground . "#a094a2")))
                                  (middle    . ((background . "#efeae9")))))))
-
     ))
 
 (defun spaceline--set-face (face alist)
