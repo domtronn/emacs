@@ -79,8 +79,8 @@
 (global-set-key (kbd "H-s-,") '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))))
 
 ;; move and resize windows
-(global-set-key (kbd "H--") '(lambda () (interactive) (font-scale '- 10)))
-(global-set-key (kbd "H-=") '(lambda () (interactive) (font-scale '+ 10)))
+(global-set-key (kbd "H--") '(lambda () (interactive) (global-text-scale-adjust -1)))
+(global-set-key (kbd "H-=") '(lambda () (interactive) (global-text-scale-adjust 1)))
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
 

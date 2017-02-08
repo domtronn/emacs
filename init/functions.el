@@ -353,11 +353,21 @@
   (move-end-of-line 1)
   (call-interactively 'vr/query-replace))
 
-(defun font-scale (op &optional amount)
-  "Apply function operator OP (+/-) to scale face attribute height by AMOUNT."
-  (let* ((height (face-attribute 'default :height))
-         (mode-line-height (face-attribute 'mode-line :height)))
-    (set-face-attribute 'default nil :height (funcall op height (or amount 10)))))
+(text-scale-set 0)
+(define-globalized-minor-mode
+  global-text-scale-mode
+  text-scale-mode
+  (lambda () (text-scale-mode 1)))
+
+(defun global-text-scale-adjust (inc)
+  "Globally modify the text scale"
+  (interactive)
+  (text-scale-set 1)
+  (kill-local-variable 'text-scale-mode-amount)
+  (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
+  (global-text-scale-mode 1))
+
+(global-text-scale-mode)
 
 (defun elisp-debug (var)
   (interactive "sDebug variable ❯ ")
