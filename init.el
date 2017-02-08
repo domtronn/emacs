@@ -797,14 +797,8 @@
 
 (use-package winum :ensure t
   :init
-  (add-hook
-   'winum-mode-hook
-   '(lambda ()
-      (setq winum-keymap
-            (let ((map (make-sparse-keymap)))
-              (dotimes (n 10)
-                (define-key map (kbd (format "s-%s" n)) `(,(intern (format "winum-select-window-%s" n)))))
-              map))))
+  (dotimes (n 10)
+    (global-set-key (kbd (format "s-%s" n)) (intern (format "winum-select-window-%s" n))))
   :config
   (winum-mode)
   (winum--clear-mode-line))
