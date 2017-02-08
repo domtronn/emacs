@@ -239,6 +239,11 @@
 (use-package git-gutter-fringe :ensure t :demand :defer 5
   :if window-system
   :config (global-git-gutter-mode)
+  (defhydra hydra-git-gutter (global-map "C-x v v")
+    "Git Hunks"
+    ("R" git-gutter:revert-hunk "revert")
+    ("n" git-gutter:next-hunk "next")
+    ("p" git-gutter:previous-hunk "previous"))
   :bind ("C-x v p" . git-gutter:previous-hunk)
         ("C-x v n" . git-gutter:next-hunk))
 
