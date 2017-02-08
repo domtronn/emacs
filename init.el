@@ -129,7 +129,7 @@
           (setq popwin:close-popup-window-timer nil)
           (defun popwin:flycheck-errors ()
             (interactive)
-            (when (get-buffer "*Flycheck errors*") (popwin:popup-buffer "*Flycheck errors*")))
+            (when (get-buffer "*Flycheck errors*") (popwin:popup-buffer "*Flycheck errors*" :noselect t)))
           (defun popwin:compilation ()
             (interactive)
             (when (get-buffer "*compilation*")
