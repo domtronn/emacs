@@ -563,9 +563,10 @@
 (use-package goto-addr :ensure t :after markdown-mode)
 (use-package browse-url :ensure t
   :defer t
+  :config (setq browse-url-browser-function 'browse-url-default-macosx-browser)
   :init (autoload 'browse-url-url-at-point "browse-url"))
 
-(use-package link-hint :ensure t
+(use-package link-hint :ensure t :after browse-url
   :bind ("H-o" . link-hint-open-link)
         ("H-O" . link-hint-open-multiple-links))
 
