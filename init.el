@@ -781,14 +781,14 @@
     (interactive)
     (async-start `(lambda ()
                     (let* ((dir (car (directory-files ,package-user-dir t "yahoo-weather")))
-                           (file (format "%s/yahoo-weather.el")))
+                           (file (format "%s/yahoo-weather.el" dir)))
                       (require 'yahoo-weather file)
                       (yahoo-weather-update-info)))
                  '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
-(use-package fancy-battery :after spaceline :defer 10 :config (fancy-battery-mode))
+(use-package fancy-battery :ensure t :after spaceline :defer 10 :config (fancy-battery-mode))
 (use-package powerline
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
@@ -908,7 +908,7 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'spacemacs-light))
+  (load-theme 'forest-blue))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
