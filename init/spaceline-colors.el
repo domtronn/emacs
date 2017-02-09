@@ -72,6 +72,14 @@
                      (inactive . ((default   . ((background . "#131617") (foreground . "#31454F")))
                                   (other     . ((background . "#131617") (foreground . "#31454F")))
                                   (middle    . ((background . "#131617")))))))
+    (darktooth      ((active   . ((highlight . ((background . "#8EC07C") (foreground . "#282828")))
+                                  (default   . ((background . "#506E59") (foreground . "#8EC07C")))
+                                  (other     . ((background . "#32302F") (foreground . "#FDF4C1")))
+                                  (middle    . ((background . "#282828")))));
+                     (inactive . ((default   . ((background . "#506E59") (foreground . "#87AF87")))
+                                  (other     . ((background . "#506E59") (foreground . "#87AF87")))
+                                  (middle    . ((background . "#282828")))))))
+
     (peacock       ((active   . ((highlight . ((background . "#FF5D38") (foreground . "#262626")))
                                   (default   . ((background . "#3e3c38") (foreground . "#E0E4CC")))
                                   (other     . ((background . "#3e3c38") (foreground . "#E0E4CC")))
