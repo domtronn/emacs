@@ -594,7 +594,7 @@
                      ("C-c C-c p" . livedown:preview)))
 
 (use-package sudo-edit :ensure t
-  :commands (sudo-edit-current-file))
+  :commands (sudo-edit))
 
 (use-package scss-mode :ensure t
   :mode ("\\.scss$" . scss-mode)
