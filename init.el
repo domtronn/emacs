@@ -37,7 +37,7 @@
 
 (require 'package)
 (setq-default package-user-dir (concat base-path "packages/elpa"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize nil)
 
 (require 'benchmark-init)
