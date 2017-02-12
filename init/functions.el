@@ -98,7 +98,7 @@
   (let* ((node (js2r--closest 'js2-import-node-p))
          (name (js2-import-node-module-id node)))
     (js2--find-file name)))
-    
+
 (defun js2--find-file (name)
   (let* ((module-dir (file-name-directory name))
          (module-name (concat (file-name-base name) "\\."))
@@ -359,8 +359,16 @@
   text-scale-mode
   (lambda () (text-scale-mode 1)))
 
+(defun global-text-scale-set (val)
+  "Globally sets the text scale to VAL"
+  (interactive)
+  (text-scale-set 1)
+  (kill-local-variable 'text-scale-mode-amount)
+  (setq-default text-scale-mode-amount val)
+  (global-text-scale-mode 1))
+
 (defun global-text-scale-adjust (inc)
-  "Globally modify the text scale"
+  "Globally modify the text scale by INC"
   (interactive)
   (text-scale-set 1)
   (kill-local-variable 'text-scale-mode-amount)
@@ -468,26 +476,26 @@
 
 ;; (defun bemify-emmet-string (expr)
 ;;   "Pre process an emmet string to be bemified."
-;; 	(let* ((split (split-string (car expr) "|"))
-;; 				 (filter (cadr split))
-;; 				 (emmet-s (car split)))
-;; 		(when (equal filter "bem")
-;; 			(let ((bemified
-;; 						 (with-temp-buffer
-;; 							 (insert emmet-s)
-;; 							 (goto-char (point-min))
-;; 							 (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
-;; 								 (let ((base-class (match-string 1))
-;; 											 (restore-point (point)))
-;; 									 (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
-;; 										 (replace-match (format ".%s%s" base-class (match-string 1))))
-;; 									 (goto-char restore-point)))
-;; 							 (buffer-string))))
-;; 				(when (not (equal emmet-s bemified))
-;; 					(with-current-buffer (current-buffer)
-;; 						(goto-char (cadr expr))
-;; 						(delete-region (cadr expr) (caddr expr))
-;; 						(insert bemified)))))))
+;;  (let* ((split (split-string (car expr) "|"))
+;;         (filter (cadr split))
+;;         (emmet-s (car split)))
+;;    (when (equal filter "bem")
+;;      (let ((bemified
+;;             (with-temp-buffer
+;;               (insert emmet-s)
+;;               (goto-char (point-min))
+;;               (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
+;;                 (let ((base-class (match-string 1))
+;;                       (restore-point (point)))
+;;                   (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
+;;                     (replace-match (format ".%s%s" base-class (match-string 1))))
+;;                   (goto-char restore-point)))
+;;               (buffer-string))))
+;;        (when (not (equal emmet-s bemified))
+;;          (with-current-buffer (current-buffer)
+;;            (goto-char (cadr expr))
+;;            (delete-region (cadr expr) (caddr expr))
+;;            (insert bemified)))))))
 
 (defun dir-depth (dir)
   "Gives depth of directory DIR"
