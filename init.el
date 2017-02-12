@@ -109,7 +109,7 @@
   :bind ("RET" . smart-newline))
 
 (use-package smartparens-config :after smartparens)
-(use-package smartparens :ensure t :demand :defer 5
+(use-package smartparens :ensure t :demand :defer t
   :config
   (smartparens-global-mode)
   (sp-local-pair
@@ -890,7 +890,7 @@
 
 ;; Themed with Spaceline
 (use-package gruvbox-theme :ensure t :defer t)
-(use-package creamsody-theme :ensure t)
+(use-package creamsody-theme :ensure t :defer t)
 (use-package suscolors-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package forest-blue-theme :ensure t :defer t)
