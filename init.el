@@ -135,9 +135,10 @@
             (when (get-buffer "*compilation*")
               (if (get-buffer-window "*compilation*")
                   (delete-window (get-buffer-window "*compilation*"))
-                (popwin:popup-buffer "*compilation*" :noselect t :stick t :tail t))))
-  :bind ("C-x m" . popwin:messages)
+                (popwin:popup-buffer "*compilation*" :noselect t :dedicated t :stick t :tail t))))
+  :bind 
   ("C-x e" . popwin:flycheck-errors)
+  ("C-x m" . popwin:messages)
   ("C-x c" . popwin:compilation))
 
 (use-package org :ensure t
@@ -199,7 +200,6 @@
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
   (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
-  (run-with-idle-timer 300 t 'wlf:agenda)
   (add-hook 'org-finalize-agenda-hook '(lambda ()
                                          (org-color-tag "Birthdays:" "#27ae60")
                                          (org-color-tag "Holidays:" "#3498db")
@@ -300,8 +300,9 @@
 
 (use-package flycheck :ensure t
   :config (global-flycheck-mode)
+  ;; npm install -g eslint_d
   (setq flycheck-javascript-standard-executable "standard")
-  (setq flycheck-javascript-eslint-executable "eslint")
+  (setq flycheck-javascript-eslint-executable "eslint_d")
   (setq flycheck-eslintrc ".eslintrc.json")
   (setq-default flycheck-disabled-checkers '(javascript-jshint))
   (bind-keys :map flycheck-mode-map
@@ -312,6 +313,8 @@
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
   :bind ("M-}" . flycheck-mode))
 
+(use-package eslintd-fix :after js2-mode :ensure t
+  :init (add-hook 'js2-mode-hook 'eslintd-fix-mode))
 (use-package eslint-reader
   :load-path "elisp/eslint-reader"
   :after js2-mode)
@@ -400,6 +403,7 @@
                       (call-interactively 'counsel-set-font)))
 
   :bind ([f2]      . counsel-git-grep)
+        ("C-x n"   . counsel-bookmark)
         ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
         ("H-M-."   . counsel-imenu)
@@ -423,11 +427,11 @@
           (t . ivy--regex-fuzzy))
         ivy-display-style 'plain)
   (bind-keys :map ivy-minibuffer-map
-             ("s-k" . delete-minibuffer-contents)
+             ("s-k"   . delete-minibuffer-contents)
              ("C-S-j" . ivy-immediate-done))
   :bind ("C-c C-r" . ivy-resume)
         ("C-;"     . swiper)
-        ("C-x b"     . ivy-switch-buffer))
+        ("C-x b"   . ivy-switch-buffer))
 
 (bind-keys :map minibuffer-local-map ("s-k" . delete-minibuffer-contents))
 
@@ -444,7 +448,7 @@
 (use-package avy-zap :ensure t :bind ("H-x" . avy-zap-to-char))
 (use-package avy :ensure t
   :bind
-  ("H-\\" . avy-goto-line)
+  ("H-\\" . avy-goto-word-0)
   ("H-'" . avy-goto-word-1)
   ("H-\"" . avy-goto-char)
   :config
@@ -764,6 +768,23 @@
         ("s-+" . hs-hide-level))
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
+(defun npm--get-package-json ()
+  "Get a package.json for a project and list its scripts"
+  (when (not (locate-dominating-file (buffer-file-name) "package.json"))
+    (error "Could not find `package.json'"))
+  (let* ((package-path (locate-dominating-file (buffer-file-name) "package.json"))
+         (package-file (format "%s/package.json" package-path))
+         (package-json (json-read-file package-file)))
+    (let-alist package-json (-map 'car .scripts))))
+
+(global-set-key (kbd "C-x C-n") 'npm-run)
+(defun npm-run ()
+  (interactive)
+  "Completing read a list of projects scripts"
+  (let ((scripts (npm--get-package-json)))
+    (ivy-read "npm run: " scripts
+              :action (lambda (match) (compile (format "npm run %s" match))))))
+
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
   :defer t
@@ -810,16 +831,6 @@
   (winum--clear-mode-line))
 
 (use-package resize-window :ensure t :bind ("C-x =" . resize-window))
-(use-package window-purpose :ensure t
-  :bind ("C-x -" . purpose-load-window-layout)
-        ("C-x _" . purpose-save-window-layout)
-  :config
-  (add-to-list 'purpose-user-mode-purposes '(js2-mode . js-editor))
-  (add-to-list 'purpose-user-name-purposes '("*compilation*" . js-compilation))
-  (add-to-list 'purpose-user-name-purposes '("*ansi-term-1*" . js-temrinal))
-  (add-to-list 'purpose-user-name-purposes '("*node-repl*" . js-repl))
-  (add-to-list 'purpose-user-name-purposes '(" *Neotree*" . js-filetree))
-  (purpose-compile-user-configuration))
 
 ;; change vc-diff to use vc-ediff
 (setq ediff-split-window-function (quote split-window-horizontally))
@@ -891,13 +902,13 @@
 ;; Themed with Spaceline
 (use-package gruvbox-theme :ensure t :defer t)
 (use-package creamsody-theme :ensure t :defer t)
-(use-package suscolors-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package forest-blue-theme :ensure t :defer t)
-(use-package liso-theme :ensure t :defer t)
 (use-package peacock-theme :ensure t :defer t)
 (use-package solarized-theme :ensure t :defer t)
+(use-package zenburn-theme :ensure t :defer t)
 
+(use-package tangotango-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package spacemacs-theme :ensure t :defer t)
 
@@ -905,6 +916,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
+(remove-hook 'first-change-hook 'ns-unselect-line)
 
 (when window-system
   (remove-mode-line-box)
