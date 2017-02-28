@@ -84,11 +84,21 @@
                           (not spaceline-ati-slim))
                          (or (cadr (split-string buf proj))
                              (format-mode-line "%b"))
-                       (format-mode-line "%b"))))
-          (propertize (format "%s" name)
-                      'face `(:height ,(if spaceline-ati-slim 1.0 0.8) :inherit)
-                      'display `(raise ,(if spaceline-ati-slim 0.1 0.2))
-                      'help-echo (format "Major-mode: `%s`" major-mode)))
+                       (format-mode-line "%b")))
+               (path (file-name-directory name))
+               (file (file-name-nondirectory name)))
+          (concat
+           (when path
+             (propertize (format "%s" path)
+                         'face `(:height ,(if spaceline-ati-slim 1.0 0.8) :inherit)
+                         'display `(raise ,(if spaceline-ati-slim 0.1 0.2))
+                         'help-echo (format "Major-mode: `%s`" major-mode)))
+           (propertize (format "%s" file)
+                       'face (if (and spaceline-ati-highlight-buffer path)
+                                 `(:height ,(if spaceline-ati-slim 1.0 0.8) :background ,(face-background default-face) :foreground ,(face-background highlight-face))
+                               `(:height ,(if spaceline-ati-slim 1.0 0.8) :inherit))
+                       'display `(raise ,(if spaceline-ati-slim 0.1 0.2))
+                       'help-echo (format "Major-mode: `%s`" major-mode))))
       (propertize (format-mode-line "%b ") 'face `(:height ,(if spaceline-ati-slim 1.0 0.8) :inherit) 'display '(raise 0.1)))
     :tight t)
 
@@ -326,7 +336,7 @@
       (concat
        (propertize (format-time-string "%H:%M ") 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
        (propertize (format "%s" icon)
-                   'face `(:height 0.8 :family ,(all-the-icons-wicon-family) :inherit)
+                   'face `(:height 0.9 :family ,(all-the-icons-wicon-family) :inherit)
                    'display '(raise 0.1))))
     :tight t)
 
@@ -412,6 +422,34 @@
          'mouse-face `(:box 1 :foreground ,(face-foreground 'highlight)))))
     :global-override fancy-battery-mode-line :when (and active (fboundp 'fancy-battery-mode) fancy-battery-mode))
 
+(spaceline-define-segment
+    ati-bookmark-favourite "A segment which displays whether the current file is bookmarked"
+    (let* ((bookmarks (--map (cons (expand-file-name (cdr (assoc 'filename (cdr it)))) (car it)) bookmark-alist))
+           (bookmark (--find (equal (car it) (buffer-file-name)) bookmarks))
+           (icon (all-the-icons-faicon (if bookmark "heart" "heart-o")))
+           (help-echo (if bookmark "Unlike" "Like")))
+
+      (propertize (format "%s" icon)
+                  'face `(:height 1.0 :family ,(all-the-icons-faicon-family) :inherit)
+                  'display '(raise 0.1)
+                  'help-echo help-echo
+                  'mouse-face '(:box 1)
+                  'local-map (make-mode-line-mouse-map
+                              'mouse-1 `(lambda () (interactive)
+                                          (if ,(cdr bookmark) (bookmark-delete ,(cdr bookmark)) (bookmark-set (buffer-name)))))))
+    :when (and (boundp 'bookmark-alist) (buffer-file-name)))
+
+(spaceline-define-segment
+    ati-fullscreen-indicator "A segment/button to toggle fullscreen and indicate full screen status"
+    (let ((icon (all-the-icons-material (if (frame-parameter nil 'fullscreen) "fullscreen_exit" "fullscreen"))))
+      (propertize (format "%s" icon)
+                  'face `(:height ,(if spaceline-ati-slim 2.0 1.3) :family ,(all-the-icons-material-family) :inherit)
+                  'display '(raise -0.2)
+                  'help-echo "Toggle frame fullscreen"
+                  'mouse-face '(:box 1)
+                  'local-map (make-mode-line-mouse-map
+                              'mouse-1 (lambda () (interactive) (toggle-frame-fullscreen))))))
+
 (defun spaceline-line-separator (&optional padding)
   "Simple wrapper around aligning the vertical line separator.
 Wraps separtor in PADDING if included."
@@ -440,7 +478,7 @@ the directions of the separator."
              (sf (if (fboundp ,start-face) (funcall ,start-face) ,start-face))  ;; Allow for functions that evaluate to
              (ef (if (fboundp ,end-face) (funcall ,end-face) ,end-face)))       ;; faces to be used
          (propertize (all-the-icons-alltheicon (format "%s-%s" sep dir) :v-adjust -0.0)
-                     'face `(:height 1.5
+                     'face `(:height 1.6
                              :family ,(all-the-icons-alltheicon-family)
                              :foreground ,(face-background sf)
                              :background ,(face-background ef))))
@@ -449,6 +487,7 @@ the directions of the separator."
 (defvar spaceline-invert-direction nil)
 (defvar spaceline-separator-type "slant")
 (defvar spaceline-ati-slim nil)
+(defvar spaceline-ati-highlight-buffer t)
 
 (define-separator "left-inactive" "right" 'powerline-inactive1 'powerline-inactive2 t)
 (define-separator "right-inactive" "left" 'powerline-inactive2 'powerline-inactive1 t)
@@ -464,12 +503,12 @@ the directions of the separator."
 (spaceline-compile
  "ati"
  '(
-   ((ati-modified ati-window-numbering ati-buffer-size) :face highlight-face :skip-alternate t)
+   ((ati-modified ati-bookmark-favourite ati-window-numbering ati-buffer-size) :face highlight-face :skip-alternate t)
    ;; left-active-3
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
-   ((ati-process ati-position ati-region-info ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
+   ((ati-process ati-position ati-region-info ati-fullscreen-indicator ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
    ati-left-3-separator
    ati-left-inactive-separator
    ((ati-vc-icon ati-git-stats ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator (if spaceline-ati-slim " " " · ") :face other-face)

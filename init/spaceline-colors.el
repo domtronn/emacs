@@ -81,22 +81,28 @@
                                   (middle    . ((background . "#282828")))))))
 
     (peacock       ((active   . ((highlight . ((background . "#FF5D38") (foreground . "#262626")))
-                                  (default   . ((background . "#3e3c38") (foreground . "#E0E4CC")))
-                                  (other     . ((background . "#3e3c38") (foreground . "#E0E4CC")))
-                                  (middle    . ((background . "#2B2A27")))));
+                                 (default   . ((background . "#3e3c38") (foreground . "#E0E4CC")))
+                                 (middle    . ((background . "#2B2A27")))));
 
                      (inactive . ((default   . ((background . "#3e3c38") (foreground . "#524e48")))
                                   (other     . ((background . "#3e3c38") (foreground . "#524e48")))
                                   (middle    . ((background . "#3e3c38")))))))
+
+    (gotham ((active . ((highlight . ((background . "#245361") (foreground . "#d3ebe9")))))))
+    (zenburn ((active . ((other     . ((background . "#494949") (foreground . "#DCDCCC")))
+                         (default   . ((background . "#383838") (foreground . "#DCDCCC")))
+                         (highlight . ((background . "#AFD8AF") (foreground . "#383838")))))
+              (inactive . ((default   . ((background . "#383838") (foreground . "#1b1b1b")))
+                           (middle    . ((background . "#383838")))))))
+
     ;; Light themes
     (spacemacs-light ((active   . ((highlight . ((background . "#9380b2") (foreground . "#edf2e9")))
-                                 (default   . ((background . "#efeae9") (foreground . "#655370")))
-                                 (other     . ((background . "#e3dedd") (foreground . "#655370")))
-                                 (middle    . ((background . "#efeae9")))));
+                                   (other     . ((background . "#e3dedd") (foreground . "#655370")))
+                                   (middle    . ((background . "#efeae9")))))
+                      (inactive . ((default   . ((background . "#efeae9") (foreground . "#a094a2")))
+                                   (other     . ((background . "#efeae9") (foreground . "#a094a2")))
+                                   (middle    . ((background . "#efeae9")))))))
 
-                    (inactive . ((default   . ((background . "#efeae9") (foreground . "#a094a2")))
-                                 (other     . ((background . "#efeae9") (foreground . "#a094a2")))
-                                 (middle    . ((background . "#efeae9")))))))
     ))
 
 (defun spaceline--set-face (face alist)
@@ -109,14 +115,14 @@ ARGS is needed to allow for this function to be used as advice"
   (let ((theme-alist (cadr (assoc (car custom-enabled-themes) spaceline--theme-colors-alist))))
     (when theme-alist
       (let-alist theme-alist
-        (spaceline--set-face 'spaceline-highlight-face  .active.highlight)
-        (spaceline--set-face 'powerline-active2         .active.middle)
-        (spaceline--set-face 'mode-line                 .active.other)
-        (spaceline--set-face 'powerline-active1         .active.default)
+        (when .active.highlight (spaceline--set-face 'spaceline-highlight-face  .active.highlight))
+        (when .active.middle    (spaceline--set-face 'powerline-active2         .active.middle))
+        (when .active.other     (spaceline--set-face 'mode-line                 .active.other))
+        (when .active.default   (spaceline--set-face 'powerline-active1         .active.default))
 
-        (spaceline--set-face 'powerline-inactive1       .inactive.default)
-        (spaceline--set-face 'mode-line-inactive        .inactive.other)
-        (spaceline--set-face 'powerline-inactive2       .inactive.middle)))))
+        (when .inactive.default (spaceline--set-face 'powerline-inactive1       .inactive.default))
+        (when .inactive.other   (spaceline--set-face 'mode-line-inactive        .inactive.other))
+        (when .inactive.middle  (spaceline--set-face 'powerline-inactive2       .inactive.middle))))))
 
 (provide 'spaceline-colors)
 ;;; spaceline-colors.el ends here
