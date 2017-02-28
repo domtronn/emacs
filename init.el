@@ -47,7 +47,7 @@
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
     (local-set-key "t" 'counsel-load-theme)
-    (local-set-key "f" 'counsel-set-font)
+    (local-set-key "f" 'set-font)
     (local-set-key "a" 'org-agenda)
     (local-set-key "p" 'projectile-switch-project)))
 

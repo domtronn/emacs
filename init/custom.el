@@ -369,15 +369,6 @@
                     ("Hack" normal)
                     ("Anonymous Pro" normal)))
 
-(defun counsel-set-font ()
-  "Forward to `set-font'.
-Usable with `ivy-resume', `ivy-next-line-and-call' and
-`ivy-previous-line-and-call'."
-  (interactive)
-  (ivy-read "Font: " (mapcar (lambda (n) (cons (car n) n)) font-list)
-            :action #'set-font
-            :caller 'set-font))
-
 (defun set-font (&optional f)
   "Set the custom font F with completion."
   (interactive)
