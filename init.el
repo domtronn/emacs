@@ -786,6 +786,8 @@
   (setq prettify-symbols-unprettify-at-point t))
 
 (use-package mode-javascript :load-path "init" :defer 5)
+(use-package mode-clojure :load-path "init" :defer 5)
+
 ;;------------------
 ;; Themes
 ;;------------------
