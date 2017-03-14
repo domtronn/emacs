@@ -261,7 +261,7 @@
     :when (and active (boundp 'flycheck-last-status-change) flycheck-current-errors) :tight t)
 
 (defvar spaceline--upgrades nil)
-(defun spaceline--count-upgrades ()
+(defun spaceline--count-upgrades (&rest args)
   "Function to count the number of package upgrades needed."
   (let ((buf (current-buffer)))
     (package-list-packages-no-fetch)
@@ -269,6 +269,7 @@
       (setq spaceline--upgrades (length (package-menu--find-upgrades))))
     (switch-to-buffer buf)))
 (advice-add 'package-menu-execute :after 'spaceline--count-upgrades)
+(advice-add 'package-refresh-contents :after 'spaceline--count-upgrades)
 
 (spaceline-define-segment
     ati-package-updates "An `all-the-icons' spaceline segment to indicate number of package updates needed"
@@ -424,20 +425,23 @@
 
 (spaceline-define-segment
     ati-bookmark-favourite "A segment which displays whether the current file is bookmarked"
-    (let* ((bookmarks (--map (cons (expand-file-name (cdr (assoc 'filename (cdr it)))) (car it)) bookmark-alist))
-           (bookmark (--find (equal (car it) (buffer-file-name)) bookmarks))
-           (icon (all-the-icons-faicon (if bookmark "heart" "heart-o")))
-           (help-echo (if bookmark "Unlike" "Like")))
-
-      (propertize (format "%s" icon)
-                  'face `(:height 1.0 :family ,(all-the-icons-faicon-family) :inherit)
-                  'display '(raise 0.1)
-                  'help-echo help-echo
-                  'mouse-face '(:box 1)
-                  'local-map (make-mode-line-mouse-map
-                              'mouse-1 `(lambda () (interactive)
-                                          (if ,(cdr bookmark) (bookmark-delete ,(cdr bookmark)) (bookmark-set (buffer-name)))))))
-    :when (and (boundp 'bookmark-alist) (buffer-file-name)))
+    (progn
+      (unless (boundp 'bookmark-alist) (bookmark-all-names))
+      (let* ((bookmarks (--map (cons (expand-file-name (cdr (assoc 'filename (cdr it)))) (car it)) bookmark-alist))
+             (bookmark (--find (equal (car it) (buffer-file-name)) bookmarks))
+             (icon (all-the-icons-faicon (if bookmark "heart" "heart-o")))
+             (help-echo (if bookmark "Unlike" "Like")))
+        
+        (propertize (format "%s" icon)
+                    'face `(:height 1.0 :family ,(all-the-icons-faicon-family) :inherit)
+                    'display '(raise 0.1)
+                    'help-echo help-echo
+                    'mouse-face '(:box 1)
+                    'local-map (make-mode-line-mouse-map
+                                'mouse-1 `(lambda () (interactive)
+                                            (if ,(cdr bookmark) (bookmark-delete ,(cdr bookmark)) (bookmark-set (buffer-file-name)))
+                                            (force-window-update))))))
+    :when (buffer-file-name))
 
 (spaceline-define-segment
     ati-fullscreen-indicator "A segment/button to toggle fullscreen and indicate full screen status"
@@ -449,6 +453,22 @@
                   'mouse-face '(:box 1)
                   'local-map (make-mode-line-mouse-map
                               'mouse-1 (lambda () (interactive) (toggle-frame-fullscreen))))))
+
+(spaceline-define-segment
+    ati-sticky-indicator "A segment/button to toggle sticky mode and indicate sticky status"
+    (let* ((sticky (window-dedicated-p (get-buffer-window (current-buffer))))
+           (icon (all-the-icons-faicon (if sticky "sticky-note" "sticky-note-o"))))
+      (propertize (format "%s" icon)
+                  'face `(:height 1.0 :family ,(all-the-icons-faicon-family) :inherit)
+                  'display '(raise 0.1)
+                  'help-echo "Toggle `window-dedicated` for this window'"
+                  'mouse-face '(:box 1)
+                  'local-map (make-mode-line-mouse-map
+                              'mouse-1 '(lambda () (interactive)
+                                          (let* ((window (window-at (cadr (mouse-position)) (cddr (mouse-position))))
+                                                 (dedicated (window-dedicated-p window)))
+                                            (set-window-dedicated-p window (not dedicated)))))))
+    :when t)
 
 (defun spaceline-line-separator (&optional padding)
   "Simple wrapper around aligning the vertical line separator.
@@ -508,7 +528,7 @@ the directions of the separator."
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
-   ((ati-process ati-position ati-region-info ati-fullscreen-indicator ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
+   ((ati-process ati-position ati-region-info ati-sticky-indicator ati-fullscreen-indicator ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
    ati-left-3-separator
    ati-left-inactive-separator
    ((ati-vc-icon ati-git-stats ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator (if spaceline-ati-slim " " " · ") :face other-face)

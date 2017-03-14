@@ -400,6 +400,10 @@
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
+(use-package bookmark :defer t
+  :commands (bookmark-jump bookmark-all-names)
+  :config (run-at-time "1 sec" 900 'bookmark-save))
+
 (use-package flx :ensure t :after ivy)
 (use-package ivy-hydra :ensure t :after ivy)
 (use-package ivy-rich :ensure t :after ivy
