@@ -49,6 +49,14 @@
           (find-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf"))
           (delete-other-windows)))))
 
+(defun eww-pretty-print-json ()
+  "pretty print *eww* buffer JSON"
+  (interactive)
+  (read-only-mode 0)
+  (json-pretty-print-buffer-ordered)
+  (read-only-mode 1)
+  (goto-char (point-min)))
+
 (defun jump-to-find-function ()
   "Go to the function definition for elisp"
   (interactive)
@@ -749,14 +757,29 @@
            (if livedown-open "--open" "")))
   (print (format "%s rendered @ %s" buffer-file-name livedown-port) (get-buffer "emacs-livedown-buffer")))
 
-(defun org-start-ticket ()
+;; ;;;;;;;;;;;;;;;;;;;;;;; ;;
+;; Sticky window functions ;;
+;; ;;;;;;;;;;;;;;;;;;;;;;; ;;
+(defun sticky-window (&optional w state)
+  "Sets WINDOW to be sticky. Defaults to `selected-window'"
   (interactive)
-  (call-interactively 'link-hint-copy-link)
-  (let ((link (car kill-ring)))
-    (goto-char (point-min))
-    (search-forward link)
-    (org-agenda-todo 2)
-    (browse-url (car (split-string link "]")))))
+  (let* ((window (or w (selected-window)))
+         (stick (if state (car state) (not (window-dedicated-p window)))))
+    (set-window-dedicated-p window stick)))
+
+(defun sticky-window-delete-other-windows ()
+  "Delete all other windows that are not marked to be visible with `sticky-window-keep-window-visible'."
+  (interactive)
+  (--map (unless (window-dedicated-p it) (delete-window it)) (cdr (window-list))))
+
+(defun sticky-window-unstick-all ()
+  "Unsticks all stuck windows"
+  (interactive)
+  (--map (sticky-window it '(nil)) (window-list)))
+
+(global-set-key [f10] 'sticky-window)
+(global-set-key (kbd "<s-f10>") 'sticky-window-unstick-all)
+(global-set-key (kbd "C-x C-z") 'sticky-window-delete-other-windows)
 
 (provide 'functions)
 ;;; functions.el ends here
