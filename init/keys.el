@@ -79,6 +79,8 @@
 (global-set-key (kbd "H-s-,") '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))))
 
 ;; move and resize windows
+(global-set-key (kbd "H-+") '(lambda () (interactive) (text-scale-adjust 1)))
+(global-set-key (kbd "H-_") '(lambda () (interactive) (text-scale-adjust -1)))
 (global-set-key (kbd "H--") '(lambda () (interactive) (global-text-scale-adjust -1)))
 (global-set-key (kbd "H-=") '(lambda () (interactive) (global-text-scale-adjust 1)))
 (global-set-key (kbd "H-0") '(lambda () (interactive) (global-text-scale-set 0)))
@@ -122,8 +124,6 @@
 
 (global-set-key (kbd "C-S-k") 'kill-whole-line)
 (global-set-key (kbd "C-k") 'kill-line)
-
-(global-set-key (kbd "C-x C-z") 'delete-other-windows)
 
 ;; Duplicate line
 (global-set-key (kbd "s-d") 'duplicate-line)
