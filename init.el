@@ -797,9 +797,10 @@
 (use-package peacock-theme :ensure t :defer t)
 (use-package solarized-theme :ensure t :defer t)
 (use-package zenburn-theme :ensure t :defer t)
-
 (use-package tangotango-theme :ensure t :defer t)
+(use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
+
 (use-package spacemacs-theme :ensure t :defer t)
 
 (put 'downcase-region 'disabled nil)
