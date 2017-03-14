@@ -40,6 +40,7 @@
 (setq-default package-user-dir (concat base-path "packages/elpa"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize nil)
+(run-with-idle-timer 900 t 'package-refresh-contents)
 
 (require 'benchmark-init)
 (add-hook
