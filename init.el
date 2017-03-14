@@ -775,10 +775,10 @@
 (global-linum-mode 1) ; enable line numbers
 (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
 (add-hook 'js2-mode-hook 'prettify-symbols-mode)
+(global-prettify-symbols-mode)
 (use-package prettify-symbols-mode
   :bind ("C-c <C-return>" . prettify-symbols-mode)
   :config
-  (global-prettify-symbols-mode)
   (setq prettify-symbols-unprettify-at-point t))
 
 (use-package mode-javascript :load-path "init" :defer 5)
