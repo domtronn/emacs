@@ -25,6 +25,7 @@
 
 ;; npm install -g livedown
 ;; npm install -g n_
+;; npm install -g eslint_d
 ;; npm install -g ramda-repl
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -313,12 +314,6 @@
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
   :bind ("M-}" . flycheck-mode))
 
-(use-package eslintd-fix :after js2-mode :ensure t
-  :init (add-hook 'js2-mode-hook 'eslintd-fix-mode))
-(use-package eslint-reader
-  :load-path "elisp/eslint-reader"
-  :after js2-mode)
-
 (use-package flyspell-popup :ensure t :defer t :after flyspell
   :config (bind-keys :map flyspell-mode-map ("±" . flyspell-popup-correct)))
 
@@ -461,76 +456,6 @@
   :commands (ag-regexp ag-project-regexp)
   :bind ("C-c g" . ag-project-regexp))
 
-(add-hook 'js2-mode-hook 'auto-complete-mode)
-
-(use-package rjsx-mode :ensure t
-  :mode ("\\.jsx$" . rjsx-mode)
-  :config
-  (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
-  (advice-add
-   'key-combo-pre-command-function
-   :around '(lambda (orig-f &rest args)
-              (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-                           (member (this-command-keys) '("=" "-" "+")))
-                (apply orig-f args)))))
-
-(use-package js2-refactor :after js2-mode :ensure t)
-(use-package js2r-extensions :after js2-mode :load-path "elisp")
-(use-package js-injector
-  :after js2-mode
-  :load-path "elisp/js-dependency-injector"
-  :config
-  (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
-
-(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
-(use-package js2-mode
-  :mode "\\.js$"
-  :config
-  (setq js-switch-indent-offset 2)
-  (setq js2-include-node-externs t)
-  (setq js2-include-browser-externs t)
-  (setq js2-basic-offset 2)
-  (setq js2-enter-indents-newline t)
-  (setq js2-highlight-level 3)
-  (setq js2-pretty-multiline-declarations 'dynamic)
-
-  (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-  
-  (defun js2-standard-fix ()
-    (interactive)
-    (when (buffer-file-name)
-      (shell-command
-       (format (if (flycheck-eslint-config-exists-p)
-                   "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
-
-  (add-hook 'js2-mode-hook 'js-injector-minor-mode)
-  (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
-  (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-  (add-hook 'js2-mode-hook
-            '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
-  (bind-keys :map js2-mode-map
-             ("C-c x" . send-to-repl)
-
-             ;; JS2 Refactor things
-             ("C-c m" . prettify-symbols-mode)
-             ("s-P" . js2r-drag-stuff-up)
-             ("s-N" . js2r-drag-stuff-down)
-             ("C-c C-o" . js2r-order-vars-by-length)
-             ("C-c C-s" . js2r-toggle-var-declaration)
-             ("C-c C-v" . js2r-extract-var)
-             ("C-c C-i" . js2r-inline-var)
-             ("C-c C-f" . js2r-extract-function)
-             ("C-c C-r" . js2r-rename-var)
-             ("C-c ." . js2-jump-to-definition)
-             ("C-k" . js2r-kill)
-             ("s-w" . rjsx-mode)
-             ("M-." . js2-jump-around)
-             ("M-," . pop-tag-mark)
-             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
-             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
-             ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
-
 (use-package comint-mode
   :init
   (add-hook
@@ -554,15 +479,6 @@
                   (set (make-local-variable 'compile-command)
                        (let ((file (file-name-sans-extension buffer-file-name)))
                          (format "g++ %s -o %s" buffer-file-name file))))))
-
-(use-package json :ensure json-mode
-  :mode ("\\.json" . json-mode)
-  :config
-  (add-hook 'json-mode-hook
-            '(lambda ()
-               (setq-local js-indent-level 2)
-               (local-set-key (kbd "<s-return>") '(lambda () (interactive) (dotimes (i 2) (smart-newline))))
-               (local-set-key (kbd "<s-S-return>") '(lambda () (interactive) (dotimes (i 4) (smart-newline)))))))
 
 (use-package goto-addr :ensure t :after markdown-mode)
 (use-package browse-url :ensure t
@@ -768,23 +684,6 @@
         ("s-+" . hs-hide-level))
 (add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
 
-(defun npm--get-package-json ()
-  "Get a package.json for a project and list its scripts"
-  (when (not (locate-dominating-file (buffer-file-name) "package.json"))
-    (error "Could not find `package.json'"))
-  (let* ((package-path (locate-dominating-file (buffer-file-name) "package.json"))
-         (package-file (format "%s/package.json" package-path))
-         (package-json (json-read-file package-file)))
-    (let-alist package-json (-map 'car .scripts))))
-
-(global-set-key (kbd "C-x C-n") 'npm-run)
-(defun npm-run ()
-  (interactive)
-  "Completing read a list of projects scripts"
-  (let ((scripts (npm--get-package-json)))
-    (ivy-read "npm run: " scripts
-              :action (lambda (match) (compile (format "npm run %s" match))))))
-
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
   :defer t
@@ -892,6 +791,7 @@
   (global-prettify-symbols-mode)
   (setq prettify-symbols-unprettify-at-point t))
 
+(use-package mode-javascript :load-path "init" :defer 5)
 ;;------------------
 ;; Themes
 ;;------------------
