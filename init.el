@@ -54,6 +54,7 @@
 
 (eval-when-compile (require 'use-package))
 (use-package bind-key :ensure t)
+(use-package try :ensure t :commands (try))
 
 (use-package functions :load-path "init")
 
