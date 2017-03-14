@@ -386,18 +386,6 @@
   (defun counsel-ag-project ()
       (interactive)
       (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
-  (defun counsel-git-grep-from-isearch ()
-    "Invoke `counsel-git-grep' from isearch."
-    (interactive)
-    (let ((input (if isearch-regexp
-                     isearch-string
-                   (regexp-quote isearch-string))))
-        (isearch-exit)
-        (counsel-git-grep nil input)))
-    (global-set-key (kbd "<f9>")
-                    (lambda () (interactive)
-                      (call-interactively 'counsel-load-theme)
-                      (call-interactively 'counsel-set-font)))
 
   :bind ([f2]      . counsel-git-grep)
         ("C-x n"   . counsel-bookmark)
