@@ -48,14 +48,8 @@
   (flycheck-add-mode 'clojure-cider-kibit 'clojure-mode)
   (flycheck-add-mode 'clojure-cider-eastwood 'clojure-mode))
 
-(use-package flycheck-pos-tip :ensure t :after (cider clojure)
-  :config
-  (setq pos-tip-background-color (face-background 'company-tooltip)
-        pos-tip-foreground-color (face-foreground 'company-tooltip)))
-
 (add-hook 'clojure-mode-hook '(lambda () (interactive) (setq-local flycheck-display-errors-function 'flycheck-pos-tip-error-messages)))
 (add-hook 'clojure-mode-hook '(lambda () (interactive) (setq-local eldoc-idle-delay 1)))
-(add-hook 'clojure-mode-hook 'flycheck-pos-tip-mode)
 (add-hook 'clojure-mode-hook 'eldoc-mode)
 
 (provide 'mode-clojure)
