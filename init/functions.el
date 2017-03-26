@@ -432,21 +432,6 @@
              (file-buffer (find-file file-name)))
         (with-current-buffer file-buffer (call-interactively 'vc-ediff))))))
 
-(defun you-can-never-leave (&optional full)
-  (interactive)
-  (let ((playing
-         (string-equal "playing\n"
-          (shell-command-to-string "osascript -e \"if app \\\"iTunes\\\" is running then tell app \\\"iTunes\\\" to get player state\""))))
-    (when (not playing)
-      (if full
-          (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/hotel-california.m4a -ss 04:14.3 && exit 0\\\"\"")
-        (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/youcanneverleave.wav && exit 0\\\"\""))))
-  (restart-emacs))
-
-(defun gallery-music ()
-  (interactive)
-  (shell-command "osascript -e \"tell application \\\"Terminal\\\" to do script \\\"mplayer ~/.emacs.d/elisp/music/gallery.m4a && exit 0\\\"\""))
-
 (defun dired-mark-duplicate-dirs ()
   "Mark all directories which have a common part."
   (interactive)
@@ -457,22 +442,6 @@
          (dirs (split-string (shell-command-to-string cmd) " ")))
     (mapc (lambda (dir) (dired-mark-files-regexp dir)) dirs)))
 
-(defun ac-lambda (&rest sources)
-  "Sets up autocomplete mode and local SOURCES"
-  (interactive)
-  (setq-local ac-sources sources))
-
-(defun -move-link (f)
-  (funcall f "http[s]\\{0,1\\}://[a-z0-9#%\./_-]+"))
-
-(defun previous-link ()
-  (interactive)
-  (-move-link 'search-backward-regexp))
-
-(defun next-link ()
-  (interactive)
-  (-move-link 'search-forward-regexp))
-
 (defun json-comma? ()
   "Whether or not to use a comma at the end of a json snippet"
   (with-current-buffer (buffer-name)
@@ -481,29 +450,6 @@
              (quote (and (goto-char restore) (search-forward "\"" nil t)))
              (brace (and (goto-char restore) (search-forward "}" nil t))))
         (when (and quote brace) (< quote brace))))))
-
-;; (defun bemify-emmet-string (expr)
-;;   "Pre process an emmet string to be bemified."
-;;  (let* ((split (split-string (car expr) "|"))
-;;         (filter (cadr split))
-;;         (emmet-s (car split)))
-;;    (when (equal filter "bem")
-;;      (let ((bemified
-;;             (with-temp-buffer
-;;               (insert emmet-s)
-;;               (goto-char (point-min))
-;;               (while (re-search-forward "\\.\\([a-zA-Z]+[a-zA-Z0-9]*\\)" (point-max) t)
-;;                 (let ((base-class (match-string 1))
-;;                       (restore-point (point)))
-;;                   (while (re-search-forward "\\.[a-z]*?\\([_-]\\{2\\}\\)" (point-max) t)
-;;                     (replace-match (format ".%s%s" base-class (match-string 1))))
-;;                   (goto-char restore-point)))
-;;               (buffer-string))))
-;;        (when (not (equal emmet-s bemified))
-;;          (with-current-buffer (current-buffer)
-;;            (goto-char (cadr expr))
-;;            (delete-region (cadr expr) (caddr expr))
-;;            (insert bemified)))))))
 
 (defun dir-depth (dir)
   "Gives depth of directory DIR"
@@ -524,11 +470,6 @@
        ((> jshintrc-depth eslintrc-depth) 'javascript-jshint)
        (t 'javascript-eslint)))))
 
-(defun other-window-everything (thing)
-  (cond
-   ((get-buffer thing) (switch-to-buffer-other-window thing))
-   (t (find-file-other-window thing))))
-
 (defmacro defrepl (name executable)
   `(prog1
        (defun ,(intern (format "%s-repl" name)) ()
@@ -543,6 +484,7 @@
 
 (defrepl "ramda" "ramda-repl")
 (defrepl "node" "node")
+(defrepl "elixir" "iex")
 (defrepl "lodash" "n_")
 
 (defmacro defewwmenu (name query)
@@ -603,50 +545,6 @@
       (comint-send-string proc (format "%s\n" content)))))
 
 ;; Docker helper functions
-
-(defun docker-containers--remove-trailing-whitespace (proc string)
-  "Remove trailing whitespace from PROC on STRING."
-  (when (buffer-live-p (process-buffer proc))
-    (with-current-buffer (process-buffer proc)
-      (let ((inhibit-read-only t))
-        (goto-char (process-mark proc))
-        (insert string)
-        (delete-trailing-whitespace)
-        (set-marker (process-mark proc) (point))))))
-
-(defun docker-containers-logs-follow-all ()
-  "Follow all currently running docker containers"
-  (interactive)
-  (--map (docker-containers-logs-follow (car it))
-         (docker-containers-entries)))
-
-(defun docker-containers-logs-follow (image)
-  "Create a process buffer to follow an image"
-  (let* ((cmd (format "docker logs -f --tail=50 %s" image))
-         (bufname (format "*docker-logs:%s*" image))
-         (buf (get-buffer bufname))
-         (proc (get-buffer-process buf)))
-
-    (when (and buf proc)
-      (set-process-query-on-exit-flag proc nil)
-      (kill-buffer buf))
-
-    (prog1 (setq buf (get-buffer-create bufname))
-      (with-current-buffer bufname
-        (compilation-mode)))
-
-    (let ((proc (start-process-shell-command bufname buf cmd)))
-      (set-process-filter proc #'docker-containers--remove-trailing-whitespace))
-    (get-buffer bufname)))
-
-(defun docker-containers-logs-follow-selection ()
-  "Log the currently selected docker container"
-  (interactive)
-  (let ((cb (current-buffer)))
-    (switch-to-buffer-other-window
-     (docker-containers-logs-follow (tabulated-list-get-id)))
-    (select-window (get-buffer-window cb))))
-
 (defun org-color-tag (tag col)
     (while (re-search-forward tag nil t)
       (add-text-properties (match-beginning 0) (point-at-eol)
@@ -667,18 +565,7 @@
             ;; This would override `fill-column' if it's an integer.
             (emacs-lisp-docstring-fill-column t))
         (fill-paragraph nil region)))
-
-(global-set-key (kbd "<s-f12>") 'dgc/save-or-restore-window-config)
-(defvar dgc/window-config nil "A variable to store current window config")
-(defun dgc/save-or-restore-window-config ()
-  (interactive)
-  (if dgc/window-config
-      (progn (message "♺ Restoring window layout")
-           (set-window-configuration dgc/window-config)
-           (setq dgc/window-config nil))
-    (message "✓ Saving window layout")
-    (setq dgc/window-config (current-window-configuration))))
-
+    
 (global-set-key (kbd "M-K") 'kill-assignment)
 (defun kill-assignment ()
   (interactive)
@@ -757,15 +644,16 @@
            (if livedown-open "--open" "")))
   (print (format "%s rendered @ %s" buffer-file-name livedown-port) (get-buffer "emacs-livedown-buffer")))
 
-;; ;;;;;;;;;;;;;;;;;;;;;;; ;;
-;; Sticky window functions ;;
-;; ;;;;;;;;;;;;;;;;;;;;;;; ;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
+;; Sticky window & layout saving functions ;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
 (defun sticky-window (&optional w state)
   "Sets WINDOW to be sticky. Defaults to `selected-window'"
   (interactive)
   (let* ((window (or w (selected-window)))
          (stick (if state (car state) (not (window-dedicated-p window)))))
-    (set-window-dedicated-p window stick)))
+    (set-window-dedicated-p window stick)
+    (force-window-update)))
 
 (defun sticky-window-delete-other-windows ()
   "Delete all other windows that are not marked to be visible with `sticky-window-keep-window-visible'."
@@ -777,8 +665,29 @@
   (interactive)
   (--map (sticky-window it '(nil)) (window-list)))
 
+(defvar window-config nil "A variable to store current window config")
+(defun window-config--restore (&optional unset)
+  (interactive)
+  (message "♺ Restoring window layout")
+  (set-window-configuration window-config)
+  (when unset (setq window-config nil)))
+
+(defun window-config--save ()
+  (interactive)
+  (message "✓ Saving window layout")
+  (setq window-config (current-window-configuration)))
+
+(defun window-config-save-or-restore ()
+  (interactive)
+  (if window-config (window-config--restore t) (window-config--save)))
+
 (global-set-key [f10] 'sticky-window)
 (global-set-key (kbd "<s-f10>") 'sticky-window-unstick-all)
+
+(global-set-key [f9] 'window-config--restore)
+(global-set-key (kbd "<s-f9>") 'window-config-save-or-restore)
+(global-set-key (kbd "<S-f9>") 'window-config--save)
+
 (global-set-key (kbd "C-x C-z") 'sticky-window-delete-other-windows)
 
 (provide 'functions)

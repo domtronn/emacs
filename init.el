@@ -441,7 +441,11 @@
   (avy-setup-default)
   (bind-keys ("H-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
 
-(use-package wgrep-ag :ensure t :after ag)
+(use-package wgrep-ag :ensure t :after ag
+  :config (bind-keys :map ag-mode-map
+                     ("W" . wgrep-change-to-wgrep-mode)
+                     ("S" . wgrep-save-all-buffers)
+                     ("F" . wgrep-finish-edit)))
 (use-package ag
   :ensure t
   :commands (ag-regexp ag-project-regexp)
