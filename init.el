@@ -63,13 +63,10 @@
 
 (use-package linum-off :ensure t)
 
-(use-package mon-css-color
-  :load-path "elisp"
-  :init (autoload 'css-color-mode "mon-css-color" "" t)
-  :config (css-color-global-mode))
-
-(use-package rainbow-delimiters :ensure t
-  :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(use-package rainbow-delimiters :ensure t :defer 1
+  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(use-package rainbow-mode :ensure t :defer 1
+  :init (add-hook 'prog-mode-hook 'rainbow-mode))
 
 (use-package paren :ensure t :disabled t)
 
@@ -582,7 +579,6 @@
 
 (use-package compile :ensure t :defer t
   :config
-  (add-hook 'compilation-mode-hook 'css-color-mode)
   (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3))
   :bind ("C-x C-c" . compile))
 
@@ -667,7 +663,6 @@
 
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'css-color-mode)
 
 (use-package hideshowvis :ensure t
   :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
@@ -715,7 +710,7 @@
 (use-package spaceline :after powerline :ensure t
   :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
 
-(use-package winum :ensure t
+(use-package winum :ensure t :defer 1
   :init
   (dotimes (n 10)
     (global-set-key (kbd (format "s-%s" n)) (intern (format "winum-select-window-%s" n))))
