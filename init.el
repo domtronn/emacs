@@ -783,8 +783,9 @@
   :config
   (setq prettify-symbols-unprettify-at-point t))
 
-(use-package mode-javascript :load-path "init" :defer 5)
-(use-package mode-clojure :load-path "init" :defer 5)
+(use-package eslint-reader :load-path "elisp/eslint-reader" :after js2-mode)
+(use-package mode-javascript :load-path "init" :defer 1)
+(use-package mode-clojure :load-path "init" :defer 1)
 
 ;;------------------
 ;; Themes

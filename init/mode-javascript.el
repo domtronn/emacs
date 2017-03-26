@@ -27,10 +27,6 @@
 ;;; Code:
 
 ;;;; Linting
-(use-package eslint-reader
-  :load-path "../elisp/eslint-reader"
-  :after js2-mode)
-
 (use-package eslintd-fix :after js2-mode :ensure t
   :init (add-hook 'js2-mode-hook '(lambda () (interactive) (when (locate-dominating-file (buffer-file-name) ".eslintrc.json") (eslintd-fix-mode)))))
 
@@ -79,9 +75,10 @@
   (advice-add
    'key-combo-pre-command-function
    :around '(lambda (orig-f &rest args)
-              (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-                           (member (this-command-keys) '("=" "-" "+")))
-                (apply orig-f args)))))
+              (when (member major-mode '("rjsx-mode"))
+                (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+                             (member (this-command-keys) '("=" "-" "+")))
+                  (apply orig-f args))))))
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
@@ -90,7 +87,7 @@
             '(lambda ()
                (setq-local js-indent-level 2)
                (local-set-key (kbd "<s-return>") 'send-to-repl)
-               (local-set-key (kbd "<s-S-return>") '(lambda () (interactive) (dotimes (i 4) (smart-newline)))))))
+               (local-set-key (kbd "<kp-enter>") '(lambda () (interactive) (dotimes (i 2) (smart-newline)))))))
 
 (use-package js2-mode
   :mode "\\.js$"
@@ -137,7 +134,7 @@
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<s-return>" . send-to-repl)
-             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
+             ("<kp-enter>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
