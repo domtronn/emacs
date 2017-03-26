@@ -109,7 +109,7 @@
   :bind ("RET" . smart-newline))
 
 (use-package smartparens-config :after smartparens)
-(use-package smartparens :ensure t :demand :defer t
+(use-package smartparens :ensure t :defer 1
   :config
   (smartparens-global-mode)
   (sp-local-pair
@@ -136,7 +136,7 @@
               (if (get-buffer-window "*compilation*")
                   (delete-window (get-buffer-window "*compilation*"))
                 (popwin:popup-buffer "*compilation*" :noselect t :dedicated t :stick t :tail t))))
-  :bind 
+  :bind
   ("C-x e" . popwin:flycheck-errors)
   ("C-x m" . popwin:messages)
   ("C-x c" . popwin:compilation))
@@ -236,7 +236,7 @@
 (use-package github-browse-file :ensure t :commands (github-browse-file))
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
-(use-package git-gutter-fringe :ensure t :demand :defer 5
+(use-package git-gutter-fringe :ensure t :defer 5
   :if window-system
   :config (global-git-gutter-mode)
   (defhydra hydra-git-gutter (global-map "C-x v v")
@@ -248,21 +248,24 @@
         ("C-x v n" . git-gutter:next-hunk))
 
 (use-package image+ :ensure t :after 'image-mode
+  :init (add-hook 'image-mode-hook '(lambda () (require 'image+)))
   :config (bind-keys :map image-mode-map
              ("0" . imagex-sticky-restore-original)
              ("+" . imagex-sticky-maximize)
              ("=" . imagex-sticky-zoom-in)
              ("-" . imagex-sticky-zoom-out)))
 
+(add-hook 'dired-load-hook '(lambda () (require 'dired+)))
 (use-package dired+ :ensure t
   :after 'dired
   :config
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
   (add-hook 'dired-mode-hook '(lambda () (local-set-key (kbd "C-p") 'previous-line)))
-  (bind-keys :map dired-mode-map
-             ("M-r" . wdired-change-to-wdired-mode)
-             ("q" . kill-all-dired-buffers)))
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (local-set-key (kbd "W") (lambda () (interactive) (wdired-change-to-wdired-mode)))
+              (local-set-key (kbd "q") 'kill-all-dired-buffers))))
 
 (use-package dired-filter :ensure t
   :after 'dired
@@ -420,8 +423,6 @@
 
 (use-package flx :ensure t :after ivy)
 (use-package ivy-hydra :ensure t :after ivy)
-(use-package ivy-rich :ensure t :after ivy
-  :config (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
 (use-package ivy :ensure t :after avy
   :config
   (ivy-mode)
@@ -514,10 +515,7 @@
   (bind-keys* ("M-<left>" . backward-word)
               ("<M-S-left>" . backward-word)
               ("M-<right>" . forward-word)
-              ("<M-S-right>" . forward-word))
-  (bind-keys :map markdown-mode-map
-             ("s-f" . next-link)
-             ("s-b" . previous-link)))
+              ("<M-S-right>" . forward-word)))
 
 (use-package livedown
   :after markdown-mode
@@ -724,7 +722,6 @@
 
 (use-package spaceline-custom :after spaceline :load-path "init/spaceline-custom")
 (use-package spaceline-colors :after spaceline-custom :load-path "init/spaceline-colors"
-  :init (add-hook 'after-init-hook 'spaceline-update-faces)
   :config (advice-add 'load-theme :after 'spaceline-update-faces))
 
 (use-package spaceline :after powerline :ensure t
