@@ -43,7 +43,7 @@
 (spaceline-define-segment
     ati-window-numbering "An `all-the-icons' window numbering segment"
     (propertize (format "%c" (+ 9311 (winum-get-number))) 'face `(:height 1.5 :inherit))
-    :tight t :when (fboundp 'winum-mode))
+    :tight t :when (and (fboundp 'winum-mode) (> (length (window-list)) 1)))
 
 (spaceline-define-segment
     ati-projectile "An `all-the-icons' segment for current `projectile' project"
@@ -73,6 +73,7 @@
                     'display '(raise 0.0)
                     'face `(:height ,(if spaceline-ati-slim 1.2 1.1) :family ,(all-the-icons-icon-family-for-buffer) :inherit)))));
 
+(defvar spaceline-ati-buffer-highlight nil)
 (spaceline-define-segment
     ati-buffer-id "An `all-the-icons' segment for the current buffer id"
     (if (fboundp 'projectile-project-root)
@@ -95,7 +96,10 @@
                          'help-echo (format "Major-mode: `%s`" major-mode)))
            (propertize (format "%s" file)
                        'face (if (and spaceline-ati-highlight-buffer path)
-                                 `(:height ,(if spaceline-ati-slim 1.0 0.8) :background ,(face-background default-face) :foreground ,(face-background highlight-face))
+                                 `(:height ,(if spaceline-ati-slim 1.0 0.8)
+                                           :weight ,(if spaceline-ati-buffer-highlight 'extra-bold 'normal)
+                                           :background ,(face-background default-face)
+                                           :foreground ,(or spaceline-ati-buffer-highlight (face-background highlight-face)))
                                `(:height ,(if spaceline-ati-slim 1.0 0.8) :inherit))
                        'display `(raise ,(if spaceline-ati-slim 0.1 0.2))
                        'help-echo (format "Major-mode: `%s`" major-mode))))
@@ -467,7 +471,8 @@
                               'mouse-1 '(lambda () (interactive)
                                           (let* ((window (window-at (cadr (mouse-position)) (cddr (mouse-position))))
                                                  (dedicated (window-dedicated-p window)))
-                                            (set-window-dedicated-p window (not dedicated)))))))
+                                            (set-window-dedicated-p window (not dedicated))
+                                            (force-window-update))))))
     :when t)
 
 (defun spaceline-line-separator (&optional padding)
@@ -523,12 +528,12 @@ the directions of the separator."
 (spaceline-compile
  "ati"
  '(
-   ((ati-modified ati-bookmark-favourite ati-window-numbering ati-buffer-size) :face highlight-face :skip-alternate t)
+   ((ati-modified ati-bookmark-favourite ati-sticky-indicator ati-window-numbering ati-buffer-size) :face highlight-face :skip-alternate t)
    ;; left-active-3
    ati-left-1-separator
    ((ati-projectile ati-mode-icon ati-buffer-id) :face default-face)
    ati-left-2-separator
-   ((ati-process ati-position ati-region-info ati-sticky-indicator ati-fullscreen-indicator ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
+   ((ati-process ati-position ati-region-info ati-fullscreen-indicator ati-text-scale-amount) :face highlight-face :separator (if spaceline-ati-slim " " (spaceline-line-separator " ")))
    ati-left-3-separator
    ati-left-inactive-separator
    ((ati-vc-icon ati-git-stats ati-flycheck-status ati-flycheck-info ati-package-updates purpose) :separator (if spaceline-ati-slim " " " · ") :face other-face)

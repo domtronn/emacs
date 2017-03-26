@@ -23,8 +23,6 @@
 ;;; Code:
 (require 'json)
 
-
-
 (defun spaceline--set-face (face alist)
   "Set FACE to be the foreground & background defined in ALIST."
   (let-alist alist (set-face-attribute face nil :foreground .foreground :background .background)))
@@ -38,7 +36,7 @@
      (inactive (default (background . "#1d2021") (foreground . "#a89984"))
                (other   (background . "#1d2021") (foreground . "#a89984"))
                (middle  (background . "#282828")))))
-   
+
    (creamsody
     ((active (highlight (background . "#529F96") (foreground . "#1d2021"))
              (default   (background . "#DFE5C5") (foreground . "#1d2021"))
@@ -46,8 +44,9 @@
              (middle    (background . "#282C32")))
      (inactive (default (background . "#1d2021") (foreground . "#a89984"))
                (other   (background . "#1d2021") (foreground . "#a89984"))
-               (middle  (background . "#282C32")))))
-   
+               (middle  (background . "#282C32")))
+     (buffer-highlight . "#1d2021")))
+
    (atom-one-dark
     ((active (highlight (background . "#98C379") (foreground . "#1d2021"))
              (default   (background . "#3E4451") (foreground . "#AAAAAA"))
@@ -56,7 +55,7 @@
      (inactive (default (background . "#1d2021") (foreground . "#666D7A"))
                (other   (background . "#1d2021") (foreground . "#666D7A"))
                (middle  (background . "#282C32")))))
-   
+
    (forest-blue
     ((active (highlight (background . "#fc5a7b") (foreground . "#1d2021"))
              (default   (background . "#f42f56") (foreground . "#232a2f"))
@@ -65,7 +64,7 @@
      (inactive (default (background . "#253c41") (foreground . "#506064"))
                (other   (background . "#253c41") (foreground . "#506064"))
                (middle  (background . "#203439")))))
-   
+
    (darktooth
     ((active (highlight (background . "#8EC07C") (foreground . "#282828"))
              (default   (background . "#506E59") (foreground . "#8EC07C"))
@@ -74,7 +73,7 @@
      (inactive (default (background . "#506E59") (foreground . "#87AF87"))
                (other   (background . "#506E59") (foreground . "#87AF87"))
                (middle  (background . "#282828")))))
-   
+
    (peacock
     ((active (highlight (background . "#FF5D38") (foreground . "#262626"))
              (default   (background . "#3e3c38") (foreground . "#E0E4CC"))
@@ -82,7 +81,7 @@
      (inactive (default (background . "#3e3c38") (foreground . "#524e48"))
                (other   (background . "#3e3c38") (foreground . "#524e48"))
                (middle  (background . "#3e3c38")))))
-   
+
    (tangotango
     ((active (highlight (background . "#edd400") (foreground . "#262626"))
              (other     (background . "#252b2b") (foreground . "#bbbbbc"))
@@ -91,14 +90,14 @@
      (inactive (default (background . "#2e3434") (foreground . "#eeeeec"))
                (other   (background . "#2e3434") (foreground . "#eeeeec"))
                (middle  (background . "#2e3434")))))
-   
+
    (zenburn
     ((active (other     (background . "#494949") (foreground . "#DCDCCC"))
              (default   (background . "#383838") (foreground . "#DCDCCC"))
              (highlight (background . "#AFD8AF") (foreground . "#383838")))
      (inactive (default (background . "#383838") (foreground . "#1b1b1b"))
                (middle  (background . "#383838")))))
-   
+
    (dracula
     ((active (other     (background . "#373844") (foreground . "#DCDCCC"))
              (default   (background . "#44475a") (foreground . "#f8f8f2"))
@@ -106,7 +105,7 @@
              (middle    (background . "#282a36")))
      (inactive (default (background . "#373844") (foreground . "#565761"))
                (middle  (background . "#373844")))))
-   
+
    (spacemacs-light
     ((active (highlight (background . "#9380b2") (foreground . "#edf2e9"))
              (other     (background . "#e3dedd") (foreground . "#655370"))
@@ -114,7 +113,7 @@
      (inactive (default (background . "#efeae9") (foreground . "#a094a2"))
                (other   (background . "#efeae9") (foreground . "#a094a2"))
                (middle  (background . "#efeae9")))))
-   
+
    (kaolin
     ((active (highlight (background . "#d2ab5d") (foreground . "#181818"))
              (default   (background . "#1e3538") (foreground . "#c5c8c6"))
@@ -137,7 +136,9 @@ ARGS is needed to allow for this function to be used as advice"
 
         (when .inactive.default (spaceline--set-face 'powerline-inactive1       .inactive.default))
         (when .inactive.other   (spaceline--set-face 'mode-line-inactive        .inactive.other))
-        (when .inactive.middle  (spaceline--set-face 'powerline-inactive2       .inactive.middle))))))
+        (when .inactive.middle  (spaceline--set-face 'powerline-inactive2       .inactive.middle))
+
+        (setq spaceline-ati-buffer-highlight (if .buffer-highlight .buffer-highlight nil))))))
 
 (provide 'spaceline-colors)
 ;;; spaceline-colors.el ends here
