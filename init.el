@@ -298,13 +298,30 @@
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c C-c" . nameless-insert-name)))
 
+(use-package flycheck-stylelint
+  :after (web-mode)
+  :load-path "elisp"
+  :config
+  (flycheck-add-mode 'scss 'web-mode)
+  (flycheck-add-mode 'css-stylelint 'web-mode)
+  (flycheck-add-mode 'css-stylelint 'scss-mode)
+  (setq flycheck-stylelint-args '("--syntax" "scss" "--formatter" "json"))
+  (setq flycheck-css-stylelint-executable "stylelint")
+  (setq flycheck-stylelintrc ".stylelintc.json")
+  (advice-add
+   'key-combo-pre-command-function
+   :around '(lambda (orig-f &rest args)
+              (when (eq major-mode "web-mode")
+                (unless (member (this-command-keys) '("=" "-" "+"))
+                  (apply orig-f args))))))
+
 (use-package flycheck :ensure t
   :config (global-flycheck-mode)
   ;; npm install -g eslint_d
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint_d")
   (setq flycheck-eslintrc ".eslintrc.json")
-  (setq-default flycheck-disabled-checkers '(javascript-jshint))
+  (setq-default flycheck-disabled-checkers '(javascript-jshint scss))
   (bind-keys :map flycheck-mode-map
              ("C-c C-e" . flycheck-list-errors)
              ("C-c C-n" . flycheck-next-error)
