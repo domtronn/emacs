@@ -507,12 +507,7 @@
 (use-package sudo-edit :ensure t
   :commands (sudo-edit))
 
-(use-package scss-mode :ensure t
-  :mode ("\\.scss$" . scss-mode)
-  :config
-  (bind-keys :map scss-mode-map
-             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
-             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))))
+(use-package scss-mode :ensure t :mode ("\\.scss" . scss-mode))
 (use-package css-mode :ensure t :mode ("\\.css$" . css-mode))
 
 (use-package lisp-mode
@@ -520,11 +515,13 @@
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook
-            '(lambda () (ac-lambda 'ac-source-functions
-                              'ac-source-variables
-                              'ac-source-yasnippet
-                              'ac-source-symbols
-                              'ac-source-words-in-same-mode-buffers)))
+            '(lambda () (setq-local
+                    ac-sources
+                    '(ac-source-functions
+                      ac-source-variables
+                      ac-source-yasnippet
+                      ac-source-symbols
+                      ac-source-words-in-same-mode-buffers))))
   :config
   (bind-keys :map emacs-lisp-mode-map
              ("C-c n" . nameless-mode)
@@ -617,27 +614,29 @@
   (bind-keys :map web-mode-map
              ("M-;" . semi-colon-end)
              ("C-j" . join-line)
-             ("s-=" . web-mode-fold-or-unfold)
-             ("<M-S-return>" . web-mode-navigate)
              ("<backtab>" . web-mode-complete)
              ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
-             ("s-/" . web-mode-comment-or-uncomment))
+             ("s-/" . web-mode-comment-or-uncomment)
+             ("§" . company-complete))
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-attr-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
   (setq web-mode-auto-quote-style 1)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-enable-auto-expanding t)
-  (setq web-mode-ac-sources-alist
-        '(("html" . (ac-source-html-tag
-                     ac-source-words-in-same-mode-buffers
-                     ac-source-html-attr))
-          ("css" . (ac-source-css-selector
-                    ac-source-css-id
-                    ac-source-css-property)))))
+  (add-hook 'web-mode-hook 'company-mode)
+  (add-hook 'web-mode-hook '(lambda () (auto-complete-mode 0)))
+  (add-hook 'web-mode-hook '(lambda () (when (equal web-mode-content-type "css") (flycheck-select-checker 'css-stylelint)))))
 
 ;; Custom Auto Complete Sources
-(use-package company :ensure t)
+(use-package company :ensure t :defer 1
+  :config
+  (setq company-show-numbers t)
+  (bind-keys :map company-active-map
+             ("C-n" . company-select-next)
+             ("C-p" . company-select-previous)))
+
 (use-package auto-complete-config :after auto-complete)
 (use-package auto-complete :ensure t
   :config
