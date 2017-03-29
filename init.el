@@ -808,6 +808,7 @@
 (use-package tangotango-theme :ensure t :defer t)
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
+(use-package nord-theme :ensure t :defer t)
 
 (use-package spacemacs-theme :ensure t :defer t)
 
@@ -819,7 +820,7 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'forest-blue))
+  (load-theme 'nord))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:

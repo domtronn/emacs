@@ -111,7 +111,7 @@
      (inactive (default (background . "#efeae9") (foreground . "#a094a2"))
                (other   (background . "#efeae9") (foreground . "#a094a2"))
                (middle  (background . "#efeae9")))))
-
+   
    (kaolin
     ((active (highlight (background . "#d2ab5d") (foreground . "#181818"))
              (default   (background . "#1e3538") (foreground . "#c5c8c6"))
@@ -119,7 +119,11 @@
              (middle    (background . "#152628")))
      (inactive (default (background . "#152628") (foreground . "#39656b"))
                (other   (background . "#152628") (foreground . "#39656b"))
-               (middle  (background . "#152628")))))))
+               (middle  (background . "#152628")))))
+   
+   (nord
+    ((active (highlight (background . "#D8DEE9") (foreground . "#2E3440")))))
+   ))
 
 (defun spaceline-update-faces (&rest args)
   "Update the faces for the current theme from `custom-enabled-themes'.
