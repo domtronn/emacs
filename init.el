@@ -31,13 +31,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Code:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when load-file-name
-  (defconst base-path (file-name-directory load-file-name)))
-
-(setq custom-file (concat base-path "init/custom.el"))
+(setq custom-file (expand-file-name "init/custom.el" user-emacs-directory))
 
 (require 'package)
-(setq-default package-user-dir (concat base-path "packages/elpa"))
+(setq-default package-user-dir (expand-file-name "packages/elpa" user-emacs-directory))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize nil)
 (run-with-idle-timer 900 t 'package-refresh-contents)
@@ -61,6 +58,7 @@
 
 ;; !!! - For package updating comment this region
 
+(use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
 
 (use-package rainbow-delimiters :ensure t :defer 1
@@ -353,7 +351,7 @@
   :config
   (recentf-mode)
   (projectile-mode)
-  (require 'projectile-ignore (concat base-path ".projectile-ignore.el"))
+  (require 'projectile-ignore (expand-file-name "var/projectile/ignore.el" user-emacs-directory))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-project-root-files-bottom-up
@@ -556,8 +554,7 @@
 
 (add-hook 'after-init-hook 'yas-global-mode)
 (use-package yasnippet :ensure t
-  :commands (yas-global-mode yas-minor-mode)
-  :config   (setq yas-snippet-dirs (concat base-path "/snippets")))
+  :commands (yas-global-mode yas-minor-mode))
 
 (use-package font-lock+ :ensure t :after all-the-icons)
 (use-package all-the-icons
@@ -805,8 +802,8 @@
 ;; Themes
 ;;------------------
 (use-package keys :load-path "init")
-(load-file (concat base-path "init/custom.el"))
-(load-file (concat base-path "init/advice.elc"))
+(load-file (expand-file-name "init/custom.el" user-emacs-directory))
+(load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
 (use-package gruvbox-theme :ensure t :defer t)
