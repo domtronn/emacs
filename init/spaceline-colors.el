@@ -21,8 +21,6 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'json)
-
 (defun spaceline--set-face (face alist)
   "Set FACE to be the foreground & background defined in ALIST."
   (let-alist alist (set-face-attribute face nil :foreground .foreground :background .background)))

@@ -121,7 +121,6 @@
 
 (use-package popup :ensure t :defer t)
 (use-package popwin :ensure t
-  :demand
   :config (popwin-mode 1)
           (setq popwin:close-popup-window-timer-interval 0.1)
           (setq popwin:close-popup-window-timer nil)
@@ -192,8 +191,6 @@
              ("s-f" . org-next-link)
              ("s-o" . org-open-at-point)
              ("s-b" . org-previous-link))
-  (bind-keys :map org-agenda-mode-map
-             ("I" . org-start-ticket))
   (org-babel-do-load-languages 'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
@@ -349,7 +346,6 @@
   :config
   (recentf-mode)
   (projectile-mode)
-  (require 'projectile-ignore (expand-file-name "var/projectile/ignore.el" user-emacs-directory))
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
   (setq projectile-project-root-files-bottom-up
@@ -434,7 +430,6 @@
         ("C-x b"   . ivy-switch-buffer))
 
 (bind-keys :map minibuffer-local-map ("s-k" . delete-minibuffer-contents))
-
 (use-package isearch
   :bind ("H-s" . isearch-forward-symbol-at-point)
         ("C-s" . isearch-forward-regexp)
@@ -452,8 +447,7 @@
   ("H-'" . avy-goto-word-1)
   ("H-\"" . avy-goto-char)
   :config
-  (avy-setup-default)
-  (bind-keys ("H-A" . (lambda () (interactive) (call-interactively 'avy-goto-word-1) (forward-word)))))
+  (avy-setup-default))
 
 (use-package wgrep-ag :ensure t :after ag
   :config (bind-keys :map ag-mode-map
