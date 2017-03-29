@@ -253,9 +253,8 @@
              ("=" . imagex-sticky-zoom-in)
              ("-" . imagex-sticky-zoom-out)))
 
-(add-hook 'dired-load-hook '(lambda () (require 'dired+)))
 (use-package dired+ :ensure t
-  :after 'dired
+  :after dired
   :config
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
@@ -266,7 +265,7 @@
               (local-set-key (kbd "q") 'kill-all-dired-buffers))))
 
 (use-package dired-filter :ensure t
-  :after 'dired
+  :after dired
   :init (setq dired-filter-group-saved-groups
               '(("default"
                  ("JavaScript" (extension "js" "json"))
@@ -278,9 +277,8 @@
                      ("C-o" . project-find-file)))
 
 (use-package dired-quick-sort :ensure t
-  :after 'dired
-  :config
-  (dired-quick-sort-setup))
+  :after dired
+  :config (dired-quick-sort-setup))
 
 (use-package windmove :ensure t
   :bind ("<M-s-right>" . windmove-right)
