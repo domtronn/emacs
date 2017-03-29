@@ -138,7 +138,7 @@
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2 t)
+ '(js-indent-level 2)
  '(js-injector-get-relative-func (quote js-injector--get-projectile-files-alist))
  '(js-injector-get-requirejs-func
    (quote
@@ -325,6 +325,14 @@
  '(cfw:face-today ((t (:inherit font-lock-warning-face :weight bold))))
  '(cfw:face-today-title ((t (:background "#D24D57" :foreground "#22313F" :weight bold))))
  '(cfw:face-toolbar-button-off ((t (:inherit default :weight bold))))
+ '(diredp-compressed-file-name ((t (:inherit dired-warning))))
+ '(diredp-compressed-file-suffix ((t (:inherit dired-warning :weight bold))))
+ '(diredp-dir-heading ((t (:inherit dired-header))))
+ '(diredp-dir-name ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
+ '(diredp-dir-priv ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
+ '(diredp-file-name ((t (:inherit default))))
+ '(diredp-file-suffix ((t (:inherit dired-warning))))
+ '(diredp-symlink ((t (:inherit dired-symlink))))
  '(flycheck-error ((t (:underline "#74CBC4"))))
  '(flycheck-info ((t (:underline "#FF516D"))))
  '(flycheck-warning ((t (:underline "#FFEB95"))))
