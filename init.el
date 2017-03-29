@@ -34,7 +34,7 @@
 (setq custom-file (expand-file-name "init/custom.el" user-emacs-directory))
 
 (require 'package)
-(setq-default package-user-dir (expand-file-name "packages/elpa" user-emacs-directory))
+(setq-default package-user-dir (expand-file-name "etc/packages" user-emacs-directory))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize nil)
 (run-with-idle-timer 900 t 'package-refresh-contents)
@@ -301,7 +301,7 @@
 
 (use-package flycheck-stylelint
   :after (web-mode)
-  :load-path "elisp"
+  :load-path "etc/elisp-packages/flycheck-stylelint"
   :config
   (flycheck-add-mode 'scss 'web-mode)
   (flycheck-add-mode 'css-stylelint 'web-mode)
@@ -386,7 +386,7 @@
   :bind ("H-C" . cycle-quotes))
 
 (use-package embrace :ensure t
-  :config (use-package hydra-embrace :load-path "elisp/hydra")
+  :config (use-package hydra-embrace :load-path "etc/elisp-packages/hydra")
   :bind
   ("H-SPC"   . hydra-embrace-or-native)
   ("H-S-SPC" . embrace-delete)
@@ -517,7 +517,7 @@
 
 (use-package livedown
   :after markdown-mode
-  :load-path "elisp/emacs-livedown"
+  :load-path "etc/elisp-packages/emacs-livedown"
   :config (bind-keys :map markdown-mode-map
                      ("C-c C-c p" . livedown:preview)))
 
@@ -559,7 +559,7 @@
 (use-package font-lock+ :ensure t :after all-the-icons)
 (use-package all-the-icons
   :if window-system
-  :load-path "elisp/all-the-icons")
+  :load-path "etc/elisp-packages/all-the-icons")
 
 (setq neo-theme (if window-system 'icons 'arrow))
 (use-package neotree :ensure t
@@ -794,7 +794,7 @@
   :config
   (setq prettify-symbols-unprettify-at-point t))
 
-(use-package eslint-reader :load-path "elisp/eslint-reader" :after js2-mode)
+(use-package eslint-reader :load-path "etc/elisp-packages/eslint-reader" :after js2-mode)
 (use-package mode-javascript :load-path "init" :defer 1)
 (use-package mode-clojure :load-path "init" :defer 1)
 

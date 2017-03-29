@@ -97,7 +97,7 @@ ehthumbs.db
 Thumbs.db
 
 # Packages
-packages/elpa/*
+etc/packages/*
 !use-package*
 !benchmark-init*
 !bind-key*

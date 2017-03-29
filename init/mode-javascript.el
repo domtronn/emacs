@@ -32,10 +32,10 @@
 
 ;;; Utilities
 (use-package js2-refactor :after js2-mode :ensure t)
-(use-package js2r-extensions :after js2-mode :load-path "elisp")
+(use-package js2r-extensions :after js2-mode :load-path "etc/elisp-packages/js2r-extension")
 (use-package js-injector
   :after js2-mode
-  :load-path "elisp/js-dependency-injector"
+  :load-path "etc/elisp-packages/js-dependency-injector"
   :config
   (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
 
