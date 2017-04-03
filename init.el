@@ -682,6 +682,7 @@
 
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
+  :mode ("\/COMMIT_EDITMSG$" . text-mode)
   :defer t
   :config (bind-keys :map magit-mode-map
                      ("o" . magit-open-file-other-window)
@@ -789,6 +790,9 @@
 (use-package eslint-reader :load-path "etc/elisp-packages/eslint-reader" :after js2-mode)
 (use-package mode-javascript :load-path "init" :defer 1)
 (use-package mode-clojure :load-path "init" :defer 1)
+
+;; Custom major modes
+(add-to-list 'auto-mode-alist '("\\.te?xt$" . text-mode))
 
 ;;------------------
 ;; Themes
