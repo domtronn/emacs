@@ -1,0 +1,7 @@
+#contributor: Xah Lee (XahLee.org)
+#name: spaceline-define-segment
+#key: sds
+# --
+(spaceline-define-segment all-the-icons-$1
+  "An `all-the-icons' segment to $2"
+  $0)
