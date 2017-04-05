@@ -440,6 +440,11 @@
                    ("C-'" . avy-isearch)
                    ("C-l" . counsel-git-grep-from-isearch)))
 
+(use-package anzu :ensure t :defer 5
+  :config (global-anzu-mode)
+          (setq-default anzu-mode-line-update-function
+                        'spaceline-all-the-icons-anzu-update-func))
+
 (use-package avy-zap :ensure t :bind ("H-x" . avy-zap-to-char))
 (use-package avy :ensure t
   :bind
