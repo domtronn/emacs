@@ -138,7 +138,7 @@
    (quote
     ("~$" "\\.o$" "\\.exe$" "\\.a$" "/\\.svn" "\\.elc$" "\\.output$" "\\.$" "#$" "\\.class$" "\\.png$" "\\.svn*" "/node_modules/" "\\.gif$" "\\.gem$" "\\.pdf$" "\\.swp$" "\\.iml$" "\\.jar$" "\\/build\\/" "/\\.git" "\\/jsdoc\\/" "\\.min\\.js$" "\\.tags$" "\\.filecache" "\\.cache$" "\\/.git\\/" "\\/report\\/" "\\.gcov\\.html$" "\\.func.*\\.html$" "\\/tmp\\/")))
  '(jpop-project-directory "/Users/charld13/Projects")
- '(js-indent-level 2)
+ '(js-indent-level 2 t)
  '(js-injector-get-relative-func (quote js-injector--get-projectile-files-alist))
  '(js-injector-get-requirejs-func
    (quote
@@ -203,6 +203,7 @@
  '(magit-revert-buffers t t)
  '(magit-visit-ref-create t)
  '(make-backup-files nil)
+ '(mc/always-run-for-all t)
  '(neo-smart-open t)
  '(nrepl-message-colors
    (quote
@@ -327,11 +328,13 @@
  '(cfw:face-toolbar-button-off ((t (:inherit default :weight bold))))
  '(diredp-compressed-file-name ((t (:inherit dired-warning))))
  '(diredp-compressed-file-suffix ((t (:inherit dired-warning :weight bold))))
+ '(diredp-date-time ((t (:inherit dired-mark :slant italic))))
  '(diredp-dir-heading ((t (:inherit dired-header))))
  '(diredp-dir-name ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
  '(diredp-dir-priv ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
  '(diredp-file-name ((t (:inherit default))))
  '(diredp-file-suffix ((t (:inherit dired-warning))))
+ '(diredp-number ((t (:inherit dired-marked))))
  '(diredp-symlink ((t (:inherit dired-symlink))))
  '(flycheck-error ((t (:underline "#74CBC4"))))
  '(flycheck-info ((t (:underline "#FF516D"))))
