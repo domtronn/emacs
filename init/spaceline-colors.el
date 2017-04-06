@@ -111,7 +111,7 @@
      (inactive (default (background . "#efeae9") (foreground . "#a094a2"))
                (other   (background . "#efeae9") (foreground . "#a094a2"))
                (middle  (background . "#efeae9")))))
-   
+
    (kaolin
     ((active (highlight (background . "#d2ab5d") (foreground . "#181818"))
              (default   (background . "#1e3538") (foreground . "#c5c8c6"))
@@ -120,9 +120,10 @@
      (inactive (default (background . "#152628") (foreground . "#39656b"))
                (other   (background . "#152628") (foreground . "#39656b"))
                (middle  (background . "#152628")))))
-   
+
    (nord
-    ((active (highlight (background . "#D8DEE9") (foreground . "#2E3440")))))
+    ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
+     (highlight . "#88C0D0")));
    ))
 
 (defun spaceline-update-faces (&rest args)
@@ -140,7 +141,7 @@ ARGS is needed to allow for this function to be used as advice"
         (when .inactive.other   (spaceline--set-face 'mode-line-inactive        .inactive.other))
         (when .inactive.middle  (spaceline--set-face 'powerline-inactive2       .inactive.middle))
 
-        (setq spaceline-ati-buffer-highlight (if .buffer-highlight .buffer-highlight nil))))))
+        (setq spaceline-all-the-icons-file-name-highlight (if .highlight .highlight nil))))))
 
 (provide 'spaceline-colors)
 ;;; spaceline-colors.el ends here
