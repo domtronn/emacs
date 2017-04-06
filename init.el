@@ -108,6 +108,7 @@
 (use-package smartparens-config :after smartparens)
 (use-package smartparens :ensure t :defer 1
   :config
+  (show-smartparens-mode)
   (smartparens-global-mode)
   (sp-local-pair
    '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode text-mode)
@@ -794,7 +795,6 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode 1)
-(show-paren-mode t)   ; Show paranthesis matching
 
 ;; Global Mode Stuff
 (global-linum-mode 1) ; enable line numbers
