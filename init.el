@@ -51,6 +51,7 @@
     (local-set-key "p" 'projectile-switch-project)))
 
 (eval-when-compile (require 'use-package))
+
 (use-package bind-key :ensure t)
 (use-package try :ensure t :commands (try))
 
@@ -65,8 +66,6 @@
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (use-package rainbow-mode :ensure t :defer 1
   :init (add-hook 'prog-mode-hook 'rainbow-mode))
-
-(use-package paren :ensure t :disabled t)
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)

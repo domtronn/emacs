@@ -72,13 +72,14 @@
   :mode ("\\.jsx$" . rjsx-mode)
   :config
   (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
-  (advice-add
-   'key-combo-pre-command-function
-   :around '(lambda (orig-f &rest args)
-              (when (member major-mode '("rjsx-mode"))
-                (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-                             (member (this-command-keys) '("=" "-" "+")))
-                  (apply orig-f args))))))
+  ;; (advice-remove
+  ;;  'key-combo-pre-command-function
+  ;;  :around '(lambda (orig-f &rest args)
+  ;;             (when (member major-mode '("rjsx-mode"))
+  ;;               (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+  ;;                            (member (this-command-keys) '("=" "-" "+")))
+  ;;                 (apply orig-f args)))))
+  )
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
@@ -120,8 +121,6 @@
 
              ;; JS2 Refactor things
              ("C-c m" . prettify-symbols-mode)
-             ("s-P" . js2r-drag-stuff-up)
-             ("s-N" . js2r-drag-stuff-down)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)
              ("C-c C-v" . js2r-extract-var)
