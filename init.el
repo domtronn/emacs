@@ -419,8 +419,7 @@
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist
-        '((projectile-find-file . ivy--regex-plus)
-          (t . ivy--regex-fuzzy))
+        '((t . ivy--regex-fuzzy))
         ivy-display-style 'plain)
   (bind-keys :map ivy-minibuffer-map
              ("s-k"   . delete-minibuffer-contents)
