@@ -19,3 +19,6 @@
 [submodule "elisp/neotree"]
 	path = elisp/neotree
 	url = git@github.com:domtronn/emacs-neotree.git
+[submodule "etc/elisp-packages/spaceline-all-the-icons"]
+	path = etc/elisp-packages/spaceline-all-the-icons
+	url = git@github.com:domtronn/spaceline-all-the-icons.el.git

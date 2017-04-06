@@ -710,16 +710,31 @@
 
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
 (use-package fancy-battery :ensure t :after spaceline :defer 10 :config (fancy-battery-mode))
+
 (use-package powerline
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
 
-(use-package spaceline-custom :after spaceline :load-path "init/spaceline-custom")
-(use-package spaceline-colors :after spaceline-custom :load-path "init/spaceline-colors"
+(use-package spaceline :after powerline :ensure t)
+(use-package spaceline-colors :after spaceline-all-the-icons :load-path "init/spaceline-colors"
   :config (advice-add 'load-theme :after 'spaceline-update-faces))
 
-(use-package spaceline :after powerline :ensure t
-  :config (setq-default mode-line-format '("%e" (:eval (spaceline-ml-ati)))))
+(use-package spaceline-all-the-icons
+  :load-path "etc/elisp-packages/spaceline-all-the-icons"
+  :after spaceline
+  :config
+  (setq spaceline-all-the-icons-icon-set-bookmark 'heart
+        spaceline-all-the-icons-icon-set-modified 'toggle
+        spaceline-all-the-icons-icon-set-dedicated 'pin
+        spaceline-all-the-icons-icon-set-flycheck-slim 'dots
+        spaceline-all-the-icons-flycheck-alternate t
+        spaceline-all-the-icons-highlight-file-name t)
+  (spaceline-toggle-all-the-icons-bookmark-on)
+  (spaceline-toggle-all-the-icons-dedicated-on)
+  (spaceline-toggle-all-the-icons-fullscreen-on)
+  (spaceline-toggle-all-the-icons-buffer-position-on)
+  (spaceline-all-the-icons-setup-advice)
+  (spaceline-all-the-icons-theme))
 
 (use-package winum :ensure t :defer 1
   :init
