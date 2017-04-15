@@ -27,12 +27,12 @@
 ;;; Code:
 
 ;;;; Linting
+(use-package eslint-reader :load-path "etc/elisp-packages/eslint-reader" :after js2-mode)
 (use-package eslintd-fix :after js2-mode :ensure t
   :init (add-hook 'js2-mode-hook '(lambda () (interactive) (when (locate-dominating-file (buffer-file-name) ".eslintrc.json") (eslintd-fix-mode)))))
 
 ;;; Utilities
 (use-package js2-refactor :after js2-mode :ensure t)
-(use-package js2r-extensions :after js2-mode :load-path "etc/elisp-packages/js2r-extension")
 (use-package js-injector
   :after js2-mode
   :load-path "etc/elisp-packages/js-dependency-injector"
@@ -58,8 +58,8 @@
 
 (global-set-key (kbd "C-x C-n") 'npm-run)
 (defun npm-run (&optional debug verbose)
-  (interactive)
   "Completing read a list of projects scripts"
+  (interactive)
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-d") `(lambda () (interactive) (ivy-quit-and-run (npm-run ,(not debug) ,verbose))))
     (define-key map (kbd "C-v") `(lambda () (interactive) (ivy-quit-and-run (npm-run ,debug ,(not verbose)))))
@@ -67,19 +67,31 @@
               :action `(lambda (match) (compile (concat (npm--get-cmd-prefix debug verbose) match)))
               :keymap map)))
 
+(global-set-key (kbd "C-x M-n") 'npm-install)
+(defun npm-install (&optional pfx)
+  "Npm install with current directory.
+When PFX is non-nil, run with --save or --save-dev"
+  (interactive "P")
+  (let* ((prefix (cond
+                  ((> (prefix-numeric-value pfx) 4) "--save")
+                  ((> (prefix-numeric-value pfx) 0) "--save-dev")))
+         (cmd (format "npm install %s " (or prefix "")))
+         (package (read-string cmd (thing-at-point 'word))))
+    (shell-command (format "%s %s" cmd package))))
+
 ;;; Major Modes
 (use-package rjsx-mode :ensure t
   :mode ("\\.jsx$" . rjsx-mode)
   :config
   (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
-  ;; (advice-remove
-  ;;  'key-combo-pre-command-function
-  ;;  :around '(lambda (orig-f &rest args)
-  ;;             (when (member major-mode '("rjsx-mode"))
-  ;;               (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-  ;;                            (member (this-command-keys) '("=" "-" "+")))
-  ;;                 (apply orig-f args)))))
-  )
+  (advice-add
+   'key-combo-pre-command-function
+   :around
+    '(lambda (orig-f &rest args)
+       (when (member major-mode '(rjsx-mode))
+         (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+                      (member (this-command-keys) '("=" "-" "+")))
+           (apply orig-f args))))))
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
@@ -102,13 +114,6 @@
   (setq js2-pretty-multiline-declarations 'dynamic)
   
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-
-  (defun js2-standard-fix ()
-    (interactive)
-    (when (buffer-file-name)
-      (shell-command
-       (format (if (flycheck-eslint-config-exists-p)
-                   "eslint --fix %s" "standard --fix %s") (buffer-file-name)))))
 
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
