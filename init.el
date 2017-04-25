@@ -421,6 +421,7 @@
 
 (use-package bookmark :defer t
   :commands (bookmark-jump bookmark-all-names)
+  :bind ("C-x r d" . bookmark-delete)
   :config (run-at-time "1 sec" 900 'bookmark-save))
 
 (use-package flx :ensure t :after ivy)
