@@ -60,7 +60,10 @@
 
 (use-package functions :load-path "init")
 
-;; !!! - For package updating comment this region
+(use-package paradox
+  :ensure t
+  :commands (paradox-list-packages))
+
 
 (use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
