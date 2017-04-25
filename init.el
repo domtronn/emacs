@@ -116,7 +116,7 @@
 (use-package smartparens-config :after smartparens)
 (use-package smartparens :ensure t :defer 1
   :config
-  (show-smartparens-mode)
+  (show-smartparens-global-mode)
   (smartparens-global-mode)
   (sp-local-pair
    '(minibuffer-inactive-mode snippet-mode lisp-mode emacs-lisp-mode text-mode)
