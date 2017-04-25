@@ -113,13 +113,14 @@
                (middle  (background . "#efeae9")))))
 
    (kaolin
-    ((active (highlight (background . "#d2ab5d") (foreground . "#181818"))
-             (default   (background . "#1e3538") (foreground . "#c5c8c6"))
-             (other     (background . "#152628") (foreground . "#859092"))
-             (middle    (background . "#152628")))
-     (inactive (default (background . "#152628") (foreground . "#39656b"))
-               (other   (background . "#152628") (foreground . "#39656b"))
-               (middle  (background . "#152628")))))
+    ((highlight . "#91b9c7")
+     (active (highlight (background . "#353535") (foreground . "#91b9c7"))
+             (default   (background . "#282828") (foreground . "#9a9f9b"))
+             (other     (background . "#282828") (foreground . "#9a9f9b"))
+             (middle    (background . "#282828")))
+     (inactive (default (background . "#202020") (foreground . "#30555a"))
+               (other   (background . "#202020") (foreground . "#30555a"))
+               (middle  (background . "#202020")))))
 
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
