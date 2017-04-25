@@ -534,6 +534,11 @@
 (use-package scss-mode :ensure t :mode ("\\.scss" . scss-mode))
 (use-package css-mode :ensure t :mode ("\\.css$" . css-mode))
 
+(use-package eval-sexp-fu :ensure t :after emacs-lisp-mode
+  :commands (eval-sexp-fu-flash-mode)
+  :init (add-hook 'emacs-lisp-mode-hook (lambda () (require 'eval-sexp-fu)))
+  :config (eval-sexp-fu-flash-mode))
+
 (use-package lisp-mode
   :mode ("\\.el" . emacs-lisp-mode)
   :init

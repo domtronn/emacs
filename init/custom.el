@@ -38,6 +38,7 @@
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
  '(emmet-quote-style "\"")
+ '(eval-sexp-fu-flash-mode t)
  '(fci-rule-color "#232A2F")
  '(flycheck-error-list-format
    [("Line" 4 flycheck-error-list-entry-< :right-align t)
@@ -336,6 +337,7 @@
  '(diredp-file-suffix ((t (:inherit dired-warning))))
  '(diredp-number ((t (:inherit dired-marked))))
  '(diredp-symlink ((t (:inherit dired-symlink))))
+ '(eval-sexp-fu-flash ((t (:inherit spaceline-highlight-face :weight bold))))
  '(flycheck-error ((t (:underline "#74CBC4"))))
  '(flycheck-info ((t (:underline "#FF516D"))))
  '(flycheck-warning ((t (:underline "#FFEB95"))))
