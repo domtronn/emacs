@@ -239,11 +239,13 @@
 (use-package github-browse-file :ensure t :commands (github-browse-file))
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
-(use-package git-gutter-fringe :ensure t :defer 5
+(use-package git-gutter :ensure t :defer 5
   :if window-system
-  :config (global-git-gutter-mode)
-  (defhydra hydra-git-gutter (global-map "C-x v v")
-    "Git Hunks"
+  :config ;(global-git-gutter-mode)
+  (setq git-gutter:added-sign "│"
+        git-gutter:removed-sign "│"
+        git-gutter:modified-sign "│")
+  (defhydra hydra-git-gutter (global-map "C-x v v") "Git Hunks"
     ("R" git-gutter:revert-hunk "revert")
     ("n" git-gutter:next-hunk "next")
     ("p" git-gutter:previous-hunk "previous"))
