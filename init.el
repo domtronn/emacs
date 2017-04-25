@@ -25,6 +25,9 @@
 
 ;; npm install -g livedown
 ;; npm install -g n_
+;; npm install -g pen
+;; npm install -g nave
+;; npm install -g speed-test
 ;; npm install -g eslint_d
 ;; npm install -g ramda-repl
 
