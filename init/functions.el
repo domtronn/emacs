@@ -167,14 +167,13 @@
   (interactive)
   (let ((type (completing-read
                "Open current file in editor ❯ " '("Sublime Text" "Atom" "Chrome" "Finder" "Multiple URLs" "URL") nil nil)))
-    (cond ((string-equal type "Sublime Text") (open-in "subl"))
-          ((string-equal type "Atom") (shell-command (format "atom %s" (projectile-project-root))))
-          ((string-equal type "Chrome") (browse-url (buffer-file-name)))
-          ((string-equal type "Multiple URLs")
-           (call-interactively 'link-hint-open-multiple-links))
-          ((string-equal type "URL")
-           (if (browse-url-url-at-point) (browse-url-at-point) (link-hint-open-link)))
-          ((string-equal type "Finder") (open-in "open" (file-name-directory (buffer-file-name)))))))
+    (pcase type
+      ("Sublime Text" (open-in "subl"))
+      ("Atom" (shell-command (format "atom %s" (projectile-project-root))))
+      ("Chrome" (browse-url (buffer-file-name)))
+      ("Multiple URLs" (call-interactively 'link-hint-open-multiple-links))
+      ("URL" (if (browse-url-url-at-point) (browse-url-at-point) (link-hint-open-link)))
+      ("Finder" (open-in "open" (or list-buffers-directory (file-name-directory (buffer-file-name))))))))
 
 (defun isearch-yank-from-start ()
   "Move to beginning of word before yanking word in `isearch-mode`."
