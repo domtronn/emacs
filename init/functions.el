@@ -585,16 +585,8 @@
         (goto-char p))
     (insert " ")))
 
-(defcustom livedown-port 1337
-  "Port on which livedown server will run."
-  :type 'integer
-  :group 'livedown)
-
-(defcustom livedown-open t
-  "Open browser automatically."
-  :type 'boolean
-  :group 'livedown)
-
+(defcustom livedown-port 1337 "Port on which livedown server will run." :type 'integer :group 'livedown)
+(defcustom livedown-open t "Open browser automatically." :type 'boolean :group 'livedown)
 (defun livedown-preview ()
   "Preview the current file in livedown."
   (interactive)
