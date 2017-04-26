@@ -702,15 +702,6 @@
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
-(use-package hideshowvis :ensure t
-  :init (autoload 'hideshowvis-enable "hideshowvis" nil t)
-  :config (hideshowvis-symbols)
-  :bind ("s-_" . hs-show-all)
-        ("s--" . hs-show-block)
-        ("s-=" . hs-toggle-hiding)
-        ("s-+" . hs-hide-level))
-(add-hook 'prog-mode-hook 'hideshowvis-minor-mode)
-
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
