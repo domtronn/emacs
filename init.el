@@ -249,10 +249,13 @@
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
 (use-package git-gutter :ensure t :defer 5
   :if window-system
-  :config ;(global-git-gutter-mode)
-  (setq git-gutter:added-sign "│"
-        git-gutter:removed-sign "│"
-        git-gutter:modified-sign "│")
+  :config (global-git-gutter-mode)
+  (setq git-gutter:added-sign "▏" 
+        git-gutter:removed-sign "▏"
+        git-gutter:modified-sign "▏")
+  (set-face-attribute 'git-gutter:added    nil :height 100)
+  (set-face-attribute 'git-gutter:deleted  nil :height 100)
+  (set-face-attribute 'git-gutter:modified nil :height 100)
   (defhydra hydra-git-gutter (global-map "C-x v v") "Git Hunks"
     ("R" git-gutter:revert-hunk "revert")
     ("n" git-gutter:next-hunk "next")
