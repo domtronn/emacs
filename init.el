@@ -62,7 +62,9 @@
 
 (use-package paradox
   :ensure t
-  :commands (paradox-list-packages))
+  :commands (paradox-list-packages)
+  :config (bind-keys :map paradox-menu-mode-map
+                     ("g" . paradox--refresh-remote-data)))
 
 
 (use-package no-littering :ensure t)
