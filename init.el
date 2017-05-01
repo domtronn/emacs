@@ -68,9 +68,17 @@
   :config (bind-keys :map paradox-menu-mode-map
                      ("g" . paradox--refresh-remote-data)))
 
-
 (use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
+(use-package nlinum :ensure t :after linum-off
+  :config
+  (advice-add 'nlinum-mode :around
+              (lambda (orig-f &rest args)
+                (unless (or (minibufferp)
+                            (memq major-mode linum-disabled-modes-list)
+                            (string-match "*" (buffer-name)))
+                  (apply orig-f args))))
+  (global-nlinum-mode))
 
 (use-package rainbow-delimiters :ensure t :defer 1
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
@@ -249,21 +257,28 @@
 (use-package github-browse-file :ensure t :commands (github-browse-file))
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
-(use-package git-gutter :ensure t :defer 5
+
+(use-package diff-hl :ensure t :defer 3
   :if window-system
-  :config (global-git-gutter-mode)
-  (setq git-gutter:added-sign "▏" 
-        git-gutter:removed-sign "▏"
-        git-gutter:modified-sign "▏")
-  (set-face-attribute 'git-gutter:added    nil :height 100)
-  (set-face-attribute 'git-gutter:deleted  nil :height 100)
-  (set-face-attribute 'git-gutter:modified nil :height 100)
-  (defhydra hydra-git-gutter (global-map "C-x v v") "Git Hunks"
-    ("R" git-gutter:revert-hunk "revert")
-    ("n" git-gutter:next-hunk "next")
-    ("p" git-gutter:previous-hunk "previous"))
-  :bind ("C-x v p" . git-gutter:previous-hunk)
-        ("C-x v n" . git-gutter:next-hunk))
+  :config
+  (setq diff-hl-draw-borders nil
+        diff-hl-side 'right)
+  (defun theme-diff-hl (&rest args) "Set the background colour of the diff hl faces"
+    (set-face-attribute 'diff-hl-insert nil :height 30 :foreground nil :background (face-foreground 'success))
+    (set-face-attribute 'diff-hl-delete nil :height 30 :foreground nil :background (face-foreground 'error))
+    (set-face-attribute 'diff-hl-change nil :height 30 :foreground nil :background (face-foreground 'warning)))
+  (theme-diff-hl)
+  (advice-add 'load-theme :after 'theme-diff-hl)
+  
+  (global-diff-hl-mode)
+  
+  (eval-after-load 'dired
+    '(add-hook 'dired-mode-hook (lambda () (diff-hl-dired-mode) (setq-local diff-hl-side 'left))))
+  
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+
+  (global-set-key (kbd "C-x v p") 'diff-hl-previous-hunk)
+  (global-set-key (kbd "C-x v n") 'diff-hl-next-hunk))
 
 (use-package image+ :ensure t :after 'image-mode
   :init (add-hook 'image-mode-hook '(lambda () (require 'image+)))
@@ -816,7 +831,6 @@
 (menu-bar-mode 1)
 
 ;; Global Mode Stuff
-(global-linum-mode 1) ; enable line numbers
 (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
 (add-hook 'js2-mode-hook 'prettify-symbols-mode)
 (global-prettify-symbols-mode)
