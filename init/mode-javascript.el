@@ -41,9 +41,11 @@
 
 (defun npm--get-package-json ()
   "Get a package.json for a project and list its scripts."
-  (when (not (locate-dominating-file (buffer-file-name) "package.json"))
+  (when (not (locate-dominating-file (or (buffer-file-name) (projectile-project-root)) "package.json"))
     (error "Could not find `package.json'"))
-  (let* ((package-path (locate-dominating-file (buffer-file-name) "package.json"))
+  (let* ((package-path (locate-dominating-file (or (buffer-file-name)
+                                                   (projectile-project-root))
+                                               "package.json"))
          (package-file (format "%s/package.json" package-path))
          (package-json (json-read-file package-file)))
     (let-alist package-json (-map 'car .scripts))))
@@ -58,7 +60,7 @@
 
 (global-set-key (kbd "C-x C-n") 'npm-run)
 (defun npm-run (&optional debug verbose)
-  "Completing read a list of projects scripts"
+  "Completing read a list of projects scripts."
   (interactive)
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-d") `(lambda () (interactive) (ivy-quit-and-run (npm-run ,(not debug) ,verbose))))
