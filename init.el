@@ -265,8 +265,9 @@
   
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
-  (global-set-key (kbd "C-x v p") 'diff-hl-previous-hunk)
-  (global-set-key (kbd "C-x v n") 'diff-hl-next-hunk))
+  :bind (:map diff-hl-mode-map
+         ("C-x v p" . diff-hl-previous-hunk)
+         ("C-x v n" . diff-hl-next-hunk)))
 
 (use-package image+ :ensure t :after 'image-mode
   :init (add-hook 'image-mode-hook '(lambda () (require 'image+)))
