@@ -227,19 +227,6 @@
                                          (org-color-tag "Holidays:" "#3498db")
                                          (org-color-tag "Reminders:" "#8e44ad"))))
 
-(use-package calfw :ensure t :after org)
-(use-package calfw-org
-  :after calfw
-  :bind ("C-c s" . cfw:open-org-calendar)
-  :config
-  (setq cfw:org-agenda-schedule-args '(:deadline :scheduled :sexp))
-  (setq cfw:org-overwrite-default-keybinding t)
-  (setq cfw:org-capture-template '("m" "calfw2org" entry (file nil)  "* %?\n %(cfw:org-capture-day)"))
-  (setq calendar-week-start-day 1)
-  (bind-keys :map cfw:calendar-mode-map
-             ("g" . cfw:refresh-calendar-buffer)
-             ("RET" . cfw:change-view-day)))
-
 (use-package doc-view :ensure t
   :mode ("\\.pdf" . doc-view-mode))
 
