@@ -65,8 +65,7 @@
 (use-package paradox
   :ensure t
   :commands (paradox-list-packages)
-  :config (bind-keys :map paradox-menu-mode-map
-                     ("g" . paradox--refresh-remote-data)))
+  :bind (:map paradox-menu-mode-map ("g" . paradox--refresh-remote-data)))
 
 (use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
@@ -117,10 +116,11 @@
 (use-package ibuf-ext :after ibuffer
   :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
 (use-package ibuffer-vc :ensure t :after ibuffer
-  :config (bind-keys :map ibuffer-mode-map ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
+  :bind (:map ibuffer-mode-map ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
 (use-package ibuffer :ensure t :defer t
-  :bind ("s-p" . ibuffer)
-  :config (bind-keys :map ibuffer-mode-map ("M-u" . ibuffer-unmark-all)))
+  :bind (("s-p" . ibuffer)
+         :map ibuffer-mode-map
+         ("M-u" . ibuffer-unmark-all)))
 
 (use-package smart-forward :ensure t
   :bind ("s-." . forward-sexp)
@@ -257,12 +257,12 @@
     (set-face-attribute 'diff-hl-change nil :height 30 :foreground nil :background (face-foreground 'warning)))
   (theme-diff-hl)
   (advice-add 'load-theme :after 'theme-diff-hl)
-  
+
   (global-diff-hl-mode)
-  
+
   (eval-after-load 'dired
     '(add-hook 'dired-mode-hook (lambda () (diff-hl-dired-mode) (setq-local diff-hl-side 'left))))
-  
+
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
   :bind (:map diff-hl-mode-map
@@ -341,20 +341,22 @@
 (use-package flycheck :ensure t
   :config (global-flycheck-mode)
   ;; npm install -g eslint_d
+  (setq flycheck-indication-mode nil)
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint_d")
   (setq flycheck-eslintrc ".eslintrc.json")
   (setq-default flycheck-disabled-checkers '(javascript-jshint scss))
-  (bind-keys :map flycheck-mode-map
-             ("C-c C-e" . flycheck-list-errors)
-             ("C-c C-n" . flycheck-next-error)
-             ("C-c C-p" . flycheck-previous-error))
   (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
-  :bind ("M-}" . flycheck-mode))
+  :bind (("M-}" . flycheck-mode)
+         :map flycheck-mode-map
+         ("C-c C-e" . flycheck-list-errors)
+         ("C-c C-n" . flycheck-next-error)
+         ("C-c C-p" . flycheck-previous-error)))
 
 (use-package flyspell-popup :ensure t :defer t :after flyspell
-  :config (bind-keys :map flyspell-mode-map ("±" . flyspell-popup-correct)))
+  :bind (:map flyspell-mode-map
+         ("±" . flyspell-popup-correct)))
 
 (use-package flyspell :ensure t
   :init (defun flyspell-toggle ()
@@ -449,23 +451,23 @@
   (setq ivy-re-builders-alist
         '((t . ivy--regex-fuzzy))
         ivy-display-style 'plain)
-  (bind-keys :map ivy-minibuffer-map
-             ("s-k"   . delete-minibuffer-contents)
-             ("C-S-j" . ivy-immediate-done))
-  :bind ("C-c C-r" . ivy-resume)
-        ("C-;"     . swiper)
-        ("C-x b"   . ivy-switch-buffer))
+  :bind (("C-;"     . swiper)
+         ("C-c C-r" . ivy-resume)
+         ("C-x b"   . ivy-switch-buffer)
+         :map ivy-minibuffer-map
+         ("s-k"     . delete-minibuffer-contents)
+         ("C-S-j"   . ivy-immediate-done)))
 
 (bind-keys :map minibuffer-local-map ("s-k" . delete-minibuffer-contents))
 (use-package isearch
-  :bind ("H-s" . isearch-forward-symbol-at-point)
-        ("C-s" . isearch-forward-regexp)
-        ("C-r" . isearch-backward-regexp)
   :commands swiper-from-isearch
-  :init (bind-keys :map isearch-mode-map
-                   ("C-;" . swiper-from-isearch)
-                   ("C-'" . avy-isearch)
-                   ("C-l" . counsel-git-grep-from-isearch)))
+  :bind (("H-s" . isearch-forward-symbol-at-point)
+         ("C-s" . isearch-forward-regexp)
+         ("C-r" . isearch-backward-regexp)
+         :map isearch-mode-map
+         ("C-;" . swiper-from-isearch)
+         ("C-'" . avy-isearch)
+         ("C-l" . counsel-git-grep-from-isearch)))
 
 (use-package anzu :ensure t :defer 5
   :config (global-anzu-mode)
@@ -676,11 +678,10 @@
 
 ;; Custom Auto Complete Sources
 (use-package company :ensure t :defer 1
-  :config
-  (setq company-show-numbers t)
-  (bind-keys :map company-active-map
-             ("C-n" . company-select-next)
-             ("C-p" . company-select-previous)))
+  :config (setq company-show-numbers t)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)))
 
 (use-package auto-complete-config :after auto-complete)
 (use-package auto-complete :ensure t
@@ -692,18 +693,17 @@
                  ac-source-words-in-same-mode-buffers))
   (global-auto-complete-mode t)
 
-  (bind-keys :map ac-completing-map ("\e" . ac-stop))
-  (bind-keys :map ac-complete-mode-map
-             ([tab] . ac-expand-common)
-             ([return] . ac-complete)
-             ("C-j" . ac-complete)
-             ("C-s" . ac-isearch)
-             ("C-n" . ac-next)
-             ("C-p" . ac-previous))
-
-  :bind
-  ("<M-tab>" . auto-complete)
-  ("§" . auto-complete))
+  :bind (("<M-tab>" . auto-complete)
+         ("§" . auto-complete)
+         :map ac-completing-map
+         ("\e" . ac-stop)
+         :map ac-complete-mode-map
+         ([tab] . ac-expand-common)
+         ([return] . ac-complete)
+         ("C-j" . ac-complete)
+         ("C-s" . ac-isearch)
+         ("C-n" . ac-next)
+         ("C-p" . ac-previous)))
 
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -712,10 +712,10 @@
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
   :defer t
-  :config (bind-keys :map magit-mode-map
-                     ("o" . magit-open-file-other-window)
-                     ("C-c c" . magit-whitespace-cleanup)
-                     ("C-c e" . magit-vc-ediff)))
+  :bind (:map magit-mode-map
+              ("o" . magit-open-file-other-window)
+              ("C-c c" . magit-whitespace-cleanup)
+              ("C-c e" . magit-vc-ediff)))
 
 (use-package yahoo-weather :ensure t
   :defer t
