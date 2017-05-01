@@ -849,6 +849,7 @@
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
+(use-package challenger-deep-theme :ensure t :defer t)
 
 (use-package spacemacs-theme :ensure t :defer t)
 

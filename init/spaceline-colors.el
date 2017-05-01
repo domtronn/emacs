@@ -124,7 +124,17 @@
 
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
-     (highlight . "#88C0D0")));
+     (highlight . "#88C0D0")))
+
+   (challenger-deep
+    ((active (highlight (background . "#131026") (foreground . "#cbe3e7"))
+             (default   (background . "#2b2942") (foreground . "#6C6F8D"))
+             (middle    (background . "#2b2942") (foreground . "#6C6F8D"))
+             (other     (background . "#131026") (foreground . "#a6b3cc")))
+     (inactive (default (background . "#131026") (foreground . "#565575"))
+               (other   (background . "#131026") (foreground . "#565575"))
+               (middle  (background . "#131026")))
+     (highlight . "#cbe3e7")))
    ))
 
 (defun spaceline-update-faces (&rest args)
