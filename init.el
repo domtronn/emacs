@@ -35,6 +35,7 @@
 ;;; Code:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq custom-file (expand-file-name "init/custom.el" user-emacs-directory))
+(load-file (expand-file-name "init/custom.el" user-emacs-directory))
 
 (require 'package)
 (setq-default package-user-dir (expand-file-name "etc/packages" user-emacs-directory))
@@ -51,7 +52,8 @@
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'set-font)
     (local-set-key "a" 'org-agenda)
-    (local-set-key "p" 'projectile-switch-project)))
+    (local-set-key "p" 'projectile-switch-project)
+    (local-set-key "P" 'paradox-list-packages)))
 
 (eval-when-compile (require 'use-package))
 
@@ -834,7 +836,6 @@
 ;; Themes
 ;;------------------
 (use-package keys :load-path "init")
-(load-file (expand-file-name "init/custom.el" user-emacs-directory))
 (load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
