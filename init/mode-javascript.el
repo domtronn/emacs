@@ -39,6 +39,9 @@
   :config
   (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
 
+
+(use-package tern :ensure t :after js2-mode
+  :config (add-hook 'js2-mode-hook tern-mode))
 (defun npm--get-package-json ()
   "Get a package.json for a project and list its scripts."
   (when (not (locate-dominating-file (or (buffer-file-name) (projectile-project-root)) "package.json"))
