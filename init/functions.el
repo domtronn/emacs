@@ -207,6 +207,11 @@
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
+(defun kill-current-buffer ()
+  "Kill the current buffer"
+  (interactive)
+  (kill-buffer (buffer-name)))
+
 (defun kill-all-buffers ()
   "Kill all open buffers."
   (interactive)
@@ -655,4 +660,5 @@
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
+;; eval: (add-hook 'after-save-hook '(lambda () (byte-compile-file (buffer-file-name))) nil t)
 ;; End:

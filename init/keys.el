@@ -27,7 +27,7 @@
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "M-*") '(lambda () (interactive) (insert "•")))
-(global-set-key (kbd "M-§") 'dabbrev-expand)
+(global-set-key (kbd "M-<kp-decimal>") 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
 
 (global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
@@ -35,9 +35,7 @@
 (global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
 
 ;; Closing Files
-(global-set-key (kbd "s-w") 'delete-window)
-(global-set-key (kbd "s-W")
-  '(lambda () (interactive) (kill-buffer (buffer-name))))
+(global-set-key (kbd "s-W") 'kill-current-buffer)
 
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
