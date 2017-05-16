@@ -39,9 +39,14 @@
   :config
   (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
 
+(use-package js-import :ensure t :after js2-mode
+  :config (setq js-import-quote "'")
+  :bind (:map js2-mode-map
+         ("s-i" . js-import)))
 
 (use-package tern :ensure t :after js2-mode
   :config (add-hook 'js2-mode-hook tern-mode))
+
 (defun npm--get-package-json ()
   "Get a package.json for a project and list its scripts."
   (when (not (locate-dominating-file (or (buffer-file-name) (projectile-project-root)) "package.json"))
@@ -123,8 +128,7 @@ When PFX is non-nil, run with --save or --save-dev"
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
-  (add-hook 'js2-mode-hook
-            '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
+  ;; (remove-hook 'js2-mode-hook '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (bind-keys :map js2-mode-map
              ("C-c x" . send-to-repl)
              ("M-=" . (lambda () (interactive) (insert "=")))
