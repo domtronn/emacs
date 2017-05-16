@@ -604,29 +604,6 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 (use-package pug-mode :ensure t :mode ("\\.pug$" . pug-mode))
-(use-package web-mode :ensure t
-  :mode
-  ("\\.html$" . web-mode)
-  ("\\.scss$" . web-mode)
-
-  :config
-  (bind-keys :map web-mode-map
-             ("M-;" . semi-colon-end)
-             ("C-j" . join-line)
-             ("<backtab>" . web-mode-complete)
-             ("<s-return>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
-             ("<s-S-return>" . (lambda () (interactive) (dotimes (i 4) (smart-newline))))
-             ("s-/" . web-mode-comment-or-uncomment)
-             ("§" . company-complete))
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-attr-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-auto-quote-style 1)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-enable-auto-expanding t)
-  (add-hook 'web-mode-hook 'company-mode)
-  (add-hook 'web-mode-hook '(lambda () (auto-complete-mode 0)))
-  (add-hook 'web-mode-hook '(lambda () (when (equal web-mode-content-type "css") (flycheck-select-checker 'css-stylelint)))))
 
 ;; Custom Auto Complete Sources
 (use-package company :ensure t :defer 1
