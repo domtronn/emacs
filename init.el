@@ -117,6 +117,9 @@
   :config (add-to-list 'ibuffer-never-show-predicates "^\\*"))
 (use-package ibuffer-vc :ensure t :after ibuffer
   :bind (:map ibuffer-mode-map ("G" . ibuffer-vc-set-filter-groups-by-vc-root)))
+(use-package ibuffer-projectile :ensure t :after ibuffer
+  :bind (:map ibuffer-mode-map ("P" . ibuffer-vc-set-filter-groups-by-vc-root)))
+
 (use-package ibuffer :ensure t :defer t
   :bind (("s-p" . ibuffer)
          :map ibuffer-mode-map
@@ -775,12 +778,13 @@
         spaceline-all-the-icons-icon-set-dedicated 'pin
         spaceline-all-the-icons-icon-set-flycheck-slim 'dots
         spaceline-all-the-icons-flycheck-alternate t
-        spaceline-all-the-icons-highlight-file-name t)
+        spaceline-all-the-icons-highlight-file-name t
+        spaceline-all-the-icons-hide-long-buffer-path t)
   (spaceline-toggle-all-the-icons-bookmark-on)
   (spaceline-toggle-all-the-icons-dedicated-on)
   (spaceline-toggle-all-the-icons-fullscreen-on)
   (spaceline-toggle-all-the-icons-buffer-position-on)
-  (spaceline-all-the-icons-setup-advice)
+  (spaceline-all-the-icons--setup-package-updates)
   (spaceline-all-the-icons-theme))
 
 (use-package winum :ensure t :defer 1
@@ -835,7 +839,8 @@
 (setq-default cursor-type '(bar . 1))             ; Change cursor to bar
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
-(setq js-indent-level 2)
+(setq frame-title-format nil)
+(setq icon-title-format nil)
 
 ;; Get rid of stupid menu bar and Tool Bar..
 (tool-bar-mode -1)
