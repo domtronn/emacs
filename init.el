@@ -452,7 +452,10 @@
          ("s-k"     . delete-minibuffer-contents)
          ("C-S-j"   . ivy-immediate-done)))
 
-(bind-keys :map minibuffer-local-map ("s-k" . delete-minibuffer-contents))
+(bind-keys :map minibuffer-local-map
+           ("s-k" . delete-minibuffer-contents)
+           ("<kp-decimal>" . completion-at-point))
+
 (use-package isearch
   :commands swiper-from-isearch
   :bind (("H-s" . isearch-forward-symbol-at-point)
