@@ -851,7 +851,6 @@
   :config
   (setq prettify-symbols-unprettify-at-point t))
 
-(use-package eslint-reader :load-path "etc/elisp-packages/eslint-reader" :after js2-mode)
 (use-package mode-javascript :load-path "init" :defer 1)
 (use-package mode-clojure :load-path "init" :defer 1)
 
@@ -869,10 +868,7 @@
 (use-package creamsody-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package forest-blue-theme :ensure t :defer t)
-(use-package peacock-theme :ensure t :defer t)
 (use-package solarized-theme :ensure t :defer t)
-(use-package zenburn-theme :ensure t :defer t)
-(use-package tangotango-theme :ensure t :defer t)
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
