@@ -44,8 +44,8 @@
   (setq flycheck-javascript-eslint-executable "eslint_d")
   (setq flycheck-eslintrc ".eslintrc.json")
   (setq-default flycheck-disabled-checkers '(javascript-jshint scss))
-  (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
+  (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
   :bind (("M-}" . flycheck-mode)
          :map flycheck-mode-map
          ("C-c C-e" . flycheck-list-errors)
