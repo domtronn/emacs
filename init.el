@@ -591,15 +591,15 @@
   :config
   (setq neo-show-updir-line nil
         neo-window-width 30
-        neo-window-fixed-size nil)
+        neo-window-fixed-size nil
+        neo-show-hidden-files t)
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
 
   (defun neotree-projectile ()
-    (interactive )
+    (interactive)
     (let ((cw (get-buffer-window (current-buffer))))
-     (if (neo-global--window-exists-p)
-         (neotree-hide)
+     (if (neo-global--window-exists-p) (neotree-hide)
        (neotree-find (or (ignore-errors (projectile-project-root))
                          (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
                          (getenv "HOME"))))
@@ -673,12 +673,26 @@
 ;; Custom Auto Complete Sources
 (use-package company :ensure t :defer 1
   :config (setq company-show-numbers t)
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)))
+  (global-company-mode)
+  :bind (("<kp-decimal>" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)))
+
+(use-package company-quickhelp :ensure t
+  :after company
+  :config (company-quickhelp-mode 1)
+  (setq pos-tip-background-color (face-background 'company-tooltip))
+  (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
+
+(use-package ac-emoji :ensure t :after auto-complete
+  :config
+  (add-hook 'markdown-mode-hook 'ac-emoji-setup)
+  (add-hook 'git-commit-mode-hook 'ac-emoji-setup)
+  (add-hook 'git-commit-mode-hook 'auto-complete-mode))
 
 (use-package auto-complete-config :after auto-complete)
-(use-package auto-complete :ensure t
+(use-package auto-complete :ensure t :disabled t
   :config
   (ac-config-default)
   (setq ac-delay 0.2)
@@ -688,7 +702,7 @@
   (global-auto-complete-mode t)
 
   :bind (("<M-tab>" . auto-complete)
-         ("§" . auto-complete)
+         ("<kp-decimal>" . auto-complete)
          :map ac-completing-map
          ("\e" . ac-stop)
          :map ac-complete-mode-map
