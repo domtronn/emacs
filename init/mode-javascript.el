@@ -83,17 +83,18 @@ When PFX is non-nil, run with --save or --save-dev"
 
 ;;; Major Modes
 (use-package rjsx-mode :ensure t
-  :mode ("\\.jsx$" . rjsx-mode)
+  :mode (("\\.jsx?$" . rjsx-mode))
   :config
   (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
-  (advice-add
-   'key-combo-pre-command-function
-   :around
-    '(lambda (orig-f &rest args)
-       (when (member major-mode '(rjsx-mode))
-         (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-                      (member (this-command-keys) '("=" "-" "+")))
-           (apply orig-f args))))))
+  ;; (advice-remove
+  ;;  'key-combo-pre-command-function
+  ;;  ;; :around
+  ;;   '(lambda (orig-f &rest args)
+  ;;      (when (member major-mode '(rjsx-mode))
+  ;;        (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+  ;;                     (member (this-command-keys) '("=" "-" "+")))
+  ;;          (apply orig-f args)))))
+  )
 
 (use-package json :ensure json-mode
   :mode ("\\.json" . json-mode)
@@ -111,12 +112,10 @@ When PFX is non-nil, run with --save or --save-dev"
   (setq js2-include-node-externs t)
   (setq js2-include-browser-externs t)
   (setq js2-basic-offset 2)
-  (setq js2-enter-indents-newline t)
   (setq js2-highlight-level 3)
-  (setq js2-pretty-multiline-declarations 'dynamic)
   
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-
+  
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
@@ -125,12 +124,14 @@ When PFX is non-nil, run with --save or --save-dev"
             '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (bind-keys :map js2-mode-map
              ("C-c x" . send-to-repl)
+             ("M-=" . (lambda () (interactive) (insert "=")))
 
              ;; JS2 Refactor things
              ("C-c m" . prettify-symbols-mode)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)
              ("C-c C-v" . js2r-extract-var)
+             ("C-c C-a" . js2r-toggle-arrow-function-and-expression)
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
