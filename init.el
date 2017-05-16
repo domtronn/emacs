@@ -880,6 +880,8 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
+(run-with-idle-timer 300 t 'zone)
+
 (remove-hook 'first-change-hook 'ns-unselect-line)
 
 (when window-system
