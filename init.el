@@ -246,28 +246,22 @@
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
 (use-package git-timemachine :ensure t :bind ("C-x v t" . git-timemachine))
 
-(use-package diff-hl :ensure t :defer 3
+(use-package git-gutter-fringe+ :ensure t :defer 3
   :if window-system
   :config
-  (setq diff-hl-draw-borders nil
-        diff-hl-side 'right)
-  (defun theme-diff-hl (&rest args) "Set the background colour of the diff hl faces"
-    (set-face-attribute 'diff-hl-insert nil :height 30 :foreground nil :background (face-foreground 'success))
-    (set-face-attribute 'diff-hl-delete nil :height 30 :foreground nil :background (face-foreground 'error))
-    (set-face-attribute 'diff-hl-change nil :height 30 :foreground nil :background (face-foreground 'warning)))
-  (theme-diff-hl)
-  (advice-add 'load-theme :after 'theme-diff-hl)
+  (setq git-gutter-fr+-side 'right-fringe)
+  (defun theme-git-gutter (&rest args) "Set the background colour of the git-gutter faces"
+    (set-face-attribute 'git-gutter-fr+-added nil :foreground (face-foreground 'success) :background (face-foreground 'success))
+    (set-face-attribute 'git-gutter-fr+-deleted nil :foreground (face-foreground 'error) :background (face-foreground 'error))
+    (set-face-attribute 'git-gutter-fr+-modified nil :foreground (face-foreground 'warning) :background (face-foreground 'warning)))
+  (theme-git-gutter)
+  (advice-add 'load-theme :after 'theme-git-gutter)
 
-  (global-diff-hl-mode)
-
-  (eval-after-load 'dired
-    '(add-hook 'dired-mode-hook (lambda () (diff-hl-dired-mode) (setq-local diff-hl-side 'left))))
-
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-
-  :bind (:map diff-hl-mode-map
-         ("C-x v p" . diff-hl-previous-hunk)
-         ("C-x v n" . diff-hl-next-hunk)))
+  (global-git-gutter+-mode)
+  
+  :bind (:map git-gutter+-mode-map
+         ("C-x v p" . git-gutter+-previous-hunk)
+         ("C-x v n" . git-gutter+-next-hunk)))
 
 (use-package image+ :ensure t :after 'image-mode
   :init (add-hook 'image-mode-hook '(lambda () (require 'image+)))
