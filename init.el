@@ -620,7 +620,11 @@
   (setq pos-tip-background-color (face-background 'company-tooltip))
   (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
 
-(use-package ac-emoji :ensure t :after auto-complete
+(use-package company-emoji :ensure t
+  :after company
+  :config (add-to-list 'company-backends 'company-emoji))
+
+(use-package ac-emoji :ensure t :disabled t :after auto-complete
   :config
   (add-hook 'markdown-mode-hook 'ac-emoji-setup)
   (add-hook 'git-commit-mode-hook 'ac-emoji-setup)
