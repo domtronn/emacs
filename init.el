@@ -318,54 +318,6 @@
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c C-c" . nameless-insert-name)))
 
-(use-package flycheck-stylelint
-  :after (web-mode)
-  :load-path "etc/elisp-packages/flycheck-stylelint"
-  :config
-  (flycheck-add-mode 'scss 'web-mode)
-  (flycheck-add-mode 'css-stylelint 'web-mode)
-  (flycheck-add-mode 'css-stylelint 'scss-mode)
-  (setq flycheck-stylelint-args '("--syntax" "scss" "--formatter" "json"))
-  (setq flycheck-css-stylelint-executable "stylelint")
-  (setq flycheck-stylelintrc ".stylelintc.json")
-  (advice-add
-   'key-combo-pre-command-function
-   :around '(lambda (orig-f &rest args)
-              (when (eq major-mode "web-mode")
-                (unless (member (this-command-keys) '("=" "-" "+"))
-                  (apply orig-f args))))))
-
-(use-package flycheck :ensure t
-  :config (global-flycheck-mode)
-  ;; npm install -g eslint_d
-  (setq flycheck-indication-mode nil)
-  (setq flycheck-javascript-standard-executable "standard")
-  (setq flycheck-javascript-eslint-executable "eslint_d")
-  (setq flycheck-eslintrc ".eslintrc.json")
-  (setq-default flycheck-disabled-checkers '(javascript-jshint scss))
-  (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
-  (flycheck-add-mode 'javascript-standard 'rjsx-mode)
-  :bind (("M-}" . flycheck-mode)
-         :map flycheck-mode-map
-         ("C-c C-e" . flycheck-list-errors)
-         ("C-c C-n" . flycheck-next-error)
-         ("C-c C-p" . flycheck-previous-error)))
-
-(use-package flyspell-popup :ensure t :defer t :after flyspell
-  :bind (:map flyspell-mode-map
-         ("±" . flyspell-popup-correct)))
-
-(use-package flyspell :ensure t
-  :init (defun flyspell-toggle ()
-          (interactive)
-          (if flyspell-mode (flyspell-mode-off) (flyspell-mode)))
-  :config
-  (setq ispell-dictionary "english")
-  (dolist (hook '(text-mode-hook)) (add-hook hook (lambda () (flyspell-mode 1))))
-  (dolist (hook '(change-log-mode-hook log-edit-mode-hook)) (add-hook hook (lambda () (flyspell-mode -1))))
-  (advice-add 'flyspell-mode-on :before 'flyspell-buffer)
-  :bind ("M-{" . flyspell-toggle))
-
 (use-package projectile :ensure t
   :commands (projectile-switch-project)
   :bind ("C-c p p" . projectile-switch-project)
@@ -857,6 +809,7 @@
   (setq prettify-symbols-unprettify-at-point t))
 
 (use-package mode-javascript :load-path "init" :defer 1)
+(use-package mode-linting :load-path "init" :defer 1)
 (use-package mode-clojure :load-path "init" :defer 1)
 
 ;; Custom major modes
