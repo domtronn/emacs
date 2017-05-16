@@ -30,18 +30,11 @@
   :after (web-mode)
   :load-path "etc/elisp-packages/flycheck-stylelint"
   :config
-  (flycheck-add-mode 'scss 'web-mode)
-  (flycheck-add-mode 'css-stylelint 'web-mode)
   (flycheck-add-mode 'css-stylelint 'scss-mode)
-  (setq flycheck-stylelint-args '("--syntax" "scss" "--formatter" "json"))
-  (setq flycheck-css-stylelint-executable "stylelint")
-  (setq flycheck-stylelintrc ".stylelintc.json")
-  (advice-add
-   'key-combo-pre-command-function
-   :around '(lambda (orig-f &rest args)
-              (when (eq major-mode "web-mode")
-                (unless (member (this-command-keys) '("=" "-" "+"))
-                  (apply orig-f args))))))
+
+  (setq flycheck-stylelint-args '("--syntax" "scss" "--formatter" "json")
+        flycheck-css-stylelint-executable "stylelint"
+        flycheck-stylelintrc ".stylelintc.json"))
 
 (use-package flycheck :ensure t
   :config (global-flycheck-mode)
