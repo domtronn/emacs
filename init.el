@@ -747,6 +747,18 @@
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
 
+(use-package atom-tabs :load-path "etc/elisp-packages/atom-tabs"
+  :config (global-atom-tabs-mode)
+  :bind (:map atom-tabs-mode-map
+              ("<s-S-right>" . atom-tabs-forward-tab)
+              ("<s-S-left>" . atom-tabs-backward-tab)
+              ("s-w" . kill-current-buffer)
+              ("s-!" . atom-tabs-select-tab-1)
+              ("s-@" . atom-tabs-select-tab-2)
+              ("s-£" . atom-tabs-select-tab-3)
+              ("s-$" . atom-tabs-select-tab-4)
+              ("s-%" . atom-tabs-select-tab-5)))
+
 (use-package spaceline :after powerline :ensure t)
 (use-package spaceline-colors :after spaceline-all-the-icons :load-path "init/spaceline-colors"
   :config (advice-add 'load-theme :after 'spaceline-update-faces))
