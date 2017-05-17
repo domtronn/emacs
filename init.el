@@ -264,7 +264,7 @@
   (advice-add 'load-theme :after 'theme-git-gutter)
 
   (global-git-gutter+-mode)
-  
+
   :bind (:map git-gutter+-mode-map
          ("C-x v p" . git-gutter+-previous-hunk)
          ("C-x v n" . git-gutter+-next-hunk)))
@@ -532,8 +532,7 @@
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 
 (use-package key-combo :ensure t
-  :config (add-to-list 'key-combo-common-mode-hooks 'web-mode-hook)
-          (key-combo-mode 1)
+  :config (key-combo-mode 1)
           (key-combo-load-default))
 
 (add-hook 'after-init-hook 'yas-global-mode)
@@ -608,7 +607,7 @@
 
 ;; Custom Auto Complete Sources
 (use-package company :ensure t :defer 1
-  :config 
+  :config
   (global-company-mode)
   (defvar company-mode/enable-yas t "Enable yasnippet for all backends.")
   (defun company-mode/backend-with-yas (backend)
@@ -621,6 +620,7 @@
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
   :bind (("<kp-decimal>" . company-complete)
+         ("<S-kp-decimal>" . company-yasnippet)
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)))
@@ -637,7 +637,7 @@
 
 (use-package company-tern :ensure t
   :after company
-  :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-emoji)))
+  :config (add-to-list 'company-backends 'company-tern))
 
 (use-package ac-emoji :ensure t :disabled t :after auto-complete
   :config
