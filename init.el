@@ -79,6 +79,9 @@
                   (apply orig-f args))))
   (global-nlinum-mode))
 
+(use-package fold-dwim :ensure t
+  :bind ("s-=" . fold-dwim-toggle))
+
 (use-package rainbow-delimiters :ensure t :defer 1
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (use-package rainbow-mode :ensure t :defer 1
