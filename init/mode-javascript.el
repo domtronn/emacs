@@ -28,8 +28,29 @@
 
 ;;;; Linting
 (use-package eslint-reader :load-path "etc/elisp-packages/eslint-reader" :after js2-mode)
+
 (use-package eslintd-fix :after js2-mode :ensure t
-  :init (add-hook 'js2-mode-hook '(lambda () (interactive) (when (locate-dominating-file (buffer-file-name) ".eslintrc.json") (eslintd-fix-mode)))))
+  :init
+  (defun js2/should-enable-eslint-fix-mode ()
+    "Test whether or not to enabled `eslintd-fix-mode'."
+    (when (or (locate-dominating-file (buffer-file-name) ".eslintrc.json")
+              (locate-dominating-file (buffer-file-name) ".eslintrc"))
+      (eslintd-fix-mode)))
+  (add-hook 'js2-mode-hook 'js2/should-enable-eslint-fix-mode))
+
+(defun js2/load-prettify-symbols-alist ()
+  "Add all of the javascript pretty symbols."
+  (push '("function" . ?𝒇) prettify-symbols-alist)
+  (push '("=>" . ?⭢) prettify-symbols-alist)
+  (push '("return" . ?⇐) prettify-symbols-alist)
+  (push '("undefined" . ?∅) prettify-symbols-alist)
+  ;; Maths symbols
+  (push '("<=" . ?≤) prettify-symbols-alist)
+  (push '(">=" . ?≥) prettify-symbols-alist)
+  (push '("!=" . ?≠) prettify-symbols-alist)
+  (push '("!==" . ?≢) prettify-symbols-alist)
+  (push '("===" . ?≡) prettify-symbols-alist)
+  (prettify-symbols-mode t))
 
 ;;; Utilities
 (use-package js2-refactor :after js2-mode :ensure t)
@@ -45,7 +66,7 @@
          ("s-i" . js-import)))
 
 (use-package tern :ensure t :after js2-mode
-  :config (add-hook 'js2-mode-hook tern-mode))
+  :config (add-hook 'js2-mode-hook 'tern-mode))
 
 (defun npm--get-package-json ()
   "Get a package.json for a project and list its scripts."
@@ -127,7 +148,6 @@ When PFX is non-nil, run with --save or --save-dev"
   (add-hook 'js2-mode-hook 'js-injector-minor-mode)
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'js2-mode-hook '(lambda () (key-combo-common-load-default)))
   ;; (remove-hook 'js2-mode-hook '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (bind-keys :map js2-mode-map
              ("C-c x" . send-to-repl)

@@ -124,19 +124,6 @@
     (let ((line (buffer-substring (line-beginning-position) (line-end-position))))
       (not (eq nil (string-match s line))))))
 
-(defun js2/load-prettify-symbols-alist ()
-  (push '("function" . ?𝒇) prettify-symbols-alist)
-  (push '("=>" . ?⭢) prettify-symbols-alist)
-  (push '("return" . ?⇐) prettify-symbols-alist)
-  (push '("undefined" . ?∅) prettify-symbols-alist)
-  ;; Maths symbols
-  (push '("<=" . ?≤) prettify-symbols-alist)
-  (push '(">=" . ?≥) prettify-symbols-alist)
-  (push '("!=" . ?≠) prettify-symbols-alist)
-  (push '("!==" . ?≢) prettify-symbols-alist)
-  (push '("===" . ?≡) prettify-symbols-alist)
-  (prettify-symbols-mode t))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Opening Files in other applications ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -625,6 +612,11 @@
   (interactive)
   (--map (unless (window-dedicated-p it) (delete-window it)) (cdr (window-list))))
 
+(defun sticky-window-pfx (&optional pfx)
+  "Call stick or unstick all based on presence of PFX."
+  (interactive "P")
+  (if pfx (sticky-window-unstick-all) (sticky-window)))
+
 (defun sticky-window-unstick-all ()
   "Unsticks all stuck windows"
   (interactive)
@@ -646,10 +638,18 @@
   (interactive)
   (if window-config (window-config--restore t) (window-config--save)))
 
-(global-set-key [f10] 'sticky-window)
+(defun window-config-pfx (&optional pfx)
+  "Save/Restore window config based on PFX."
+  (interactive "p")
+  (cl-case pfx
+    (1 (window-config--restore))
+    (4 (window-config--save))
+    (16 (window-config-save-or-restore))))
+
+(global-set-key [f10] 'sticky-window-pfx)
 (global-set-key (kbd "<s-f10>") 'sticky-window-unstick-all)
 
-(global-set-key [f9] 'window-config--restore)
+(global-set-key [f9] 'window-config-pfx)
 (global-set-key (kbd "<s-f9>") 'window-config-save-or-restore)
 (global-set-key (kbd "<S-f9>") 'window-config--save)
 
