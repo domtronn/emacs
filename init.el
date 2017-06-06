@@ -79,8 +79,12 @@
                   (apply orig-f args))))
   (global-nlinum-mode))
 
-(use-package fold-dwim :ensure t
-  :bind ("s-=" . fold-dwim-toggle))
+(use-package nlinum-hl :ensure t :after nlinum
+  :config (nlinum-hl-mode))
+
+(use-package origami :ensure t
+  :config (origami-mode)
+  :bind ("s-=" . origami-toggle-node))
 
 (use-package rainbow-delimiters :ensure t :defer 1
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
