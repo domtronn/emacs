@@ -622,7 +622,9 @@
   (interactive)
   (--map (sticky-window it '(nil)) (window-list)))
 
+;;; Window Configurations
 (defvar window-config nil "A variable to store current window config")
+(defvar window-config-file (expand-file-name "var/window-config.el" user-emacs-directory))
 (defun window-config--restore (&optional unset)
   (interactive)
   (message "♺ Restoring window layout")
@@ -632,7 +634,8 @@
 (defun window-config--save ()
   (interactive)
   (message "✓ Saving window layout")
-  (setq window-config (current-window-configuration)))
+  (setq window-config (current-window-configuration))
+  (with-temp-file window-config-file (insert (format "%s" window-config))))
 
 (defun window-config-save-or-restore ()
   (interactive)
@@ -646,12 +649,12 @@
     (4 (window-config--save))
     (16 (window-config-save-or-restore))))
 
-(global-set-key [f10] 'sticky-window-pfx)
-(global-set-key (kbd "<s-f10>") 'sticky-window-unstick-all)
+(global-set-key (kbd "H-0") 'sticky-window-pfx)
+(global-set-key (kbd "H-)") 'sticky-window-unstick-all)
 
-(global-set-key [f9] 'window-config-pfx)
-(global-set-key (kbd "<s-f9>") 'window-config-save-or-restore)
-(global-set-key (kbd "<S-f9>") 'window-config--save)
+(global-set-key (kbd "H-9") 'window-config-pfx)
+(global-set-key (kbd "s-H-9") 'window-config-save-or-restore)
+(global-set-key (kbd "H-(") 'window-config--save)
 
 (global-set-key (kbd "C-x C-z") 'sticky-window-delete-other-windows)
 
