@@ -102,10 +102,10 @@
 (defun npm-install (&optional pfx)
   "Npm install with current directory.
 When PFX is non-nil, run with --save or --save-dev"
-  (interactive "P")
-  (let* ((prefix (cond
-                  ((> (prefix-numeric-value pfx) 4) "--save")
-                  ((> (prefix-numeric-value pfx) 0) "--save-dev")))
+  (interactive "p")
+  (let* ((prefix (cl-case pfx
+                   (4 "--save")
+                   (0 "--save-dev")))
          (cmd (format "npm install %s " (or prefix "")))
          (package (read-string cmd (thing-at-point 'word))))
     (shell-command (format "%s %s" cmd package))))

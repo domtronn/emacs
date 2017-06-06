@@ -52,9 +52,14 @@
          ("C-c C-n" . flycheck-next-error)
          ("C-c C-p" . flycheck-previous-error)))
 
-(use-package flyspell-popup :ensure t :defer t :after flyspell
+(use-package flyspell-popup :ensure t :after flyspell
   :bind (:map flyspell-mode-map
          ("±" . flyspell-popup-correct)))
+
+(use-package flycheck-pos-tip :ensure t :after flycheck
+  :config
+  (setq pos-tip-background-color (face-background 'company-tooltip))
+  (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
 
 (use-package flyspell :ensure t
   :init (defun flyspell-toggle ()
