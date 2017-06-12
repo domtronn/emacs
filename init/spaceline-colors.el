@@ -122,6 +122,23 @@
                (other   (background . "#202020") (foreground . "#30555a"))
                (middle  (background . "#202020")))))
 
+   (twilight-bright
+    ((active
+      ;; (highlight (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (default   (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (other     (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (middle    (background . "#e3f4ff"))
+      (highlight (background . "#f1f4f8") (foreground . "#6b82a7"))
+      (default   (background . "#f1f4f8") (foreground . "#6b82a7"))
+      (other     (background . "#f1f4f8") (foreground . "#6b82a7"))
+      (middle    (background . "#f1f4f8")))
+     (inactive
+      (default (background . "#f7f7f7") (foreground . "#b4b4b4"))
+      (other   (background . "#f7f7f7") (foreground . "#b4b4b4"))
+      (middle  (background . "#f7f7f7") (foreground . "#b4b4b4")))
+
+     (highlight . "#417598")))
+
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
      (highlight . "#88C0D0")))

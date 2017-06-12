@@ -839,14 +839,13 @@
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
 (use-package challenger-deep-theme :ensure t :defer t)
+(use-package twilight-bright-theme :ensure t :defer t)
 
 (use-package spacemacs-theme :ensure t :defer t)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-
-(run-with-idle-timer 300 t 'zone)
 
 (remove-hook 'first-change-hook 'ns-unselect-line)
 
