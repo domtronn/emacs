@@ -398,6 +398,14 @@
   :bind ("C-x r d" . bookmark-delete)
   :config (run-at-time "1 sec" 900 'bookmark-save))
 
+(use-package fancy-narrow
+  :ensure t
+  :config
+  (fancy-narrow-mode)
+  (set-face-attribute 'fancy-narrow-blocked-face nil :foreground nil :inherit font-lock-comment-face)
+  :bind ("C-x , ," . fancy-narrow-to-region)
+        ("C-x , ." . fancy-widen))
+
 (use-package flx :ensure t :after ivy)
 (use-package ivy-hydra :ensure t :after ivy)
 (use-package ivy :ensure t :after avy
