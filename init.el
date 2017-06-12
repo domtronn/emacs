@@ -557,9 +557,10 @@
 (use-package neotree :ensure t
   :config
   (setq neo-show-updir-line nil
-        neo-window-width 30
+        neo-window-width 35
         neo-window-fixed-size nil
-        neo-show-hidden-files t)
+        neo-show-hidden-files t
+        neo-vc-integration '(face))
   (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
   (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
 
