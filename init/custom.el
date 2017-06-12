@@ -206,13 +206,14 @@
  '(make-backup-files nil)
  '(mc/always-run-for-all t)
  '(neo-smart-open t)
+ '(neo-vc-integration (quote (face)))
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (spaceline benchmark-init js-import company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
+    (helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init js-import company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(popwin:popup-window-height 15)
@@ -353,9 +354,10 @@
  '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
  '(neo-dir-link-face ((t (:inherit default :height 0.9))))
  '(neo-file-link-face ((t (:inherit default :height 0.9))))
- '(neo-vc-added-face ((t (:foreground "LightGreen" :height 0.9))))
- '(neo-vc-edited-face ((t (:foreground "#FFA15" :height 0.9))))
- '(neo-vc-up-to-date-face ((t (:foreground "LightGray" :height 0.9))))
+ '(neo-vc-added-face ((t (:foreground "#5f9411" :height 0.9))))
+ '(neo-vc-edited-face ((t (:foreground "#6b82a7" :height 0.9))))
+ '(neo-vc-ignored-face ((t nil)))
+ '(neo-vc-up-to-date-face ((t (:height 0.9))))
  '(popup-menu-summary-face ((t (:inherit company-tooltip-selection))))
  '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
  '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
