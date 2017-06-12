@@ -79,9 +79,6 @@
                   (apply orig-f args))))
   (global-nlinum-mode))
 
-(use-package nlinum-hl :ensure t :after nlinum
-  :config (nlinum-hl-mode))
-
 (use-package origami :ensure t
   :config (origami-mode)
   :bind ("s-=" . origami-toggle-node))
