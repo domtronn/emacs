@@ -369,6 +369,9 @@
   ("H-S-SPC" . embrace-delete)
   ("H-c"     . embrace-change))
 
+(use-package helpful :ensure t
+  :bind ("C-h f" . helpful-function))
+
 (use-package smex :ensure t :after counsel)
 (use-package counsel :ensure t :after ivy
   :defer 5
@@ -388,7 +391,8 @@
         ("C-x C-f" . counsel-find-file)
         ("C-h b"   . counsel-descbinds)
         ("C-h v"   . counsel-describe-variable)
-        ("C-h f"   . counsel-describe-function)
+        ("C-h F"   . counsel-describe-face)
+        ;; ("C-h f"   . counsel-describe-function) ;; Deprecated in favour of `helpful'
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
@@ -541,6 +545,7 @@
 
 (add-hook 'after-init-hook 'yas-global-mode)
 (use-package yasnippet :ensure t
+  :config (add-hook 'ruby-mode-hook (lambda () (yas-minor-mode -1)))
   :commands (yas-global-mode yas-minor-mode))
 
 (use-package font-lock+ :ensure t :after all-the-icons)
@@ -685,7 +690,7 @@
 
 (use-package yahoo-weather :ensure t
   :defer t
-  :init (setq yahoo-weather-location "Salford Quays")
+  :init (setq yahoo-weather-location "Bermondsey")
   :config
   (defvar yahoo-run-id nil)
   (defun yahoo-weather-async-update-info ()
@@ -737,6 +742,8 @@
   (spaceline-toggle-all-the-icons-fullscreen-on)
   (spaceline-toggle-all-the-icons-buffer-position-on)
   (spaceline-all-the-icons--setup-package-updates)
+  (spaceline-all-the-icons--setup-paradox)
+  (spaceline-all-the-icons--setup-neotree)
   (spaceline-all-the-icons-theme))
 
 (use-package winum :ensure t :defer 1
