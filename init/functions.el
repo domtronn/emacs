@@ -556,7 +556,7 @@
             ;; This would override `fill-column' if it's an integer.
             (emacs-lisp-docstring-fill-column t))
         (fill-paragraph nil region)))
-    
+
 (global-set-key (kbd "M-K") 'kill-assignment)
 (defun kill-assignment ()
   (interactive)
@@ -649,12 +649,9 @@
     (4 (window-config--save))
     (16 (window-config-save-or-restore))))
 
-(global-set-key (kbd "H-0") 'sticky-window-pfx)
-(global-set-key (kbd "H-)") 'sticky-window-unstick-all)
-
-(global-set-key (kbd "H-9") 'window-config-pfx)
-(global-set-key (kbd "s-H-9") 'window-config-save-or-restore)
-(global-set-key (kbd "H-(") 'window-config--save)
+(defun set-frame-fullsize ()
+  (interactive)
+  (set-frame-size (selected-frame) 238 100))
 
 (global-set-key (kbd "C-x C-z") 'sticky-window-delete-other-windows)
 
