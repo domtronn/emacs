@@ -137,7 +137,7 @@
       (other   (background . "#f7f7f7") (foreground . "#b4b4b4"))
       (middle  (background . "#f7f7f7") (foreground . "#b4b4b4")))
 
-     (highlight . "#417598")))
+     (highlight . "#6b82a7")))
 
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
