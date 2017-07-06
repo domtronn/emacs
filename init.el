@@ -733,7 +733,8 @@
               ("s-$" . atom-tabs-select-tab-4)
               ("s-%" . atom-tabs-select-tab-5)))
 
-(use-package spaceline :after powerline :ensure t)
+(use-package spaceline :after powerline :ensure t
+  :config (setq spaceline-responsive nil))
 (use-package spaceline-colors :after spaceline-all-the-icons :load-path "init/spaceline-colors"
   :config (advice-add 'load-theme :after 'spaceline-update-faces))
 
