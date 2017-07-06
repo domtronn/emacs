@@ -362,9 +362,7 @@
   :bind ("H-C" . cycle-quotes))
 
 (use-package embrace :ensure t
-  :config (use-package hydra-embrace :load-path "etc/elisp-packages/hydra")
   :bind
-  ("H-SPC"   . hydra-embrace-or-native)
   ("H-S-SPC" . embrace-delete)
   ("H-c"     . embrace-change))
 
