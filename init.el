@@ -716,7 +716,6 @@
   (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
 
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
-(use-package fancy-battery :ensure t :after spaceline :defer 10 :config (fancy-battery-mode))
 
 (use-package powerline
   :if window-system
