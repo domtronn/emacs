@@ -464,6 +464,12 @@
   :bind ("C-c g" . ag-project-regexp)
         ("C-c C-f" . ag-regexp))
 
+(use-package rg
+  :after ag
+  :ensure  t
+  :bind ("M-s" . rg-dwim)
+        ("M-S" . rg-project)
+  :config (add-hook 'rg-mode-hook 'wgrep-ag-setup))
 (use-package comint
   :init
   (add-hook
