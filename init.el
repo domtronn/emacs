@@ -74,7 +74,9 @@
   (advice-add 'nlinum-mode :around
               (lambda (orig-f &rest args)
                 (unless (or (minibufferp)
-                            (memq major-mode linum-disabled-modes-list)
+                            (or
+                             (eq major-mode 'treemacs-mode)
+                             (memq major-mode linum-disabled-modes-list))
                             (string-match "*" (buffer-name)))
                   (apply orig-f args))))
   (global-nlinum-mode))
