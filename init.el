@@ -513,16 +513,12 @@
   :mode ("\\.md" . markdown-mode)
   :config
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
+  (add-hook 'markdown-mode-hook 'livedown-preview)
   (bind-keys* ("M-<left>" . backward-word)
               ("<M-S-left>" . backward-word)
               ("M-<right>" . forward-word)
               ("<M-S-right>" . forward-word)))
 
-(use-package livedown
-  :after markdown-mode
-  :load-path "etc/elisp-packages/emacs-livedown"
-  :config (bind-keys :map markdown-mode-map
-                     ("C-c C-c p" . livedown:preview)))
 
 (use-package sudo-edit :ensure t
   :commands (sudo-edit))
