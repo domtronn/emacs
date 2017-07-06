@@ -49,6 +49,7 @@
  '(lambda ()
     (local-set-key "i" '(lambda () (interactive) (find-file user-init-file)))
     (local-set-key "s" '(lambda () (interactive) (switch-to-buffer "*scratch*")))
+    (local-set-key "F" '(lambda () (interactive) (set-frame-size (selected-frame) 238 100)))
     (local-set-key "t" 'counsel-load-theme)
     (local-set-key "f" 'set-font)
     (local-set-key "a" 'org-agenda)
@@ -104,6 +105,7 @@
         ("H-p" . mc/mark-previous-like-this)
         ("s-p" . mc/skip-to-previous-like-this)
         ("H-l" . mc/mark-all-symbols-like-this)
+        ("H->" . mc/insert-numbers)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
 (use-package multi-line :ensure t
@@ -379,7 +381,7 @@
       (interactive)
       (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
 
-  :bind ([f2]      . counsel-git-grep)
+  :bind ("H-2"      . counsel-git-grep)
         ("C-x n"   . counsel-bookmark)
         ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
@@ -412,7 +414,8 @@
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy))
+        '((swiper . ivy--regex-plus)
+          (t . ivy--regex-fuzzy))
         ivy-display-style 'plain)
   :bind (("C-;"     . swiper)
          ("C-c C-r" . ivy-resume)
@@ -446,6 +449,7 @@
   ("H-\\" . avy-goto-word-0)
   ("H-'" . avy-goto-word-1)
   ("H-\"" . avy-goto-char)
+  ("H-SPC" . avy-goto-char)
   :config
   (avy-setup-default))
 
@@ -457,7 +461,8 @@
 (use-package ag
   :ensure t
   :commands (ag-regexp ag-project-regexp)
-  :bind ("C-c g" . ag-project-regexp))
+  :bind ("C-c g" . ag-project-regexp)
+        ("C-c C-f" . ag-regexp))
 
 (use-package comint
   :init
@@ -491,7 +496,7 @@
 
 (use-package link-hint :ensure t :after browse-url
   :bind ("H-o" . link-hint-open-link)
-        ("H-O" . link-hint-open-multiple-links))
+        ("H-k" . link-hint-open-multiple-links))
 
 (use-package markdown-toc :ensure t
   :after markdown-mode
@@ -584,9 +589,8 @@
       (neotree-find)
       (select-window cw)))
 
-  :bind ([f1] . neotree-projectile)
-        ("<S-f1>" . neotree-projectile-find)
-        ("<M-f1>" . neotree-find))
+  :bind ("H-1" . neotree-projectile)
+        ("H-§" . neotree-projectile-find))
 
 (use-package compile :ensure t :defer t
   :config
@@ -688,11 +692,11 @@
 (use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
-  :defer t
-  :bind (:map magit-mode-map
-              ("o" . magit-open-file-other-window)
-              ("C-c c" . magit-whitespace-cleanup)
-              ("C-c e" . magit-vc-ediff)))
+  :bind (("H-6" . magit-status)
+         :map magit-mode-map
+         ("o" . magit-open-file-other-window)
+         ("C-c ." . magit-whitespace-cleanup)
+         ("C-c e" . magit-vc-ediff)))
 
 (use-package yahoo-weather :ensure t
   :defer t

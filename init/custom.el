@@ -18,6 +18,8 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(ansi-term-color-vector
+   [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"])
  '(backup-by-copying-when-mismatch nil)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-setup (quote one-frame))
@@ -30,6 +32,7 @@
  '(cua-normal-cursor-color "#657b83")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
+ '(cursor-in-non-selected-windows nil)
  '(cursor-type (quote (bar . 1)))
  '(custom-safe-themes
    (quote
@@ -39,6 +42,7 @@
  '(default-input-method "TeX")
  '(emmet-quote-style "\"")
  '(eval-sexp-fu-flash-mode t)
+ '(fci-rule-character-color "#d9d9d9")
  '(fci-rule-color "#232A2F")
  '(flycheck-error-list-format
    [("Line" 4 flycheck-error-list-entry-< :right-align t)
@@ -213,14 +217,15 @@
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init js-import company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
+    (rg treemacs kanji-mode helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init js-import company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(popwin:popup-window-height 15)
  '(popwin:special-display-config
    (quote
-    (("*Flycheck errors*" :regexp nil :position bottom :stick t)
-     ("*compilation*" :regexp nil :height 30 :position bottom :noselect t :tail t :stick t)
+    (("*rg*" :regexp nil :position bottom :noselect nil)
+     ("*Flycheck errors*" :regexp nil :position bottom :stick t)
+     ("*compilation*" :regexp nil :height 30 :position bottom :noselect t :stick t :tail t)
      ("*s-" :regexp t :position bottom)
      ("*grunt" :regexp nil :position bottom :noselect t)
      ("*RE-Builder*" :height 2 :position bottom)
@@ -334,8 +339,8 @@
  '(diredp-compressed-file-suffix ((t (:inherit dired-warning :weight bold))))
  '(diredp-date-time ((t (:inherit dired-mark :slant italic))))
  '(diredp-dir-heading ((t (:inherit dired-header))))
- '(diredp-dir-name ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
- '(diredp-dir-priv ((t (:inherit dired-directory :background "#2C2C2C2C2C2C"))))
+ '(diredp-dir-name ((t (:inherit dired-directory :background "#2C2C2C"))))
+ '(diredp-dir-priv ((t (:inherit dired-directory :background "#2C2C2C"))))
  '(diredp-file-name ((t (:inherit default))))
  '(diredp-file-suffix ((t (:inherit dired-warning))))
  '(diredp-number ((t (:inherit dired-marked))))
@@ -355,7 +360,7 @@
  '(neo-dir-link-face ((t (:inherit default :height 0.9))))
  '(neo-file-link-face ((t (:inherit default :height 0.9))))
  '(neo-vc-added-face ((t (:foreground "#5f9411" :height 0.9))))
- '(neo-vc-edited-face ((t (:foreground "#6b82a7" :height 0.9))))
+ '(neo-vc-edited-face ((((background light)) (:foreground "#FF516D" :background "#FFEFF2" :height 0.9)) (((background dark)) (:foreground "#FF516D" :height 0.9))))
  '(neo-vc-ignored-face ((t nil)))
  '(neo-vc-up-to-date-face ((t (:height 0.9))))
  '(popup-menu-summary-face ((t (:inherit company-tooltip-selection))))
@@ -366,18 +371,19 @@
  '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
 
 ;;; Font Manipulation:
-(defvar font-list '(("Menlo" normal)
-                    ("Monaco" normal)
-                    ("Courier New" normal)
-                    ("Droid Sans Mono" normal)
-                    ("Ubuntu Mono derivative Powerline" normal)
-                    ("Source Code Pro" extralight)
-                    ("Inconsolata" medium)
-                    ("Apercu" medium)
-                    ("Maison Neue" medium)
-                    ("NotCourierSans" normal)
-                    ("Hack" normal)
-                    ("Anonymous Pro" normal)))
+(defvar font-list
+  '(
+    ("Andale Mono" extralight)
+    ("Anonymous Pro" normal)
+    ("Apercu" medium)
+    ("Courier New" normal)
+    ("Droid Sans Mono" normal)
+    ("Hack" normal)
+    ("Inconsolata" medium)
+    ("Maison Neue" medium)
+    ("Menlo" normal)
+    ("Source Code Pro" extralight)
+  ))
 
 (defun set-font (&optional f)
   "Set the custom font F with completion."
