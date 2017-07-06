@@ -470,7 +470,9 @@
   :bind ("M-s" . rg-dwim)
         ("M-S" . rg-project)
   :config (add-hook 'rg-mode-hook 'wgrep-ag-setup))
+
 (use-package comint
+  :defer 5
   :init
   (add-hook
    'comint-mode-hook
@@ -518,7 +520,6 @@
               ("<M-S-left>" . backward-word)
               ("M-<right>" . forward-word)
               ("<M-S-right>" . forward-word)))
-
 
 (use-package sudo-edit :ensure t
   :commands (sudo-edit))
@@ -593,6 +594,18 @@
 
   :bind ("H-1" . neotree-projectile)
         ("H-§" . neotree-projectile-find))
+
+(use-package treemacs
+  :commands (treemacs treemacs-toggle)
+  :config
+  (setq treemacs-header-function 'treemacs--create-header-projectile
+        treemacs-change-root-without-asking t
+        treemacs-follow-after-init t
+        treemacs-git-integration t
+        treemacs-width 40)
+  (treemacs-follow-mode)
+  (add-hook 'treemacs-mode-hook (lambda () (setq-local line-spacing 5)))
+  (add-hook 'treemacs-mode-hook (lambda () (setq-local tab-width 1))))
 
 (use-package compile :ensure t :defer t
   :config
