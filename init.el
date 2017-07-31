@@ -832,13 +832,15 @@
 (menu-bar-mode 1)
 
 ;; Global Mode Stuff
-(add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
-(add-hook 'js2-mode-hook 'prettify-symbols-mode)
-(global-prettify-symbols-mode)
+;; (add-hook 'js2-mode-hook 'js2/load-prettify-symbols-alist)
+;; (add-hook 'js2-mode-hook 'prettify-symbols-mode)
+;; (global-prettify-symbols-mode)
 (use-package prettify-symbols-mode
   :bind ("C-c <C-return>" . prettify-symbols-mode)
   :config
   (setq prettify-symbols-unprettify-at-point t))
+
+(mac-auto-operator-composition-mode)
 
 (use-package mode-javascript :load-path "init" :defer 1)
 (use-package mode-linting :load-path "init" :defer 1)

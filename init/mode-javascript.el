@@ -58,7 +58,8 @@
   :after js2-mode
   :load-path "etc/elisp-packages/js-dependency-injector"
   :config
-  (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist))
+  (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist)
+  :bind (:map js2-mode-map ("s-I" . js-injector-clever-import-module)))
 
 (use-package js-import :ensure t :after js2-mode
   :config (setq js-import-quote "'")
