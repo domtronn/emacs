@@ -711,6 +711,7 @@
          :map magit-mode-map
          ("o" . magit-open-file-other-window)
          ("C-c ." . magit-whitespace-cleanup)
+         ("C-c C-." . magit-whitespace-cleanup)
          ("C-c e" . magit-vc-ediff)))
 
 (use-package yahoo-weather :ensure t
