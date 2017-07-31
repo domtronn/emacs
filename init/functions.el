@@ -599,6 +599,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
 ;; Sticky window & layout saving functions ;;
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
+(global-set-key (kbd "H-0") 'sticky-window)
 (defun sticky-window (&optional w state)
   "Sets WINDOW to be sticky. Defaults to `selected-window'"
   (interactive)
@@ -648,6 +649,9 @@
     (1 (window-config--restore))
     (4 (window-config--save))
     (16 (window-config-save-or-restore))))
+
+(global-set-key (kbd "H-v H-,") 'window-config--save)
+(global-set-key (kbd "H-v H-.") 'window-config--restore)
 
 (defun set-frame-fullsize ()
   (interactive)
