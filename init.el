@@ -799,12 +799,10 @@
 (setq create-lockfiles nil)                 ; don't make lock files
 (setq auto-save-default nil)                ; don't autosave
 (setq truncate-partial-width-windows t)     ; Turn truncation off on split windows
+
 ;; Disable audible and visible bell in favor of flashing the mode line instead
-(defun mode-line-visible-bell () "A friendlier vaisual bell effect."
-  (invert-face 'powerline-active1) (run-with-timer 0.1 nil 'invert-face 'powerline-active1)
-  (invert-face 'mode-line) (run-with-timer 0.1 nil 'invert-face 'mode-line))
 (setq visible-bell nil)
-(setq ring-bell-function 'mode-line-visible-bell)
+(setq ring-bell-function nil)
 
 
 ;; Set Path
