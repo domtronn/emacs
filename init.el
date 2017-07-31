@@ -847,6 +847,23 @@
 ;; Custom major modes
 (add-to-list 'auto-mode-alist '("\\.te?xt$" . text-mode))
 
+;; Auto correcting abbreve mode
+(define-abbrev-table 'global-abbrev-table
+  '(
+    ("reuslt" "result" nil 0)
+    ("reulst" "result" nil 0)
+    ("hten" "then" nil 0)
+    ("Promsie" "Promise" nil 0)
+    ("requier" "require" nil 0)
+    ("entires" "entries" nil 0)
+    ("emtires" "entries" nil 0)
+    ("stirng" "string" nil 0)
+    ("fitler" "filter" nil 0)
+    ("reuqire" "require" nil 0)
+    ("reuiqre" "require" nil 0)
+    ))
+(add-hook 'prog-mode-hook 'abbrev-mode)
+
 ;;------------------
 ;; Themes
 ;;------------------
