@@ -707,7 +707,6 @@
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
-(use-package grunt :ensure t :bind ("C-M-g" . grunt-exec))
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
   :bind (("H-6" . magit-status)
