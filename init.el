@@ -322,6 +322,9 @@
                      ("C-x c" . dockerfile-build-buffer)
                      ("C-x C-c" . dockerfile-build-no-cache-buffer)))
 
+(use-package docker-compose-mode :ensure t
+  :mode ("^docker-compose.yml$" . docker-compose-mode))
+
 (use-package nameless :ensure t
   :defer t
   :config (bind-keys :map nameless-mode-map ("C-c C-c" . nameless-insert-name)))
