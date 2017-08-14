@@ -56,10 +56,8 @@
   :bind (:map flyspell-mode-map
          ("±" . flyspell-popup-correct)))
 
-(use-package flycheck-pos-tip :ensure t :after flycheck
-  :config
-  (setq pos-tip-background-color (face-background 'company-tooltip))
-  (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
+(use-package flycheck-inline :ensure t :after flycheck
+  :config (add-hook 'flycheck-mode-hook 'flycheck-inline-enable))
 
 (use-package flyspell :ensure t
   :init (defun flyspell-toggle ()
