@@ -42,6 +42,14 @@
      (inactive (default (background . "#1d2021") (foreground . "#a89984"))
                (other   (background . "#1d2021") (foreground . "#a89984"))
                (middle  (background . "#282828")))))
+    (gruvbox-dark-hard
+    ((active (highlight (background . "#b8bb26") (foreground . "#1d2021"))
+             (default   (background . "#3c3836") (foreground . "#f4e8ba"))
+             (other     (background . "#282828") (foreground . "#928374"))
+             (middle    (background . "#1d2021")))
+     (inactive (default (background . "#1d2021") (foreground . "#a89984"))
+               (other   (background . "#1d2021") (foreground . "#a89984"))
+               (middle  (background . "#282828")))))
 
    (creamsody
     ((active (highlight (background . "#529F96") (foreground . "#1d2021"))
