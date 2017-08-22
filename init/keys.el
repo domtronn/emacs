@@ -40,6 +40,8 @@
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
 
+(global-set-key (kbd "H-`") 'other-window)
+
 (global-set-key (kbd "s-h") 'goto-line)
 
 ;; Alignment
