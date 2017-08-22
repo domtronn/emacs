@@ -420,7 +420,8 @@
   (setq ivy-re-builders-alist
         '((swiper . ivy--regex-plus)
           (t . ivy--regex-fuzzy))
-        ivy-display-style 'plain)
+        ivy-display-style 'plain
+        ivy-height 9)
   :bind (("C-;"     . swiper)
          ("C-c C-r" . ivy-resume)
          ("C-x b"   . ivy-switch-buffer)
