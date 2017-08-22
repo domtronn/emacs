@@ -80,6 +80,7 @@
                              (memq major-mode linum-disabled-modes-list))
                             (string-match "*" (buffer-name)))
                   (apply orig-f args))))
+  (custom-set-faces '(linum ((t :height 0.9))))
   (global-nlinum-mode))
 
 (use-package origami :ensure t
