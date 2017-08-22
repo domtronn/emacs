@@ -877,7 +877,6 @@
 (load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
-(use-package gruvbox-theme :ensure t :defer t)
 (use-package creamsody-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package forest-blue-theme :ensure t :defer t)
@@ -886,6 +885,18 @@
 (use-package nord-theme :ensure t :defer t)
 (use-package challenger-deep-theme :ensure t :defer t)
 (use-package twilight-bright-theme :ensure t :defer t)
+(use-package subatomic-theme :ensure :defer t
+  :config
+  (custom-theme-set-faces 'subatomic
+   '(mode-line ((t :weight extralight)))
+   '(term-color-black ((t :foreground "#232533")))
+   '(term-color-blue ((t :foreground "#61AFEF")))
+   '(term-color-cyan ((t :foreground "#86edec")))
+   '(term-color-green ((t (:foreground "#38fab4"))))
+   '(term-color-magenta ((t :foreground "#9c71a5")))
+   '(term-color-red ((t :foreground "#f59ea3")))
+   '(term-color-white ((t :foreground "#e5e5e5")))
+   '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
 
 (use-package spacemacs-theme :ensure t :defer t)
 
@@ -897,7 +908,7 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'nord))
+  (load-theme 'subatomic))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:

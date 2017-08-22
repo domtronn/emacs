@@ -50,9 +50,11 @@
      (inactive (default (background . "#1d2021") (foreground . "#a89984"))
                (other   (background . "#1d2021") (foreground . "#a89984"))
                (middle  (background . "#282828")))))
+    (subatomic
+     ((active (highlight (background . "#f9b529") (foreground . "#1d2021")))))
 
    (creamsody
-    ((active (highlight (background . "#529F96") (foreground . "#1d2021"))
+    ((active (highlight (background . "#83A598") (foreground . "#1d2021"))
              (default   (background . "#DFE5C5") (foreground . "#1d2021"))
              (other     (background . "#282C32") (foreground . "#FDF4C1"))
              (middle    (background . "#282C32")))
