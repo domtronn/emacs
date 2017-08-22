@@ -633,7 +633,7 @@
   (setq shell-pop-autocd-to-working-dir nil
         shell-pop-shell-type '("term" "*terminal*" (lambda () (ansi-term "/bin/bash" "*ansi-terminal*")))
         shell-pop-window-position "bottom"
-        shell-pop-window-size 40))
+        shell-pop-window-size 20))
 
 (use-package uniquify
   :config
