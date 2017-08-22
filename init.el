@@ -861,6 +861,7 @@
     ("Promsie" "Promise" nil 0)
     ("requier" "require" nil 0)
     ("entires" "entries" nil 0)
+    ("entiers" "entries" nil 0)
     ("emtires" "entries" nil 0)
     ("stirng" "string" nil 0)
     ("fitler" "filter" nil 0)
