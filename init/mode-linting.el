@@ -43,6 +43,8 @@
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint_d")
   (setq flycheck-eslintrc ".eslintrc.json")
+  ;; In the case of broken Eslint configs, try running `(flycheck-eslint-config-exists-p)'
+  ;; Also, `M-! eslint_d --print-config .'
   (setq-default flycheck-disabled-checkers '(javascript-jshint scss))
   (flycheck-add-mode 'javascript-standard 'rjsx-mode)
   (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
