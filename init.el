@@ -877,14 +877,30 @@
 (load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
-(use-package creamsody-theme :ensure t :defer t)
 (use-package atom-one-dark-theme :ensure t :defer t)
 (use-package forest-blue-theme :ensure t :defer t)
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
-(use-package challenger-deep-theme :ensure t :defer t)
-(use-package twilight-bright-theme :ensure t :defer t)
+
+(use-package twilight-bright-theme :ensure t :defer t
+  :config
+  (custom-set-variables
+   '(ansi-term-color-vector
+     ["#232533" "#e5e5e5" "#f59ea3" "#38fab4" "#f2ef9c" "#86edec" "#9c71a5" "#61AFEF" "#232533"])))
+
+(use-package creamsody-theme :ensure t :defer t
+  :config
+  (custom-theme-set-faces 'creamsody
+   '(term-color-black ((t :foreground "#232533")))
+   '(term-color-blue ((t :foreground "#61AFEF")))
+   '(term-color-cyan ((t :foreground "#86edec")))
+   '(term-color-green ((t (:foreground "#38fab4"))))
+   '(term-color-magenta ((t :foreground "#9c71a5")))
+   '(term-color-red ((t :foreground "#f59ea3")))
+   '(term-color-white ((t :foreground "#e5e5e5")))
+   '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
+
 (use-package subatomic-theme :ensure :defer t
   :config
   (custom-theme-set-faces 'subatomic
