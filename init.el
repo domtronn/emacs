@@ -890,10 +890,12 @@
 
 ;; Themed with Spaceline
 (use-package atom-one-dark-theme :ensure t :defer t)
-(use-package forest-blue-theme :ensure t :defer t)
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
+
+(use-package doom-themes :ensure :defer t
+  :config (setq spaceline-all-the-icons-separator-type 'none))
 
 (use-package twilight-bright-theme :ensure t :defer t
   :config
@@ -925,8 +927,6 @@
    '(term-color-red ((t :foreground "#f59ea3")))
    '(term-color-white ((t :foreground "#e5e5e5")))
    '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
-
-(use-package spacemacs-theme :ensure t :defer t)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
