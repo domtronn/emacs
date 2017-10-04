@@ -541,8 +541,8 @@
 (use-package sudo-edit :ensure t
   :commands (sudo-edit))
 
-(use-package scss-mode :ensure t :mode ("\\.scss" . scss-mode))
-(use-package css-mode :ensure t :mode ("\\.css$" . css-mode))
+(use-package scss-mode :ensure t :mode ("\\.scss" . scss-mode) :config (setq css-indent-offset 2))
+(use-package css-mode :ensure t :mode ("\\.css$" . css-mode) :config (setq css-indent-offset 2))
 
 (use-package eval-sexp-fu :ensure t :after emacs-lisp-mode
   :commands (eval-sexp-fu-flash-mode)
