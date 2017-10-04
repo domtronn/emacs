@@ -30,25 +30,34 @@
   :commands (cider-mode cider-jack-in)
   :config
   (setq nrepl-log-messages nil
+        nrepl-sync-request-timeout 60
+        cider-repl-pop-to-buffer-on-connect nil
+        cider-repl-use-clojure-font-lock t
         cider-repl-display-help-banner nil)
   (bind-keys :map cider-repl-mode-map
              ("C-r" . cider-repl-history)
              ("<up>" . cider-repl-previous-input)
              ("<down>" . cider-repl-next-input))
   (bind-keys :map cider-mode-map
-             ("s-<return>" . cider-eval-defun-at-point)))
+             ("s-<return>" . cider-eval-defun-at-point)
+             ("M-<return>" . cider-eval-sexp-at-point)
+             ("s-S-<return>" . cider-eval-buffer)
+             ("C-h C-/" . cider-inspect-last-result)
+             ("M-:" . cider-read-and-eval)
+             ("M-;" . eval-expression)))
 
 (use-package ac-cider :ensure t :after (cider clojure)
+  :disabled t
   :init
   (add-hook 'clojure-mode-hook 'ac-cider-setup)
   (add-hook 'cider-repl-mode-hook 'ac-cider-setup))
 
 (use-package flycheck-clojure :ensure t :after (flycheck)
+  :disabled t
   :config (flycheck-clojure-setup)
   (flycheck-add-mode 'clojure-cider-kibit 'clojure-mode)
   (flycheck-add-mode 'clojure-cider-eastwood 'clojure-mode))
 
-(add-hook 'clojure-mode-hook '(lambda () (interactive) (setq-local flycheck-display-errors-function 'flycheck-pos-tip-error-messages)))
 (add-hook 'clojure-mode-hook '(lambda () (interactive) (setq-local eldoc-idle-delay 1)))
 (add-hook 'clojure-mode-hook 'eldoc-mode)
 
