@@ -387,11 +387,13 @@
       (interactive)
       (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
 
-  :bind ("H-2"      . counsel-git-grep)
+  :bind ("H-2"     . counsel-git-grep)
+        ("C-S-o"     . counsel-git)
         ("C-x n"   . counsel-bookmark)
         ("C-c f"   . counsel-ag-project)
         ("C-c v"   . counsel-git-grep)
-        ("H-M-."   . counsel-imenu)
+        ("H->"     . counsel-imenu)
+        ("C-'"     . counsel-imenu)
         ("M-x"     . counsel-M-x)
         ("C-x C-f" . counsel-find-file)
         ("C-h b"   . counsel-descbinds)
@@ -400,6 +402,14 @@
         ;; ("C-h f"   . counsel-describe-function) ;; Deprecated in favour of `helpful'
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
+
+(use-package imenu-list :ensure t
+  :bind
+  ("C-M-\\" . imenu-list-noselect)
+  ("C-\\" . imenu-list))
+
+(use-package imenu-anywhere :ensure t :after ivy
+  :bind ("C-\"" . ivy-imenu-anywhere) )
 
 (use-package bookmark :defer t
   :commands (bookmark-jump bookmark-all-names)
