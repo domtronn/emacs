@@ -273,8 +273,9 @@
   (global-git-gutter+-mode)
 
   :bind (:map git-gutter+-mode-map
-         ("C-x v p" . git-gutter+-previous-hunk)
-         ("C-x v n" . git-gutter+-next-hunk)))
+              ("C-x v p" . git-gutter+-previous-hunk)
+              ("C-x v s" . git-gutter+-show-hunk)
+              ("C-x v n" . git-gutter+-next-hunk)))
 
 (use-package image+ :ensure t :after 'image-mode
   :init (add-hook 'image-mode-hook '(lambda () (require 'image+)))
