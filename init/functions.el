@@ -476,6 +476,7 @@
 (defrepl "ramda" "ramda-repl")
 (defrepl "node" "node")
 (defrepl "elixir" "iex")
+(defrepl "ruby" "irb")
 (defrepl "lodash" "n_")
 
 (defmacro defewwmenu (name query)
