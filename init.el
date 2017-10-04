@@ -232,6 +232,7 @@
              ("s-b" . org-previous-link))
   (org-babel-do-load-languages 'org-babel-load-languages '((sh . t) (ruby . t) (dot . t) (perl . t)))
   (add-hook 'org-mode-hook 'auto-fill-mode)
+  (add-hook 'org-mode-hook 'rainbow-mode)
   (add-hook 'org-mode-hook 'abbrev-mode)
   (add-hook 'org-mode-hook '(lambda () (flycheck-mode 0)))
   (add-hook 'org-finalize-agenda-hook '(lambda ()
