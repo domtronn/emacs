@@ -130,8 +130,7 @@
   :bind (:map ibuffer-mode-map ("P" . ibuffer-vc-set-filter-groups-by-vc-root)))
 
 (use-package ibuffer :ensure t :defer t
-  :bind (("s-p" . ibuffer)
-         :map ibuffer-mode-map
+  :bind (:map ibuffer-mode-map
          ("M-u" . ibuffer-unmark-all)))
 
 (use-package smart-forward :ensure t
@@ -356,7 +355,6 @@
   ("C-c p o" . projectile-find-file-in-known-projects)
   ("C-c p a" . projectile-add-known-project)
   ("C-c p d" . projectile-find-dir)
-  ("C-x C-b"   . projectile-switch-to-buffer)
   ("C-c p x x" . projectile-remove-known-project))
 
 (use-package visual-regexp :ensure t
@@ -437,6 +435,7 @@
   :bind (("C-;"     . swiper)
          ("C-c C-r" . ivy-resume)
          ("C-x b"   . ivy-switch-buffer)
+         ("C-x C-b" . ivy-switch-buffer-other-window)
          :map ivy-minibuffer-map
          ("s-k"     . delete-minibuffer-contents)
          ("C-S-j"   . ivy-immediate-done)))
@@ -460,13 +459,16 @@
           (setq-default anzu-mode-line-update-function
                         'spaceline-all-the-icons-anzu-update-func))
 
-(use-package avy-zap :ensure t :bind ("H-x" . avy-zap-to-char))
+(use-package avy-zap :ensure t :bind ("H-k" . avy-zap-up-to-char))
 (use-package avy :ensure t
   :bind
-  ("H-\\" . avy-goto-word-0)
-  ("H-'" . avy-goto-word-1)
-  ("H-\"" . avy-goto-char)
-  ("H-SPC" . avy-goto-char)
+  ("s-H" . avy-goto-line)
+  ("s-p" . avy-goto-line-above)
+  ("s-n" . avy-goto-line-below)
+  ("s-J" . avy-goto-word-0)
+  ("s-j" . avy-goto-word-1)
+  ("s-l" . avy-goto-char-2)
+  ("s-L" . avy-goto-char-2)
   :config
   (avy-setup-default))
 
@@ -855,8 +857,10 @@
   :config
   (setq prettify-symbols-unprettify-at-point t))
 
-(mac-auto-operator-composition-mode)
+(when (fboundp 'mac-auto-operator-composition-mode)
+  (mac-auto-operator-composition-mode))
 
+(use-package mode-web :load-path "init" :defer 1)
 (use-package mode-javascript :load-path "init" :defer 1)
 (use-package mode-linting :load-path "init" :defer 1)
 (use-package mode-clojure :load-path "init" :defer 1)
@@ -869,6 +873,9 @@
   '(
     ("reuslt" "result" nil 0)
     ("reulst" "result" nil 0)
+    ("remidner" "reminder" nil 0)
+    ("lenfgth" "length" nil 0)
+    ("lengfth" "length" nil 0)
     ("hten" "then" nil 0)
     ("Promsie" "Promise" nil 0)
     ("requier" "require" nil 0)

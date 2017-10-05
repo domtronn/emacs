@@ -164,6 +164,8 @@ When PFX is non-nil, run with --save or --save-dev"
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
+             ("s-]" . forward-sexp)
+             ("s-[" . backward-sexp)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
              ("s-w" . rjsx-mode)

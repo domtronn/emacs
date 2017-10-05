@@ -43,8 +43,8 @@
              ("M-<return>" . cider-eval-sexp-at-point)
              ("s-S-<return>" . cider-eval-buffer)
              ("C-h C-/" . cider-inspect-last-result)
-             ("M-:" . cider-read-and-eval)
-             ("M-;" . eval-expression)))
+             ("M-;" . cider-read-and-eval)
+             ("M-:" . eval-expression)))
 
 (use-package ac-cider :ensure t :after (cider clojure)
   :disabled t

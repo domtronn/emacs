@@ -44,9 +44,6 @@
 
 (global-set-key (kbd "s-h") 'goto-line)
 
-(global-set-key (kbd "s-p") 'backward-list)
-(global-set-key (kbd "s-n") 'forward-list)
-
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
 (global-set-key (kbd "C-x a (")
