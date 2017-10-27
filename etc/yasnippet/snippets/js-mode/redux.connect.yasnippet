@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name : Redux#Connect - boiler plate redux store connect
+# key  : connect
+# --
+const mapStateToProps = (state = {}) => ({
+  $1
+})    
+
+export default connect(mapStateToProps, { })(`(s-upper-camel-case (file-name-sans-extension (file-name-base (buffer-file-name))))`)
