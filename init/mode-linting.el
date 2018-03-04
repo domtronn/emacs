@@ -58,7 +58,7 @@
   :bind (:map flyspell-mode-map
          ("±" . flyspell-popup-correct)))
 
-(use-package flycheck-inline :ensure t :after flycheck
+(use-package flycheck-inline :ensure t :after flycheck :disabled t
   :config (add-hook 'flycheck-mode-hook 'flycheck-inline-enable))
 
 (use-package flyspell :ensure t

@@ -53,7 +53,7 @@
     (subatomic
      ((active (highlight (background . "#f9b529") (foreground . "#1d2021")))))
 
-   (creamsody
+    (creamsody
     ((active (highlight (background . "#83A598") (foreground . "#1d2021"))
              (default   (background . "#DFE5C5") (foreground . "#1d2021"))
              (other     (background . "#282C32") (foreground . "#FDF4C1"))
@@ -62,16 +62,29 @@
                (other   (background . "#1d2021") (foreground . "#a89984"))
                (middle  (background . "#282C32")))
      (buffer-highlight . "#1d2021")))
+    
+    (kaolin-galaxy
+     ((buffer-highlight . "#967bb6")))
 
-   (atom-one-dark
-    ((active (highlight (background . "#98C379") (foreground . "#1d2021"))
-             (default   (background . "#3E4451") (foreground . "#AAAAAA"))
-             (other     (background . "#282C32") (foreground . "#AAAAAA"))
-             (middle    (background . "#282C32")))
-     (inactive (default (background . "#1d2021") (foreground . "#666D7A"))
-               (other   (background . "#1d2021") (foreground . "#666D7A"))
-               (middle  (background . "#282C32")))))
+    (atom-one-dark
+     ((active (highlight (background . "#98C379") (foreground . "#1d2021"))
+              (default   (background . "#3E4451") (foreground . "#AAAAAA"))
+              (other     (background . "#282C32") (foreground . "#AAAAAA"))
+              (middle    (background . "#282C32")))
+      (inactive (default (background . "#1d2021") (foreground . "#666D7A"))
+                (other   (background . "#1d2021") (foreground . "#666D7A"))
+                (middle  (background . "#282C32")))))
 
+    (doom-spacegrey
+     ((active (highlight (background . "#5699AF") (foreground . "#1d2021"))
+              (default   (background . "#343D46") (foreground . "#5699AF"))
+              (other     (background . "#282C32") (foreground . "#c0c5ce"))
+              (middle    (background . "#282C32")))
+      (inactive (default (background . "#282C32") (foreground . "#73797e"))
+                (other   (background . "#282C32") (foreground . "#73797e"))
+                (middle  (background . "#282C32")))
+      (buffer-highlight . "#1d2021")))
+    
    (forest-blue
     ((active (highlight (background . "#fc5a7b") (foreground . "#1d2021"))
              (default   (background . "#f42f56") (foreground . "#232a2f"))
@@ -161,15 +174,15 @@
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
      (highlight . "#88C0D0")))
 
-   (challenger-deep
-    ((active (highlight (background . "#131026") (foreground . "#cbe3e7"))
-             (default   (background . "#2b2942") (foreground . "#6C6F8D"))
-             (middle    (background . "#2b2942") (foreground . "#6C6F8D"))
-             (other     (background . "#131026") (foreground . "#a6b3cc")))
-     (inactive (default (background . "#131026") (foreground . "#565575"))
-               (other   (background . "#131026") (foreground . "#565575"))
-               (middle  (background . "#131026")))
-     (highlight . "#cbe3e7")))
+   (tao-yang
+    ((active (highlight (background . "#252525") (foreground . "#E8E8E8"))
+             (default   (background . "#252525") (foreground . "#E8E8E8"))
+             (middle    (background . "#252525") (foreground . "#E8E8E8"))
+             (other     (background . "#252525") (foreground . "#E8E8E8")))
+     (inactive (default (background . "#DADADA") (foreground . "#616161"))
+               (other   (background . "#DADADA") (foreground . "#616161"))
+               (middle  (background . "#DADADA")))
+     (highlight . "#E8E8E8")))
    ))
 
 (defun spaceline-update-faces (&rest args)

@@ -37,12 +37,13 @@
 ;; Closing Files
 (global-set-key (kbd "s-W") 'kill-current-buffer)
 
+(global-set-key (kbd "s-]") 'forward-sexp)
+(global-set-key (kbd "s-[") 'backward-sexp)
+
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
 
 (global-set-key (kbd "H-`") 'other-window)
-
-(global-set-key (kbd "s-h") 'goto-line)
 
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)

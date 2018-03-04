@@ -102,9 +102,9 @@
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
-        ("s-n" . mc/skip-to-next-like-this)
+        ("H-N" . mc/skip-to-next-like-this)
         ("H-p" . mc/mark-previous-like-this)
-        ("s-p" . mc/skip-to-previous-like-this)
+        ("H-P" . mc/skip-to-previous-like-this)
         ("H-l" . mc/mark-all-symbols-like-this)
         ("H->" . mc/insert-numbers)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
@@ -219,7 +219,6 @@
   :config
   ;; Export Backends
   (use-package ox-twbs :ensure t)
-  (use-package ox-reveal :ensure t)
   (use-package org-wc :ensure t)
   (bind-keys :map org-mode-map
              ("C-c C-x l"   . org-toggle-link-display)
@@ -249,10 +248,6 @@
         ("s-Z" . undo-tree-redo)
         ("s-y" . undo-tree-redo)
         ("C-+" . undo-tree-redo))
-
-(use-package etags-select :ensure t :defer t
-  :bind ("H-." . etags-select-find-tag-at-point)
-        ("H->" . etags-select-find-tag))
 
 (use-package github-browse-file :ensure t :commands (github-browse-file))
 (use-package git-link :ensure t :commands (git-link git-link-homepage))
@@ -284,8 +279,9 @@
              ("=" . imagex-sticky-zoom-in)
              ("-" . imagex-sticky-zoom-out)))
 
-(use-package dired+ :ensure t
+(use-package dired+
   :after dired
+  :load-path "etc/elisp-packages/dired+"
   :config
   (setq insert-directory-program "gls")
   (add-hook 'dired-mode-hook '(lambda () (dired-hide-details-mode 0)))
@@ -348,7 +344,6 @@
   (setq projectile-globally-ignored-file-suffixes '(".min.js" ".tags" ".elc"))
   (setq projectile-tags-file-name ".tags")
   (setq projectile-tags-command "/usr/local/Cellar/ctags/5.8_1/bin/ctags -Re -f \"%s\" %s")
-  (setq projectile-tags-backend 'etags-select)
   :bind
   ("C-o" . projectile-find-file)
   ("C-c C-p" . projectile-ibuffer)
@@ -372,9 +367,6 @@
   ("H-S-SPC" . embrace-delete)
   ("H-c"     . embrace-change))
 
-(use-package helpful :ensure t
-  :bind ("C-h f" . helpful-function))
-
 (use-package smex :ensure t :after counsel)
 (use-package counsel :ensure t :after ivy
   :defer 5
@@ -397,7 +389,7 @@
         ("C-h b"   . counsel-descbinds)
         ("C-h v"   . counsel-describe-variable)
         ("C-h F"   . counsel-describe-face)
-        ;; ("C-h f"   . counsel-describe-function) ;; Deprecated in favour of `helpful'
+        ("C-h f"   . counsel-describe-function)
         ("s-V"     . counsel-yank-pop)
         ("M-y"     . counsel-yank-pop))
 
@@ -424,7 +416,7 @@
 
 (use-package flx :ensure t :after ivy)
 (use-package ivy-hydra :ensure t :after ivy)
-(use-package ivy :ensure t :after avy
+(use-package ivy :ensure t
   :config
   (ivy-mode)
   (setq ivy-re-builders-alist
@@ -459,7 +451,7 @@
           (setq-default anzu-mode-line-update-function
                         'spaceline-all-the-icons-anzu-update-func))
 
-(use-package avy-zap :ensure t :bind ("H-k" . avy-zap-up-to-char))
+(use-package avy-zap :ensure t :bind ("H-x" . avy-zap-up-to-char))
 (use-package avy :ensure t
   :bind
   ("s-H" . avy-goto-line)
@@ -467,6 +459,7 @@
   ("s-n" . avy-goto-line-below)
   ("s-J" . avy-goto-word-0)
   ("s-j" . avy-goto-word-1)
+  ("H-j" . avy-goto-char-2)
   ("s-l" . avy-goto-char-2)
   ("s-L" . avy-goto-char-2)
   :config
@@ -572,15 +565,15 @@
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 
 (use-package key-combo :ensure t
-  :config (key-combo-mode 1)
-          (key-combo-load-default))
+  :config
+  (key-combo-mode 1)
+  (key-combo-load-default))
 
 (add-hook 'after-init-hook 'yas-global-mode)
 (use-package yasnippet :ensure t
   :config (add-hook 'ruby-mode-hook (lambda () (yas-minor-mode -1)))
   :commands (yas-global-mode yas-minor-mode))
 
-(use-package font-lock+ :ensure t :after all-the-icons)
 (use-package all-the-icons
   :if window-system
   :load-path "etc/elisp-packages/all-the-icons")
@@ -599,11 +592,9 @@
   (defun neotree-projectile ()
     (interactive)
     (let ((cw (get-buffer-window (current-buffer))))
-     (if (neo-global--window-exists-p) (neotree-hide)
-       (neotree-find (or (ignore-errors (projectile-project-root))
-                         (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
-                         (getenv "HOME"))))
-     (select-window cw)))
+      (neotree-find (or (ignore-errors (projectile-project-root))
+                        (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
+                        (getenv "HOME")))))
 
   (defun neotree-projectile-find ()
     (interactive)
@@ -617,8 +608,7 @@
 (use-package treemacs
   :commands (treemacs treemacs-toggle)
   :config
-  (setq treemacs-header-function 'treemacs--create-header-projectile
-        treemacs-change-root-without-asking t
+  (setq treemacs-change-root-without-asking t
         treemacs-follow-after-init t
         treemacs-git-integration t
         treemacs-width 40)
@@ -777,6 +767,7 @@
   (setq spaceline-all-the-icons-icon-set-bookmark 'heart
         spaceline-all-the-icons-icon-set-modified 'toggle
         spaceline-all-the-icons-icon-set-dedicated 'pin
+        spaceline-all-the-icons-separator-type 'none
         spaceline-all-the-icons-icon-set-flycheck-slim 'dots
         spaceline-all-the-icons-flycheck-alternate t
         spaceline-all-the-icons-highlight-file-name t
@@ -874,6 +865,7 @@
     ("reuslt" "result" nil 0)
     ("reulst" "result" nil 0)
     ("remidner" "reminder" nil 0)
+    ("suggestsions" "suggestions" nil 0)
     ("lenfgth" "length" nil 0)
     ("lengfth" "length" nil 0)
     ("hten" "then" nil 0)
@@ -900,32 +892,20 @@
 (use-package dracula-theme :ensure t :defer t)
 (use-package darktooth-theme :ensure t :defer t)
 (use-package nord-theme :ensure t :defer t)
-
 (use-package doom-themes :ensure :defer t
-  :config (setq spaceline-all-the-icons-separator-type 'none))
-
-(use-package twilight-bright-theme :ensure t :defer t
   :config
-  (custom-set-variables
-   '(ansi-term-color-vector
-     ["#232533" "#e5e5e5" "#f59ea3" "#38fab4" "#f2ef9c" "#86edec" "#9c71a5" "#61AFEF" "#232533"])))
+  (setq
+   doom-one-light-brighter-modeline t
+   doom-spacegrey-brighter-modeline t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config)
+  (doom-themes-visual-bell-config))
 
+(use-package tao-theme :ensure t :defer t)
+(use-package twilight-bright-theme :ensure t :defer t)
 (use-package creamsody-theme :ensure t :defer t
   :config
   (custom-theme-set-faces 'creamsody
-   '(term-color-black ((t :foreground "#232533")))
-   '(term-color-blue ((t :foreground "#61AFEF")))
-   '(term-color-cyan ((t :foreground "#86edec")))
-   '(term-color-green ((t (:foreground "#38fab4"))))
-   '(term-color-magenta ((t :foreground "#9c71a5")))
-   '(term-color-red ((t :foreground "#f59ea3")))
-   '(term-color-white ((t :foreground "#e5e5e5")))
-   '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
-
-(use-package subatomic-theme :ensure :defer t
-  :config
-  (custom-theme-set-faces 'subatomic
-   '(mode-line ((t :weight extralight)))
    '(term-color-black ((t :foreground "#232533")))
    '(term-color-blue ((t :foreground "#61AFEF")))
    '(term-color-cyan ((t :foreground "#86edec")))
@@ -943,7 +923,8 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'subatomic))
+  (load-theme 'doom-spacegrey)
+  (spaceline-update-faces))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:

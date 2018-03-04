@@ -54,19 +54,22 @@
 
 ;;; Utilities
 (use-package js2-refactor :after js2-mode :ensure t)
-(use-package js-injector
-  :after js2-mode
-  :load-path "etc/elisp-packages/js-dependency-injector"
-  :config
-  (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist)
-  :bind (:map js2-mode-map ("s-I" . js-injector-clever-import-module)))
+;; (use-package js-injector
+;;   :disabled t
+;;   :after js2-mode
+;;   :load-path "etc/elisp-packages/js-dependency-injector"
+;;   :config
+;;   (setq js-injector-get-relative-func 'js-injector--get-projectile-files-alist)
+;;   :bind (:map js2-mode-map ("s-I" . js-injector-clever-import-module)))
 
 (use-package js-import :ensure t :after js2-mode
+  :load-path "etc/elisp-packages/js-import"
   :config (setq js-import-quote "'")
   :bind (:map js2-mode-map
-         ("s-i" . js-import)))
+              ("s-i" . js-import)
+              ("s-I" . js-import)))
 
-(use-package tern :ensure t :after js2-mode
+(use-package tern :ensure t :after js2-mode :disabled t
   :config (add-hook 'js2-mode-hook 'tern-mode))
 
 (defun npm--get-package-json ()
@@ -115,16 +118,21 @@ When PFX is non-nil, run with --save or --save-dev"
 (use-package rjsx-mode :ensure t
   :mode (("\\.jsx?$" . rjsx-mode))
   :config
-  (bind-keys :map rjsx-mode-map ("s-w" . js2-mode))
-  ;; (advice-remove
-  ;;  'key-combo-pre-command-function
-  ;;  ;; :around
-  ;;   '(lambda (orig-f &rest args)
-  ;;      (when (member major-mode '(rjsx-mode))
-  ;;        (unless (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
-  ;;                     (member (this-command-keys) '("=" "-" "+")))
-  ;;          (apply orig-f args)))))
-  )
+  (add-hook 'rjsx-mode-hook 'js2-mode-hide-warnings-and-errors)
+
+  (defun key-combo--jsx-advice (orig-f &rest args)
+    "Advice to put around `key-combo-pre-command-function'.
+Applies ORIG-F with ARGS if the predicate passes."
+    (when (member major-mode '(rjsx-mode))
+      (unless (or
+               (looking-at ".*/>$")
+               (and (member (js2-node-type (js2-node-at-point)) (list rjsx-JSX rjsx-JSX-ATTR rjsx-JSX-IDENT rjsx-JSX-MEMBER))
+                    (member (this-command-keys) '("=" "-" "+"))))
+        (apply orig-f args))))
+  ;; (advice-add 'key-combo-pre-command-function :around 'key-combo--jsx-advice )
+  ;; (advice-remove 'key-combo-pre-command-function 'key-combo--jsx-advice )
+
+  (bind-keys :map rjsx-mode-map ("s-w" . js2-mode)))
 
 (use-package json :ensure json-mode
   :mode (("\\.json" . json-mode)
@@ -137,17 +145,15 @@ When PFX is non-nil, run with --save or --save-dev"
                (local-set-key (kbd "<kp-enter>") '(lambda () (interactive) (dotimes (i 2) (smart-newline)))))))
 
 (use-package js2-mode
-  :mode "\\.js$"
   :config
   (setq js-switch-indent-offset 2)
   (setq js2-include-node-externs t)
   (setq js2-include-browser-externs t)
   (setq js2-basic-offset 2)
   (setq js2-highlight-level 3)
-  
+
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-  
-  (add-hook 'js2-mode-hook 'js-injector-minor-mode)
+
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   ;; (remove-hook 'js2-mode-hook '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
@@ -164,8 +170,6 @@ When PFX is non-nil, run with --save or --save-dev"
              ("C-c C-i" . js2r-inline-var)
              ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
-             ("s-]" . forward-sexp)
-             ("s-[" . backward-sexp)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
              ("s-w" . rjsx-mode)
@@ -176,6 +180,22 @@ When PFX is non-nil, run with --save or --save-dev"
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
+(global-set-key (kbd "s-t") 'toggle-file-and-css)
+(defun toggle-file-and-css ()
+  "Toggle between JSX/JS and CSS file."
+  (interactive)
+  (when buffer-file-name
+    (let* ((file-name (buffer-file-name))
+           (css-p (s-ends-with? ".css" file-name))
+           (jsx-p (s-ends-with? ".jsx" file-name))
+           (js-p (s-ends-with? ".js" file-name)))
+      (when jsx-p (find-file (s-replace ".jsx" ".css" file-name)))
+      (when js-p (find-file (s-replace ".js" ".css" file-name)))
+      (when (and css-p (file-exists-p (s-replace ".css" ".js" file-name)) )
+        (find-file (s-replace ".css" ".js" file-name)))
+      (when (and css-p (file-exists-p (s-replace ".css" ".jsx" file-name)) )
+        (find-file (s-replace ".css" ".jsx" file-name))))))
 
 (provide 'mode-javascript)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
