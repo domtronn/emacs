@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name : Redux#dispatch
+# key  : dispatch
+# binding : C-c C-c C-o
+# --
+export const $1 = (${2:payload}) => ({
+  type: ${1:$(upcase (s-snake-case yas-text))},
+  payload: { $2 }
+})
