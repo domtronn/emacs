@@ -62,7 +62,7 @@
                (other   (background . "#1d2021") (foreground . "#a89984"))
                (middle  (background . "#282C32")))
      (buffer-highlight . "#1d2021")))
-    
+
     (kaolin-galaxy
      ((buffer-highlight . "#967bb6")))
 
@@ -84,7 +84,7 @@
                 (other   (background . "#282C32") (foreground . "#73797e"))
                 (middle  (background . "#282C32")))
       (buffer-highlight . "#1d2021")))
-    
+
    (forest-blue
     ((active (highlight (background . "#fc5a7b") (foreground . "#1d2021"))
              (default   (background . "#f42f56") (foreground . "#232a2f"))
@@ -155,20 +155,36 @@
 
    (twilight-bright
     ((active
-      ;; (highlight (background . "#e3f4ff") (foreground . "#417598"))
-      ;; (default   (background . "#e3f4ff") (foreground . "#417598"))
-      ;; (other     (background . "#e3f4ff") (foreground . "#417598"))
-      ;; (middle    (background . "#e3f4ff"))
       (highlight (background . "#f1f4f8") (foreground . "#6b82a7"))
       (default   (background . "#f1f4f8") (foreground . "#6b82a7"))
       (other     (background . "#f1f4f8") (foreground . "#6b82a7"))
       (middle    (background . "#f1f4f8")))
+
      (inactive
       (default (background . "#f7f7f7") (foreground . "#b4b4b4"))
       (other   (background . "#f7f7f7") (foreground . "#b4b4b4"))
       (middle  (background . "#f7f7f7") (foreground . "#b4b4b4")))
-
      (highlight . "#6b82a7")))
+
+   (twilight-jazz
+    ((active
+      ;; (highlight (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (default   (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (other     (background . "#e3f4ff") (foreground . "#417598"))
+      ;; (middle    (background . "#e3f4ff"))
+      ;; (highlight (background . "#f1f4f8") (foreground . "#6b82a7"))
+      ;; (default   (background . "#f1f4f8") (foreground . "#6b82a7"))
+      ;; (other     (background . "#f1f4f8") (foreground . "#6b82a7"))
+      ;; (middle    (background . "#f1f4f8")))
+      (highlight (background . "#f33859") (foreground . "#ffffff"))
+      (default   (background . "#35b1bf") (foreground . "#ffffff"))
+      (other     (background . "#ffecef") (foreground . "#f33859"))
+      (middle    (background . "#f5f6f4")))
+     (inactive
+      (default (background . "#35b1bf") (foreground . "#ebf6f7"))
+      (other   (background . "#4ad9da") (foreground . "#effbfb"))
+      (middle  (background . "#effbfb") (foreground . "#b4b4b4")))
+     (highlight . "#ffffff")))
 
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
