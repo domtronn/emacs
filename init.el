@@ -80,7 +80,8 @@
                              (memq major-mode linum-disabled-modes-list))
                             (string-match "*" (buffer-name)))
                   (apply orig-f args))))
-  (custom-set-faces '(linum ((t :height 0.9))))
+  (custom-set-faces '(linum ((t :height 0.8))))
+  (setq nlinum-highlight-current-line t)
   (global-nlinum-mode))
 
 (use-package origami :ensure t
@@ -161,20 +162,7 @@
   :config
   (popwin-mode 1)
   (setq popwin:close-popup-window-timer-interval 0.1)
-  (setq popwin:close-popup-window-timer nil)
-  (defun popwin:flycheck-errors ()
-    (interactive)
-    (when (get-buffer "*Flycheck errors*") (popwin:popup-buffer "*Flycheck errors*" :noselect t)))
-  (defun popwin:compilation ()
-    (interactive)
-    (when (get-buffer "*compilation*")
-      (if (get-buffer-window "*compilation*")
-          (delete-window (get-buffer-window "*compilation*"))
-        (popwin:popup-buffer "*compilation*" :noselect t :dedicated t :stick t :tail t))))
-  :bind
-  ("C-x e" . popwin:flycheck-errors)
-  ("C-x m" . popwin:messages)
-  ("C-x c" . popwin:compilation))
+  (setq popwin:close-popup-window-timer nil))
 
 (use-package org :ensure t
   :defer t
@@ -377,10 +365,21 @@
       (interactive)
       (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
 
+  (defun counsel-rg-type (&optional pfx)
+    (interactive "P")
+    (let* ((ext (file-name-extension (buffer-file-name)))
+           (type-list (s-split "\n" (shell-command-to-string "rg --type-list")))
+           (type (car (s-split ":" (car (--filter (s-contains? ext it) type-list))))))
+      (counsel-rg
+       (if pfx (thing-at-point 'symbol) "")
+       (projectile-project-root)
+       (format "--type %s" type))))
+
   :bind ("H-2"     . counsel-git-grep)
-        ("C-S-o"     . counsel-git)
+        ("C-S-o"   . counsel-git)
         ("C-x n"   . counsel-bookmark)
-        ("C-c f"   . counsel-ag-project)
+        ("C-c f"   . counsel-rg)
+        ("C-c C-f" . counsel-rg-type)
         ("C-c v"   . counsel-git-grep)
         ("H->"     . counsel-imenu)
         ("C-'"     . counsel-imenu)
@@ -434,7 +433,8 @@
 
 (bind-keys :map minibuffer-local-map
            ("s-k" . delete-minibuffer-contents)
-           ("<kp-decimal>" . completion-at-point))
+           ("<kp-decimal>" . completion-at-point)
+           ("<backtab>" . completion-at-point))
 
 (use-package isearch
   :commands swiper-from-isearch
@@ -473,15 +473,16 @@
 (use-package ag
   :ensure t
   :commands (ag-regexp ag-project-regexp)
-  :bind ("C-c g" . ag-project-regexp)
-        ("C-c C-f" . ag-regexp))
+  :bind ("C-c g" . ag-project-regexp))
 
 (use-package rg
-  :after ag
   :ensure  t
   :bind ("M-s" . rg-dwim)
         ("M-S" . rg-project)
-  :config (add-hook 'rg-mode-hook 'wgrep-ag-setup))
+  :config
+  (add-hook 'rg-mode-hook 'wgrep-ag-setup)
+  (bind-keys :map rg-mode-map
+             ("W" . wgrep-change-to-wgrep-mode)))
 
 (use-package comint
   :defer 5
@@ -663,6 +664,7 @@
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
   :bind (("<kp-decimal>" . company-complete)
+         ("<backtab>" . company-complete)
          ("<S-kp-decimal>" . company-yasnippet)
          :map company-active-map
          ("C-n" . company-select-next)
@@ -888,11 +890,11 @@
 (load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
-(use-package atom-one-dark-theme :ensure t :defer t)
-(use-package dracula-theme :ensure t :defer t)
-(use-package darktooth-theme :ensure t :defer t)
-(use-package nord-theme :ensure t :defer t)
-(use-package doom-themes :ensure :defer t
+(use-package atom-one-dark-theme :ensure t :defer t :disabled t)
+(use-package dracula-theme :ensure t :defer t :disabled t)
+(use-package darktooth-theme :ensure t :defer t :disabled t)
+(use-package nord-theme :ensure t :defer t :disabled t)
+(use-package doom-themes :ensure :defer t :disabled t
   :config
   (setq
    doom-one-light-brighter-modeline t
@@ -901,9 +903,9 @@
   (doom-themes-org-config)
   (doom-themes-visual-bell-config))
 
-(use-package tao-theme :ensure t :defer t)
-(use-package twilight-bright-theme :ensure t :defer t)
-(use-package creamsody-theme :ensure t :defer t
+(use-package tao-theme :ensure t :defer t :disabled t)
+(use-package twilight-bright-theme :ensure t :defer t :disabled t)
+(use-package creamsody-theme :ensure t :defer t :disabled t
   :config
   (custom-theme-set-faces 'creamsody
    '(term-color-black ((t :foreground "#232533")))
@@ -915,6 +917,26 @@
    '(term-color-white ((t :foreground "#e5e5e5")))
    '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
 
+(use-package twilight-jazz-theme :load-path "init/twilight-jazz-theme.elc"
+  :config
+  (setq spaceline-all-the-icons-separator-type 'slant)
+  (setq powerline-text-scale-factor 1.2))
+
+(setq sql-connection-alist
+      '((profile-production
+         (sql-product 'postgres)
+         (sql-port 5432)
+         (sql-server "crm-profile-production.cv7dcdtnxmsa.eu-west-1.rds.amazonaws.com")
+         (sql-user "crm")
+         
+         (sql-database "crm_profile_production"))
+        (profile-staging
+         (sql-product 'postgres)
+         (sql-port 5432)
+         (sql-server "crm-profile-staging.cv7dcdtnxmsa.eu-west-1.rds.amazonaws.com")
+         (sql-database "crm_profile_staging"))))
+
+
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
@@ -923,7 +945,7 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'doom-spacegrey)
+  (load-theme 'twilight-jazz)
   (spaceline-update-faces))
 
 (benchmark-init/show-durations-tree)
