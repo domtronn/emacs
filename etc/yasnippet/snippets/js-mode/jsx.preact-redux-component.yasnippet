@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name : JSX#Import.PreactComponent&Redux
+# key  : precox
+# binding : C-c C-c C-[
+# /** @jsx h */
+# --
+import { h, Component } from 'preact'
+import { connect } from 'preact-redux'
+
+class `(s-upper-camel-case (file-name-base (buffer-name)))` extends Component {
+  render () {
+    return (
+      <div className=''>
+        $0
+      </div>
+    )
+  }
+}
+  
+export default connect((s = {}) => ({}), {  })(`(s-upper-camel-case (file-name-base (buffer-name)))`)

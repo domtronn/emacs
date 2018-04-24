@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name : JSX#Import.PreactComponent
+# key  : preco
+# binding : C-c C-c C-[
+# /** @jsx h */
+# --
+import { h, Component } from 'preact'
+
+class `(s-upper-camel-case (file-name-base (buffer-name)))` extends Component {
+  render () {
+    return (
+      <div className=''>
+        $0
+      </div>
+    )
+  }
+}
+  
+export default `(s-upper-camel-case (file-name-base (buffer-name)))`
