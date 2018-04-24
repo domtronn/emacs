@@ -67,9 +67,30 @@
 (use-package js-import :ensure t :after js2-mode
   :load-path "etc/elisp-packages/js-import"
   :config (setq js-import-quote "'")
+  :bind (:map js2-mode-map ("s-i" . js-import)))
+
+(use-package import-js :ensure t :after js2-mode
+  :config (run-import-js)
+  (defun import-js-import-word ()
+    "Run import-js goto function, which returns a path to the specified module"
+    (interactive)
+    (import-js-check-daemon)
+    (setq import-js-output "")
+    (setq import-js-handler 'import-js-handle-imports)
+    (import-js-send-input `(("command" . "word")
+                            ("commandArg" . ,(completing-read "Module: "
+                                                              (-uniq
+                                                               (append
+                                                                (--map (s-upper-camel-case
+                                                                        (file-name-base
+                                                                         (file-name-sans-extension it)))
+                                                                       (projectile-current-project-files))
+                                                                (-map 'first (imenu-anywhere-candidates)))))))))
+  
   :bind (:map js2-mode-map
-              ("s-i" . js-import)
-              ("s-I" . js-import)))
+              ("s-I" . import-js-import)
+              ("M-s-^" . import-js-import-word)
+              ("M-s-≥" . imenu-anywhere)))
 
 (use-package tern :ensure t :after js2-mode :disabled t
   :config (add-hook 'js2-mode-hook 'tern-mode))
@@ -164,13 +185,13 @@ Applies ORIG-F with ARGS if the predicate passes."
              ("M-=" . (lambda () (interactive) (insert "=")))
 
              ;; JS2 Refactor things
+             ("M-SPC" . js2-mark-defun)
              ("C-c m" . prettify-symbols-mode)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)
              ("C-c C-v" . js2r-extract-var)
              ("C-c C-a" . js2r-toggle-arrow-function-and-expression)
              ("C-c C-i" . js2r-inline-var)
-             ("C-c C-f" . js2r-extract-function)
              ("C-c C-r" . js2r-rename-var)
              ("C-c ." . js2-jump-to-definition)
              ("C-k" . js2r-kill)
@@ -189,15 +210,21 @@ Applies ORIG-F with ARGS if the predicate passes."
   (interactive)
   (when buffer-file-name
     (let* ((file-name (buffer-file-name))
-           (css-p (s-ends-with? ".css" file-name))
-           (jsx-p (s-ends-with? ".jsx" file-name))
-           (js-p (s-ends-with? ".js" file-name)))
-      (when jsx-p (find-file (s-replace ".jsx" ".css" file-name)))
-      (when js-p (find-file (s-replace ".js" ".css" file-name)))
-      (when (and css-p (file-exists-p (s-replace ".css" ".js" file-name)) )
-        (find-file (s-replace ".css" ".js" file-name)))
-      (when (and css-p (file-exists-p (s-replace ".css" ".jsx" file-name)) )
-        (find-file (s-replace ".css" ".jsx" file-name))))))
+           (base-name (file-name-sans-extension (buffer-file-name)))
+           (style-name
+            (cond
+             ((file-exists-p (format "%s.css" base-name)) (format "%s.css" base-name))
+             ((file-exists-p (format "%s.scss" base-name)) (format "%s.scss" base-name))))
+           (impl-name
+            (cond
+             ((file-exists-p (format "%s.jsx" base-name)) (format "%s.jsx" base-name))
+             ((file-exists-p (format "%s.js" base-name)) (format "%s.js" base-name))))
+           
+           (impl-p (string-equal file-name impl-name))
+           (style-p (string-equal file-name style-name)))
+      
+      (when impl-p (find-file style-name))
+      (when style-p (find-file impl-name)))))
 
 (provide 'mode-javascript)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
