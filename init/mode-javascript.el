@@ -33,8 +33,10 @@
   :init
   (defun js2/should-enable-eslint-fix-mode ()
     "Test whether or not to enabled `eslintd-fix-mode'."
-    (when (or (locate-dominating-file (buffer-file-name) ".eslintrc.json")
-              (locate-dominating-file (buffer-file-name) ".eslintrc"))
+    (when (and
+           (buffer-file-name)
+           (or (locate-dominating-file (buffer-file-name) ".eslintrc.json")
+               (locate-dominating-file (buffer-file-name) ".eslintrc")))
       (eslintd-fix-mode)))
   (add-hook 'js2-mode-hook 'js2/should-enable-eslint-fix-mode))
 

@@ -450,9 +450,9 @@
   "Guess the JS lintrc file in the current project"
   (if (not (buffer-file-name))
       'javascript-standard
-    (let* ((jshintrc-loc (locate-dominating-file (buffer-file-name) flycheck-jshintrc))
+    (let* ((jshintrc-loc (when (buffer-file-name) (locate-dominating-file (buffer-file-name) flycheck-jshintrc)))
            (jshintrc-depth (dir-depth jshintrc-loc))
-           (eslintrc-loc (locate-dominating-file (buffer-file-name) flycheck-eslintrc))
+           (eslintrc-loc (when (buffer-file-name) (locate-dominating-file (buffer-file-name) flycheck-eslintrc)))
            (eslintrc-depth (dir-depth eslintrc-loc)))
       (cond
        ((and (not eslintrc-loc) (not jshintrc-loc)) 'javascript-standard)
