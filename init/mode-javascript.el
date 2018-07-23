@@ -185,7 +185,6 @@ Applies ORIG-F with ARGS if the predicate passes."
              ("M-=" . (lambda () (interactive) (insert "=")))
 
              ;; JS2 Refactor things
-             ("M-SPC" . js2-mark-defun)
              ("C-c m" . prettify-symbols-mode)
              ("C-c C-o" . js2r-order-vars-by-length)
              ("C-c C-s" . js2r-toggle-var-declaration)

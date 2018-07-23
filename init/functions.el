@@ -660,6 +660,13 @@
 
 (global-set-key (kbd "C-x C-z") 'sticky-window-delete-other-windows)
 
+(defun highlight-line ()
+  (interactive)
+  (goto-char (line-beginning-position))
+  (set-mark (line-end-position)))
+
+(global-set-key (kbd "M-SPC") 'highlight-line)
+
 (provide 'functions)
 ;;; functions.el ends here
 ;; Local Variables:

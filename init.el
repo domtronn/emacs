@@ -103,9 +103,13 @@
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
+        ("<end>" . mc/mark-next-like-this)
         ("H-N" . mc/skip-to-next-like-this)
+        ("<S-end>" . mc/skip-to-next-like-this)
         ("H-p" . mc/mark-previous-like-this)
+        ("<f13>" . mc/mark-previous-like-this)
         ("H-P" . mc/skip-to-previous-like-this)
+        ("<S-f13>" . mc/skip-to-previous-like-this)
         ("H-l" . mc/mark-all-symbols-like-this)
         ("H->" . mc/insert-numbers)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
@@ -345,16 +349,19 @@
         ("C-c q" . vr/query-replace)
         ("C-c m" . vr/mc-mark)
         ("s-r" . vr/query-replace)
-  :config (setq vr/match-separator-string " → "))
+        :config (setq vr/match-separator-string " 🌪️ "
+                      vr/match-separator-use-custom-face t))
 
 (use-package cycle-quotes :ensure t
-  :bind ("H-C" . cycle-quotes))
+  :bind ("H-C" . cycle-quotes)
+        ("<S-delete>" . cycle-quotes))
 
 (use-package embrace :ensure t
   :bind
-  ("H-S-SPC" . embrace-delete)
-  ("H-c"     . embrace-change))
-
+  ("H-S-SPC"      . embrace-delete)
+  ("H-c"          . embrace-change)
+  ("<deletechar>" . embrace-change))
+  
 (use-package smex :ensure t :after counsel)
 (use-package counsel :ensure t :after ivy
   :defer 5
@@ -418,12 +425,21 @@
 (use-package ivy :ensure t
   :config
   (ivy-mode)
+  (defun swiper-thing-at-point ()
+    (interactive)
+    (if (region-active-p)
+        (let ((text (buffer-substring (region-beginning) (region-end))))
+          (deactivate-mark)
+          (swiper text))
+      (swiper)))
+
   (setq ivy-re-builders-alist
         '((swiper . ivy--regex-plus)
           (t . ivy--regex-fuzzy))
         ivy-display-style 'plain
         ivy-height 9)
-  :bind (("C-;"     . swiper)
+  :bind (("C-;"     . swiper-thing-at-point)
+         ("C-:"     . swiper-all-thing-at-point)
          ("C-c C-r" . ivy-resume)
          ("C-x b"   . ivy-switch-buffer)
          ("C-x C-b" . ivy-switch-buffer-other-window)
@@ -451,17 +467,16 @@
           (setq-default anzu-mode-line-update-function
                         'spaceline-all-the-icons-anzu-update-func))
 
-(use-package avy-zap :ensure t :bind ("H-x" . avy-zap-up-to-char))
+(use-package avy-zap :ensure t :bind ("s-x" . avy-zap-up-to-char))
 (use-package avy :ensure t
   :bind
-  ("s-H" . avy-goto-line)
+  ("s-g" . avy-goto-line)
   ("s-p" . avy-goto-line-above)
   ("s-n" . avy-goto-line-below)
   ("s-J" . avy-goto-word-0)
   ("s-j" . avy-goto-word-1)
-  ("H-j" . avy-goto-char-2)
   ("s-l" . avy-goto-char-2)
-  ("s-L" . avy-goto-char-2)
+  ("s-L" . avy-goto-char)
   :config
   (avy-setup-default))
 
@@ -481,6 +496,8 @@
         ("M-S" . rg-project)
   :config
   (add-hook 'rg-mode-hook 'wgrep-ag-setup)
+  (setq rg-show-columns t
+        rg-show-header t)
   (bind-keys :map rg-mode-map
              ("W" . wgrep-change-to-wgrep-mode)))
 
@@ -604,7 +621,8 @@
       (select-window cw)))
 
   :bind ("H-1" . neotree-projectile)
-        ("H-§" . neotree-projectile-find))
+  ("<f1> <f1>" . neotree-projectile)
+  ("H-§" . neotree-projectile-find))
 
 (use-package treemacs
   :commands (treemacs treemacs-toggle)
@@ -718,32 +736,36 @@
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
   :bind (("H-6" . magit-status)
+         ("<f6>" . magit-status)
          :map magit-mode-map
          ("o" . magit-open-file-other-window)
          ("C-c ." . magit-whitespace-cleanup)
          ("C-c C-." . magit-whitespace-cleanup)
          ("C-c e" . magit-vc-ediff)))
 
-(use-package yahoo-weather :ensure t
-  :defer t
-  :init (setq yahoo-weather-location "Bermondsey")
-  :config
-  (defvar yahoo-run-id nil)
-  (defun yahoo-weather-async-update-info ()
-    (interactive)
-    (async-start `(lambda ()
-                    (let* ((dir (car (directory-files ,package-user-dir t "yahoo-weather")))
-                           (file (format "%s/yahoo-weather.el" dir)))
-                      (require 'yahoo-weather file)
-                      (yahoo-weather-update-info)))
-                 '(lambda (&rest args) (message "Yahoo weather updated [%s]" (format-time-string "%H:%M")))))
-  (setq yahoo-run-id (run-at-time "1 sec" 900 'yahoo-weather-async-update-info)))
-
 (use-package restart-emacs :ensure t :bind ("s-q" . restart-emacs))
 
 (use-package powerline
   :if window-system
   :config (setq-default powerline-default-separator 'nil))
+
+(use-package elixir-mode :ensure t
+  :mode "\\.exs?"
+  :config
+  (require 'smartparens-elixir)
+  (add-hook 'elixir-mode-hook 'smartparens-mode)
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
+
+(use-package alchemist :ensure t
+  :after elixir-mode
+  :config (setq alchemist-key-command-prefix (kbd "C-c ."))
+  (defun alchemist-eval-thing-at-point ()
+    (interactive)
+    (if (region-active-p) (call-interactively 'alchemist-eval-region) (alchemist-eval-current-line)))
+  :bind (:map elixir-mode-map
+              ("<s-return>" . alchemist-eval-thing-at-point)
+              ("<s-S-return>" . alchemist-eval-buffer)))
 
 (use-package atom-tabs :load-path "etc/elisp-packages/atom-tabs"
   :config (global-atom-tabs-mode)
@@ -917,10 +939,10 @@
    '(term-color-white ((t :foreground "#e5e5e5")))
    '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
 
-(use-package twilight-jazz-theme :load-path "init/twilight-jazz-theme.elc"
+(use-package aquafresh-theme :load-path "init/aquafresh-theme.el"
   :config
   (setq spaceline-all-the-icons-separator-type 'slant)
-  (setq powerline-text-scale-factor 1.2))
+  (setq powerline-text-scale-factor 1.1))
 
 (setq sql-connection-alist
       '((profile-production
@@ -945,7 +967,7 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'twilight-jazz)
+  (load-theme 'aquafresh-morning)
   (spaceline-update-faces))
 
 (benchmark-init/show-durations-tree)

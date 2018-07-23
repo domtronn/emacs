@@ -18,6 +18,8 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(ansi-term-color-vector
+   [unspecified "#282050" "#e7004d" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#e7004d"])
  '(backup-by-copying-when-mismatch nil)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-setup (quote one-frame))
@@ -34,14 +36,14 @@
  '(cursor-type (quote (bar . 1)))
  '(custom-safe-themes
    (quote
-    ("5b00b80d6c41824d13b88b1e6eb4f574106a6f2ad304a10b20d6be4a5db7834c" "0598de4cc260b7201120b02d580b8e03bd46e5d5350ed4523b297596a25f7403" "2a1b4531f353ec68f2afd51b396375ac2547c078d035f51242ba907ad8ca19da" "3481e594ae6866d72c40ad77d86a1ffa338d01daa9eb0977e324f365cef4f47c" "73e35ffa5ca98b57a9923954f296c3854ce6d8736b31fdbdda3d27502d4b4d69" "31e64af34ba56d5a3e85e4bebefe2fb8d9d431d4244c6e6d95369a643786a40e" "d507c9e58cb0eb8508e15c8fedc2d4e0b119123fab0546c5fd30cadd3705ac86" "6f11ad991da959fa8de046f7f8271b22d3a97ee7b6eca62c81d5a917790a45d9" "b34636117b62837b3c0c149260dfebe12c5dad3d1177a758bb41c4b15259ed7e" "6c35ffc17f8288be4c7866deb7437e8af33cd09930e195738cdfef911ab77274" "a285e7bc4714013b6cd74ac4663b9fa5e8f734e989fcca42069c45ed702d4b72" "7f968c172d6ec46766773a8304c7570bdff45f1220d3700008a437d9529ca3e4" "5cd0afd0ca01648e1fff95a7a7f8abec925bd654915153fb39ee8e72a8b56a1f" "2997ecd20f07b99259bddba648555335ffb7a7d908d8d3e6660ecbec415f6b95" "6369644497a7dde1350dce08f404316c7cb19f2d1c1b937d412a8860c4eb02f5" "14099b48e45d17d7e007a9c33c690004861e4fb9bb14e9562a13a7b4ee3b683c" "6fa9baa12ed2813c3deb764cb896bb2e80ebbbbb786b56082ea4c4a23c2b6a69" "a3f85ee6e877f02e239d2a6633a5b8263b53113751aca549aa4c5f458829c95d" "66881e95c0eda61d34aa7f08ebacf03319d37fe202d68ecf6a1dbfd49d664bc3" "28315d38ed9f3ae4f84937ff390aec4739f86a78b8b55db15b8b81e4f8aae7ff" "5e46a1f5841476ba810a8331dbf2714ef5edb44ddf9b41aa0d681e1454107bf5" "60f9439182356ed1821f90ef1b1b1ca13234f81bfd25321a9cc80e6607a6a54f" "6df465c9d5df9d3f3aefb67e74ece2bf9e9e80e2037d22397e85d5bae190ab66" "36a116cdc52e42ca0a3496ed07e62025f8915243d7aee793b528a0673028c4bf" "d4c7190cd923cec95b3e1412eba44762fcaed44bab119e6657e0b924f740fda5" "1dbf2b600d24bc86c466d01f3c03f59b0d9159769daa7fcd4f2d8212e9fb708d" "ca2abff9d19f278aae4b694e745dde1eb1223cb559e36398a55178d42304a77a" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5c6d40ef6e7bbe9e83dc0e32db794c7e9a6a0d9eb7d6a874aaf9744c053842b4" "c806912d706db590cde0483f0ec90db69bc5ce5da1d8846462d7c20aecb3dcda" "9f3dd1d7b46e99b94bb53506c44b651c811b3552100898842bdd22ce63ab8b55" "d09467d742f713443c7699a546c0300db1a75fed347e09e3f178ab2f3aa2c617" "d79ece4768dfc4bab488475b85c2a8748dcdc3690e11a922f6be5e526a20b485" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "9baea9c4e3e3c6f38a861454fe566432e2d1c02bc1fa7cea9b9a11d7081f0819" "708df3cbb25425ccbf077a6e6f014dc3588faba968c90b74097d11177b711ad1" "b391fa6fc0967eb5980b203c27f5a98e9efc5296cddb92e232e17e592d8231e2" "98a619757483dc6614c266107ab6b19d315f93267e535ec89b7af3d62fb83cad" "dc54983ec5476b6187e592af57c093a42790f9d8071d9a0163ff4ff3fbea2189" "ff52e9e329c5a66eae3570e3f17288d0a9f96403ce1ac7cbca5a193ebc500936" "d9b0d5c7077ddad798e9749d0629e86b925c2e146641b24130edd8f82cd0cf5d" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "ac194ceaf2a741572f99274e22c96c953f27de11ca4944c05f4e3252937c12a0" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "0107651d44bfacc9ee4d725fdba9a617273ef0569bffc8f07e7212d39d1bf6ec" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "419637b7a8c9cb43f273980f0c9879c0cbadace6b38efac0281e031772c84eb2" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "c46068478d29787a89c3930841e8de94d59cd6a573e4d479d71e78a3f41c6ae3" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
+    ("c34dcdd4b3007c69b48710aa138e214d1ac91f2895e94f820ac78103e68f0369" "4085630051304fa4031844f2bbdb5bcdb1433943f8f2041d91558551800be08d" "d313fa1119b5fb9186e86eda405e611b99987b11e3b9c0b7f3ca1521e8f8e404" "b4053b7272fe46cb8a302a504cfdb6df671a3941d07199e058b0fdf1a76f0919" "6882a713b9e831d3716f06a68adc2019577eb6b347577482de5c2a104e630b7f" "bca97045f69b208b4922cf8b70b660b0653a0a9ed191d91e7ad41335bf860ad4" "8237926a338234d92711cc91d0e2f2906fb522ad221263f7b388f2825d794174" "6413d691161f165b5fdd1113dff3dadc7198dfb926cb14228045b3dcdc600bf8" "abd8b2a8b679131865f9181445a2d46a4b8ccd0c22a3cd3580e49fe4dd925435" "5b00b80d6c41824d13b88b1e6eb4f574106a6f2ad304a10b20d6be4a5db7834c" "0598de4cc260b7201120b02d580b8e03bd46e5d5350ed4523b297596a25f7403" "2a1b4531f353ec68f2afd51b396375ac2547c078d035f51242ba907ad8ca19da" "3481e594ae6866d72c40ad77d86a1ffa338d01daa9eb0977e324f365cef4f47c" "73e35ffa5ca98b57a9923954f296c3854ce6d8736b31fdbdda3d27502d4b4d69" "31e64af34ba56d5a3e85e4bebefe2fb8d9d431d4244c6e6d95369a643786a40e" "d507c9e58cb0eb8508e15c8fedc2d4e0b119123fab0546c5fd30cadd3705ac86" "6f11ad991da959fa8de046f7f8271b22d3a97ee7b6eca62c81d5a917790a45d9" "b34636117b62837b3c0c149260dfebe12c5dad3d1177a758bb41c4b15259ed7e" "6c35ffc17f8288be4c7866deb7437e8af33cd09930e195738cdfef911ab77274" "a285e7bc4714013b6cd74ac4663b9fa5e8f734e989fcca42069c45ed702d4b72" "7f968c172d6ec46766773a8304c7570bdff45f1220d3700008a437d9529ca3e4" "5cd0afd0ca01648e1fff95a7a7f8abec925bd654915153fb39ee8e72a8b56a1f" "2997ecd20f07b99259bddba648555335ffb7a7d908d8d3e6660ecbec415f6b95" "6369644497a7dde1350dce08f404316c7cb19f2d1c1b937d412a8860c4eb02f5" "14099b48e45d17d7e007a9c33c690004861e4fb9bb14e9562a13a7b4ee3b683c" "6fa9baa12ed2813c3deb764cb896bb2e80ebbbbb786b56082ea4c4a23c2b6a69" "a3f85ee6e877f02e239d2a6633a5b8263b53113751aca549aa4c5f458829c95d" "66881e95c0eda61d34aa7f08ebacf03319d37fe202d68ecf6a1dbfd49d664bc3" "28315d38ed9f3ae4f84937ff390aec4739f86a78b8b55db15b8b81e4f8aae7ff" "5e46a1f5841476ba810a8331dbf2714ef5edb44ddf9b41aa0d681e1454107bf5" "60f9439182356ed1821f90ef1b1b1ca13234f81bfd25321a9cc80e6607a6a54f" "6df465c9d5df9d3f3aefb67e74ece2bf9e9e80e2037d22397e85d5bae190ab66" "36a116cdc52e42ca0a3496ed07e62025f8915243d7aee793b528a0673028c4bf" "d4c7190cd923cec95b3e1412eba44762fcaed44bab119e6657e0b924f740fda5" "1dbf2b600d24bc86c466d01f3c03f59b0d9159769daa7fcd4f2d8212e9fb708d" "ca2abff9d19f278aae4b694e745dde1eb1223cb559e36398a55178d42304a77a" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "5c6d40ef6e7bbe9e83dc0e32db794c7e9a6a0d9eb7d6a874aaf9744c053842b4" "c806912d706db590cde0483f0ec90db69bc5ce5da1d8846462d7c20aecb3dcda" "9f3dd1d7b46e99b94bb53506c44b651c811b3552100898842bdd22ce63ab8b55" "d09467d742f713443c7699a546c0300db1a75fed347e09e3f178ab2f3aa2c617" "d79ece4768dfc4bab488475b85c2a8748dcdc3690e11a922f6be5e526a20b485" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "9baea9c4e3e3c6f38a861454fe566432e2d1c02bc1fa7cea9b9a11d7081f0819" "708df3cbb25425ccbf077a6e6f014dc3588faba968c90b74097d11177b711ad1" "b391fa6fc0967eb5980b203c27f5a98e9efc5296cddb92e232e17e592d8231e2" "98a619757483dc6614c266107ab6b19d315f93267e535ec89b7af3d62fb83cad" "dc54983ec5476b6187e592af57c093a42790f9d8071d9a0163ff4ff3fbea2189" "ff52e9e329c5a66eae3570e3f17288d0a9f96403ce1ac7cbca5a193ebc500936" "d9b0d5c7077ddad798e9749d0629e86b925c2e146641b24130edd8f82cd0cf5d" "e6d871e13fd608b78aaff9d7f63e81aab1c901439eb0f432d6bb505ff1dda3cb" "ac194ceaf2a741572f99274e22c96c953f27de11ca4944c05f4e3252937c12a0" "f110ecd815cb48e75e275db68d06e7439a6f82429d1cf51382520cfb5652fc44" "0107651d44bfacc9ee4d725fdba9a617273ef0569bffc8f07e7212d39d1bf6ec" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "419637b7a8c9cb43f273980f0c9879c0cbadace6b38efac0281e031772c84eb2" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "c46068478d29787a89c3930841e8de94d59cd6a573e4d479d71e78a3f41c6ae3" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "0db94e3baa6604fd1bf3871cf602f3ac400f65fce4c8adac07758af9259aefce" "ffc576509985b49dce4e34ae4cef858c81cd678cc920d43971c91bdffedfa7d7" "e5343a4b2c731f7f5ab9e25ccc69a20482614d2bb66b9246f86bfcfb0de8891a" "f23c2d947b426285828db5ec060784c2278ced8a96b9c5b1f40eed1d58428493" default)))
  '(dabbrev-check-all-buffers nil)
  '(dabbrev-eliminate-newlines nil)
  '(default-input-method "TeX")
  '(emmet-quote-style "\"")
  '(eval-sexp-fu-flash-mode t)
- '(fci-rule-character-color "#d9d9d9")
- '(fci-rule-color "#232A2F")
+ '(fci-rule-character-color "#6c7175")
+ '(fci-rule-color "#6c7175")
  '(flycheck-error-list-format
    [("Line" 4 flycheck-error-list-entry-< :right-align t)
     ("Col" 3 nil :right-align t)
@@ -51,7 +53,7 @@
  '(flycheck-eslintrc ".eslintrc.json" t)
  '(flycheck-highlighting-mode (quote lines))
  '(flycheck-idle-change-delay 2)
- '(fringe-mode '(0))
+ '(fringe-mode (quote (0)) nil (fringe))
  '(git-gutter-fr:side (quote left-fringe))
  '(global-prettify-symbols-mode t)
  '(global-rainbow-delimiters-mode t)
@@ -216,19 +218,19 @@
  '(magit-visit-ref-create t)
  '(make-backup-files nil)
  '(mc/always-run-for-all t)
- '(nlinum-format " %d ")
  '(neo-smart-open t)
  '(neo-vc-integration (quote (face)))
+ '(nlinum-format " %d ")
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
- '(org-fontify-done-headline t t)
- '(org-fontify-quote-and-verse-blocks t t)
- '(org-fontify-whole-heading-line t t)
+ '(org-fontify-done-headline t)
+ '(org-fontify-quote-and-verse-blocks t)
+ '(org-fontify-whole-heading-line t)
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (twilight-jazz-theme import-js indent-guide eldoc-eval kaolin-themes clojure imenu-anywhere imenu-list doom-themes subatomic-theme docker-compose-mode decide flycheck-inline js-import rg treemacs kanji-mode helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
+    (alchemist elixir-mode elixir twilight-jazz-theme import-js indent-guide eldoc-eval kaolin-themes clojure imenu-anywhere imenu-list doom-themes subatomic-theme docker-compose-mode decide flycheck-inline js-import rg treemacs kanji-mode helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(popwin:popup-window-height 15)
@@ -236,6 +238,7 @@
    (quote
     (("*rg*" :regexp nil :height 0.4 :position bottom :noselect nil)
      ("*Flycheck errors*" :regexp nil :position bottom :stick t)
+     ("*alchemist-eval-mode*" :position bottom :tail t)
      ("*git-gutter+-diff*" :regexp nil :position bottom)
      ("*compilation*" :regexp nil :height 30 :position bottom :noselect t :stick t :tail t)
      ("*s-" :regexp t :position bottom)
@@ -277,6 +280,7 @@
  '(smex-prompt-string "Why won't you just fucking ")
  '(sp-hybrid-kill-excessive-whitespace t)
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))
+ '(spaceline-all-the-icons-file-name-highlight "#313334")
  '(tab-stop-list (quote (2 4 6 8 10 12 14 16 18 20 22 24 26 28 30)))
  '(tabbar-background-color "#353535")
  '(tags-add-tables nil)
@@ -327,65 +331,6 @@
  '(xkcd-cache-latest "~/.xkcd/latest")
  '(yas-fallback-behavior (quote call-other-command)))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight extralight :height 130 :width normal :foundry "nil" :family "Operator Mono"))))
- '(ac-candidate-face ((t (:inherit company-tooltip-selection))))
- '(ac-selection-face ((t (:inherit company-tooltip-common-selection))))
- '(ac-yasnippet-candidate-face ((t (:inherit company-scrollbar-bg :foreground "#e74c3c"))))
- '(ac-yasnippet-selection-face ((t (:foreground "#c0392b"))))
- '(cfw:face-header ((t (:inherit \#F9690E :weight bold))))
- '(cfw:face-holiday ((t (:inherit (font-lock-doc-face cfw:face-day-title) :weight bold))))
- '(cfw:face-periods ((t (:inherit font-lock-warning-face :weight light))))
- '(cfw:face-select ((t (:background "#F27935" :foreground "#22313F"))))
- '(cfw:face-sunday ((t (:foreground "#6C7A89" :weight bold))))
- '(cfw:face-title ((t (:inherit font-lock-keyword-face :weight bold :height 2.0))))
- '(cfw:face-today ((t (:inherit font-lock-warning-face :weight bold))))
- '(cfw:face-today-title ((t (:background "#D24D57" :foreground "#22313F" :weight bold))))
- '(cfw:face-toolbar-button-off ((t (:inherit default :weight bold))))
- '(diredp-compressed-file-name ((t (:inherit dired-warning))))
- '(diredp-compressed-file-suffix ((t (:inherit dired-warning :weight bold))))
- '(diredp-date-time ((t (:inherit dired-mark :slant italic))))
- '(diredp-dir-heading ((t (:inherit dired-header))))
- '(diredp-dir-name ((t (:inherit dired-directory :background "#2C2C2C"))))
- '(diredp-dir-priv ((t (:inherit dired-directory :background "#2C2C2C"))))
- '(diredp-file-name ((t (:inherit default))))
- '(diredp-file-suffix ((t (:inherit dired-warning))))
- '(diredp-number ((t (:inherit dired-marked))))
- '(diredp-symlink ((t (:inherit dired-symlink))))
- '(eval-sexp-fu-flash ((t (:inherit spaceline-highlight-face :weight bold))))
- '(flycheck-error ((t (:underline "#74CBC4"))))
- '(flycheck-info ((t (:underline "#FF516D"))))
- '(flycheck-warning ((t (:underline "#FFEB95"))))
- '(font-lock-comment-face ((t (:slant italic))))
- '(font-lock-keyword-face ((t (:slant italic :weight book))))
- '(font-lock-string-face ((t (:slant italic))))
- '(hs-face ((t (:distant-foreground "black"))))
- '(js2-function-call ((t (:inherit font-lock-function-name-face :weight extra-light))))
- '(js2-non-used ((t (:inherit nil :foreground "#9c9c9c" :slant italic))) t)
- '(js2-object-property ((t (:inherit default :weight bold))))
- '(linum ((t :height 0.9)))
- '(markdown-header-face ((t (:inherit default :weight bold))))
- '(markdown-header-face-1 ((t (:inherit default :height 1.8))))
- '(markdown-header-face-2 ((t (:inherit default :height 1.4))))
- '(markdown-header-face-3 ((t (:inherit default :height 1.2))))
- '(neo-dir-link-face ((t (:inherit default :height 0.9))))
- '(neo-file-link-face ((t (:inherit default :height 0.9))))
- '(neo-vc-added-face ((t (:foreground "#5f9411" :height 0.9))))
- '(neo-vc-edited-face ((t (:foreground "#FF516D" :slant italic :weight thin :height 0.9))))
- '(neo-vc-ignored-face ((t nil)))
- '(neo-vc-up-to-date-face ((t (:height 0.9))))
- '(popup-menu-summary-face ((t (:inherit company-tooltip-selection))))
- '(popup-scroll-bar-background-face ((t (:inherit company-scrollbar-bg))))
- '(popup-scroll-bar-foreground-face ((t (:inherit company-scrollbar-fg))))
- '(popup-summary-face ((t (:inherit company-tooltip-selection))))
- '(popup-tip-face ((t (:inherit company-tooltip-selection :underline nil :slant normal :weight normal))))
- '(rjsx-attr ((t (:inherit font-lock-variable-name-face :slant italic :weight bold))))
- '(vertical-border ((((type tty)) (:inherit \#1b1d1e)))))
-
 ;;; Font Manipulation:
 (defvar font-list
   '(
@@ -404,6 +349,8 @@
     ("iA Writer Duospace" normal)
     ("Menlo" normal)
     ("Source Code Pro" extralight)
+    ("Dita Grotesk Mono DEMO" normal)
+    ("monofur for Powerline" normal)
   ))
 
 (defun set-font (&optional f)
@@ -419,3 +366,13 @@
 
 (provide 'custom)
 ;;; custom.el ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(linum ((t :height 0.8)))
+ '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold))))
+ '(markdown-header-face-1 ((t (:inherit font-lock-function-name-face :weight bold :height 1.8))))
+ '(markdown-header-face-2 ((t (:inherit font-lock-function-name-face :weight bold :height 1.4))))
+ '(markdown-header-face-3 ((t (:inherit font-lock-function-name-face :weight bold :height 1.2)))))
