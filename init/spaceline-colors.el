@@ -177,14 +177,26 @@
       ;; (other     (background . "#f1f4f8") (foreground . "#6b82a7"))
       ;; (middle    (background . "#f1f4f8")))
       (highlight (background . "#f33859") (foreground . "#ffffff"))
-      (default   (background . "#35b1bf") (foreground . "#ffffff"))
-      (other     (background . "#ffecef") (foreground . "#f33859"))
+      (default   (background . "#4ad9da") (foreground . "#effbfb"))
+      (other     (background . "#ccf4f4") (foreground . "#4ad9da"))
       (middle    (background . "#f5f6f4")))
      (inactive
-      (default (background . "#35b1bf") (foreground . "#ebf6f7"))
-      (other   (background . "#4ad9da") (foreground . "#effbfb"))
-      (middle  (background . "#effbfb") (foreground . "#b4b4b4")))
+      (default (background . "#38fab4") (foreground . "#fff"))
+      (other   (background . "#38fab4") (foreground . "#fff"))
+      (middle  (background . "#eefff8") (foreground . "#b4b4b4")))
      (highlight . "#ffffff")))
+
+   (aquafresh-midnight
+    ((active
+      (highlight (foreground . "#f33859") (background . "#563A46"))
+      (default   (foreground . "#4ad9da") (background . "#354850"))
+      (other     (foreground . "#f1ca4d") (background . "#676145"))
+      (middle    (background . "#354850")))
+     (inactive
+      (default (background . "#31494A") (foreground . "#38fab4"))
+      (other   (background . "#31494A") (foreground . "#38fab4"))
+      (middle  (background . "#354850") (foreground . "#b4b4b4")))
+     (highlight . "#4ad9da")))
 
    (nord
     ((active (highlight (background . "#E5E9F0") (foreground . "#2E3440")))
