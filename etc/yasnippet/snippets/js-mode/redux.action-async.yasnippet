@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name : Redux#Action - export const ACTION = 'ACTION' + SUCCESS & FAILURE
+# key  : asyncaction
+# binding : C-c C-c C-A
+# --
+export const ${1:$$(upcase (replace-regexp-in-string " " "_" yas-text))} = '$1'
+export const $1_SUCCESS = '$1_SUCCESS'
+export const $1_FAILURE = '$1_FAILURE'$0
