@@ -30,6 +30,15 @@
 (global-set-key (kbd "M-<kp-decimal>") 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
 
+(global-set-key (kbd "<down>") 'next-line)
+(global-set-key (kbd "<left>") 'previous-line)
+(global-set-key (kbd "<right>") 'forward-char)
+(global-set-key (kbd "<home>") 'backward-char)
+(global-set-key (kbd "<S-right>") 'forward-word)
+(global-set-key (kbd "<S-home>") 'backward-word)
+(global-set-key (kbd "<S-down>") 'forward-paragraph)
+(global-set-key (kbd "<S-left>") 'backward-paragraph)
+
 (global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
 
 (global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
@@ -43,7 +52,7 @@
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
 
-(global-set-key (kbd "H-`") 'other-window)
+(global-set-key (kbd "H-'") 'other-window)
 
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
@@ -83,9 +92,9 @@
 (global-set-key (kbd "H-+") '(lambda () (interactive) (text-scale-adjust 1)))
 (global-set-key (kbd "H-_") '(lambda () (interactive) (text-scale-adjust -1)))
 (global-set-key (kbd "H--") '(lambda () (interactive) (global-text-scale-adjust -1)))
-(global-set-key (kbd "H-=") '(lambda () (interactive) (global-text-scale-adjust 1)))
+(global-set-key (kbd "<f11>") '(lambda () (interactive) (global-text-scale-adjust -1)))
+(global-set-key (kbd "<f12>") '(lambda () (interactive) (global-text-scale-adjust 1)))
 (global-set-key (kbd "<H-backspace>") '(lambda () (interactive) (global-text-scale-set 0)))
-(global-set-key (kbd "M-SPC") 'er/mark-symbol)
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
 
@@ -100,7 +109,7 @@
                            (eq 100 (frame-parameter (selected-frame) 'alpha)))
                        (set-frame-parameter (selected-frame) 'alpha '60)
                      (set-frame-parameter (selected-frame) 'alpha '100))))
-(global-set-key (kbd "H-)") '(lambda () (interactive) (find-file user-init-file)))
+(global-set-key (kbd "<f10>") '(lambda () (interactive) (find-file user-init-file)))
 
 (global-set-key (kbd "M-d") 'kill-word)
 (global-set-key (kbd "M-D") 'backward-kill-word)
@@ -134,6 +143,7 @@
 
 ;; Regexp snippets
 (global-set-key (kbd "C-c C-v i") '(lambda () (interactive) (insert "\\(.*?\\)")))
+(global-set-key (kbd "C-c C-v w") '(lambda () (interactive) (insert "\\(\\w+\\)")))
 
 (global-set-key "\M-]" 'next-error)
 (global-set-key "\M-[" 'previous-error)
