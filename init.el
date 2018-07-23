@@ -101,6 +101,11 @@
   :init (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
   :config (setq hl-paren-colors '("#91ca55" "#f45d43" "#ee3f46" "#c0392b")))
 
+(use-package auto-highlight-symbol :ensure t
+  :config
+  (setq ahs-idle-interval 0.5)
+  (auto-highlight-symbol-mode 1))
+
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
         ("<end>" . mc/mark-next-like-this)

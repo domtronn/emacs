@@ -31,8 +31,8 @@ influence of C1 on the result."
 (defun aquafresh-apply-custom-theme (theme-name)
   "`let' bind all colors used in `aquafresh-themes' for THEME-NAME."
   (let* ((light (eq 'aquafresh-morning theme-name))
-         (background (if light "#FFFFFF" "#2a2a2d"))
-         (foreground (if light "#313334" "#fbfafb"))
+         (background (if light "#FFFFFF" "#1d252c"))
+         (foreground (if light "#313334" "#d3e6f8"))
          (alpha (if light 0.1 0.1))
          (blend `(lambda (col &optional a) (color-blend col ,background (or a ,alpha))))
          (cursor (if light "#1fe19b" "#f33859"))
@@ -40,7 +40,7 @@ influence of C1 on the result."
          (gray-1 "#8394a7") (gray-1bg (funcall blend gray-1))
          (gray-2 "#6c7175") (gray-2bg (funcall blend gray-2 0.05))
 
-         (gray-3 (if light "#cac2c0" "#53575a"))
+         (gray-3 (if light "#cac2c0" "#384551"))
          (gray-3bg (funcall blend gray-3))
 
          (gray-4 "#d2d0d3")
@@ -103,7 +103,7 @@ influence of C1 on the result."
      `(ivy-current-match ((t (:foreground ,background :background ,red-1 :italic t))))
 
      `(neo-dir-link-face ((t (:foreground ,foreground :underline t :bold t))))
-     
+
      ;; Spaceline
      (if light
          `(spaceline-highlight-face ((t (:background ,red-1 :foreground ,red-1bg))))
@@ -125,8 +125,8 @@ influence of C1 on the result."
      ;; Elixir
      `(elixir-attribute-face ((t (:foreground ,magenta-2 :background ,magenta-2bg))))
      `(elixir-atom-face ((t (:foreground ,blue-1 :background ,blue-1bg))))
-     
-     
+
+
      ;; Linum
      `(linum ((t (:foreground ,gray-3 :background ,gray-3bg :bold t))))
      `(nlinum-current-line ((t (:foreground ,gray-3bg :background ,gray-3 :bold t :height 0.8))))
@@ -135,6 +135,11 @@ influence of C1 on the result."
      ;; show-paren-mode
      `(show-paren-match ((t (:foreground ,cyan-2 :background ,cyan-2bg))))
      `(show-paren-mismatch ((t (:background ,red-1 :foreground ,red-1bg))))
+
+     ;; auto highlight symbol mode
+     `(ahs-plugin-defalt-face ((t (:foreground ,green-2 :background ,green-2bg))))
+     `(ahs-face ((t (:foreground ,green-2 :background ,gray-1bg))))
+     `(ahs-definition-face ((t (:foreground ,green-2bg :background ,green-2 :underline t))))
 
      ;; ido
      `(ido-only-match ((t (:foreground ,green-1 :background ,green-1bg))))
@@ -164,6 +169,8 @@ influence of C1 on the result."
      `(magit-diff-removed-highlight ((t (:foreground ,red-2 :background ,red-2bg :bold t))))
      `(magit-item-highlight ((t (:background ,gray-1bg))))
 
+     `(ahs-add-overlay-face)
+
      `(magit-tag ((t (:background ,orange-1bg :foreground ,orange-1))))
 
      `(magit-section-heading ((t (:foreground ,magenta-1 :background ,magenta-1bg :bold t))))
@@ -181,6 +188,9 @@ influence of C1 on the result."
      `(vr/group-2 ((t (:foreground ,yellow-1 :background ,yellow-1bg :box t :underline nil :bold nil))))
 
      `(vr/match-separator-face ((t (:foreground ,foreground :bold t))))
+
+     ;; Auto highlight face
+
 
      ;; customisation
      `(custom-state ((t (:background ,green-2bg :foreground ,green-2 :bold t))))
@@ -292,7 +302,7 @@ influence of C1 on the result."
 
      ;; Eldoc
      `(eldoc-highlight-function-argument ((t (:italic t :bold t))))
-     
+
      ;; MC
      `(mc/region-face ((t (:foreground ,blue-2 :background ,blue-2bg))))
 
