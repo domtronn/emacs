@@ -42,6 +42,7 @@
   (setq flycheck-indication-mode nil)
   (setq flycheck-javascript-standard-executable "standard")
   (setq flycheck-javascript-eslint-executable "eslint_d")
+  (setq flycheck-stylelintrc ".styleintrc")
   (setq flycheck-eslintrc ".eslintrc.json")
   ;; In the case of broken Eslint configs, try running `(flycheck-eslint-config-exists-p)'
   ;; Also, `M-! eslint_d --print-config .'
