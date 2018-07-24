@@ -332,9 +332,6 @@
   (projectile-mode)
   (setq projectile-completion-system 'ivy)
   (setq projectile-sort-order 'recently-active)
-  (setq projectile-project-root-files-bottom-up
-        (append '(".projectile" "gulpfile.js" "gruntfile.js" "Gulpfile.js" "Gruntfile.js" "package.json")
-                projectile-project-root-files-bottom-up))
   (setq projectile-globally-ignored-directories
         (append projectile-globally-ignored-directories
                 '("node_modules" "build" "tests" ".cache")))
@@ -682,7 +679,8 @@
         backend
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
-
+  
+  
   (setq company-show-numbers t)
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
@@ -698,6 +696,11 @@
   :config (company-quickhelp-mode 1)
   (setq pos-tip-background-color (face-background 'company-tooltip))
   (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
+
+
+(use-package company-jsimport :load-path "init/company-jsimport.el"
+  :after company
+  :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-jsimport-backend)))
 
 (use-package company-emoji :ensure t
   :after company
