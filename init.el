@@ -1,4 +1,4 @@
-;;; init.el --- My Emacs initialisation file.
+;;  initialisation file.
 
 ;; Copyright (C) 2014  Dominic Charlesworth <dgc336@gmail.com>
 
@@ -68,6 +68,15 @@
   :commands (paradox-list-packages)
   :bind (:map paradox-menu-mode-map ("g" . paradox--refresh-remote-data)))
 
+(use-package quickrun
+  :ensure t
+  :bind ("C-x RET RET" . quickrun))
+
+(eval-after-load "treemacs"
+  (use-package solaire-mode
+   :ensure t
+   :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)))
+
 (use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
 (use-package nlinum :ensure t :after linum-off
@@ -80,11 +89,10 @@
                              (memq major-mode linum-disabled-modes-list))
                             (string-match "*" (buffer-name)))
                   (apply orig-f args))))
-  (custom-set-faces '(linum ((t :height 0.8))))
   (setq nlinum-highlight-current-line t)
   (global-nlinum-mode))
 
-(use-package origami :ensure t
+(use-package origami :ensure t :disabled t
   :config (origami-mode)
   :bind ("s-=" . origami-toggle-node))
 
@@ -142,6 +150,16 @@
 (use-package ibuffer :ensure t :defer t
   :bind (:map ibuffer-mode-map
          ("M-u" . ibuffer-unmark-all)))
+
+(use-package eyebrowse :ensure t
+  :config
+  (eyebrowse-mode)
+  (setq spaceline-all-the-icons-icon-set-eyebrowse-slot 'string
+        eyebrowse-mode-line-left-delimiter ""
+        eyebrowse-mode-line-style 'smart
+        eyebrowse-mode-line-separator " | "
+        eyebrowse-mode-line-right-delimiter "  👀")
+  (eyebrowse-rename-window-config 1 "emacs"))
 
 (use-package smart-forward :ensure t
   :bind ("s-." . forward-sexp)
@@ -363,7 +381,7 @@
   ("H-S-SPC"      . embrace-delete)
   ("H-c"          . embrace-change)
   ("<deletechar>" . embrace-change))
-  
+
 (use-package smex :ensure t :after counsel)
 (use-package counsel :ensure t :after ivy
   :defer 5
@@ -599,7 +617,7 @@
   :load-path "etc/elisp-packages/all-the-icons")
 
 (setq neo-theme (if window-system 'icons 'arrow))
-(use-package neotree :ensure t
+(use-package neotree :ensure t :disabled t
   :config
   (setq neo-show-updir-line nil
         neo-window-width 35
@@ -626,16 +644,33 @@
   ("<f1> <f1>" . neotree-projectile)
   ("H-§" . neotree-projectile-find))
 
+(use-package treemacs-projectile :ensure t
+  :commands (treemacs-projectile))
 (use-package treemacs
+  :ensure t
   :commands (treemacs treemacs-toggle)
   :config
   (setq treemacs-change-root-without-asking t
         treemacs-follow-after-init t
+        treemacs-no-png-images t
+        treemacs-project-follow-cleanup t
+        treemacs-recenter-after-file-follow t
         treemacs-git-integration t
         treemacs-width 40)
-  (treemacs-follow-mode)
-  (add-hook 'treemacs-mode-hook (lambda () (setq-local line-spacing 5)))
-  (add-hook 'treemacs-mode-hook (lambda () (setq-local tab-width 1))))
+  (setq treemacs-icon-open-text (propertize "📂 " 'face 'treemacs-directory-face)
+        treemacs-icon-closed-text (propertize "📁 " 'face 'treemacs-directory-face)
+        treemacs-icon-tag-leaf-text (propertize "● " 'face 'treemacs-term-node-face)
+        treemacs-icon-tag-node-open-text (propertize "💿 " 'face 'treemacs-tags-face)
+        treemacs-icon-tag-node-closed-text (propertize "📀 " 'face 'treemacs-tags-face)
+        treemacs-icon-text (propertize "📄 " 'face 'treemacs-file-face))
+
+  (define-key treemacs-mode-map [mouse-1] #'treemacs-doubleclick-action)
+  (treemacs-tag-follow-mode)
+  (treemacs-git-mode 'simple)
+  :bind ("<f1> <f1>" . treemacs-select-window)
+        ("<s-kp-decimal>" . treemacs-select-window)
+        ("<s-S-kp-decimal>" . treemacs-find-file)
+        ("<S-f1> <S-f1>" . treemacs-find-file))
 
 (use-package compile :ensure t :defer t
   :config
@@ -679,8 +714,8 @@
         backend
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
-  
-  
+
+
   (setq company-show-numbers t)
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
@@ -802,13 +837,15 @@
         spaceline-all-the-icons-separator-type 'none
         spaceline-all-the-icons-icon-set-flycheck-slim 'dots
         spaceline-all-the-icons-flycheck-alternate t
+        spaceline-all-the-icons-icon-set-window-numbering 'circle
         spaceline-all-the-icons-highlight-file-name t
-        spaceline-all-the-icons-hide-long-buffer-path t)
-  (spaceline-toggle-all-the-icons-bookmark-on)
-  (spaceline-toggle-all-the-icons-dedicated-on)
-  (spaceline-toggle-all-the-icons-fullscreen-on)
+        spaceline-all-the-icons-hide-long-buffer-path t
+        spaceline-all-the-icons-separator-type 'none)
+  (spaceline-toggle-all-the-icons-bookmark-off)
+  (spaceline-toggle-all-the-icons-dedicated-off)
+  (spaceline-toggle-all-the-icons-fullscreen-off)
   (spaceline-toggle-all-the-icons-buffer-position-on)
-  (spaceline-all-the-icons--setup-package-updates)
+  (spaceline-toggle-all-the-icons-package-updates-off)
   (spaceline-all-the-icons--setup-paradox)
   (spaceline-all-the-icons--setup-neotree)
   (spaceline-all-the-icons-theme))
@@ -949,7 +986,7 @@
 
 (use-package aquafresh-theme :load-path "init/aquafresh-theme.el"
   :config
-  (setq spaceline-all-the-icons-separator-type 'slant)
+  (setq spaceline-all-the-icons-separator-type 'none)
   (setq powerline-text-scale-factor 1.1))
 
 (setq sql-connection-alist
@@ -958,7 +995,7 @@
          (sql-port 5432)
          (sql-server "crm-profile-production.cv7dcdtnxmsa.eu-west-1.rds.amazonaws.com")
          (sql-user "crm")
-         
+
          (sql-database "crm_profile_production"))
         (profile-staging
          (sql-product 'postgres)

@@ -4,6 +4,11 @@
 (require 'projectile)
 (require 'company)
 
+(defconst company-jsimport--static-modules
+  '("child_process" "path" "fs" "crypto" "dns" "events" "http" "https" "os" "util"))
+
+(--map (list it "node") company-jsimport--static-modules)
+
 (defun company-jsimport--create-dependency-candidate (candidate)
   "Create `company' candidate from CANDIDATE."
   (let* ((name (format "%s" (car candidate)))
@@ -16,7 +21,12 @@
   (let* ((name (file-name-nondirectory candidate))
          (path (concat (projectile-project-root) candidate))
          (relative (f-relative path (file-name-directory buffer-file-name)))
-         (completion (if (s-starts-with? "." relative) relative (format "./%s" relative)))
+         (relative-path (if (s-starts-with? "." relative) relative (format "./%s" relative)))
+         (completion (if (or
+                          (string-suffix-p ".js" relative-path)
+                          (string-suffix-p ".jsx" relative-path))
+                         (file-name-sans-extension relative-path)
+                       relative-path))
          (location (file-name-directory (f-relative path (projectile-project-root)))))
     (propertize name 'path path 'type 'module 'completion completion 'location location)))
 
@@ -25,10 +35,13 @@
   "Read closest package.json dependencies and filter by PREFIX."
   (unless buffer-file-name (error "Not in a project file"))
   (let* ((package (locate-dominating-file buffer-file-name "package.json"))
-         (json (json-read-from-string (f-read-text (format "%s/package.json" package)))))
+         (json (json-read-from-string (f-read-text (format "%s/package.json" package))))
+         (node-v (s-trim (shell-command-to-string "node --version")))
+         (node-deps (--map (list it node-v) company-jsimport--static-modules)))
     (--filter (s-contains-p prefix it)
               (-map 'company-jsimport--create-dependency-candidate
-                    (cdr (assoc 'dependencies json))))))
+                    (append (cdr (assoc 'dependencies json))
+                            (cdr (assoc 'dev-dependencies json)) node-deps)))))
 
 (defun company-jsimport--get-modules (prefix)
   "Read project files for importable modules."

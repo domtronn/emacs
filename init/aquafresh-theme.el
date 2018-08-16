@@ -31,17 +31,18 @@ influence of C1 on the result."
 (defun aquafresh-apply-custom-theme (theme-name)
   "`let' bind all colors used in `aquafresh-themes' for THEME-NAME."
   (let* ((light (eq 'aquafresh-morning theme-name))
-         (background (if light "#FFFFFF" "#1d252c"))
-         (foreground (if light "#313334" "#d3e6f8"))
+         (background (if light "#fbfbfb" "#151e25"))
+         (solaire-background (if light "#ffffff" "#1d252c"))
+         (foreground (if light "#6d838e" "#d3e6f8"))
          (alpha (if light 0.1 0.1))
          (blend `(lambda (col &optional a) (color-blend col ,background (or a ,alpha))))
-         (cursor (if light "#1fe19b" "#f33859"))
+         (cursor (if light "#151e25" "#f33859"))
 
          (gray-1 "#8394a7") (gray-1bg (funcall blend gray-1))
-         (gray-2 "#6c7175") (gray-2bg (funcall blend gray-2 0.05))
+         (gray-2 "#9baeb7") (gray-2bg (funcall blend gray-2 0.05))
 
-         (gray-3 (if light "#cac2c0" "#384551"))
-         (gray-3bg (funcall blend gray-3))
+         (gray-3 (if light "#9bb3bb" "#384551"))
+         (gray-3bg (if light background (funcall blend gray-3)))
 
          (gray-4 "#d2d0d3")
          (gray-5 "#efefef")
@@ -60,6 +61,7 @@ influence of C1 on the result."
 
          (cyan-1 "#4ad9da") (cyan-1bg (funcall blend cyan-1))
          (cyan-2 "#03bde3") (cyan-2bg (funcall blend cyan-2))
+         (cyan-3 "#41b6bd") (cyan-3bg (funcall blend cyan-3))
 
          (blue-1 "#5072ff") (blue-1bg (funcall blend blue-1))
          (blue-2 "#7055e8") (blue-2bg (funcall blend blue-2))
@@ -71,17 +73,21 @@ influence of C1 on the result."
      theme-name
 
      ;; Basics
-     `(default ((t (:background ,background :foreground ,foreground))))
+     `(default ((t (:height 120 :background ,background :foreground ,foreground :weight extralight :foundry "nil" :family "Roboto Mono Light" ))))
+     `(solaire-default-face ((t (:height 120 :background ,solaire-background :weight extralight :family "Operator Mono"))))
      `(cursor ((t (:background ,cursor))))
      `(region ((t (:background ,blue-1bg :foreground ,blue-1))))
      `(highlight ((t (:foreground ,cyan-2 :background ,cyan-2bg))))
+     `(highlight-indentation-face ((t (:background ,green-2))))
+     `(highlight-indentation-current-column-face ((t (:background ,magenta-1))))
+     `(indent-guide-face ((t (:foreground ,background))))
      `(hl-line ((t (:bold t))))
-     `(minibuffer-prompt ((t (:foreground ,yellow-1bg :background ,yellow-1 :italic t))))
+     `(minibuffer-prompt ((t (:foreground ,green-2bg :background ,green-2 :italic t))))
      `(escape-glyph ((t (:foreground ,magenta-1 :background , magenta-1bg))))
 
      ;; Font-lock stuff
      `(font-lock-builtin-face ((t (:foreground ,yellow-1 :background ,yellow-1bg))))
-     `(font-lock-constant-face ((t (:foreground ,magenta-1 :bold t))))
+     `(font-lock-constant-face ((t (:foreground ,magenta-1))))
      `(font-lock-comment-face ((t (:foreground ,gray-3 :background ,gray-3bg :italic t))))
      `(font-lock-comment-delimiter-face ((t (:foreground ,gray-3 :background ,gray-3bg :italic t :bold t))))
      `(font-lock-doc-face ((t (:foreground ,gray-2 :background ,gray-2bg :italic t))))
@@ -100,26 +106,72 @@ influence of C1 on the result."
      `(ivy-action ((t (:foreground ,background :background ,orange-1))))
      `(ivy-virtual ((t (:foreground ,background :background ,orange-1))))
      `(ivy-prompt-match ((t (:foreground ,cyan-1 :background ,cyan-1bg))))
-     `(ivy-current-match ((t (:foreground ,background :background ,red-1 :italic t))))
+     `(ivy-current-match ((t (:foreground ,background :background ,cyan-2 :italic t))))
 
      `(neo-dir-link-face ((t (:foreground ,foreground :underline t :bold t))))
 
+     ;; All the icons
+     `(all-the-icons-red ((t (:foreground ,red-1))))
+     `(all-the-icons-red-alt ((t (:foreground ,red-1))))
+     `(all-the-icons-lred ((t (:foreground ,red-2))))
+     `(all-the-icons-dred ((t (:foreground ,red-2))))
+
+     `(all-the-icons-green ((t (:foreground ,green-1))))
+     `(all-the-icons-lgreen ((t (:foreground ,green-2))))
+     `(all-the-icons-dgreen ((t (:foreground ,green-2))))
+
+     `(all-the-icons-blue ((t (:foreground ,blue-1))))
+     `(all-the-icons-blue-alt ((t (:foreground ,blue-1))))
+     `(all-the-icons-lblue ((t (:foreground ,blue-2))))
+     `(all-the-icons-dblue ((t (:foreground ,blue-2))))
+
+     `(all-the-icons-cyan ((t (:foreground ,cyan-1))))
+     `(all-the-icons-cyan-alt ((t (:foreground ,cyan-1))))
+     `(all-the-icons-lcyan ((t (:foreground ,cyan-2))))
+     `(all-the-icons-dcyan ((t (:foreground ,cyan-2))))
+
+     `(all-the-icons-yellow ((t (:foreground ,yellow-1))))
+     `(all-the-icons-lyellow ((t (:foreground ,yellow-2))))
+     `(all-the-icons-dyellow ((t (:foreground ,yellow-2))))
+
+     `(all-the-icons-orange ((t (:foreground ,orange-1))))
+     `(all-the-icons-lorange ((t (:foreground ,orange-2))))
+     `(all-the-icons-dorange ((t (:foreground ,orange-2))))
+
+     `(all-the-icons-maroon ((t (:foreground ,cyan-1))))
+     `(all-the-icons-lmaroon ((t (:foreground ,cyan-2))))
+     `(all-the-icons-dmaroon ((t (:foreground ,cyan-2))))
+
+     `(all-the-icons-silver ((t (:foreground ,gray-1))))
+     `(all-the-icons-lsilver ((t (:foreground ,gray-2))))
+     `(all-the-icons-dsilver ((t (:foreground ,gray-2))))
+
+     `(all-the-icons-pink ((t (:foreground ,magenta-1))))
+     `(all-the-icons-lpink ((t (:foreground ,magenta-2))))
+     `(all-the-icons-dpink ((t (:foreground ,magenta-2))))
+
+     `(all-the-icons-purple ((t (:foreground ,magenta-1))))
+     `(all-the-icons-lpurple ((t (:foreground ,magenta-2))))
+     `(all-the-icons-dpurple ((t (:foreground ,magenta-2))))
+
      ;; Spaceline
      (if light
-         `(spaceline-highlight-face ((t (:background ,red-1 :foreground ,red-1bg))))
-         `(spaceline-highlight-face ((t (:background ,red-1bg :foreground ,red-1)))))
-     `(powerline-active2 ((t (:background ,gray-3bg))))
+         `(spaceline-highlight-face ((t (:background ,cyan-2 :foreground ,cyan-2bg))))
+         `(spaceline-highlight-face ((t (:background ,red-1 :foreground ,background)))))
+     `(powerline-active2 ((t (:background ,gray-3bg :overline ,gray-1bg))))
      (if light
-         `(powerline-active1 ((t (:background ,cyan-1 :foreground ,foreground))))
-         `(powerline-active1 ((t (:background ,yellow-1bg :foreground ,yellow-1)))))
-
-     `(powerline-inactive1 ((t (:background ,gray-1bg :foreground ,red-1))))
-     `(powerline-inactive2 ((t (:background ,gray-1bg :italic t :foreground ,red-2))))
+         `(powerline-active1 ((t (:background ,background :foreground ,foreground))))
+         `(powerline-active1 ((t (:background ,background :foreground ,foreground)))))
 
      (if light
-         `(mode-line ((t (:foreground ,cyan-2 :background ,cyan-2bg))))
-         `(mode-line ((t (:foreground ,gray-1 :background ,gray-1bg)))))
-     `(mode-line-inactive ((t (:foreground ,cyan-2 :background ,cyan-2bg))))
+         `(powerline-inactive1 ((t (:background ,background :foreground ,cyan-2))))
+         `(powerline-inactive1 ((t (:background ,background :foreground ,gray-2)))))
+     `(powerline-inactive2 ((t (:background ,background :italic t :foreground ,cyan-2 :overline ,gray-1bg))))
+
+     (if light
+         `(mode-line ((t (:foreground ,foreground :background ,gray-2bg :box ,gray-2))))
+         `(mode-line ((t (:foreground ,foreground :background ,gray-2bg :box ,gray-1bg)))))
+     `(mode-line-inactive ((t (:foreground ,cyan-2 :background ,background :box ,gray-1bg))))
      `(vertical-border ((t (:background ,background :foreground ,gray-4))))
 
      ;; Elixir
@@ -128,8 +180,9 @@ influence of C1 on the result."
 
 
      ;; Linum
-     `(linum ((t (:foreground ,gray-3 :background ,gray-3bg :bold t))))
-     `(nlinum-current-line ((t (:foreground ,gray-3bg :background ,gray-3 :bold t :height 0.8))))
+     `(linum ((t (:foreground ,gray-3 :background ,solaire-background :height 100))))
+     `(nlinum ((t (:height 80 :foreground ,red-1bg))))
+     `(nlinum-current-line ((t (:foreground ,foreground :bold t :background ,solaire-background :height 125))))
      `(fringe ((t (:background ,gray-3bg))))
 
      ;; show-paren-mode
@@ -137,9 +190,29 @@ influence of C1 on the result."
      `(show-paren-mismatch ((t (:background ,red-1 :foreground ,red-1bg))))
 
      ;; auto highlight symbol mode
-     `(ahs-plugin-defalt-face ((t (:foreground ,green-2 :background ,green-2bg))))
-     `(ahs-face ((t (:foreground ,green-2 :background ,gray-1bg))))
-     `(ahs-definition-face ((t (:foreground ,green-2bg :background ,green-2 :underline t))))
+     `(ahs-plugin-defalt-face ((t (:foreground ,green-1 :background ,green-1bg))))
+     `(ahs-face ((t (:foreground ,green-1 :background ,gray-1bg :italic t :underline t))))
+     `(ahs-definition-face ((t (:foreground ,green-1bg :background ,green-1 :bold t))))
+
+     ;; neotree
+     `(neo-banner-face ((t (:foreground ,magenta-2))))
+     `(neo-header-face ((t (:foreground ,magenta-2))))
+     `(neo-vc-edited-face ((t (:foreground ,orange-1))))
+     `(neo-vc-added-face ((t (:foreground ,green-1))))
+     `(neo-root-dir-face ((t (:foreground ,cyan-1))))
+     `(neo-dir-link-face ((t (:foreground ,red-1 :bold nil :underline nil))))
+
+     ;; treemacs
+     `(treemacs-root-face ((t (:foreground ,cyan-2 :background ,cyan-2bg :height 140))))
+     `(treemacs-root-face)
+     `(treemacs-directory-face ((t (:foreground ,gray-2 :background ,gray-2bg))))
+     `(treemacs-fringe-indicator-face ((t (:foreground ,green-1 :background ,green-1))))
+     `(treemacs-term-node-face ((t (:foreground ,red-2 :background ,red-2bg))))
+     `(treemacs-tags-face ((t (:foreground ,red-2 :background ,red-2bg))))
+     `(treemacs-on-failure-pulse-face ((t (:foreground ,background :background ,gray-1))))
+     `(treemacs-git-modified-face ((t (:foreground ,cyan-1 :background ,cyan-1bg))))
+     `(treemacs-git-modified-face ((t (:foreground ,cyan-1 :background ,cyan-1bg))))
+     `(treemacs-git-ignored-face ((t (:foreground ,gray-4 :italic t))))
 
      ;; ido
      `(ido-only-match ((t (:foreground ,green-1 :background ,green-1bg))))
@@ -167,7 +240,7 @@ influence of C1 on the result."
      `(magit-diff-deleted ((t (:foreground ,red-2 :background ,red-2bg))))
      `(magit-diff-removed ((t (:foreground ,red-1 :background ,red-1bg))))
      `(magit-diff-removed-highlight ((t (:foreground ,red-2 :background ,red-2bg :bold t))))
-     `(magit-item-highlight ((t (:background ,gray-1bg))))
+     `(magit-item-highlight ((t (:background ,background))))
 
      `(ahs-add-overlay-face)
 
@@ -285,11 +358,12 @@ influence of C1 on the result."
      ;; Javascript
      `(rjsx-attr ((t (:background ,cyan-1bg :bold nil :foreground ,cyan-1 :italic t))))
      `(rjsx-tag ((t (:background ,magenta-1bg :foreground ,magenta-1 ))))
-     `(rjsx-text ((t (:background ,background :foreground ,foreground :italic t ))))
+     `(rjsx-text ((t (:background ,solaire-background :foreground ,foreground :italic t :inherit nil))))
      `(rjsx-tag-bracket-face ((t (:background ,magenta-1bg :bold t :foreground ,magenta-1 ))))
 
      `(show-paren-match ((t (:foreground ,background :background ,cyan-1))))
      `(js2-function-param ((t (:foreground ,blue-2 :background ,blue-2bg))))
+     `(js2-function-call ((t (:foreground ,foreground))))
      `(js2-non-used ((t (:foreground ,red-1 :underline t :italic t))))
 
      `(js2-object-property ((t (:bold nil :italic t :foreground ,gray-1 :background ,gray-1bg :weight light ))))
@@ -371,7 +445,13 @@ influence of C1 on the result."
      ;; ;; Fill Column Indicator mode
      (if light
          `(spaceline-all-the-icons-file-name-highlight ,foreground)
-         `(spaceline-all-the-icons-file-name-highlight ,red-1))
+       `(spaceline-all-the-icons-file-name-highlight ,red-1))
+     `(treemacs-icon-open-text ,(propertize "📂 " 'face 'treemacs-directory-face))
+     `(treemacs-icon-closed-text ,(propertize "📁 " 'face 'treemacs-directory-face))
+     `(treemacs-icon-tag-leaf-text ,(propertize "● " 'face 'treemacs-term-node-face))
+     `(treemacs-icon-tag-node-open-text ,(propertize "💿 " 'face 'treemacs-tags-face))
+     `(treemacs-icon-tag-node-closed-text ,(propertize "📀 " 'face 'treemacs-tags-face))
+     `(treemacs-icon-text ,(propertize "📄 " 'face 'treemacs-file-face))
      `(fci-rule-color ,gray-2)
      `(fci-rule-character-color ,gray-2))))
 

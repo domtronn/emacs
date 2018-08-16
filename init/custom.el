@@ -230,13 +230,14 @@
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (auto-highlight-symbol alchemist elixir-mode elixir twilight-jazz-theme import-js indent-guide eldoc-eval kaolin-themes clojure imenu-anywhere imenu-list doom-themes subatomic-theme docker-compose-mode decide flycheck-inline js-import rg treemacs kanji-mode helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
+    (highlight-indentation eyebrowse treemacs-projectile solaire-mode quickrun auto-highlight-symbol alchemist elixir-mode elixir twilight-jazz-theme import-js indent-guide eldoc-eval kaolin-themes clojure imenu-anywhere imenu-list doom-themes subatomic-theme docker-compose-mode decide flycheck-inline js-import rg treemacs kanji-mode helpful twilight-bright-theme nlinum-hl fancy-narrow origami spaceline benchmark-init company-emoji company-quickhelp git-gutter-fringe+ zerodark-theme zerodark memoize ibuffer-projectile anzu nord-theme rainbow-mode json-mode eslintd-fix flycheck-pos-tip flycheck-clojure ac-cider try flow-mode cider dracula gotham-theme dracula-theme toggle-quotes ample-zen-theme tangotango-theme kaolin-theme color-theme-sanityinc-tomorrow anti-zenburn-theme zenburn-theme danneskjold-theme prassee-theme which-key fancy-battery company-tern window-purpose purpose resize-window window-resize winum copy-as-format js-format ox-bullets rjsx-mode smooth-scrolling ox-md zoom-window yaml-mode yahoo-weather window-layout wgrep-ag wgrep-ack web-mode web-completion-data vline visual-regexp use-package undo-tree tao-theme suscolors-theme sudo-edit sticky-windows spacemacs-theme solarized-theme smex smartparens smart-newline smart-forward skewer-mode shell-pop scss-mode rust-mode restart-emacs request repository-root rainbow-delimiters pug-mode projectile pos-tip popwin php-mode ox-twbs ox-reveal org-wc org-bullets operate-on-number noflet niflheim-theme nginx-mode neotree names nameless multi-line multi monokai-theme math-symbol-lists material-theme markdown-toc magit-gh-pulls lorem-ipsum linum-off link-hint leuven-theme legalese kurecolor key-combo js2-refactor jenkins ivy-hydra inf-ruby image+ ibuffer-vc hideshowvis haml-mode gruvbox-theme grunt gntp github-issues github-browse-file git-timemachine git-messenger git-link git-gutter-fringe forest-blue-theme font-lock+ flyspell-popup flycheck-tip flycheck-rust flx exec-path-from-shell etags-select eshell-prompt-extras eshell-git-prompt engine-mode embrace eink-theme drag-stuff dockerfile-mode docker dired-quick-sort dired-narrow dired-filter dired+ darktooth-theme darkokai-theme cycle-quotes creamsody-theme counsel context-coloring composable command-log-mode coffee-mode chinese-word-at-point calfw buffer-move browse-url-dwim avy-zap aurora-theme auctex atomic-chrome atom-one-dark-theme ag ack-and-a-half ack ac-html ac-emoji ac-emmet ac-dabbrev)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(popwin:popup-window-height 15)
  '(popwin:special-display-config
    (quote
-    (("*rg*" :regexp nil :height 0.4 :position bottom :noselect nil)
+    (("*quickrun*" :regexp nil :height 0.2 :position bottom :noselect t :stick t :tail t)
+     ("*rg*" :regexp nil :height 0.4 :position bottom :noselect nil)
      ("*Flycheck errors*" :regexp nil :position bottom :stick t)
      ("*alchemist-eval-mode*" :position bottom :tail t)
      ("*git-gutter+-diff*" :regexp nil :position bottom)
@@ -280,7 +281,6 @@
  '(smex-prompt-string "Why won't you just fucking ")
  '(sp-hybrid-kill-excessive-whitespace t)
  '(sp-sexp-suffix (quote ((js2-mode regexp "\"\""))))
- '(spaceline-all-the-icons-file-name-highlight "#313334")
  '(tab-stop-list (quote (2 4 6 8 10 12 14 16 18 20 22 24 26 28 30)))
  '(tabbar-background-color "#353535")
  '(tags-add-tables nil)
@@ -353,13 +353,14 @@
     ("monofur for Powerline" normal)
   ))
 
+(set-fontset-font "fontset-default" 'unicode '("Apple Color Emoji"))
 (defun set-font (&optional f)
   "Set the custom font F with completion."
   (interactive)
   (let* ((font (or f (assoc (completing-read "Font: " font-list nil nil) font-list)))
          (family (car font))
          (weight (cadr font)))
-    (set-face-attribute 'default nil :family family :weight weight)
+    (set-face-attribute 'solaire-default-face nil :family family :weight weight)
     (run-at-time "0.2 sec" nil
                  `(lambda () (when (not (eq (face-attribute 'default :family ) ,family))
                           (set-face-attribute 'default nil :family ,family :weight (quote ,weight)))))))
@@ -371,7 +372,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(linum ((t :height 0.8)))
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold))))
  '(markdown-header-face-1 ((t (:inherit font-lock-function-name-face :weight bold :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit font-lock-function-name-face :weight bold :height 1.4))))

@@ -477,6 +477,7 @@
 (defrepl "node" "node")
 (defrepl "elixir" "iex")
 (defrepl "ruby" "irb")
+(defrepl "haskell" "ghci")
 (defrepl "lodash" "n_")
 
 (defmacro defewwmenu (name query)
@@ -651,8 +652,8 @@
     (4 (window-config--save))
     (16 (window-config-save-or-restore))))
 
-(global-set-key (kbd "H-v H-,") 'window-config--save)
-(global-set-key (kbd "H-v H-.") 'window-config--restore)
+(global-set-key (kbd "C-x [") 'window-config--save)
+(global-set-key (kbd "C-x ]") 'window-config--restore)
 
 (defun set-frame-fullsize ()
   (interactive)

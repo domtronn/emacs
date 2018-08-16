@@ -92,8 +92,8 @@
 (global-set-key (kbd "H-+") '(lambda () (interactive) (text-scale-adjust 1)))
 (global-set-key (kbd "H-_") '(lambda () (interactive) (text-scale-adjust -1)))
 (global-set-key (kbd "H--") '(lambda () (interactive) (global-text-scale-adjust -1)))
-(global-set-key (kbd "<f11>") '(lambda () (interactive) (global-text-scale-adjust -1)))
-(global-set-key (kbd "<f12>") '(lambda () (interactive) (global-text-scale-adjust 1)))
+(global-set-key (kbd "<f11>") '(lambda () (interactive) (text-scale-adjust -1)))
+(global-set-key (kbd "<f12>") '(lambda () (interactive) (text-scale-adjust 1)))
 (global-set-key (kbd "<H-backspace>") '(lambda () (interactive) (global-text-scale-set 0)))
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
