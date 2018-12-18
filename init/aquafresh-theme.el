@@ -32,11 +32,13 @@ influence of C1 on the result."
   "`let' bind all colors used in `aquafresh-themes' for THEME-NAME."
   (let* ((light (eq 'aquafresh-morning theme-name))
          (background (if light "#fbfbfb" "#151e25"))
-         (solaire-background (if light "#ffffff" "#1d252c"))
-         (foreground (if light "#6d838e" "#d3e6f8"))
+         (solaire-background (if light "#fdfdfd" "#1d252c"))
+         (foreground (if light "#60686c" "#d3e6f8"))
          (alpha (if light 0.1 0.1))
          (blend `(lambda (col &optional a) (color-blend col ,background (or a ,alpha))))
          (cursor (if light "#151e25" "#f33859"))
+
+         (orange-2-light (if light "#ffe3b7" (funcall blend "#ffe3b7" 0.1)))
 
          (gray-1 "#8394a7") (gray-1bg (funcall blend gray-1))
          (gray-2 "#9baeb7") (gray-2bg (funcall blend gray-2 0.05))
@@ -45,7 +47,7 @@ influence of C1 on the result."
          (gray-3bg (if light background (funcall blend gray-3)))
 
          (gray-4 "#d2d0d3")
-         (gray-5 "#efefef")
+         (gray-5 "#eaedf0")
 
          (red-1 "#f33859") (red-1bg (funcall blend red-1))
          (red-2 "#ff6b6a") (red-2bg (funcall blend red-2))
@@ -54,7 +56,7 @@ influence of C1 on the result."
          (green-2 "#2bf05e") (green-2bg (funcall blend green-2))
 
          (orange-1 "#ff9f43") (orange-1bg (funcall blend orange-1))
-         (orange-2 "#ff5728") (orange-2bg (funcall blend orange-2))
+         (orange-2 "#ff6a00") (orange-2bg (funcall blend orange-2))
 
          (yellow-1 "#fecb56") (yellow-1bg (funcall blend yellow-1))
          (yellow-2 "#e37b40") (yellow-2bg (funcall blend yellow-2))
@@ -81,7 +83,7 @@ influence of C1 on the result."
      `(highlight-indentation-face ((t (:background ,green-2))))
      `(highlight-indentation-current-column-face ((t (:background ,magenta-1))))
      `(indent-guide-face ((t (:foreground ,background))))
-     `(hl-line ((t (:bold t))))
+     `(hl-line ((t (:bold nil :background ,orange-2-light :foreground ,foreground))))
      `(minibuffer-prompt ((t (:foreground ,green-2bg :background ,green-2 :italic t))))
      `(escape-glyph ((t (:foreground ,magenta-1 :background , magenta-1bg))))
 
@@ -110,6 +112,8 @@ influence of C1 on the result."
 
      `(neo-dir-link-face ((t (:foreground ,foreground :underline t :bold t))))
 
+     `(doom-modeline-bar ((t (:background ,green-1))) )
+     
      ;; All the icons
      `(all-the-icons-red ((t (:foreground ,red-1))))
      `(all-the-icons-red-alt ((t (:foreground ,red-1))))
@@ -156,15 +160,15 @@ influence of C1 on the result."
 
      ;; Spaceline
      (if light
-         `(spaceline-highlight-face ((t (:background ,cyan-2 :foreground ,cyan-2bg))))
-         `(spaceline-highlight-face ((t (:background ,red-1 :foreground ,background)))))
+         `(spaceline-highlight-face ((t (:background ,orange-2 :foreground ,orange-2bg))))
+         `(spaceline-highlight-face ((t (:background ,background :foreground ,orange-2)))))
      `(powerline-active2 ((t (:background ,gray-3bg :overline ,gray-1bg))))
      (if light
-         `(powerline-active1 ((t (:background ,background :foreground ,foreground))))
+         `(powerline-active1 ((t (:background ,orange-2 :foreground ,orange-2bg))))
          `(powerline-active1 ((t (:background ,background :foreground ,foreground)))))
 
      (if light
-         `(powerline-inactive1 ((t (:background ,background :foreground ,cyan-2))))
+         `(powerline-inactive1 ((t (:background ,background :foreground ,orange-2))))
          `(powerline-inactive1 ((t (:background ,background :foreground ,gray-2)))))
      `(powerline-inactive2 ((t (:background ,background :italic t :foreground ,cyan-2 :overline ,gray-1bg))))
 
@@ -203,16 +207,19 @@ influence of C1 on the result."
      `(neo-dir-link-face ((t (:foreground ,red-1 :bold nil :underline nil))))
 
      ;; treemacs
-     `(treemacs-root-face ((t (:foreground ,cyan-2 :background ,cyan-2bg :height 140))))
-     `(treemacs-root-face)
-     `(treemacs-directory-face ((t (:foreground ,gray-2 :background ,gray-2bg))))
+     `(treemacs-root-face ((t (:foreground ,foreground :background ,background :height 140))))
+     `(treemacs-directory-face ((t (:foreground ,foreground))))
      `(treemacs-fringe-indicator-face ((t (:foreground ,green-1 :background ,green-1))))
-     `(treemacs-term-node-face ((t (:foreground ,red-2 :background ,red-2bg))))
-     `(treemacs-tags-face ((t (:foreground ,red-2 :background ,red-2bg))))
-     `(treemacs-on-failure-pulse-face ((t (:foreground ,background :background ,gray-1))))
-     `(treemacs-git-modified-face ((t (:foreground ,cyan-1 :background ,cyan-1bg))))
-     `(treemacs-git-modified-face ((t (:foreground ,cyan-1 :background ,cyan-1bg))))
-     `(treemacs-git-ignored-face ((t (:foreground ,gray-4 :italic t))))
+     `(treemacs-term-node-face ((t (:foreground ,red-2))))
+     `(treemacs-tags-face ((t (:foreground ,gray-2))))
+     `(treemacs-on-failure-pulse-face ((t (:foreground ,background :background ,gray-5))))
+     `(treemacs-on-success-pulse-face ((t (:foreground ,background :background ,orange-2))))
+     `(treemacs-git-modified-face ((t (:foreground ,orange-2))))
+     `(treemacs-git-untracked-face ((t (:foreground ,orange-1))))
+     `(treemacs-git-ignored-face ((t (:foreground ,gray-4 ))))
+
+     ;; resize-window
+     `(resize-window-background ((t (:background ,gray-1bg :foreground ,gray-1bg))))
 
      ;; ido
      `(ido-only-match ((t (:foreground ,green-1 :background ,green-1bg))))
@@ -263,6 +270,7 @@ influence of C1 on the result."
      `(vr/match-separator-face ((t (:foreground ,foreground :bold t))))
 
      ;; Auto highlight face
+     `(highlight-symbol-face ((t (:background ,background))))
 
 
      ;; customisation
@@ -297,6 +305,16 @@ influence of C1 on the result."
 
      `(diredp-date-time ((t (:foreground ,red-2 :weight bold :background ,red-2bg :italic t))))
      `(diredp-number ((t (:foreground ,orange-1 :background ,orange-1bg))))
+
+     `(imenu-list-entry-face ((t (:foreground ,foreground :bold t))))
+     `(imenu-list-entry-face-0 ((t (:foreground ,red-1))))
+     `(imenu-list-entry-face-1 ((t (:foreground ,orange-2))))
+     `(imenu-list-entry-face-2 ((t (:foreground ,magenta-1))))
+
+     `(markdown-header-face ((t (:foreground ,foreground :background ,background :bold t))))
+     `(markdown-header-face-1 ((t (:foreground ,red-1 :background ,background))))
+     `(markdown-header-face-2 ((t (:foreground ,orange-2 :background ,background))))
+     `(markdown-header-face-3 ((t (:foreground ,magenta-1 :background ,background))))
 
      `(diredp-flag-mark ((t (:foreground ,green-1bg :background ,green-1))))
      `(diredp-flag-mark-line ((t (:foreground ,green-1 :background ,green-1bg))))
@@ -351,9 +369,9 @@ influence of C1 on the result."
      `(rainbow-delimiters-depth-9-face ((t (:bold t :foreground ,green-1))))
 
      ;; Avy
-     `(avy-lead-face ((t (:background ,magenta-2 :foreground ,magenta-2bg))))
-     `(avy-lead-face-0 ((t (:background ,green-1 :foreground ,green-1bg))))
-     `(avy-lead-face-1 ((t (:background ,orange-1 :foreground ,orange-1bg))))
+     `(avy-lead-face ((t (:background ,foreground :foreground ,background))))
+     `(avy-lead-face-0 ((t (:background ,background :foreground ,foreground :box t :height 0.8))))
+     `(avy-lead-face-1 ((t (:background ,foreground :foreground ,background))))
 
      ;; Javascript
      `(rjsx-attr ((t (:background ,cyan-1bg :bold nil :foreground ,cyan-1 :italic t))))
@@ -444,8 +462,8 @@ influence of C1 on the result."
      theme-name
      ;; ;; Fill Column Indicator mode
      (if light
-         `(spaceline-all-the-icons-file-name-highlight ,foreground)
-       `(spaceline-all-the-icons-file-name-highlight ,red-1))
+         `(spaceline-all-the-icons-file-name-highlight ,orange-2bg)
+       `(spaceline-all-the-icons-file-name-highlight ,orange-2))
      `(treemacs-icon-open-text ,(propertize "📂 " 'face 'treemacs-directory-face))
      `(treemacs-icon-closed-text ,(propertize "📁 " 'face 'treemacs-directory-face))
      `(treemacs-icon-tag-leaf-text ,(propertize "● " 'face 'treemacs-term-node-face))
