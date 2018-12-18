@@ -824,8 +824,6 @@
 
 (use-package spaceline :after powerline :ensure t
   :config (setq spaceline-responsive nil))
-(use-package spaceline-colors :after spaceline-all-the-icons :load-path "init/spaceline-colors"
-  :config (advice-add 'load-theme :after 'spaceline-update-faces))
 
 (use-package spaceline-all-the-icons
   :load-path "etc/elisp-packages/spaceline-all-the-icons"
