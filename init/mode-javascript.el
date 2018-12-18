@@ -54,8 +54,22 @@
   (push '("===" . ?≡) prettify-symbols-alist)
   (prettify-symbols-mode t))
 
+(defun quick-eval ()
+  (interactive)
+  (let* ((root (projectile-project-root))
+         (src-file (buffer-file-name))
+         (build-file (replace-regexp-in-string "/src/" "/build/" src-file)))
+    (message root)
+    (quickrun :source `((:command . "node")
+                        (:tempfile . nil)
+                        (:default-directory . ,root)
+                        (:exec . (,(format "npx babel %s --out-file %s" src-file build-file)
+                                  ,(format "cd %s; npx env-cmd development node %s" root build-file)
+                                  ))))))
+
 ;;; Utilities
-(use-package js2-refactor :after js2-mode :ensure t)
+(use-package js2-refactor :ensure t
+  :bind (:map js2-mode-map ("C-c r" . js2r-rename-var)))
 ;; (use-package js-injector
 ;;   :disabled t
 ;;   :after js2-mode
@@ -141,7 +155,9 @@ When PFX is non-nil, run with --save or --save-dev"
 (use-package rjsx-mode :ensure t
   :mode (("\\.jsx?$" . rjsx-mode))
   :config
+  (key-combo-define rjsx-mode-map "=" '(" = " " => " " === "))
   (add-hook 'rjsx-mode-hook 'js2-mode-hide-warnings-and-errors)
+  (add-hook 'rjsx-mode-hook '(lambda () (set-face-attribute 'rjsx-tag-bracket-face nil :inherit 'rjsx-tag)))
 
   (defun key-combo--jsx-advice (orig-f &rest args)
     "Advice to put around `key-combo-pre-command-function'.
@@ -156,16 +172,14 @@ Applies ORIG-F with ARGS if the predicate passes."
   ;; (advice-remove 'key-combo-pre-command-function 'key-combo--jsx-advice )
 
   (bind-keys :map rjsx-mode-map ("s-w" . js2-mode)))
-
+ 
 (use-package json :ensure json-mode
   :mode (("\\.json" . json-mode)
          ("\\.eslintrc$" . json-mode))
   :config
   (add-hook 'json-mode-hook
             '(lambda ()
-               (setq-local js-indent-level 2)
-               (local-set-key (kbd "<s-return>") 'send-to-repl)
-               (local-set-key (kbd "<kp-enter>") '(lambda () (interactive) (dotimes (i 2) (smart-newline)))))))
+               (setq-local js-indent-level 2))))
 
 (use-package js2-mode
   :config
@@ -176,12 +190,14 @@ Applies ORIG-F with ARGS if the predicate passes."
   (setq js2-highlight-level 3)
 
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
-
+  (require 'js2-refactor)
+  
+  (key-combo-define js2-mode-map "=" '(" = " " => " " === "))
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
   ;; (remove-hook 'js2-mode-hook '(lambda () (flycheck-select-checker (flycheck--guess-checker))))
   (bind-keys :map js2-mode-map
-             ("C-c x" . send-to-repl)
+             ("C-c x" . quick-eval)
              ("M-=" . (lambda () (interactive) (insert "=")))
 
              ;; JS2 Refactor things
@@ -198,7 +214,6 @@ Applies ORIG-F with ARGS if the predicate passes."
              ("M-." . js2-jump-around)
              ("M-," . pop-tag-mark)
              ("<s-return>" . send-to-repl)
-             ("<kp-enter>" . (lambda () (interactive) (dotimes (i 2) (smart-newline))))
              ("<C-backspace>" . (lambda () (interactive) (smart-backward) (js2r-kill)))))
 
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
