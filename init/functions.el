@@ -652,9 +652,6 @@
     (4 (window-config--save))
     (16 (window-config-save-or-restore))))
 
-(global-set-key (kbd "C-x [") 'window-config--save)
-(global-set-key (kbd "C-x ]") 'window-config--restore)
-
 (defun set-frame-fullsize ()
   (interactive)
   (set-frame-size (selected-frame) 238 100))
