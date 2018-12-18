@@ -72,10 +72,9 @@
   :ensure t
   :bind ("C-x RET RET" . quickrun))
 
-(eval-after-load "treemacs"
-  (use-package solaire-mode
-   :ensure t
-   :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)))
+(use-package solaire-mode
+  :ensure t
+  :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode))
 
 (use-package no-littering :ensure t)
 (use-package linum-off :ensure t)
@@ -112,18 +111,22 @@
 (use-package auto-highlight-symbol :ensure t
   :config
   (setq ahs-idle-interval 0.5)
-  (auto-highlight-symbol-mode 1))
+  (add-hook 'prog-mode-hook 'auto-highlight-symbol-mode))
+
+(use-package highlight-symbol :ensure t
+  :bind ("H-l" . highlight-symbol-next)
+        ("H-j" . highlight-symbol-prev))
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
-        ("<end>" . mc/mark-next-like-this)
+        ("<down>" . mc/mark-next-like-this)
         ("H-N" . mc/skip-to-next-like-this)
-        ("<S-end>" . mc/skip-to-next-like-this)
+        ("<S-down>" . mc/skip-to-next-like-this)
         ("H-p" . mc/mark-previous-like-this)
-        ("<f13>" . mc/mark-previous-like-this)
+        ("<up>" . mc/mark-previous-like-this)
         ("H-P" . mc/skip-to-previous-like-this)
-        ("<S-f13>" . mc/skip-to-previous-like-this)
-        ("H-l" . mc/mark-all-symbols-like-this)
+        ("<S-up>" . mc/skip-to-previous-like-this)
+        ("<right>" . mc/mark-all-symbols-like-this)
         ("H->" . mc/insert-numbers)
         ("M-<mouse-1>" . mc/add-cursor-on-click))
 
@@ -156,9 +159,9 @@
   (eyebrowse-mode)
   (setq spaceline-all-the-icons-icon-set-eyebrowse-slot 'string
         eyebrowse-mode-line-left-delimiter ""
-        eyebrowse-mode-line-style 'smart
+        eyebrowse-mode-line-style 'always
         eyebrowse-mode-line-separator " | "
-        eyebrowse-mode-line-right-delimiter "  👀")
+        eyebrowse-mode-line-right-delimiter " ⏿")
   (eyebrowse-rename-window-config 1 "emacs"))
 
 (use-package smart-forward :ensure t
@@ -190,6 +193,12 @@
   (popwin-mode 1)
   (setq popwin:close-popup-window-timer-interval 0.1)
   (setq popwin:close-popup-window-timer nil))
+
+(use-package pomidor :ensure t :defer t
+  :commands (pomidor)
+  :config  (setq pomidor-play-sound-file (lambda (file) (start-process "my-pomidor-play-sound" nil "mplayer" file))
+                 pomidor-sound-tick nil
+                 pomidor-sound-tack nil))
 
 (use-package org :ensure t
   :defer t
@@ -259,6 +268,7 @@
 (use-package undo-tree :ensure t
   :config (global-undo-tree-mode)
   :bind ("C-c C-u" . undo-tree-visualize)
+        ("C-/" . hippie-expand)
         ("s-z" . undo-tree-undo)
         ("s-Z" . undo-tree-redo)
         ("s-y" . undo-tree-redo)
@@ -358,7 +368,8 @@
   (setq projectile-tags-command "/usr/local/Cellar/ctags/5.8_1/bin/ctags -Re -f \"%s\" %s")
   :bind
   ("C-o" . projectile-find-file)
-  ("C-c C-p" . projectile-ibuffer)
+  ("C-x C-b" . projectile-switch-to-buffer)
+  ("C-x C-p" . projectile-ibuffer)
   ("C-c p o" . projectile-find-file-in-known-projects)
   ("C-c p a" . projectile-add-known-project)
   ("C-c p d" . projectile-find-dir)
@@ -372,14 +383,21 @@
         :config (setq vr/match-separator-string " 🌪️ "
                       vr/match-separator-use-custom-face t))
 
+(use-package uuidgen :ensure t
+  :commands (uuidgen uuidgen-4))
+
+(use-package graphql-mode :ensure t
+  :mode (".gql$" . graphql-mode))
+
 (use-package cycle-quotes :ensure t
-  :bind ("H-C" . cycle-quotes)
+  :bind ("H-'" . cycle-quotes)
         ("<S-delete>" . cycle-quotes))
 
 (use-package embrace :ensure t
   :bind
   ("H-S-SPC"      . embrace-delete)
   ("H-c"          . embrace-change)
+  ("H-SPC"        . embrace-change)
   ("<deletechar>" . embrace-change))
 
 (use-package smex :ensure t :after counsel)
@@ -425,12 +443,13 @@
   ("C-\\" . imenu-list))
 
 (use-package imenu-anywhere :ensure t :after ivy
-  :bind ("C-\"" . ivy-imenu-anywhere) )
+  :bind ("C-c i" . ivy-imenu-anywhere)
+        ("C-\"" . ivy-imenu-anywhere) )
 
 (use-package bookmark :defer t
   :commands (bookmark-jump bookmark-all-names)
   :bind ("C-x r d" . bookmark-delete)
-  :config (run-at-time "1 sec" 900 'bookmark-save))
+  :config (run-at-time "1 sec" 3600 'bookmark-save))
 
 (use-package fancy-narrow
   :ensure t
@@ -462,7 +481,6 @@
          ("C-:"     . swiper-all-thing-at-point)
          ("C-c C-r" . ivy-resume)
          ("C-x b"   . ivy-switch-buffer)
-         ("C-x C-b" . ivy-switch-buffer-other-window)
          :map ivy-minibuffer-map
          ("s-k"     . delete-minibuffer-contents)
          ("C-S-j"   . ivy-immediate-done)))
@@ -489,13 +507,17 @@
 
 (use-package avy-zap :ensure t :bind ("s-x" . avy-zap-up-to-char))
 (use-package avy :ensure t
+  :config
+  (defun avy-goto-treemacs ()
+    (interactive)
+    (avy--generic-jump "^\s+" nil 'pre (point-min) (point-max)))
   :bind
   ("s-g" . avy-goto-line)
   ("s-p" . avy-goto-line-above)
   ("s-n" . avy-goto-line-below)
   ("s-J" . avy-goto-word-0)
   ("s-j" . avy-goto-word-1)
-  ("s-l" . avy-goto-char-2)
+  ("s-l" . avy-goto-char-timer)
   ("s-L" . avy-goto-char)
   :config
   (avy-setup-default))
@@ -564,6 +586,7 @@
 (use-package markdown-mode :ensure t
   :mode ("\\.md" . markdown-mode)
   :config
+  (setq markdown-marginalize-headers t)
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (add-hook 'markdown-mode-hook 'livedown-preview)
   (bind-keys* ("M-<left>" . backward-word)
@@ -605,7 +628,8 @@
 (use-package key-combo :ensure t
   :config
   (key-combo-mode 1)
-  (key-combo-load-default))
+  (key-combo-load-default)
+  (key-combo-define-global "|" '(" | " " || " " |> ")))
 
 (add-hook 'after-init-hook 'yas-global-mode)
 (use-package yasnippet :ensure t
@@ -616,34 +640,6 @@
   :if window-system
   :load-path "etc/elisp-packages/all-the-icons")
 
-(setq neo-theme (if window-system 'icons 'arrow))
-(use-package neotree :ensure t :disabled t
-  :config
-  (setq neo-show-updir-line nil
-        neo-window-width 35
-        neo-window-fixed-size nil
-        neo-show-hidden-files t
-        neo-vc-integration '(face))
-  (add-hook 'neotree-mode-hook (lambda () (setq-local line-spacing 5)))
-  (add-hook 'neotree-mode-hook (lambda () (setq-local tab-width 1)))
-
-  (defun neotree-projectile ()
-    (interactive)
-    (let ((cw (get-buffer-window (current-buffer))))
-      (neotree-find (or (ignore-errors (projectile-project-root))
-                        (and (buffer-file-name) (file-name-nondirectory (buffer-file-name)))
-                        (getenv "HOME")))))
-
-  (defun neotree-projectile-find ()
-    (interactive)
-    (let ((cw (get-buffer-window (current-buffer))))
-      (neotree-find)
-      (select-window cw)))
-
-  :bind ("H-1" . neotree-projectile)
-  ("<f1> <f1>" . neotree-projectile)
-  ("H-§" . neotree-projectile-find))
-
 (use-package treemacs-projectile :ensure t
   :commands (treemacs-projectile))
 (use-package treemacs
@@ -652,25 +648,87 @@
   :config
   (setq treemacs-change-root-without-asking t
         treemacs-follow-after-init t
-        treemacs-no-png-images t
+        treemacs-space-between-root-nodes nil
         treemacs-project-follow-cleanup t
         treemacs-recenter-after-file-follow t
         treemacs-git-integration t
+        treemacs-is-never-other-window t
         treemacs-width 40)
-  (setq treemacs-icon-open-text (propertize "📂 " 'face 'treemacs-directory-face)
-        treemacs-icon-closed-text (propertize "📁 " 'face 'treemacs-directory-face)
-        treemacs-icon-tag-leaf-text (propertize "● " 'face 'treemacs-term-node-face)
-        treemacs-icon-tag-node-open-text (propertize "💿 " 'face 'treemacs-tags-face)
-        treemacs-icon-tag-node-closed-text (propertize "📀 " 'face 'treemacs-tags-face)
-        treemacs-icon-text (propertize "📄 " 'face 'treemacs-file-face))
+  (treemacs-follow-mode t)
+  (add-hook 'treemacs-mode-hook (lambda () (setq line-spacing 10)))
+  (defun treemacs->icon (s) (treemacs->height (format "%s\t" s)))
+  (defun treemacs->height (s) (format "%s%s" (propertize " " 'face '(:height 1.5)) s))
+  (defface treemacs-highlight
+  '((((background dark)) :foreground "#ff6a00")
+    (((background light)) :foreground "#ff6a00"))
+  "Face for highliht symbols in Treemacs"
+  :group 'treemacs)
+  (setq treemacs-icon-open-png (treemacs->icon (all-the-icons-faicon "folder-open" :height 1.2 :face 'treemacs-highlight))
+        treemacs-icon-closed-png (treemacs->icon (all-the-icons-faicon "folder" :height 1.2))
+        treemacs-icon-text (treemacs->height (format "%s " (propertize (all-the-icons-faicon "file-o") 'display '(raise 0.1))))
+        treemacs-icon-root-png (treemacs->icon (all-the-icons-faicon "files-o" :height 1.2 :face 'treemacs-highlight))
+        treemacs-icon-tag-node-open-png (propertize " " 'face 'treemacs-highlight)
+        treemacs-icon-tag-node-closed-png (format "%s " (all-the-icons-material "format_list_bulleted" :face 'treemacs-highlight) )
+        treemacs-icon-tag-leaf-png (format "%s " (all-the-icons-faicon "dot-circle-o" :face 'treemacs-highlight) ))
+
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "babel" :height 1.1)) "babelrc")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "eslint" :height 1.1)) "eslintrc" "eslintrc.json" "eslintignore")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "css3" :height 1.1)) "css")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "git")) "gitignore" "gitkeep")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "html5")) "html" "htm")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "haml")) "haml" "erb" "slim")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "moustache")) "hbs")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "javascript" :height 1.1)) "js")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "nodejs" :height 1.1)) "node-version")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "sass" :height 1.1)) "scss" "sass")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "sticky-note-o")) "log" "dat")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "jsx-2")) "jsx")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "stylelint")) "stylelintrc")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "markdown" :height 1.2)) "md" "mdx" "markdown")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "config")) "yaml" "yml" "xml")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "cogs")) "properties" "boot" "config")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "dockerfile")) "Dockerfile" "dockerignore")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "nix")) "nix")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "postgresql")) "psql" "sql")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "clojure-line")) "edn" "clj" "cljc")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "key")) "p12" "key" "pem" "cert")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "book")) "LICENSE")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "script" :height 1.1)) "bashrc")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "bower")) "bowerrc")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "terminal")) "sh" "zsh" "fish")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "file-text")) "text" "txt")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "file-media")) "ico" "png" "jpg" "jpeg" "svg")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "file-pdf-o")) "pdf")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "file-video-o")) "mp4")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "emacs")) "el" "elc" "org")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "elixir" :height 0.9)) "ex" "eex" "exs")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "elixir" :height 0.9)) "")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "coffeescript" :height 0.9)) "coffee")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "go")) "go")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "haskell")) "hs")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "java")) "java")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "julia")) "jl")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "python")) "py")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "ruby" :height 0.9)) "rb")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-alltheicon "scala")) "scala")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "font")) "otf" "ttf")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-octicon "lock")) "lock")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "check-square-o")) "TODO")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-fileicon "graphql")) "gql")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "file-o")) "DS_Store")
+
+  (treemacs-define-custom-icon (treemacs->height (propertize "{…}" 'face '(:height 0.8))) "json" "cson")
+  (treemacs-define-custom-icon (treemacs->height (propertize "Ts" 'face '(:height 0.8))) "ts")
+  (treemacs-define-custom-icon (treemacs->height (all-the-icons-faicon "codepen")) "env" "env-cmdrc")
 
   (define-key treemacs-mode-map [mouse-1] #'treemacs-doubleclick-action)
-  (treemacs-tag-follow-mode)
   (treemacs-git-mode 'simple)
-  :bind ("<f1> <f1>" . treemacs-select-window)
-        ("<s-kp-decimal>" . treemacs-select-window)
-        ("<s-S-kp-decimal>" . treemacs-find-file)
-        ("<S-f1> <S-f1>" . treemacs-find-file))
+  :bind (("<kp-enter>" . treemacs-select-window)
+         ("<s-kp-decimal>" . treemacs-select-window)
+         ("<s-S-kp-decimal>" . treemacs-find-file)
+         ("<S-f1> <S-f1>" . treemacs-find-file)
+         :map treemacs-mode-map
+         ("f" . avy-goto-treemacs)))
 
 (use-package compile :ensure t :defer t
   :config
@@ -679,6 +737,9 @@
 
 (use-package ansi-color :ensure t
   :after (ansi-term compile)
+  :bind (:map term-mode-map
+              ("H-p" . term-previous-input)
+              ("H-n" . term-next-input))
   :config
   (defun colorize-compilation-buffer ()
     (toggle-read-only)
@@ -691,7 +752,7 @@
   :config
   (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
   (setq shell-pop-autocd-to-working-dir nil
-        shell-pop-shell-type '("term" "*terminal*" (lambda () (ansi-term "/bin/bash" "*ansi-terminal*")))
+        shell-pop-shell-type '("term" "*terminal*" (lambda () (ansi-term "/bin/zsh" "*ansi-terminal*")))
         shell-pop-window-position "bottom"
         shell-pop-window-size 20))
 
@@ -715,23 +776,24 @@
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
 
-
   (setq company-show-numbers t)
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
-  :bind (("<kp-decimal>" . company-complete)
+  :bind (("C-<tab>" . company-complete)
+         ("H-\\" . company-complete)
+         ("H-/" . dabbrev-expand)
          ("<backtab>" . company-complete)
          ("<S-kp-decimal>" . company-yasnippet)
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)))
 
-(use-package company-quickhelp :ensure t
+(use-package company-quickhelp :ensure t :disabled t
   :after company
-  :config (company-quickhelp-mode 1)
+  :config
+  (define-key company-active-map (kbd "C-h") 'company-quickhelp-manual-begin)
   (setq pos-tip-background-color (face-background 'company-tooltip))
   (setq pos-tip-foreground-color (face-foreground 'company-tooltip)))
-
 
 (use-package company-jsimport :load-path "init/company-jsimport.el"
   :after company
@@ -740,38 +802,6 @@
 (use-package company-emoji :ensure t
   :after company
   :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-emoji)))
-
-(use-package company-tern :ensure t
-  :after company
-  :config (add-to-list 'company-backends 'company-tern))
-
-(use-package ac-emoji :ensure t :disabled t :after auto-complete
-  :config
-  (add-hook 'markdown-mode-hook 'ac-emoji-setup)
-  (add-hook 'git-commit-mode-hook 'ac-emoji-setup)
-  (add-hook 'git-commit-mode-hook 'auto-complete-mode))
-
-(use-package auto-complete-config :after auto-complete)
-(use-package auto-complete :ensure t :disabled t
-  :config
-  (ac-config-default)
-  (setq ac-delay 0.2)
-  (set-default 'ac-sources
-               '(ac-source-yasnippet
-                 ac-source-words-in-same-mode-buffers))
-  (global-auto-complete-mode t)
-
-  :bind (("<M-tab>" . auto-complete)
-         ("<kp-decimal>" . auto-complete)
-         :map ac-completing-map
-         ("\e" . ac-stop)
-         :map ac-complete-mode-map
-         ([tab] . ac-expand-common)
-         ([return] . ac-complete)
-         ("C-j" . ac-complete)
-         ("C-s" . ac-isearch)
-         ("C-n" . ac-next)
-         ("C-p" . ac-previous)))
 
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -822,7 +852,26 @@
               ("s-$" . atom-tabs-select-tab-4)
               ("s-%" . atom-tabs-select-tab-5)))
 
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-init)
+  :init
+  (setq doom-modeline-bar-width 3)
+  :config
+  (defun update-theme-faces ()
+    (set-face-attribute 'linum nil :height 100)
+    (set-face-attribute 'nlinum-current-line nil :height 120)
+    (set-face-attribute 'ahs-face nil :background (face-attribute 'default :background))
+    (set-face-attribute 'ahs-face nil :foreground (face-attribute 'mode-line-emphasis :foreground))
+    (set-face-attribute 'ahs-plugin-defalt-face nil :background (face-attribute 'mode-line-emphasis :foreground))
+    (set-face-attribute 'ahs-plugin-defalt-face nil :foreground (face-attribute 'solaire-default-face :background))
+    (set-face-attribute 'doom-modeline-bar nil :background (face-attribute 'mode-line-emphasis :foreground))
+    (setq doom-modeline-bar-width 3))
+  (advice-add 'load-theme :after 'update-theme-faces)
+  (advice-add 'counsel-load-theme :after 'update-theme-faces))
+
 (use-package spaceline :after powerline :ensure t
+  :disabled t
   :config (setq spaceline-responsive nil))
 
 (use-package spaceline-all-the-icons
@@ -830,22 +879,20 @@
   :after spaceline
   :config
   (setq spaceline-all-the-icons-icon-set-bookmark 'heart
-        spaceline-all-the-icons-icon-set-modified 'toggle
+        spaceline-all-the-icons-icon-set-modified 'circle
         spaceline-all-the-icons-icon-set-dedicated 'pin
         spaceline-all-the-icons-separator-type 'none
-        spaceline-all-the-icons-icon-set-flycheck-slim 'dots
+        spaceline-all-the-icons-icon-set-flycheck-slim 'dotsphil
         spaceline-all-the-icons-flycheck-alternate t
         spaceline-all-the-icons-icon-set-window-numbering 'circle
         spaceline-all-the-icons-highlight-file-name t
         spaceline-all-the-icons-hide-long-buffer-path t
         spaceline-all-the-icons-separator-type 'none)
   (spaceline-toggle-all-the-icons-bookmark-off)
-  (spaceline-toggle-all-the-icons-dedicated-off)
   (spaceline-toggle-all-the-icons-fullscreen-off)
   (spaceline-toggle-all-the-icons-buffer-position-on)
   (spaceline-toggle-all-the-icons-package-updates-off)
   (spaceline-all-the-icons--setup-paradox)
-  (spaceline-all-the-icons--setup-neotree)
   (spaceline-all-the-icons-theme))
 
 (use-package winum :ensure t :defer 1
@@ -883,8 +930,8 @@
 
 
 ;; Set Path
-(setenv "PATH" (concat "/usr/texbin:/usr/local/bin:" (getenv "PATH")))
-(setq exec-path '("/usr/local/bin" "/usr/bin" "/bin"))
+(setenv "PATH" (concat "~/.jenv:/usr/texbin:/usr/local/bin:" (getenv "PATH")))
+(setq exec-path '("~/.jenv/shims" "/usr/local/bin" "/usr/bin" "/bin" "~/.jenv/shims"))
 
 ;; Set Mac modifiers keys
 (setq mac-function-modifier 'hyper)
@@ -925,6 +972,8 @@
 
 ;; Custom major modes
 (add-to-list 'auto-mode-alist '("\\.te?xt$" . text-mode))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
 
 ;; Auto correcting abbreve mode
 (define-abbrev-table 'global-abbrev-table
@@ -955,52 +1004,25 @@
 (load-file (expand-file-name "init/advice.elc" user-emacs-directory))
 
 ;; Themed with Spaceline
-(use-package atom-one-dark-theme :ensure t :defer t :disabled t)
-(use-package dracula-theme :ensure t :defer t :disabled t)
-(use-package darktooth-theme :ensure t :defer t :disabled t)
-(use-package nord-theme :ensure t :defer t :disabled t)
-(use-package doom-themes :ensure :defer t :disabled t
+(use-package doom-themes :ensure :defer t
+  :commands (doom-opera-theme doom-sourcerer-theme doom-tomorrow-night-theme doom-city-lights)
   :config
-  (setq
-   doom-one-light-brighter-modeline t
-   doom-spacegrey-brighter-modeline t)
-  (doom-themes-neotree-config)
+  (setq doom-one-light-brighter-modeline t
+        doom-spacegrey-brighter-modeline t
+        doom-enable-italic t
+        doom-enable-bold nil)
   (doom-themes-org-config)
+  (doom-themes-treemacs-config)
   (doom-themes-visual-bell-config))
 
-(use-package tao-theme :ensure t :defer t :disabled t)
-(use-package twilight-bright-theme :ensure t :defer t :disabled t)
-(use-package creamsody-theme :ensure t :defer t :disabled t
-  :config
-  (custom-theme-set-faces 'creamsody
-   '(term-color-black ((t :foreground "#232533")))
-   '(term-color-blue ((t :foreground "#61AFEF")))
-   '(term-color-cyan ((t :foreground "#86edec")))
-   '(term-color-green ((t (:foreground "#38fab4"))))
-   '(term-color-magenta ((t :foreground "#9c71a5")))
-   '(term-color-red ((t :foreground "#f59ea3")))
-   '(term-color-white ((t :foreground "#e5e5e5")))
-   '(term-color-yellow ((t (:foreground "#f2ef9c"))))))
+(use-package kaolin-themes :ensure :defer t
+  :commands (kaolin-bubblegum-theme kaolin-fusion kaolin-valey-dark)
+  :config (kaolin-treemacs-theme))
 
 (use-package aquafresh-theme :load-path "init/aquafresh-theme.el"
   :config
   (setq spaceline-all-the-icons-separator-type 'none)
   (setq powerline-text-scale-factor 1.1))
-
-(setq sql-connection-alist
-      '((profile-production
-         (sql-product 'postgres)
-         (sql-port 5432)
-         (sql-server "crm-profile-production.cv7dcdtnxmsa.eu-west-1.rds.amazonaws.com")
-         (sql-user "crm")
-
-         (sql-database "crm_profile_production"))
-        (profile-staging
-         (sql-product 'postgres)
-         (sql-port 5432)
-         (sql-server "crm-profile-staging.cv7dcdtnxmsa.eu-west-1.rds.amazonaws.com")
-         (sql-database "crm_profile_staging"))))
-
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -1010,14 +1032,15 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'aquafresh-morning)
-  (spaceline-update-faces))
+  (load-theme 'kaolin-fusion))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
 ;; End:
+
+;;  (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (provide 'init)
 ;;; init.el ends here
