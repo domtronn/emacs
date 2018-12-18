@@ -29,6 +29,7 @@
 ;;;; Web Mode
 
 (use-package web-mode
+  :ensure t
   :mode (("\\.moon$" . web-mode)
          ("\\.ejs$" . web-mode)
          ("\\.html$" . web-mode))
@@ -39,8 +40,7 @@
               ("C-c C-c k" . web-mode-element-kill)
               ("C-c C-c n" . web-mode-element-next)
               ("C-c C-c p" . web-mode-element-previous)
-              ("C-c C-c a" . web-mode-element-select))
-  )
+              ("C-c C-c a" . web-mode-element-select)) )
 
 (provide 'mode-web)
 
