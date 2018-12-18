@@ -27,32 +27,39 @@
 ;; note: C-h k is the command used to discover key-presses
 (global-set-key (kbd "M-£") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "M-*") '(lambda () (interactive) (insert "•")))
+(global-set-key (kbd "C-~") '(lambda () (interactive) (insert ?`)))
 (global-set-key (kbd "M-<kp-decimal>") 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
-
-(global-set-key (kbd "<down>") 'next-line)
-(global-set-key (kbd "<left>") 'previous-line)
-(global-set-key (kbd "<right>") 'forward-char)
-(global-set-key (kbd "<home>") 'backward-char)
-(global-set-key (kbd "<S-right>") 'forward-word)
-(global-set-key (kbd "<S-home>") 'backward-word)
-(global-set-key (kbd "<S-down>") 'forward-paragraph)
-(global-set-key (kbd "<S-left>") 'backward-paragraph)
 
 (global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
 
 (global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
 
+(global-set-key (kbd "H-g") 'keyboard-quit)
+
 ;; Closing Files
 (global-set-key (kbd "s-W") 'kill-current-buffer)
+(global-set-key (kbd "H-'") 'hippie-expand)
 
 (global-set-key (kbd "s-]") 'forward-sexp)
+(global-set-key (kbd "H-]") 'forward-sexp)
 (global-set-key (kbd "s-[") 'backward-sexp)
+(global-set-key (kbd "H-[") 'backward-sexp)
+
+;; Caps lock as normal behaviour
+(global-set-key (kbd "H-g") 'keyboard-quit)
+(global-set-key (kbd "H-g") 'keyboard-quit)
+(global-set-key (kbd "H-f") 'forward-char)
+(global-set-key (kbd "H-e") 'end-of-line)
+(global-set-key (kbd "H-a") 'beginning-of-line)
+(global-set-key (kbd "H-d") 'delete-char)
+(global-set-key (kbd "H-D") 'backward-delete-char)
+(global-set-key (kbd "H-b") 'backward-char)
+(global-set-key (kbd "H-p") 'previous-line)
+(global-set-key (kbd "H-n") 'next-line)
 
 (global-set-key (kbd "s-<") 'fill-paragraph)
 (global-set-key (kbd "s->") 'unfill-paragraph)
-
-(global-set-key (kbd "H-'") 'other-window)
 
 ;; Alignment
 (global-set-key (kbd "C-x a a") 'align-regexp)
@@ -90,11 +97,11 @@
 
 ;; move and resize windows
 (global-set-key (kbd "H-+") '(lambda () (interactive) (text-scale-adjust 1)))
+(global-set-key (kbd "s-+") '(lambda () (interactive) (text-scale-adjust 1)))
 (global-set-key (kbd "H-_") '(lambda () (interactive) (text-scale-adjust -1)))
-(global-set-key (kbd "H--") '(lambda () (interactive) (global-text-scale-adjust -1)))
+(global-set-key (kbd "s-_") '(lambda () (interactive) (text-scale-adjust -1)))
 (global-set-key (kbd "<f11>") '(lambda () (interactive) (text-scale-adjust -1)))
 (global-set-key (kbd "<f12>") '(lambda () (interactive) (text-scale-adjust 1)))
-(global-set-key (kbd "<H-backspace>") '(lambda () (interactive) (global-text-scale-set 0)))
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
 
