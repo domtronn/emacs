@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name : JSX#Import.ThemeUi
+# key  : theme-ui
+# binding : C-c C-c C-t
+# /** @jsx jsx */
+# --
+/** @jsx jsx */
+import { jsx } from 'theme-ui'
+
+const `(s-upper-camel-case (file-name-base (buffer-name)))` = () => (
+  <div
+    sx={{
+    }}
+  >
+    $0
+  </div>
+)
+
+export default `(s-upper-camel-case (file-name-base (buffer-name)))`
