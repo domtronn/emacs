@@ -100,7 +100,7 @@
                                                                          (file-name-sans-extension it)))
                                                                        (projectile-current-project-files))
                                                                 (-map 'first (imenu-anywhere-candidates)))))))))
-  
+
   :bind (:map js2-mode-map
               ("s-I" . import-js-import)
               ("M-s-^" . import-js-import-word)
@@ -153,7 +153,7 @@ When PFX is non-nil, run with --save or --save-dev"
 
 ;;; Major Modes
 (use-package rjsx-mode :ensure t
-  :mode (("\\.jsx?$" . rjsx-mode))
+  :mode (("\\.m?jsx?$" . rjsx-mode))
   :config
   (key-combo-define rjsx-mode-map "=" '(" = " " => " " === "))
   (add-hook 'rjsx-mode-hook 'js2-mode-hide-warnings-and-errors)
@@ -172,7 +172,7 @@ Applies ORIG-F with ARGS if the predicate passes."
   ;; (advice-remove 'key-combo-pre-command-function 'key-combo--jsx-advice )
 
   (bind-keys :map rjsx-mode-map ("s-w" . js2-mode)))
- 
+
 (use-package json :ensure json-mode
   :mode (("\\.json" . json-mode)
          ("\\.eslintrc$" . json-mode))
@@ -180,6 +180,10 @@ Applies ORIG-F with ARGS if the predicate passes."
   (add-hook 'json-mode-hook
             '(lambda ()
                (setq-local js-indent-level 2))))
+
+(use-package auto-rename-tag :ensure t :disabled t
+  :after rjsx-mode
+  :config (global-auto-rename-tag-mode t))
 
 (use-package js2-mode
   :config
@@ -191,7 +195,7 @@ Applies ORIG-F with ARGS if the predicate passes."
 
   (setq js2-jump-fallback-f '(lambda (thing &rest args) (counsel-ag thing (projectile-project-root))))
   (require 'js2-refactor)
-  
+
   (key-combo-define js2-mode-map "=" '(" = " " => " " === "))
   (add-hook 'js2-mode-hook 'js2-mode-hide-warnings-and-errors)
   (add-hook 'js2-mode-hook '(lambda () (modify-syntax-entry ?_ "w")))
@@ -233,10 +237,10 @@ Applies ORIG-F with ARGS if the predicate passes."
             (cond
              ((file-exists-p (format "%s.jsx" base-name)) (format "%s.jsx" base-name))
              ((file-exists-p (format "%s.js" base-name)) (format "%s.js" base-name))))
-           
+
            (impl-p (string-equal file-name impl-name))
            (style-p (string-equal file-name style-name)))
-      
+
       (when impl-p (find-file style-name))
       (when style-p (find-file impl-name)))))
 

@@ -74,6 +74,7 @@
 
 (use-package solaire-mode
   :ensure t
+  :config (solaire-global-mode 1)
   :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode))
 
 (use-package no-littering :ensure t)
@@ -114,8 +115,8 @@
   (add-hook 'prog-mode-hook 'auto-highlight-symbol-mode))
 
 (use-package highlight-symbol :ensure t
-  :bind ("H-l" . highlight-symbol-next)
-        ("H-j" . highlight-symbol-prev))
+  :bind ("H-d" . highlight-symbol-next)
+        ("H-a" . highlight-symbol-prev))
 
 (use-package multiple-cursors :ensure t
   :bind ("H-n" . mc/mark-next-like-this)
@@ -155,6 +156,7 @@
          ("M-u" . ibuffer-unmark-all)))
 
 (use-package eyebrowse :ensure t
+  :disabled t
   :config
   (eyebrowse-mode)
   (setq spaceline-all-the-icons-icon-set-eyebrowse-slot 'string
@@ -373,7 +375,9 @@
   ("C-c p o" . projectile-find-file-in-known-projects)
   ("C-c p a" . projectile-add-known-project)
   ("C-c p d" . projectile-find-dir)
-  ("C-c p x x" . projectile-remove-known-project))
+  ("C-c p x x" . projectile-remove-known-project)
+  ("C-x C-c" . projectile-compile-project)
+  ("C-x c" . compile))
 
 (use-package visual-regexp :ensure t
   :bind ("C-c r" . vr/replace)
@@ -505,12 +509,14 @@
           (setq-default anzu-mode-line-update-function
                         'spaceline-all-the-icons-anzu-update-func))
 
-(use-package avy-zap :ensure t :bind ("s-x" . avy-zap-up-to-char))
+(use-package avy-zap :ensure t :bind
+  ("s-x" . avy-zap-up-to-char)
+  ("H-x" . avy-zap-up-to-char))
 (use-package avy :ensure t
   :config
   (defun avy-goto-treemacs ()
     (interactive)
-    (avy--generic-jump "^\s+" nil 'pre (point-min) (point-max)))
+    (avy--generic-jump "^\s+" 'pre (point-min) (point-max)))
   :bind
   ("s-g" . avy-goto-line)
   ("s-p" . avy-goto-line-above)
@@ -535,6 +541,7 @@
 (use-package rg
   :ensure  t
   :bind ("M-s" . rg-dwim)
+        ("C-x s" . rg-project)
         ("M-S" . rg-project)
   :config
   (add-hook 'rg-mode-hook 'wgrep-ag-setup)
@@ -575,8 +582,10 @@
   :init (autoload 'browse-url-url-at-point "browse-url"))
 
 (use-package link-hint :ensure t :after browse-url
-  :bind ("H-o" . link-hint-open-link)
-        ("H-k" . link-hint-open-multiple-links))
+  :bind
+  ("C-x l" . link-hint-open-link)
+  ("H-o" . link-hint-open-link)
+  ("H-k" . link-hint-open-multiple-links))
 
 (use-package markdown-toc :ensure t
   :after markdown-mode
@@ -723,7 +732,7 @@
 
   (define-key treemacs-mode-map [mouse-1] #'treemacs-doubleclick-action)
   (treemacs-git-mode 'simple)
-  :bind (("<kp-enter>" . treemacs-select-window)
+  :bind (("H-\\" . treemacs-select-window)
          ("<s-kp-decimal>" . treemacs-select-window)
          ("<s-S-kp-decimal>" . treemacs-find-file)
          ("<S-f1> <S-f1>" . treemacs-find-file)
@@ -732,27 +741,14 @@
 
 (use-package compile :ensure t :defer t
   :config
-  (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3))
-  :bind ("C-x C-c" . compile))
-
-(use-package ansi-color :ensure t
-  :after (ansi-term compile)
-  :bind (:map term-mode-map
-              ("H-p" . term-previous-input)
-              ("H-n" . term-next-input))
-  :config
-  (defun colorize-compilation-buffer ()
-    (toggle-read-only)
-    (ansi-color-apply-on-region compilation-filter-start (point))
-    (toggle-read-only))
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+  (add-to-list 'compilation-error-regexp-alist '("at .*?\\(/.*?\\):\\(.*?\\):\\(.*?\\)$" 1 2 3)))
 
 (use-package shell-pop :ensure t
   :bind ("C-`" . shell-pop)
   :config
   (add-hook 'term-mode-hook '(lambda () (yas-minor-mode -1)))
   (setq shell-pop-autocd-to-working-dir nil
-        shell-pop-shell-type '("term" "*terminal*" (lambda () (ansi-term "/bin/zsh" "*ansi-terminal*")))
+        shell-pop-shell-type 'eshell
         shell-pop-window-position "bottom"
         shell-pop-window-size 20))
 
@@ -780,7 +776,7 @@
   (setq company-backends (--map (company-mode/backend-with-yas it) company-backends))
 
   :bind (("C-<tab>" . company-complete)
-         ("H-\\" . company-complete)
+         ("<kp-enter>" . company-complete)
          ("H-/" . dabbrev-expand)
          ("<backtab>" . company-complete)
          ("<S-kp-decimal>" . company-yasnippet)
@@ -803,13 +799,20 @@
   :after company
   :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-emoji)))
 
+(use-package company-go :ensure t
+  :after company
+  :config
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (company-mode))))
+
 (add-hook 'LaTeX-mode-hook '(lambda () (local-set-key (kbd "C-x c") 'xelatex-make)))
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 
 (use-package magit :ensure t
   :mode ("\/COMMIT_EDITMSG$" . text-mode)
   :bind (("H-6" . magit-status)
-         ("<f6>" . magit-status)
+         ("C-x g" . magit-status)
          :map magit-mode-map
          ("o" . magit-open-file-other-window)
          ("C-c ." . magit-whitespace-cleanup)
@@ -829,6 +832,59 @@
   (add-hook 'elixir-mode-hook 'smartparens-mode)
   (add-hook 'elixir-mode-hook
             (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
+
+(use-package go-mode :ensure t
+  :mode "\\.go$"
+  :bind (:map go-mode-map
+              ("<s-return>" . gofmt)))
+
+(use-package go-eldoc :ensure t
+  :after go-mode
+  :config (add-hook 'go-mode-hook 'go-eldoc-setup))
+
+(use-package go-fill-struct :ensure t
+  :after go-mode)
+
+(use-package eclim :ensure t
+  :config
+  (setq eclimd-autostart t)
+  (add-hook 'java-mode-hook 'eclim-mode)
+  :bind (:map eclim-mode-map
+              ("<M-return>" . eclim-problems-correct)
+              ("C-c C-p" . eclim-problems-previous-same-window)
+              ("C-c C-n" . eclim-problems-next-same-window)
+              ("C-c C-o" . eclim-problems-open)
+              ("s-i" . eclim-java-import-organize)))
+
+(use-package company-emacs-eclim :ensure t
+  :after eclim
+  :config
+  (company-emacs-eclim-setup)
+  )
+
+(use-package default-text-scale :ensure t
+  :load-path "etc/elisp-packages/default-text-scale"
+  :commands (default-text-scale-increase default-text-scale-decrease)
+  :config (default-text-scale-mode 1)
+  (defun reset-font-family (orig-f &rest args)
+    (let ((solaire-pre-font (face-attribute 'solaire-default-face :family nil 'default))
+          (default-pre-font (face-attribute 'default :family nil 'default)))
+      (apply orig-f args)
+      (set-face-attribute 'solaire-default-face nil :family solaire-pre-font)
+      (set-face-attribute 'default nil :family default-pre-font)))
+  (advice-add 'default-text-scale-increase :around 'reset-font-family)
+  (advice-add 'default-text-scale-decrease :around 'reset-font-family)
+  (advice-add 'solaire-default-text-scale-increase :around 'reset-font-family)
+  (advice-add 'solaire-default-text-scale-decrease :around 'reset-font-family)
+  (advice-add 'default-text-scale-reset :around 'reset-font-family)
+  (advice-add 'load-theme :around 'reset-font-family)
+  :bind
+  ("H-+" . solaire-default-text-scale-increase)
+  ("H-=" . solaire-default-text-scale-decrease)
+  ("H-s-+" . default-text-scale-increase)
+  ("H-s-=" . default-text-scale-decrease)
+  ("H-M-+" . default-text-scale-reset)
+  ("H-M-=" . default-text-scale-reset))
 
 (use-package alchemist :ensure t
   :after elixir-mode
@@ -858,8 +914,27 @@
   :init
   (setq doom-modeline-bar-width 3)
   :config
+  (defun italicise-theme-faces ()
+    "Set italic font properties for use with Operator Mono font."
+    (interactive)
+    (set-face-attribute 'font-lock-comment-face nil :italic t)
+    (set-face-attribute 'font-lock-comment-delimiter-face nil :italic t)
+    (set-face-attribute 'font-lock-doc-face nil :italic t)
+    (set-face-attribute 'font-lock-keyword-face nil :italic t)
+    (set-face-attribute 'font-lock-string-face nil :italic t)
+    (set-face-attribute 'ivy-current-match nil :italic t)
+    (set-face-attribute 'powerline-inactive2 nil :italic t)
+    (set-face-attribute 'ahs-face nil :italic t)
+    (set-face-attribute 'magit-branch-remote nil :italic t)
+    (set-face-attribute 'diredp-date-time nil :italic t)
+    (set-face-attribute 'rjsx-attr nil :italic t)
+    (set-face-attribute 'rjsx-text nil :italic t)
+    (set-face-attribute 'js2-non-used nil :italic t)
+    (set-face-attribute 'js2-object-property nil :italic t)
+    (set-face-attribute 'eldoc-highlight-function-argument nil :italic t))
+
   (defun update-theme-faces ()
-    (set-face-attribute 'linum nil :height 100)
+    (set-face-attribute 'linum nil :height 100 :background (face-attribute 'default :background))
     (set-face-attribute 'nlinum-current-line nil :height 120)
     (set-face-attribute 'ahs-face nil :background (face-attribute 'default :background))
     (set-face-attribute 'ahs-face nil :foreground (face-attribute 'mode-line-emphasis :foreground))
@@ -868,7 +943,9 @@
     (set-face-attribute 'doom-modeline-bar nil :background (face-attribute 'mode-line-emphasis :foreground))
     (setq doom-modeline-bar-width 3))
   (advice-add 'load-theme :after 'update-theme-faces)
-  (advice-add 'counsel-load-theme :after 'update-theme-faces))
+  (advice-add 'counsel-load-theme :after 'update-theme-faces)
+  (advice-add 'default-text-scale-increase :after 'update-theme-faces)
+  (advice-add 'default-text-scale-decrease :after 'update-theme-faces))
 
 (use-package spaceline :after powerline :ensure t
   :disabled t
@@ -930,8 +1007,8 @@
 
 
 ;; Set Path
-(setenv "PATH" (concat "~/.jenv:/usr/texbin:/usr/local/bin:" (getenv "PATH")))
-(setq exec-path '("~/.jenv/shims" "/usr/local/bin" "/usr/bin" "/bin" "~/.jenv/shims"))
+(setenv "PATH" (concat "~/.jenv:/usr/texbin:/usr/local/bin:" (getenv "PATH") ":"  "~/.nvm/versions/node/v10.17.0/bin/" ":" "~/.nvm"))
+(setq exec-path '("~/.jenv/shims" "/usr/local/bin" "/usr/bin" "/bin" "~/go/bin" "~/.nvm/nvm.sh" "~/.nvm/versions/node/v10.17.0/bin" ))
 
 ;; Set Mac modifiers keys
 (setq mac-function-modifier 'hyper)
@@ -980,6 +1057,8 @@
   '(
     ("reuslt" "result" nil 0)
     ("reulst" "result" nil 0)
+    ("beeling" "beeline" nil 0)
+    ("beelin" "beeline" nil 0)
     ("remidner" "reminder" nil 0)
     ("suggestsions" "suggestions" nil 0)
     ("lenfgth" "length" nil 0)
@@ -987,7 +1066,11 @@
     ("hten" "then" nil 0)
     ("Promsie" "Promise" nil 0)
     ("requier" "require" nil 0)
+    ("repsonsive" "responsive" nil 0)
     ("entires" "entries" nil 0)
+    ("marign" "margin" nil 0)
+    ("mairgn" "margin" nil 0)
+    ("repsond" "respond" nil 0)
     ("entiers" "entries" nil 0)
     ("emtires" "entries" nil 0)
     ("stirng" "string" nil 0)
@@ -1019,7 +1102,21 @@
   :commands (kaolin-bubblegum-theme kaolin-fusion kaolin-valey-dark)
   :config (kaolin-treemacs-theme))
 
+;; Monochrome fonts
+(use-package tao-theme :ensure t :defer t :disabled t)
+(use-package minimal-theme :ensure t :defer t :disabled t)
+(use-package phoenix-dark-pink-theme :ensure t :defer t)
+(use-package poet-theme :ensure t :commands (poet-dark-monochrome))
+(use-package grayscale-theme :ensure t :defer t :disabled t)
+
+(use-package exec-path-from-shell :ensure t :defer t)
+(use-package snails
+  :load-path "etc/elisp-packages/snails"
+  :bind ("C-S-SPC" . snails)
+  ("S-s-SPC" . snails))
+
 (use-package aquafresh-theme :load-path "init/aquafresh-theme.el"
+  :defer t
   :config
   (setq spaceline-all-the-icons-separator-type 'none)
   (setq powerline-text-scale-factor 1.1))
@@ -1032,13 +1129,21 @@
 
 (when window-system
   (remove-mode-line-box)
-  (load-theme 'kaolin-fusion))
+  (load-theme 'kaolin-breeze))
 
 (benchmark-init/show-durations-tree)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; eval: (flycheck-mode 0)
 ;; End:
+
+(use-package async :ensure t)
+(use-package kubernetes
+  :ensure t
+  :after (async)
+  :commands (kubernetes-overview)
+  :bind ("C-x k" . kubernetes-overview))
+
 
 ;;  (add-hook 'before-save-hook 'whitespace-cleanup)
 

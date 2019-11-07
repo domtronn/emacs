@@ -28,6 +28,25 @@ influence of C1 on the result."
             (round (+ (* x alpha) (* y (- 1 alpha)))))
           (color-values c1) (color-values c2))))
 
+(defun aquafresh-italicise-theme ()
+  "Italicises the faces used in the `aquafresh-them'."
+  (interactive)
+  (set-face-attribute 'minibuffer-prompt nil :italic t)
+  (set-face-attribute 'font-lock-comment-face nil :italic t)
+  (set-face-attribute 'font-lock-comment-delimiter-face nil :italic t)
+  (set-face-attribute 'font-lock-doc-face nil :italic t)
+  (set-face-attribute 'font-lock-keyword-face nil :italic t)
+  (set-face-attribute 'font-lock-string-face nil :italic t)
+  (set-face-attribute 'ivy-current-match nil :italic t)
+  (set-face-attribute 'powerline-inactive2 nil :italic t)
+  (set-face-attribute 'ahs-face nil :italic t)
+  (set-face-attribute 'magit-branch-remote nil :italic t)
+  (set-face-attribute 'diredp-date-time nil :italic t)
+  (set-face-attribute 'rjsx-attr nil :italic t)
+  (set-face-attribute 'rjsx-text nil :italic t)
+  (set-face-attribute 'js2-object-property nil :italic t)
+  (set-face-attribute 'eldoc-highlight-function-argument nil :italic t))
+
 (defun aquafresh-apply-custom-theme (theme-name)
   "`let' bind all colors used in `aquafresh-themes' for THEME-NAME."
   (let* ((light (eq 'aquafresh-morning theme-name))

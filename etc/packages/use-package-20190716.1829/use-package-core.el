@@ -651,7 +651,8 @@ extending any keys already present."
                     ,(when (eq use-package-verbose 'debug)
                        `(message ,(format "Compiling package %s" name-string)))
                     ,(unless (plist-get args :no-require)
-                       `(load ,name-string nil t)))))))))
+                       `(unless (featurep ',name-symbol)
+                          (load ,name-string nil t))))))))))
 
     ;; Certain keywords imply :defer, if :demand was not specified.
     (when (and (not (plist-member args :demand))
@@ -1419,7 +1420,7 @@ no keyword implies `:all'."
 (defun use-package-handler/:custom-face (name _keyword args rest state)
   "Generate use-package custom-face keyword code."
   (use-package-concat
-   (mapcar #'(lambda (def) `(custom-set-faces (quote ,def))) args)
+   (mapcar #'(lambda (def) `(custom-set-faces (backquote ,def))) args)
    (use-package-process-keywords name rest state)))
 
 ;;;; :init
@@ -1533,6 +1534,7 @@ this file.  Usage:
                  package.  This is useful if the package is being lazily
                  loaded, and you wish to conditionally call functions in your
                  `:init' block that are defined in the package.
+:hook            Specify hook(s) to attach this package to.
 
 :bind            Bind keys, and define autoloads for the bound commands.
 :bind*           Bind keys, and define autoloads for the bound commands,
@@ -1542,7 +1544,7 @@ this file.  Usage:
 :bind-keymap*    Like `:bind-keymap', but overrides all minor mode bindings
 
 :defer           Defer loading of a package -- this is implied when using
-                 `:commands', `:bind', `:bind*', `:mode', `:magic',
+                 `:commands', `:bind', `:bind*', `:mode', `:magic', `:hook',
                  `:magic-fallback', or `:interpreter'.  This can be an integer,
                  to force loading after N seconds of idle time, if the package
                  has not already been loaded.

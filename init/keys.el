@@ -31,8 +31,6 @@
 (global-set-key (kbd "M-<kp-decimal>") 'dabbrev-expand)
 (global-set-key (kbd "M-S-SPC") 'kill-whitespace)
 
-(global-set-key (kbd "<M-return>") '(lambda () (interactive) (end-of-line) (smart-newline)))
-
 (global-set-key (kbd "<s-mouse-1>") 'goto-address-at-point)
 
 (global-set-key (kbd "H-g") 'keyboard-quit)
@@ -40,10 +38,13 @@
 ;; Closing Files
 (global-set-key (kbd "s-W") 'kill-current-buffer)
 (global-set-key (kbd "H-'") 'hippie-expand)
+(global-set-key (kbd "H-`") 'hippie-expand)
+(global-set-key (kbd "<enter>") 'hippie-expand)
 
-(global-set-key (kbd "s-]") 'forward-sexp)
+(global-set-key (kbd "s-\\") 'company-complete)
+(global-set-key (kbd "s-]") 'hippie-expand)
+
 (global-set-key (kbd "H-]") 'forward-sexp)
-(global-set-key (kbd "s-[") 'backward-sexp)
 (global-set-key (kbd "H-[") 'backward-sexp)
 
 ;; Caps lock as normal behaviour
@@ -94,14 +95,6 @@
 (global-set-key (kbd "H-,") 'pop-tag-mark)
 (global-set-key (kbd "H-<") 'pop-to-mark-command)
 (global-set-key (kbd "H-s-,") '(lambda () (interactive) (ring-insert find-tag-marker-ring (point-marker))))
-
-;; move and resize windows
-(global-set-key (kbd "H-+") '(lambda () (interactive) (text-scale-adjust 1)))
-(global-set-key (kbd "s-+") '(lambda () (interactive) (text-scale-adjust 1)))
-(global-set-key (kbd "H-_") '(lambda () (interactive) (text-scale-adjust -1)))
-(global-set-key (kbd "s-_") '(lambda () (interactive) (text-scale-adjust -1)))
-(global-set-key (kbd "<f11>") '(lambda () (interactive) (text-scale-adjust -1)))
-(global-set-key (kbd "<f12>") '(lambda () (interactive) (text-scale-adjust 1)))
 
 (global-set-key (kbd "s-]") 'exchange-point-and-mark)
 
